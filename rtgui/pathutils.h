@@ -25,3 +25,4 @@
 Glib::ustring removeExtension(const Glib::ustring &filename);
 Glib::ustring getExtension(const Glib::ustring &filename);
 Glib::ustring fname_to_utf8(const std::string &fname);
+Glib::ustring getExecutablePath(char *argv0);

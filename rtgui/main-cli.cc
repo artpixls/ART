@@ -153,21 +153,7 @@ int main (int argc, char **argv)
     Gio::init ();
 
 #ifdef BUILD_BUNDLE
-    char exname[512] = {0};
-    Glib::ustring exePath;
-    // get the path where the rawtherapee executable is stored
-#ifdef WIN32
-    WCHAR exnameU[512] = {0};
-    GetModuleFileNameW (NULL, exnameU, 511);
-    WideCharToMultiByte (CP_UTF8, 0, exnameU, -1, exname, 511, 0, 0 );
-#else
-
-    if (readlink ("/proc/self/exe", exname, 511) < 0) {
-        strncpy (exname, argv[0], 511);
-    }
-
-#endif
-    exePath = Glib::path_get_dirname (exname);
+    Glib::ustring exePath = getExecutablePath(argv[0]);
 
     // set paths
     if (Glib::path_is_absolute (DATA_SEARCH_PATH)) {

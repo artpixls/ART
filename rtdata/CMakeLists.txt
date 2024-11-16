@@ -28,7 +28,7 @@ if(WIN32)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/WindowsInnoSetup.iss" DESTINATION ${BINDIR})
 endif()
 
-if(APPLE)
+if(APPLE_DIRS)
     set(ICONSDIR "${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/Resources/share/icons")
     set(DATADIR "${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/Resources/share")
 endif()

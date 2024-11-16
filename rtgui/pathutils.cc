@@ -18,6 +18,20 @@
 
 #include "pathutils.h"
 
+#ifndef WIN32
+# include <glibmm/fileutils.h>
+# include <glib.h>
+# include <glib/gstdio.h>
+# include <glibmm/threads.h>
+#else // WIN32
+# include <glibmm/thread.h>
+# include "conio.h"
+#endif
+
+#ifdef __APPLE__
+# include <mach-o/dyld.h>
+#endif // __APPLE__
+
 
 Glib::ustring removeExtension (const Glib::ustring& filename)
 {
@@ -64,4 +78,41 @@ Glib::ustring fname_to_utf8(const std::string &fname)
     return Glib::filename_to_utf8(fname);
 
 #endif
+}
+
+
+Glib::ustring getExecutablePath(const char *argv0)
+{
+    char exname[512] = {0};
+    uint32_t bufsz = 512;
+    
+#ifdef WIN32
+    WCHAR exnameU[512] = {0};
+    GetModuleFileNameW (NULL, exnameU, 511);
+    WideCharToMultiByte (CP_UTF8, 0, exnameU, -1, exname, 511, 0, 0 );
+    
+#elif defined __APPLE__
+    
+    if (_NSGetExecutablePath(exname, &exname_size) != 0) {
+        g_strlcpy(exname, argv0, 512);
+    }
+    {
+        gchar *a = g_canonicalize_filename(exname, NULL);
+        g_strlcpy(exname, a, 512);
+        g_free(a);
+    }
+    
+#else
+
+    if (readlink("/proc/self/exe", exname, 511) < 0) {
+        g_strlcpy(exname, argv0, 512);
+        gchar *a = g_canonicalize_filename(exname, NULL);
+        g_strlcpy(exname, a, 512);
+        g_free(a);
+    }
+
+#endif
+    
+    Glib::ustring exePath = Glib::path_get_dirname(exname);
+    return exePath;
 }

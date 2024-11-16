@@ -45,13 +45,13 @@
 #include "session.h"
 
 #ifndef WIN32
-#include <glibmm/fileutils.h>
-#include <glib.h>
-#include <glib/gstdio.h>
-#include <glibmm/threads.h>
-#else
-#include <glibmm/thread.h>
-#include "conio.h"
+# include <glibmm/fileutils.h>
+# include <glib.h>
+# include <glib/gstdio.h>
+# include <glibmm/threads.h>
+#else // WIN32
+# include <glibmm/thread.h>
+# include "conio.h"
 #endif
 
 #ifdef WITH_MIMALLOC
@@ -429,21 +429,7 @@ int main (int argc, char **argv)
 #endif
 
 #ifdef BUILD_BUNDLE
-    char exname[512] = {0};
-    Glib::ustring exePath;
-    // get the path where the rawtherapee executable is stored
-#ifdef WIN32
-    WCHAR exnameU[512] = {0};
-    GetModuleFileNameW (NULL, exnameU, 511);
-    WideCharToMultiByte (CP_UTF8, 0, exnameU, -1, exname, 511, 0, 0 );
-#else
-
-    if (readlink ("/proc/self/exe", exname, 511) < 0) {
-        strncpy (exname, argv[0], 511);
-    }
-
-#endif
-    exePath = Glib::path_get_dirname (exname);
+    Glib::ustring exePath = getExecutablePath(argv[0]);
 
     // set paths
     if (Glib::path_is_absolute (DATA_SEARCH_PATH)) {
@@ -468,12 +454,12 @@ int main (int argc, char **argv)
 
     options.rtSettings.lensfunDbDirectory = LENSFUN_DB_PATH;
 
-#else
+#else // BUILD_BUNDLE
     argv0 = DATA_SEARCH_PATH;
     creditsPath = CREDITS_SEARCH_PATH;
     licensePath = LICENCE_SEARCH_PATH;
     options.rtSettings.lensfunDbDirectory = LENSFUN_DB_PATH;
-#endif
+#endif // BUILD_BUNDLE
 
     Glib::ustring fatalError;
     try {
