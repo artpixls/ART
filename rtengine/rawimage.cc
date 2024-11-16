@@ -980,8 +980,10 @@ int RawImage::loadRaw (bool loadData, unsigned int imageNum, bool closeFile, Pro
             if (use_internal_decoder_) {
                 crop_masked_pixels();
                 free(raw_image);
+#ifdef ART_USE_LIBRAW                
             } else if (!float_raw_image && !dng_version && strncmp(libraw_->unpack_function_name(), "canon_600_load_raw", 18) != 0) {
                 set_black_from_masked_areas();
+#endif // ART_USE_LIBRAW
             }
             raw_image = nullptr;
             adjust_margins = !float_raw_image; //true;
