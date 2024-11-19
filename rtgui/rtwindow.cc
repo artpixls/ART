@@ -466,6 +466,9 @@ RTWindow::RTWindow():
     if (options.windowMaximized) {
         move (lMonitorRect.get_x(), lMonitorRect.get_y());
         maximize();
+#ifdef __APPLE__
+        set_default_size(lMonitorRect.get_width(), lMonitorRect.get_height());
+#endif
     } else {
         unmaximize();
         resize (options.windowWidth, options.windowHeight);

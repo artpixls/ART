@@ -81,7 +81,7 @@ Glib::ustring fname_to_utf8(const std::string &fname)
 }
 
 
-Glib::ustring getExecutablePath(const char *argv0)
+Glib::ustring getExecutablePath(char *argv0)
 {
     char exname[512] = {0};
     uint32_t bufsz = 512;
@@ -93,7 +93,7 @@ Glib::ustring getExecutablePath(const char *argv0)
     
 #elif defined __APPLE__
     
-    if (_NSGetExecutablePath(exname, &exname_size) != 0) {
+    if (_NSGetExecutablePath(exname, &bufsz) != 0) {
         g_strlcpy(exname, argv0, 512);
     }
     {
