@@ -28,76 +28,42 @@ def getopts():
     p.add_argument('-v', '--verbose', action='store_true')
     p.add_argument('-r', '--rpath', action='append')
     p.add_argument('-p', '--prefix')
-    p.add_argument('-V', '--version', required=True)
     p.add_argument('-n', '--no-dmg', action='store_true')
-    p.add_argument('-f', '--fix-paths', action='store_true')
     ret = p.parse_args()
     ret.outdir = os.path.join(ret.outdir, 'ART.app')
     return ret
 
 
-def getplist(opts):
-    return f"""\
-<?xml version="1.0" encoding="UTF-8"?>
-<plist version="1.0">
-    <dict>
-        <key>CFBundleExecutable</key>
-        <string>ART</string>
-        <key>CFBundleGetInfoString</key>
-        <string>{opts.version}, Copyright © 2004-2010 Gábor Horváth, 2010-2019 RawTherapee Development Team, 2019-2024 Alberto Griggio</string>
-        <key>CFBundleIconFile</key>
-        <string>ART.icns</string>
-        <key>CFBundleIdentifier</key>
-        <string>us.pixls.art.ART</string>
-        <key>CFBundleInfoDictionaryVersion</key>
-        <string>6.0</string>
-        <key>CFBundleName</key>
-        <string>ART</string>
-        <key>CFBundlePackageType</key>
-        <string>APPL</string>
-        <key>CFBundleShortVersionString</key>
-        <string>{opts.version}</string>
-        <key>CFBundleSignature</key>
-        <string>????</string>
-        <key>CFBundleVersion</key>
-        <string>{opts.version}</string>
-        <key>NSHighResolutionCapable</key>
-        <true />
-        <key>NSHumanReadableCopyright</key>
-        <string>Copyright © 2004-2010 Gábor Horváth, 2010-2019 RawTherapee Development Team, 2019-2024 Alberto Griggio</string>
-        <key>LSMultipleInstancesProhibited</key>
-        <true />
-    </dict>
-</plist>
-"""
-
-
-def getdlls(opts, name='ART', include_rpath=True):
-    blacklist = {
-	'libc++.1.dylib',
-        'libSystem.B.dylib',
-        }
-    res = []
+def getdlls(opts):
+    blacklist = ['/System/', '/usr/lib/']
+    res = set()
     d = os.path.join(os.getcwd(), 'Contents/MacOS')
-    p = subprocess.Popen(['otool', '-L', os.path.join(d, name)],
-                         stdout=subprocess.PIPE)
-    out, _ = p.communicate()
-    for line in out.decode('utf-8').splitlines()[1:]:
-        line = line.strip()
-        bits = line.split('(compatibility ')
-        lib = bits[0].strip()
-        if lib.startswith('@rpath/') and include_rpath:
-            bn = lib[7:]
-            for p in opts.rpath:
-                plib = os.path.join(p, bn)
-                if os.path.exists(plib):
-                    lib = plib
-                    break
-        else:
-            bn = os.path.basename(lib)
-        if bn not in blacklist:
-            res.append(lib)
-    return res
+    to_process = [os.path.join(d, 'ART')]
+    seen = set()
+    while to_process:
+        name = to_process[-1]
+        to_process.pop()
+        if name in seen:
+            continue
+        seen.add(name)
+        r = subprocess.run(['otool', '-L', name], capture_output=True,
+                           encoding='utf-8')
+        out = r.stdout
+        for line in out.splitlines()[1:]:
+            line = line.strip()
+            bits = line.split('(compatibility ')
+            lib = bits[0].strip()
+            if lib.startswith('@rpath/'):
+                bn = lib[7:]
+                for p in opts.rpath:
+                    plib = os.path.join(p, bn)
+                    if os.path.exists(plib):
+                        lib = plib
+                        break
+            if not any(lib.startswith(p) for p in blacklist):
+                res.add(lib)
+                to_process.append(lib)
+    return sorted(res)
 
 
 def getprefix(opts):
@@ -177,46 +143,22 @@ def extra_files(opts):
              P('share/icons/Adwaita/index.theme'), 
              P('share/icons/Adwaita/cursors'),
         ]),
-        # ('Contents', [
-        #     (P('lib/gdk-pixbuf-2.0/2.10.0/loaders'), 'Frameworks'),
-        # ]),
-        ('Contents/Resources', [
-            P('lib/gdk-pixbuf-2.0/2.10.0/loaders.cache'),
+        ('Contents/Resources/share/icons', [
+             P('share/icons/hicolor'),
         ]),
-        # ('lib', [
-        #     D('/usr/lib/x86_64-linux-gnu/gio'),
-        # ]),
         ('Contents/Resources/share/glib-2.0/schemas', [
             P('share/glib-2.0/schemas/gschemas.compiled'),
         ]),
         ('Contents/Resources', [
             (D('~/.local/share/lensfun/updates/version_1'), 'lensfun'),
         ]),
-        # ('lib', [
-        #     D('/usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so'),
-        #     D('/usr/lib/x86_64-linux-gnu/gvfs/libgvfsdaemon.so'),
-        # ]),
-        ('Contents/Resources/etc/gtk-3.0', [
+        ('Contents/Resources/etc', [
             P('etc/gtk-3.0'),
         ]),
+        ('Contents/Resources', [
+            P('etc/fonts/fonts.conf'),
+        ]),
     ] + extra
-
-
-def fix_dlls(opts, name):
-    if not opts.fix_paths:
-        return
-    executable = os.path.join(opts.outdir, 'Contents/MacOS', name)
-    if opts.verbose:
-        print(f'setting @rpath for shared libraries in {executable}')
-    for lib in getdlls(opts, name, False):
-        libname = os.path.basename(lib)
-        outlib = os.path.join(opts.outdir, 'Contents/Frameworks', libname)
-        subprocess.run(['install_name_tool', '-id',
-                        '/Applications/ART.app/Contents/Frameworks/' + libname,
-                        outlib], check=True)
-        subprocess.run(['install_name_tool', '-change',
-                        lib, '/Applications/ART.app/Contents/Frameworks/'
-                        + libname, executable], check=True)
 
 
 def make_dmg(opts):
@@ -274,75 +216,16 @@ def main():
                            'Contents/Resources/share/gtk-3.0/settings.ini'),
               'w') as out:
         out.write('[Settings]\ngtk-button-images=1\n')
-    with open(os.path.join(opts.outdir, 'Contents/Info.plist'), 'w') as out:
-        out.write(getplist(opts))
-    shutil.copy2(os.path.join(os.path.dirname(__file__), 'art.icns'),
-                 os.path.join(opts.outdir, 'Contents/Resources/ART.icns'))
     with open(os.path.join(opts.outdir, 'Contents/Resources/options'),
               'a') as out:
         out.write('\n[Lensfun]\nDBDirectory=../Contents/Resources/lensfun\n')
         # if opts.exiftool:
         #     out.write('\n[Metadata]\nExiftoolPath=exiftool\n')
     for name in ('ART', 'ART-cli'):
-        fix_dlls(opts, name)
+        #fix_dlls(opts, name)
         shutil.move(os.path.join(opts.outdir, 'Contents/MacOS', name),
-                    os.path.join(opts.outdir, 'Contents/MacOS', name + '.bin'))
-    with open(os.path.join(opts.outdir, 'Contents/Resources/fonts.conf'),
-              'w') as out:
-        out.write("""\
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-
-<fontconfig>
-  <dir>/usr/share/fonts</dir>
-  <dir>/usr/local/share/fonts</dir>
-  <dir prefix="xdg">fonts</dir>
-
-  <cachedir>/var/cache/fontconfig</cachedir>
-  <cachedir prefix="xdg">fontconfig</cachedir>
-
-  <match target="pattern">
-    <test qual="any" name="family"><string>mono</string></test>
-    <edit name="family" mode="assign" binding="same"><string>monospace</string></edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family"><string>sans serif</string></test>
-    <edit name="family" mode="assign" binding="same"><string>sans-serif</string></edit>
-  </match>
-
-  <match target="pattern">
-    <test qual="any" name="family"><string>sans</string></test>
-    <edit name="family" mode="assign" binding="same"><string>sans-serif</string></edit>
-  </match>
-
-  <alias>
-    <family>DejaVu Sans</family>
-    <default><family>sans-serif</family></default>
-  </alias>
-  <alias>
-    <family>sans-serif</family>
-    <prefer><family>DejaVu Sans</family></prefer>
-  </alias>
-  <alias>
-    <family>DejaVu Serif</family>
-    <default><family>serif</family></default>
-  </alias>
-  <alias>
-    <family>serif</family>
-    <prefer><family>DejaVu Serif</family></prefer>
-  </alias>
-  <alias>
-    <family>DejaVu Sans Mono</family>
-    <default><family>monospace</family></default>
-  </alias>
-  <alias>
-    <family>monospace</family>
-    <prefer><family>DejaVu Sans Mono</family></prefer>
-  </alias>
-
-  <config><rescan><int>30</int></rescan></config>
-</fontconfig>
-""")        
+                    os.path.join(opts.outdir, 'Contents/MacOS',
+                                 '.' + name + '.bin'))
     with open(os.path.join(opts.outdir, 'Contents/MacOS/ART'), 'w') as out:
         out.write("""#!/bin/bash
 export ART_restore_GTK_CSD=$GTK_CSD
@@ -354,9 +237,10 @@ export ART_restore_FONTCONFIG_FILE=$FONTCONFIG_FILE
 export ART_restore_GTK_PATH=$GTK_PATH
 export ART_restore_GTK_IM_MODULE_FILE=$GTK_IM_MODULE_FILE
 export ART_restore_GSETTINGS_SCHEMA_DIR=$GSETTINGS_SCHEMA_DIR
-export GTK_CSD=0
+export ART_restore_XDG_DATA_DIRS=$XDG_DATA_DIRS
 d=$(dirname "$0")/..
-export GDK_PIXBUF_MODULE_FILE="$d/Resources/loaders.cache"
+export GTK_CSD=0
+export GDK_PIXBUF_MODULE_FILE="$d/Resources/etc/gtk-3.0/gdk-pixbuf.loaders"
 export GDK_PIXBUF_MODULEDIR="$d/Frameworks"
 #export GIO_MODULE_DIR="$d/Frameworks/gio/modules"
 export DYLD_LIBRARY_PATH="$d/Frameworks"
@@ -365,7 +249,10 @@ export FONTCONFIG_FILE="$d/Resources/fonts.conf"
 export GTK_PATH="$d/Resources/etc/gtk-3.0"
 export GTK_IM_MODULE_FILE="$d/Resources/etc/gtk-3.0/gtk.immodules"
 export GSETTINGS_SCHEMA_DIR="$d/Resources/share/glib-2.0/schemas"
-"$d/MacOS/ART.bin" "$@"
+export XDG_DATA_DIRS="$d/Resources/share"
+export GDK_RENDERING=similar
+export GTK_OVERLAY_SCROLLING=0
+"$d/MacOS/.ART.bin" "$@"
 """)
     with open(os.path.join(opts.outdir, 'Contents/MacOS/ART-cli'), 'w') as out:
         out.write("""#!/bin/bash
@@ -375,7 +262,7 @@ d=$(dirname "$0")/..
 #export GIO_MODULE_DIR="$d/Frameworks/gio/modules"
 export DYLD_LIBRARY_PATH="$d/Frameworks"
 #export ART_EXIFTOOL_BASE_DIR="$d/lib/exiftool"
-exec "$d/MacOS/ART-cli.bin" "$@"
+exec "$d/MacOS/.ART-cli.bin" "$@"
 """)
     for name in ('ART', 'ART-cli'):
         os.chmod(os.path.join(opts.outdir, 'Contents/MacOS', name), 0o755)

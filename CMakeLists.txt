@@ -799,7 +799,7 @@ endif()
 
 if(APPLE)
     install(FILES "${CMAKE_BINARY_DIR}/Info.plist" DESTINATION "${CMAKE_INSTALL_PREFIX}/Contents")
-    install(FILES "${PROJECT_SOURCE_DIR}/tools/osx/art.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/Contents/Resources")
+    install(FILES "${PROJECT_SOURCE_DIR}/tools/osx/ART.icns" DESTINATION "${CMAKE_INSTALL_PREFIX}/Contents/Resources")
 endif()
 
 add_subdirectory(rtengine)
