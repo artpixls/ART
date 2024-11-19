@@ -176,8 +176,12 @@ set(NONCLISOURCEFILES
 include_directories(BEFORE "${CMAKE_CURRENT_BINARY_DIR}")
 
 if(APPLE)
-    find_package(MacIntegration REQUIRED)
-    # At the time of writing CMake has no module finder for gtkmacintegration so here we have it hard-coded, if installed via macports it should be in /opt/local/...
+    pkg_check_modules(MacIntegration gtk-mac-integration-gtk3)
+    if(NOT MacIntegration_FOUND)
+        find_package(MacIntegration REQUIRED)
+    else()
+        set(EXTRA_LIBDIR ${EXTRA_LIBDIR} ${MacIntegration_LIBDIR})
+    endif()
     set(EXTRA_LIB_RTGUI ${MacIntegration_LIBRARIES})
     set(EXTRA_INCDIR ${EXTRA_INCDIR} ${MacIntegration_INCLUDE_DIRS})
 endif()
@@ -254,9 +258,6 @@ endif()
 if(OPENMP_FOUND AND NOT APPLE AND NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
     set(EXTRA_LIB_RTGUI ${EXTRA_LIB_RTGUI} "atomic")
 endif()
-
-# Create config.h which defines where data are stored
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/config.h")
 
 if(LIBRAW_FOUND)
     link_directories(${LIBRAW_LIBRARY_DIRS})
@@ -342,10 +343,15 @@ if(HAS_MIMALLOC)
 endif()
 
 # Install executables
-if(APPLE_DIRS)
-    install(TARGETS art DESTINATION "${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/MacOS")
-    install(TARGETS art-cli DESTINATION "${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/MacOS")
-else()
-    install(TARGETS art DESTINATION ${BINDIR})
-    install(TARGETS art-cli DESTINATION ${BINDIR})
+install(TARGETS art DESTINATION ${BINDIR})
+install(TARGETS art-cli DESTINATION ${BINDIR})
+
+# Create config.h which defines where data are stored
+if(APPLE)
+    foreach(_v DATADIR DOCDIR CREDITSDIR LICENCEDIR LENSFUNDBDIR)
+        if(${_v})
+            set(${_v} "../../${${_v}}")
+        endif()
+    endforeach()
 endif()
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/config.h")

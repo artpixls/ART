@@ -28,11 +28,6 @@ if(WIN32)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/WindowsInnoSetup.iss" DESTINATION ${BINDIR})
 endif()
 
-if(APPLE_DIRS)
-    set(ICONSDIR "${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/Resources/share/icons")
-    set(DATADIR "${PROJECT_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE}/Resources/share")
-endif()
-
 if(UNIX)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/ART.desktop.in" "${CMAKE_CURRENT_BINARY_DIR}/ART.desktop")
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ART.desktop" DESTINATION ${DESKTOPDIR})
@@ -69,22 +64,22 @@ install(FILES ${IMG_ICO} DESTINATION "${DATADIR}/images")
 install(DIRECTORY ${CTLSCRIPTSDIR} DESTINATION "${DATADIR}" FILES_MATCHING PATTERN "*.ctl")
 install(DIRECTORY ${LUTSDIR} DESTINATION "${DATADIR}" FILES_MATCHING REGEX ".*[^~]$")
 
-if(APPLE)
-    # CMake escapes first item quote character. Do not remove 'DUMMY_VARIABLE='
-    set(MACOSX_BUNDLE_COMMAND DUMMY_VARIABLE=
-        PROJECT_NAME="${PROJECT_NAME}"
-        PROJECT_SOURCE_DIR="${PROJECT_SOURCE_DIR}"
-        CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
-        GTK_PREFIX="${GTK_PREFIX}")
-    if(PROC_BIT_DEPTH MATCHES 32)
-        list(APPEND MACOSX_BUNDLE_COMMAND PROC_BIT_DEPTH=32)
-    else()
-        list(APPEND MACOSX_BUNDLE_COMMAND PROC_BIT_DEPTH=64)
-    endif()
-    list(APPEND MACOSX_BUNDLE_COMMAND sh "${PROJECT_SOURCE_DIR}/tools/osx/macosx_bundle.sh")
+# if(APPLE)
+#     # CMake escapes first item quote character. Do not remove 'DUMMY_VARIABLE='
+#     set(MACOSX_BUNDLE_COMMAND DUMMY_VARIABLE=
+#         PROJECT_NAME="${PROJECT_NAME}"
+#         PROJECT_SOURCE_DIR="${PROJECT_SOURCE_DIR}"
+#         CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
+#         GTK_PREFIX="${GTK_PREFIX}")
+#     if(PROC_BIT_DEPTH MATCHES 32)
+#         list(APPEND MACOSX_BUNDLE_COMMAND PROC_BIT_DEPTH=32)
+#     else()
+#         list(APPEND MACOSX_BUNDLE_COMMAND PROC_BIT_DEPTH=64)
+#     endif()
+#     list(APPEND MACOSX_BUNDLE_COMMAND sh "${PROJECT_SOURCE_DIR}/tools/osx/macosx_bundle.sh")
 
-    add_custom_target(macosx_bundle
-        COMMAND ${MACOSX_BUNDLE_COMMAND}
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-        COMMENT "Creating macOS bundle")
-endif()
+#     add_custom_target(macosx_bundle
+#         COMMAND ${MACOSX_BUNDLE_COMMAND}
+#         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+#         COMMENT "Creating macOS bundle")
+# endif()

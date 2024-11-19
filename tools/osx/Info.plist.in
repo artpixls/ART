@@ -1,154 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
     <dict>
-        <key>LSEnvironment</key>
-        <dict>
-            <key>XDG_CONFIG_DIRS</key>
-            <string>/Applications/ART.app/Contents/Resources/share/gtk-3.0</string>
-            <key>XDG_CONFIG_HOME</key>
-            <string>art/Library/Application Support</string>
-            <key>XDG_DATA_DIRS</key>
-            <string>/Applications/ART.app/Contents/Resources/share/gtk-3.0</string>
-            <key>GTK_PATH</key>
-            <string>/Applications/ART.app/Contents/Resources/etc/gtk-3.0</string>
-            <key>GTK_IM_MODULE_FILE</key>
-            <string>/Applications/ART.app/Contents/Resources/etc/gtk-3.0/gtk.immodules</string>
-            <key>XDG_DATA_HOME</key>
-            <string>art/Library/Application Support</string>
-            <key>GSETTINGS_SCHEMA_DIR</key>
-            <string>/Applications/ART.app/Contents/Resources/share/glib-2.0/schemas</string>
-            <key>GDK_PIXBUF_MODULE_FILE</key>
-            <string>/Applications/ART.app/Contents/Resources/etc/gtk-3.0/gdk-pixbuf.loaders</string>
-            <key>GDK_PIXBUF_MODULEDIR</key>
-            <string>/Applications/ART.app/Contents/Frameworks</string>
-            <key>LIBDIR</key>
-            <string>/Applications/ART.app/Contents/Frameworks</string>
-            <key>DATADIR</key>
-            <string>/Applications/ART.app/Contents/Resources</string>
-            <key>GDK_RENDERING</key>
-            <string>similar</string>
-            <key>GTK_OVERLAY_SCROLLING</key>
-            <string>0</string>
-        </dict>
-        <key>LSMultipleInstancesProhibited</key>
-        <true />
-        <key>LSMinimumSystemVersionByArchitecture</key>
-        <dict>
-            <key>arm64</key>
-            <string>@minimum_arm64_version@</string>
-            <key>x86_64</key>
-            <string>@minimum_x86_64_version@</string>
-        </dict>
-        <key>CFBundleAllowMixedLocalizations</key>
-        <true />
-        <key>CFBundleDisplayName</key>
-        <string>ART</string>
-        <key>CFBundleDocumentTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleTypeExtensions</key>
-                <array>
-                    <string>arp</string>
-                    <string>ARP</string>
-                </array>
-                <key>CFBundleTypeIconFile</key>
-                <string>profile.icns</string>
-                <key>CFBundleTypeName</key>
-                <string>ART Profile Data</string>
-                <key>CFBundleTypeRole</key>
-                <string>Editor</string>
-                <key>LSIsAppleDefaultForType</key>
-                <true />
-                <key>LSItemContentTypes</key>
-                <array>
-                    <string>us.pixls.art.ART.arp</string>
-                </array>
-            </dict>
-            <dict>
-                <key>CFBundleTypeExtensions</key>
-                <array>
-                    <string>3FR</string>
-                    <string>3fr</string>
-                    <string>ARW</string>
-                    <string>arw</string>
-                    <string>CR2</string>
-                    <string>cr2</string>
-                    <string>CRF</string>
-                    <string>crf</string>
-                    <string>CRW</string>
-                    <string>crw</string>
-                    <string>DCR</string>
-                    <string>dcr</string>
-                    <string>DNG</string>
-                    <string>dng</string>
-                    <string>FFF</string>
-                    <string>fff</string>
-                    <string>IIQ</string>
-                    <string>iiq</string>
-                    <string>KDC</string>
-                    <string>kdc</string>
-                    <string>MEF</string>
-                    <string>mef</string>
-                    <string>MOS</string>
-                    <string>mos</string>
-                    <string>MRW</string>
-                    <string>mrw</string>
-                    <string>NEF</string>
-                    <string>nef</string>
-                    <string>NRW</string>
-                    <string>nrw</string>
-                    <string>ORF</string>
-                    <string>orf</string>
-                    <string>PEF</string>
-                    <string>pef</string>
-                    <string>RAF</string>
-                    <string>raf</string>
-                    <string>RAW</string>
-                    <string>raw</string>
-                    <string>RW2</string>
-                    <string>rw2</string>
-                    <string>RWZ</string>
-                    <string>rwz</string>
-                    <string>SR2</string>
-                    <string>sr2</string>
-                    <string>SRF</string>
-                    <string>srf</string>
-                    <string>SRW</string>
-                    <string>srw</string>
-                </array>
-                <key>CFBundleTypeMIMETypes</key>
-                <array>
-                    <string>image/raw</string>
-                </array>
-                <key>CFBundleTypeName</key>
-                <string>Camera Raw</string>
-                <key>CFBundleTypeRole</key>
-                <string>Viewer</string>
-            </dict>
-            <dict>
-                <key>CFBundleTypeExtensions</key>
-                <array>
-                    <string>JPEG</string>
-                    <string>jpeg</string>
-                    <string>JPG</string>
-                    <string>jpg</string>
-                    <string>PNG</string>
-                    <string>png</string>
-                    <string>TIF</string>
-                    <string>tif</string>
-                    <string>TIFF</string>
-                    <string>tiff</string>
-                </array>
-                <key>CFBundleTypeName</key>
-                <string>Image</string>
-                <key>CFBundleTypeRole</key>
-                <string>Viewer</string>
-            </dict>
-        </array>
         <key>CFBundleExecutable</key>
         <string>ART</string>
         <key>CFBundleGetInfoString</key>
-        <string>@version@, Copyright © 2004-2010 Gábor Horváth, 2010-2022 A/RT Development Teams</string>
+        <string>${GIT_DESCRIBE}, Copyright © 2004-2010 Gábor Horváth, 2010-2019 RawTherapee Development Team, 2019-2024 Alberto Griggio</string>
         <key>CFBundleIconFile</key>
         <string>ART.icns</string>
         <key>CFBundleIdentifier</key>
@@ -160,46 +16,16 @@
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleShortVersionString</key>
-        <string>@shortVersion@</string>
+        <string>${GIT_DESCRIBE}</string>
         <key>CFBundleSignature</key>
         <string>????</string>
         <key>CFBundleVersion</key>
-        <string>@shortVersion@</string>
-        <key>LSArchitecturePriority</key>
-        <array>
-            <string>arm64</string>
-            <string>x86_64</string>
-        </array>
+        <string>${GIT_DESCRIBE}</string>
         <key>NSHighResolutionCapable</key>
         <true />
         <key>NSHumanReadableCopyright</key>
-        <string>Copyright © 2004-2010 Gábor Horváth, 2010-2022 A/RT Development Teams</string>
-        <key>UTExportedTypeDeclarations</key>
-        <array>
-            <dict>
-                <key>UTTypeConformsTo</key>
-                <array>
-                    <string>public.data</string>
-                </array>
-                <key>UTTypeDescription</key>
-                <string>ART Profile Data</string>
-                <key>UTTypeIconFile</key>
-                <string>profile.icns</string>
-                <key>UTTypeIdentifier</key>
-                <string>us.pixls.art.ART.arp</string>
-                <key>UTTypeReferenceURL</key>
-                <string>https://bitbucket.org/agriggio/art</string>
-                <key>UTTypeTagSpecification</key>
-                <dict>
-                    <key>com.apple.ostype</key>
-                    <string>ARP</string>
-                    <key>public.filename-extension</key>
-                    <array>
-                        <string>arp</string>
-                        <string>ARP</string>
-                    </array>
-                </dict>
-            </dict>
-        </array>
+        <string>Copyright © 2004-2010 Gábor Horváth, 2010-2019 RawTherapee Development Team, 2019-2024 Alberto Griggio</string>
+        <key>LSMultipleInstancesProhibited</key>
+        <true />
     </dict>
 </plist>
