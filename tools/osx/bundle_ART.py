@@ -29,6 +29,7 @@ def getopts():
     p.add_argument('-r', '--rpath', action='append')
     p.add_argument('-p', '--prefix')
     p.add_argument('-n', '--no-dmg', action='store_true')
+    p.add_argument('-d', '--dmg-name', default='ART')
     ret = p.parse_args()
     ret.outdir = os.path.join(ret.outdir, 'ART.app')
     return ret
@@ -163,11 +164,11 @@ def extra_files(opts):
 
 def make_dmg(opts):
     if opts.verbose:
-        print(f'Creating dmg in {opts.outdir}/ART-{opts.version}.dmg ...')
+        print(f'Creating dmg in {opts.outdir}/{opts.dmg_name}.dmg ...')
     subprocess.run(['hdiutil', 'create', '-format', 'UDBZ',
                     '-fs', 'HFS+', '-srcdir', 'ART.app',
-                    '-volname', f'ART-{opts.version}',
-                    f'ART-{opts.version}.dmg'],
+                    '-volname', opts.dmg_name,
+                    f'{opts.dmg_name}.dmg'],
                     cwd=os.path.join(opts.outdir, '..'),
                    check=True)
 
