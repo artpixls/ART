@@ -38,5 +38,5 @@ CustomProfileBuilder=
 #ImgDefault=Neutral
 
 [GUI]
-FontFamily=Helvetica Regular
-CPFontFamily=Helvetica Regular
+FontFamily=default
+CPFontFamily=default
