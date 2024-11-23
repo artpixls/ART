@@ -23,6 +23,7 @@
 # include <glib.h>
 # include <glib/gstdio.h>
 # include <glibmm/threads.h>
+# include <unistd.h>
 #else // WIN32
 # include <glibmm/thread.h>
 # include "conio.h"
@@ -84,7 +85,6 @@ Glib::ustring fname_to_utf8(const std::string &fname)
 Glib::ustring getExecutablePath(char *argv0)
 {
     char exname[512] = {0};
-    uint32_t bufsz = 512;
     
 #ifdef WIN32
     WCHAR exnameU[512] = {0};
@@ -92,6 +92,7 @@ Glib::ustring getExecutablePath(char *argv0)
     WideCharToMultiByte (CP_UTF8, 0, exnameU, -1, exname, 511, 0, 0 );
     
 #elif defined __APPLE__
+    uint32_t bufsz = 512;
     
     if (_NSGetExecutablePath(exname, &bufsz) != 0) {
         g_strlcpy(exname, argv0, 512);
