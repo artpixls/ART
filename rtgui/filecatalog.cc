@@ -974,39 +974,43 @@ void FileCatalog::_refreshProgressBar ()
     // Also mention that this progress bar only measures the FIRST pass (quick thumbnails)
     // The second, usually longer pass is done multithreaded down in the single entries and is NOT measured by this
     if (!inTabMode && (!previewsToLoad || std::floor(100.f * previewsLoaded / previewsToLoad) != std::floor(100.f * (previewsLoaded - 1) / previewsToLoad))) {
-        GThreadLock lock; // All GUI access from idle_add callbacks or separate thread HAVE to be protected
-        Gtk::Notebook *nb = (Gtk::Notebook *)(filepanel->get_parent());
-        Gtk::Grid* grid = Gtk::manage(new Gtk::Grid());
-        Gtk::Label *label = nullptr;
+        idle_register.add(
+            [this]() -> bool
+            {
+                Gtk::Notebook *nb = (Gtk::Notebook *)(filepanel->get_parent());
+                Gtk::Grid* grid = Gtk::manage(new Gtk::Grid());
+                Gtk::Label *label = nullptr;
 
-        int tot = previewsToLoad ? previewsToLoad : previewsLoaded;
-        grid->attach_next_to(*Gtk::manage(new RTImage("folder-closed.png")), options.tabbedUI ? Gtk::POS_RIGHT : Gtk::POS_TOP, 1, 1);
-        int filteredCount = fileBrowser->getNumFiltered() < 0 ? tot : min(fileBrowser->getNumFiltered(), tot);
+                int tot = previewsToLoad ? previewsToLoad : previewsLoaded;
+                grid->attach_next_to(*Gtk::manage(new RTImage("folder-closed.png")), options.tabbedUI ? Gtk::POS_RIGHT : Gtk::POS_TOP, 1, 1);
+                int filteredCount = fileBrowser->getNumFiltered() < 0 ? tot : min(fileBrowser->getNumFiltered(), tot);
 
-        label = Gtk::manage(new Gtk::Label(M("MAIN_FRAME_FILEBROWSER") +
-                                           (filteredCount != tot ? " [" + Glib::ustring::format(filteredCount) + "/" : " (")
-                                               + Glib::ustring::format(tot) +
-                                               (filteredCount != tot ? "]" : ")")));
+                label = Gtk::manage(new Gtk::Label(M("MAIN_FRAME_FILEBROWSER") +
+                                                   (filteredCount != tot ? " [" + Glib::ustring::format(filteredCount) + "/" : " (")
+                                                   + Glib::ustring::format(tot) +
+                                                   (filteredCount != tot ? "]" : ")")));
 
-        if (!options.tabbedUI) {
-            label->set_angle(90);
-        }
-        grid->attach_next_to(*label, !options.tabbedUI ? Gtk::POS_TOP : Gtk::POS_RIGHT, 1, 1);
-        grid->set_tooltip_markup(M("MAIN_FRAME_FILEBROWSER_TOOLTIP"));
-        grid->show_all();
+                if (!options.tabbedUI) {
+                    label->set_angle(90);
+                }
+                grid->attach_next_to(*label, !options.tabbedUI ? Gtk::POS_TOP : Gtk::POS_RIGHT, 1, 1);
+                grid->set_tooltip_markup(M("MAIN_FRAME_FILEBROWSER_TOOLTIP"));
+                grid->show_all();
 
-        if (nb) {
-            nb->set_tab_label(*filepanel, *grid);
-        }
-        if (previewsToLoad) {
-            filepanel->loadingThumbs(M("PROGRESSBAR_LOADINGTHUMBS"), float(previewsLoaded) / float(previewsToLoad));
-        }
+                if (nb) {
+                    nb->set_tab_label(*filepanel, *grid);
+                    return false;
+                }
+                if (previewsToLoad) {
+                    filepanel->loadingThumbs(M("PROGRESSBAR_LOADINGTHUMBS"), float(previewsLoaded) / float(previewsToLoad));
+                }
+                return false;
+            });
     }
 }
 
 void FileCatalog::previewReady (int dir_id, FileBrowserEntry* fdn)
 {
-
     if ( dir_id != selectedDirectoryId ) {
         delete fdn;
         return;
