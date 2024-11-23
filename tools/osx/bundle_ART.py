@@ -138,6 +138,12 @@ def extra_files(opts):
                   glob.glob(os.path.join(pref,
                                          'lib/gdk-pixbuf-2.0/2.10.0/'
                                          'loaders/*.so'))))
+    extra.append(('Contents/Frameworks',
+                  glob.glob(os.path.join(pref,
+                                         'lib/gtk-3.0/3*/immodules/*.so'))))
+    extra.append(('Contents/Resources',
+                  [os.path.join(pref, 'bin/gtk-query-immodules-3.0'),
+                   os.path.join(pref, 'bin/gdk-pixbuf-query-loaders')]))
     return [
         ('Contents/Resources/share/icons/Adwaita', [
              P('share/icons/Adwaita/scalable'),
@@ -216,7 +222,9 @@ def main():
     with open(os.path.join(opts.outdir,
                            'Contents/Resources/share/gtk-3.0/settings.ini'),
               'w') as out:
-        out.write('[Settings]\ngtk-button-images=1\n')
+        #out.write('[Settings]\ngtk-button-images=1\n')
+        out.write('[Settings]\ngtk-primary-button-warps-slider = true\n'
+                  'gtk-overlay-scrolling = true\n')
     with open(os.path.join(opts.outdir, 'Contents/Resources/options'),
               'a') as out:
         out.write('\n[Lensfun]\nDBDirectory=../Contents/Resources/lensfun\n')
@@ -240,20 +248,26 @@ export ART_restore_GTK_IM_MODULE_FILE=$GTK_IM_MODULE_FILE
 export ART_restore_GSETTINGS_SCHEMA_DIR=$GSETTINGS_SCHEMA_DIR
 export ART_restore_XDG_DATA_DIRS=$XDG_DATA_DIRS
 d=$(dirname "$0")/..
+t=$(/usr/bin/mktemp -d)
 export GTK_CSD=0
-export GDK_PIXBUF_MODULE_FILE="$d/Resources/etc/gtk-3.0/gdk-pixbuf.loaders"
+#export GDK_PIXBUF_MODULE_FILE="$d/Resources/etc/gtk-3.0/gdk-pixbuf.loaders"
+"$d/Resources/gdk-pixbuf-query-loaders" "$d/Frameworks/"libpixbufloader-*.so > "$t/loader.cache"
+"$d/Resources/gtk-query-immodules-3.0" "$d"/Frameworks/im-*.so > "$t/gtk.immodules"
+export GDK_PIXBUF_MODULE_FILE="$t/loader.cache"
+export GTK_IM_MODULE_FILE="$t/gtk.immodules"
 export GDK_PIXBUF_MODULEDIR="$d/Frameworks"
 #export GIO_MODULE_DIR="$d/Frameworks/gio/modules"
 export DYLD_LIBRARY_PATH="$d/Frameworks"
 export FONTCONFIG_FILE="$d/Resources/fonts.conf"
 #export ART_EXIFTOOL_BASE_DIR="$d/Resources/exiftool"
 export GTK_PATH="$d/Resources/etc/gtk-3.0"
-export GTK_IM_MODULE_FILE="$d/Resources/etc/gtk-3.0/gtk.immodules"
+#export GTK_IM_MODULE_FILE="$d/Resources/etc/gtk-3.0/gtk.immodules"
 export GSETTINGS_SCHEMA_DIR="$d/Resources/share/glib-2.0/schemas"
 export XDG_DATA_DIRS="$d/Resources/share"
 export GDK_RENDERING=similar
 export GTK_OVERLAY_SCROLLING=0
 "$d/MacOS/.ART.bin" "$@"
+/bin/rm -rf "$t"
 """)
     with open(os.path.join(opts.outdir, 'Contents/MacOS/ART-cli'), 'w') as out:
         out.write("""#!/bin/bash
