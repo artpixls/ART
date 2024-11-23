@@ -48,7 +48,11 @@ osx_will_quit_cb (GtkosxApplication *app, gpointer data)
 {
     RTWindow *rtWin = (RTWindow *)data;
     rtWin->on_delete_event (0);
-    gtk_main_quit ();
+    if (rtWin->isApplication()) {
+        rtWin->unset_application();
+    } else {
+        gtk_main_quit();
+    }
 }
 
 bool RTWindow::osxFileOpenEvent (Glib::ustring path)
@@ -268,7 +272,8 @@ RTWindow::RTWindow():
     mainNB(nullptr),
     bpanel(nullptr),
     splash(nullptr),
-    btn_fullscreen(nullptr)
+    btn_fullscreen(nullptr),
+    is_application_(false)
 {
 
     if (options.is_new_version()) {
@@ -445,8 +450,10 @@ RTWindow::RTWindow():
         g_signal_connect (osxApp, "NSApplicationWillTerminate",  G_CALLBACK (osx_will_quit_cb), rtWin);
         g_signal_connect (osxApp, "NSApplicationOpenFile", G_CALLBACK (osx_open_file_cb), rtWin);
         // RT don't have a menu, but we must create a dummy one to get the default OS X app menu working
-        GtkWidget *menubar;
-        menubar = gtk_menu_bar_new ();
+        GtkWidget *menubar = gtk_menu_bar_new ();
+        //gtk_container_add(GTK_CONTAINER(gobj()), menubar);
+        gtk_widget_set_parent(menubar, GTK_WIDGET(rtWin->gobj()));
+        gtk_widget_hide(menubar);
         gtkosx_application_set_menu_bar (osxApp, GTK_MENU_SHELL (menubar));
         gtkosx_application_set_use_quartz_accelerators (osxApp, FALSE);
         gtkosx_application_ready (osxApp);
@@ -688,14 +695,6 @@ RTWindow::~RTWindow()
 void RTWindow::on_realize()
 {
     Gtk::Window::on_realize();
-
-    // if (fpanel) {
-    //     fpanel->setAspect();
-    // }
-
-    // if (simpleEditor) {
-    //     epanel->setAspect();
-    // }
     
     mainWindowCursorManager.init(get_window());
 
@@ -933,7 +932,11 @@ bool RTWindow::keyPressed (GdkEventKey* event)
 
     if (try_quit) {
         if (!on_delete_event (nullptr)) {
-            gtk_main_quit();
+            if (isApplication()) {
+                unset_application();    
+            } else {
+                gtk_main_quit();
+            }
         }
     }
 

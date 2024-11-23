@@ -311,6 +311,7 @@ private:
         } else {
             rtWindow = create_rt_window();
             add_window(*rtWindow);
+            rtWindow->setApplication(true);
             return true;
         }
     }

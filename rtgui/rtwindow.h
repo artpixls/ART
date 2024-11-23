@@ -127,6 +127,8 @@ public:
     void writeToolExpandedStatus (std::vector<int> &tpOpen);
 
     // void showInfo(const Glib::ustring &msg, double duration=0.0);
+    void setApplication(bool yes) { is_application_ = yes; }
+    bool isApplication() const { return is_application_; }
 
 private:
     // void show_info_msg(const Glib::ustring &msg, bool is_error, double duration, size_t padding);
@@ -173,6 +175,7 @@ private:
 #endif
 
     IdleRegister idle_register;
+    bool is_application_;
 };
 
 #endif
