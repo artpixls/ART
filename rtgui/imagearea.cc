@@ -340,7 +340,7 @@ bool ImageArea::on_scroll_event (GdkEventScroll* event)
 //    printf("ImageArea::on_scroll_event / delta_x=%.5f, delta_y=%.5f, direction=%d, type=%d, send_event=%d\n",
 //            event->delta_x, event->delta_y, (int)event->direction, (int)event->type, event->send_event);
 
-    if (shortcut_mgr_ && shortcut_mgr_->shouldHandleScroll()) {
+    if (shortcut_mgr_ && shortcut_mgr_->scrollPressed(event)) {
         return true;
     }
 
