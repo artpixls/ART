@@ -28,12 +28,19 @@ public:
     typedef sigc::slot<void, const Glib::ustring&> DirSelectionSlot;
 
 private:
+    enum class PlaceType : uint8_t {
+      MOUNT,
+      VOLUME,
+      DRIVE,
+      DEFAULT_DIR_OR_SESSION,
+      FAVARITE_DIR
+    };
     class PlacesColumns: public Gtk::TreeModel::ColumnRecord {
     public:
         Gtk::TreeModelColumn<Glib::RefPtr<Gio::Icon>> icon;
         Gtk::TreeModelColumn<Glib::ustring> label;
         Gtk::TreeModelColumn<Glib::ustring> root;
-        Gtk::TreeModelColumn<int> type;
+        Gtk::TreeModelColumn<PlaceType> type;
         Gtk::TreeModelColumn<bool> rowSeparator;
         PlacesColumns()
         {
@@ -57,6 +64,10 @@ private:
     Glib::RefPtr<Gio::FileMonitor> session_monitor_;
 
     void on_session_changed(const Glib::RefPtr<Gio::File>& file, const Glib::RefPtr<Gio::File>& other_file, Gio::FileMonitorEvent event_type);
+
+    void SetRow(Gtk::TreeModel::Row row, Glib::RefPtr<Gio::Icon> icon,
+                Glib::ustring label, Glib::ustring root, PlaceType type,
+                bool rowSeparator);
     
 public:
 

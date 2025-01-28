@@ -18,6 +18,8 @@
  */
 #include "placesbrowser.h"
 
+#include <algorithm>
+
 #ifdef WIN32
 #include <windows.h>
 #include <shlobj.h>
@@ -126,6 +128,17 @@ bool compareMountByRoot (Glib::RefPtr<Gio::Mount> a, Glib::RefPtr<Gio::Mount> b)
     return a->get_root()->get_parse_name() < b->get_root()->get_parse_name();
 }
 
+void PlacesBrowser::SetRow(Gtk::TreeModel::Row row,
+                           Glib::RefPtr<Gio::Icon> icon, Glib::ustring label,
+                           Glib::ustring root, PlaceType type,
+                           bool rowSeparator) {
+  row[placesColumns.icon] = std::move(icon);
+  row[placesColumns.label] = std::move(label);
+  row[placesColumns.root] = std::move(root);
+  row[placesColumns.type] = type;
+  row[placesColumns.rowSeparator] = rowSeparator;
+}
+
 void PlacesBrowser::refreshPlacesList ()
 {
     placesModel->clear ();
@@ -136,12 +149,9 @@ void PlacesBrowser::refreshPlacesList ()
     if (hfile && hfile->query_exists()) {
         try {
             if (auto info = hfile->query_info ()) {
-                Gtk::TreeModel::Row newrow = *(placesModel->append());
-                newrow[placesColumns.label] = info->get_display_name ();
-                newrow[placesColumns.icon]  = info->get_icon ();
-                newrow[placesColumns.root]  = hfile->get_parse_name ();
-                newrow[placesColumns.type]  = 4;
-                newrow[placesColumns.rowSeparator] = false;
+                SetRow(*(placesModel->append()), info->get_icon(),
+                       info->get_display_name(), hfile->get_parse_name(),
+                       PlaceType::DEFAULT_DIR_OR_SESSION, false);
             }
         } catch (Gio::Error&) {}
     }
@@ -152,24 +162,19 @@ void PlacesBrowser::refreshPlacesList ()
     if (hfile2 && hfile2->query_exists() && !hfile2->equal(hfile)) {
         try {
             if (auto info = hfile2->query_info ()) {
-                Gtk::TreeModel::Row newrow = *(placesModel->append());
-                newrow[placesColumns.label] = info->get_display_name ();
-                newrow[placesColumns.icon]  = info->get_icon ();
-                newrow[placesColumns.root]  = hfile2->get_parse_name ();
-                newrow[placesColumns.type]  = 4;
-                newrow[placesColumns.rowSeparator] = false;
+                SetRow(*(placesModel->append()), info->get_icon(),
+                       info->get_display_name(), hfile2->get_parse_name(),
+                       PlaceType::DEFAULT_DIR_OR_SESSION, false);
             }
         } catch (Gio::Error&) {}
     }
 
     // session
-    Gtk::TreeModel::Row newrow = *(placesModel->append());
-    newrow[placesColumns.label] = M("SESSION_LABEL") + " (" + std::to_string(art::session::list().size()) + ")";
-    newrow[placesColumns.icon] = Gio::ThemedIcon::create("document-open-recent");
-    newrow[placesColumns.root] = art::session::path();
-    newrow[placesColumns.type] = 4;
-    newrow[placesColumns.rowSeparator] = false;
-    
+    SetRow(*(placesModel->append()),
+         Gio::ThemedIcon::create("document-open-recent"),
+         M("SESSION_LABEL") + " (" +
+             std::to_string(art::session::list().size()) + ")",
+         art::session::path(), PlaceType::DEFAULT_DIR_OR_SESSION, false);
 
     // append favorites
     if (!placesModel->children().empty()) {
@@ -183,12 +188,9 @@ void PlacesBrowser::refreshPlacesList ()
         if (hfile && hfile->query_exists()) {
             try {
                 if (auto info = hfile->query_info ()) {
-                    Gtk::TreeModel::Row newrow = *(placesModel->append());
-                    newrow[placesColumns.label] = info->get_display_name ();
-                    newrow[placesColumns.icon]  = info->get_icon ();
-                    newrow[placesColumns.root]  = hfile->get_parse_name ();
-                    newrow[placesColumns.type]  = 5;
-                    newrow[placesColumns.rowSeparator] = false;
+                    SetRow(*(placesModel->append()), info->get_icon(),
+                    info->get_display_name(), hfile->get_parse_name(),
+                    PlaceType::FAVARITE_DIR, false);
                 }
             } catch(Gio::Error&) {}
         }
@@ -206,31 +208,20 @@ void PlacesBrowser::refreshPlacesList ()
         std::vector<Glib::RefPtr<Gio::Volume> > volumes = drives[j]->get_volumes ();
 
         if (volumes.empty()) {
-            Gtk::TreeModel::Row newrow = *(placesModel->append());
-            newrow[placesColumns.label] = drives[j]->get_name ();
-            newrow[placesColumns.icon]  = drives[j]->get_icon ();
-            newrow[placesColumns.root]  = "";
-            newrow[placesColumns.type]  = 3;
-            newrow[placesColumns.rowSeparator] = false;
+            SetRow(*(placesModel->append()), drives[j]->get_icon(),
+                    drives[j]->get_name(), "", PlaceType::DRIVE, false);
         }
 
         for (size_t i = 0; i < volumes.size (); i++) {
             Glib::RefPtr<Gio::Mount> mount = volumes[i]->get_mount ();
 
             if (mount) { // placesed volumes
-                Gtk::TreeModel::Row newrow = *(placesModel->append());
-                newrow[placesColumns.label] = mount->get_name ();
-                newrow[placesColumns.icon]  = mount->get_icon ();
-                newrow[placesColumns.root]  = mount->get_root ()->get_parse_name ();
-                newrow[placesColumns.type]  = 1;
-                newrow[placesColumns.rowSeparator] = false;
+                SetRow(*(placesModel->append()), mount->get_icon(),
+                        mount->get_name(), mount->get_root ()->get_parse_name(),
+                        PlaceType::MOUNT, false);
             } else { // unplacesed volumes
-                Gtk::TreeModel::Row newrow = *(placesModel->append());
-                newrow[placesColumns.label] = volumes[i]->get_name ();
-                newrow[placesColumns.icon]  = volumes[i]->get_icon ();
-                newrow[placesColumns.root]  = "";
-                newrow[placesColumns.type]  = 2;
-                newrow[placesColumns.rowSeparator] = false;
+                SetRow(*(placesModel->append()), volumes[i]->get_icon(),
+                        volumes[i]->get_name(), "", PlaceType::VOLUME, false);
             }
         }
     }
@@ -243,19 +234,12 @@ void PlacesBrowser::refreshPlacesList ()
             Glib::RefPtr<Gio::Mount> mount = volumes[i]->get_mount ();
 
             if (mount) { // placesed volumes
-                Gtk::TreeModel::Row newrow = *(placesModel->append());
-                newrow[placesColumns.label] = mount->get_name ();
-                newrow[placesColumns.icon]  = mount->get_icon ();
-                newrow[placesColumns.root]  = mount->get_root ()->get_parse_name ();
-                newrow[placesColumns.type]  = 1;
-                newrow[placesColumns.rowSeparator] = false;
+                SetRow(*(placesModel->append()), mount->get_icon(),
+                        mount->get_name(), mount->get_root ()->get_parse_name(),
+                        PlaceType::MOUNT, false);
             } else { // unplacesed volumes
-                Gtk::TreeModel::Row newrow = *(placesModel->append());
-                newrow[placesColumns.label] = volumes[i]->get_name ();
-                newrow[placesColumns.icon]  = volumes[i]->get_icon ();
-                newrow[placesColumns.root]  = "";
-                newrow[placesColumns.type]  = 2;
-                newrow[placesColumns.rowSeparator] = false;
+                SetRow(*(placesModel->append()), volumes[i]->get_icon(),
+                        volumes[i]->get_name(), "", PlaceType::VOLUME, false);
             }
         }
     }
@@ -271,12 +255,9 @@ void PlacesBrowser::refreshPlacesList ()
 
     for (size_t i = 0; i < mounts.size (); i++) {
         if (!mounts[i]->get_volume ()) {
-            Gtk::TreeModel::Row newrow = *(placesModel->append());
-            newrow[placesColumns.label] = mounts[i]->get_name ();
-            newrow[placesColumns.icon]  = mounts[i]->get_icon ();
-            newrow[placesColumns.root]  = mounts[i]->get_root ()->get_parse_name ();
-            newrow[placesColumns.type]  = 1;
-            newrow[placesColumns.rowSeparator] = false;
+            SetRow(*(placesModel->append()), mounts[i]->get_icon(),
+                    mounts[i]->get_name(), mounts[i]->get_root ()->get_parse_name(),
+                    PlaceType::MOUNT, false);
         }
     }
 }
@@ -311,7 +292,7 @@ void PlacesBrowser::selectionChanged ()
     Gtk::TreeModel::iterator iter = selection->get_selected();
 
     if (iter) {
-        if (iter->get_value (placesColumns.type) == 2) {
+        if (iter->get_value (placesColumns.type) == PlaceType::VOLUME) {
             std::vector<Glib::RefPtr<Gio::Volume> > volumes = vm->get_volumes ();
 
             for (size_t i = 0; i < volumes.size(); i++)
@@ -319,7 +300,7 @@ void PlacesBrowser::selectionChanged ()
                     volumes[i]->mount ();
                     break;
                 }
-        } else if (iter->get_value (placesColumns.type) == 3) {
+        } else if (iter->get_value (placesColumns.type) == PlaceType::DRIVE) {
             std::vector<Glib::RefPtr<Gio::Drive> > drives = vm->get_connected_drives ();
 
             for (size_t i = 0; i < drives.size(); i++)
@@ -358,10 +339,12 @@ void PlacesBrowser::addPressed ()
     }
 
     // check if the dirname is already in the list. If yes, return.
-    for (size_t i = 0; i < options.favoriteDirs.size(); i++)
-        if (options.favoriteDirs[i] == lastSelectedDir) {
-            return;
-        }
+    const auto all_items = placesModel->children();
+    if (std::any_of(all_items.begin(), all_items.end(), [this](const Gtk::TreeModel::Row& row) {
+        return row[placesColumns.root] == lastSelectedDir;
+    })) {
+        return;
+    }
 
     // append
     Glib::RefPtr<Gio::File> hfile = Gio::File::create_for_path (lastSelectedDir);
@@ -383,7 +366,7 @@ void PlacesBrowser::delPressed ()
     Glib::RefPtr<Gtk::TreeSelection> selection = treeView->get_selection();
     Gtk::TreeModel::iterator iter = selection->get_selected();
 
-    if (iter && iter->get_value(placesColumns.type) == 5) {
+    if (iter && iter->get_value(placesColumns.type) == PlaceType::FAVARITE_DIR) {
         std::vector<Glib::ustring>::iterator i = std::find (options.favoriteDirs.begin(), options.favoriteDirs.end(), iter->get_value (placesColumns.root));
 
         if (i != options.favoriteDirs.end()) {
