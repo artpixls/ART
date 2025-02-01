@@ -239,8 +239,11 @@ bool BatchQueue::keyPressed (GdkEventKey* event)
 
 void BatchQueue::addEntries (const std::vector<BatchQueueEntry*>& entries, bool head, bool save)
 {
+    std::cout << "BatchQueue::addEntries -- before lock" << std::endl;
     {
         MYWRITERLOCK(l, entryRW);
+
+        std::cout << "BatchQueue::addEntries" << " -- after lock" << std::endl;
 
         for (const auto entry : entries) {
 
@@ -273,6 +276,10 @@ void BatchQueue::addEntries (const std::vector<BatchQueueEntry*>& entries, bool 
 
             if (entry->thumbnail)
                 entry->thumbnail->imageEnqueued ();
+
+            std::cout << "BatchQueue::addEntries - entry: " << entry->filename
+                      << " " << bool(entry->thumbnail) << " " << fd.size()
+                      << std::endl;
         }
     }
 
@@ -1120,6 +1127,9 @@ void BatchQueue::buttonPressed (LWButton* button, int actionCode, void* actionDa
 void BatchQueue::notifyListener ()
 {
     const bool queueRunning = processing;
+
+    std::cout << "BatchQueue::notifyListener -- " << bool(listener) << " " << queueRunning << std::endl;
+    
     if (listener) {
         BatchQueueListener* const bql = listener;
 
@@ -1129,6 +1139,8 @@ void BatchQueue::notifyListener ()
             qsize = fd.size();
         }
 
+        std::cout << "BatchQueue::notifyListener -- qsize: " << qsize << std::endl;
+        
         idle_register.add(
             [bql, qsize, queueRunning]() -> bool
             {

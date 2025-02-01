@@ -93,6 +93,12 @@ public:
     void setBatchProfile(const rtengine::procparams::PartialProfile *bp);
     const rtengine::procparams::PartialProfile *getBatchProfile() override;
 
+    void redraw(bool checkfilter=true) override
+    {
+        std::cout << "BatchQueue::redraw" << std::endl;
+        ThumbBrowserBase::redraw(checkfilter);
+    }
+
 private:
     void cancelItems_(const std::vector<ThumbBrowserEntryBase*>& items) { cancelItems(items, false); }
     int getMaxThumbnailHeight() const override;

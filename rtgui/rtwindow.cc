@@ -971,7 +971,8 @@ bool RTWindow::scrollPressed(GdkEventScroll *event)
 
 void RTWindow::addBatchQueueJob (BatchQueueEntry* bqe, bool head)
 {
-
+    std::cout << "RTWindow::addBatchQueueJob - entry: " << bqe->filename << std::endl;
+    
     std::vector<BatchQueueEntry*> entries;
     entries.push_back (bqe);
     bpanel->addBatchQueueJobs (entries, head);

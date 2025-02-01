@@ -213,7 +213,7 @@ public:
         return fd;
     }
     void on_style_updated () override;
-    void redraw (bool checkfilter = true);   // arrange files and draw area
+    virtual void redraw (bool checkfilter = true);   // arrange files and draw area
     void refreshThumbImages (); // refresh thumbnail sizes, re-generate thumbnail images, arrange and draw
     void refreshQuickThumbImages (); // refresh thumbnail sizes, re-generate thumbnail images, arrange and draw
     void refreshEditedState (const std::set<Glib::ustring>& efiles);

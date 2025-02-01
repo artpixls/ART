@@ -2088,6 +2088,9 @@ void EditorPanel::do_queue_image(bool fast_export)
         return;
     }
 
+    std::cout << "-----------------------------------------------------\n"
+              << "EditorPanel::do_queue_image" << std::endl;
+
     saveProfile();
     parent->addBatchQueueJob(createBatchQueueEntry(fast_export, true, nullptr));
 }

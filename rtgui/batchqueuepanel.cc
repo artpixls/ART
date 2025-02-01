@@ -228,6 +228,8 @@ void BatchQueuePanel::init (RTWindow *parent)
 // it is expected to have a non null forceOrientation value on Preferences update only. In this case, qsize is ignored and computed automatically
 void BatchQueuePanel::updateTab (int qsize, int forceOrientation)
 {
+    std::cout << "BatchQueuePanel::updateTab: " << qsize << " " << forceOrientation << std::endl;
+    
     Gtk::Notebook *nb = (Gtk::Notebook *)(this->get_parent());
 
     if (forceOrientation > 0) {
@@ -280,6 +282,8 @@ void BatchQueuePanel::updateTab (int qsize, int forceOrientation)
 
 void BatchQueuePanel::queueSizeChanged(int qsize, bool queueRunning, bool queueError, const Glib::ustring& queueErrorMessage)
 {
+    std::cout << "BatchQueuePanel::queueSizeChanged: " << qsize << " " << queueRunning << " " << queueError << " " << queueErrorMessage << std::endl;
+    
     setGuiFromBatchState(queueRunning, qsize);
 
     if (!queueRunning && qsize == 0 && queueShouldRun) {
@@ -369,6 +373,12 @@ void BatchQueuePanel::setGuiFromBatchState(bool queueRunning, int qsize)
 
 void BatchQueuePanel::addBatchQueueJobs(const std::vector<BatchQueueEntry*>& entries, bool head)
 {
+    std::cout << "BatchQueuePanel::addBatchQueueJobs - jobs:";
+    for (auto &e : entries) {
+        std::cout << " " << e->filename;
+    }
+    std::cout << std::endl;    
+    
     batchQueue->addEntries(entries, head);
 
     if (!qStartStop->get_active() && qAutoStart->get_active()) {

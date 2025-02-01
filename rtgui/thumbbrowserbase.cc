@@ -627,7 +627,7 @@ void ThumbBrowserBase::arrangeFiles(bool checkfilter)
 
     // GUI already locked by ::redraw, the only caller of this method for now.
     // We could lock it one more time, there's no harm excepted (negligible) speed penalty
-    //GThreadLock lock;
+    GThreadLock lock;
 
     int rowHeight = 0;
     for (const auto entry : fd) {
@@ -1051,8 +1051,8 @@ bool ThumbBrowserBase::Internal::on_scroll_event (GdkEventScroll* event)
 
 void ThumbBrowserBase::redraw (bool checkfilter)
 {
-
     GThreadLock lock;
+
     arrangeFiles(checkfilter);
     queue_draw();
 }
