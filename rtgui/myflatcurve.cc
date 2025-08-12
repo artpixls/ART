@@ -212,8 +212,14 @@ void MyFlatCurve::draw ()
     }
 
     // draw f(x)=0.5 line
-    c = style->get_border_color(state);
-    cr->set_source_rgb (c.get_red(), c.get_green(), c.get_blue());
+    //c = style->get_border_color(state);
+    //cr->set_source_rgb (c.get_red(), c.get_green(), c.get_blue());
+    c = style->get_color(state);
+    if (snapToElmt == -2) {
+        set_source_rgb(cr, 1.0, 0.0, 0.0);
+    } else {
+        set_source_rgba(cr, c.get_red(), c.get_green(), c.get_blue(), 0.35);
+    }
     std::valarray<double> ds (1);
     ds[0] = 4 * s;
     cr->set_dash (ds, 0);
