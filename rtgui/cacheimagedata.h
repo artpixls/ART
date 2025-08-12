@@ -55,6 +55,7 @@ public:
     int sensortype;
     rtengine::IIO_Sample_Format sampleFormat;
     Glib::ustring lens;
+    Glib::ustring orientation;
     Glib::ustring camMake;
     Glib::ustring camModel;
     Glib::ustring filetype;
@@ -104,7 +105,7 @@ public:
     std::string getMake() const override { return camMake; }
     std::string getModel() const override { return camModel; }
     std::string getLens() const override { return lens; }
-    std::string getOrientation() const override { return ""; } // TODO
+    std::string getOrientation() const override { return orientation; } // TODO
     Glib::ustring getFileName() const override { return ""; }
     bool getPixelShift () const override { return isPixelShift; }
     bool getHDR() const override { return isHDR; }
