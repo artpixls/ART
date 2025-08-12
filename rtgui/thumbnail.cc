@@ -831,11 +831,16 @@ int Thumbnail::infoFromImage (const Glib::ustring& fname)
         cfs.timeValid    = true;
         cfs.exifValid    = true;
         cfs.lens         = idata->getLens();
+        cfs.orientation         = idata->getOrientation();
         cfs.camMake      = idata->getMake();
         cfs.camModel     = idata->getModel();
         cfs.rating = idata->getRating();
         cfs.colorLabel = idata->getColorLabel();
         cfs.timestamp = idata->getDateTimeAsTS();
+
+         if (idata->getOrientation() == "") {
+            cfs.orientation = "Unknown";
+        }
 
         if (idata->getOrientation() == "Rotate 90 CW") {
             deg = 90;
