@@ -166,6 +166,10 @@ int CacheImageData::load (const Glib::ustring& fname)
                     lens        = keyFile.get_string ("ExifInfo", "Lens");
                 }
 
+                if (keyFile.has_key ("ExifInfo", "Orientation")) {
+                    orientation        = keyFile.get_string ("ExifInfo", "Orientation");
+                }
+                
                 if (keyFile.has_key ("ExifInfo", "CameraMake")) {
                     camMake     = keyFile.get_string ("ExifInfo", "CameraMake");
                 }
@@ -277,6 +281,7 @@ int CacheImageData::save (const Glib::ustring& fname)
     }
 
     keyFile.set_string  ("ExifInfo", "Lens", lens);
+    keyFile.set_string  ("ExifInfo", "Orientation", orientation);
     keyFile.set_string  ("ExifInfo", "CameraMake", camMake);
     keyFile.set_string  ("ExifInfo", "CameraModel", camModel);
     keyFile.set_string  ("FileInfo", "Filetype", filetype);

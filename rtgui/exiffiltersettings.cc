@@ -38,6 +38,7 @@ void ExifFilterSettings::clear()
     dateFrom = Glib::Date(31, Glib::Date::DECEMBER, 2100);
     dateTo = Glib::Date(1, Glib::Date::JANUARY, 1900);
     lenses.clear();
+    orientations.clear();
     cameras.clear();
     expcomp.clear();
     filetypes.clear();
@@ -49,6 +50,7 @@ void ExifFilterSettings::clear()
     filterExpComp = false;
     filterCamera = false;
     filterLens = false;
+    filterOrientation = false;
     filterFiletype = false;
     filterDate = false;
 }
@@ -90,6 +92,7 @@ void ExifFilterSettings::load(const Glib::KeyFile &kf, const Glib::ustring &grou
     get_bool(filterExpComp, "FilterExpComp");
     get_bool(filterCamera, "FilterCamera");
     get_bool(filterLens, "FilterLens");
+    get_bool(filterOrientation, "FilterOrientation");
     get_bool(filterFiletype, "FilterFiletype");
     get_bool(filterDate, "FilterDate");
 
@@ -106,6 +109,7 @@ void ExifFilterSettings::load(const Glib::KeyFile &kf, const Glib::ustring &grou
     get_set("Filetypes", filetypes);
     get_set("Cameras", cameras);
     get_set("Lenses", lenses);
+    get_set("Orientations", orientations);
     get_set("Expcomp", expcomp);
 
     get_double(fnumberFrom, "FNumberFrom");
@@ -180,6 +184,7 @@ void ExifFilterSettings::save(Glib::KeyFile &kf, const Glib::ustring &group) con
     kf.set_boolean(group, "FilterExpComp", filterExpComp);
     kf.set_boolean(group, "FilterCamera", filterCamera);
     kf.set_boolean(group, "FilterLens", filterLens);
+    kf.set_boolean(group, "FilterOrientation", filterOrientation);
     kf.set_boolean(group, "FilterFiletype", filterFiletype);
     kf.set_boolean(group, "FilterDate", filterDate);
 
@@ -192,6 +197,7 @@ void ExifFilterSettings::save(Glib::KeyFile &kf, const Glib::ustring &group) con
     set_set("Filetypes", filetypes);
     set_set("Cameras", cameras);
     set_set("Lenses", lenses);
+    set_set("Orientations", orientations);
     set_set("Expcomp", expcomp);
 
     kf.set_double(group, "FNumberFrom", fnumberFrom);

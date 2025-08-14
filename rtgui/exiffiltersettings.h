@@ -30,6 +30,7 @@ public:
     std::set<std::string> filetypes;
     std::set<std::string> cameras;
     std::set<std::string> lenses;
+    std::set<std::string> orientations;
     std::set<std::string> expcomp;
     double fnumberFrom;
     double fnumberTo;
@@ -50,6 +51,7 @@ public:
     bool filterExpComp;
     bool filterCamera;
     bool filterLens;
+    bool filterOrientation;
     bool filterFiletype;
     bool filterDate;
 

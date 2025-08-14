@@ -148,6 +148,18 @@ FilterPanel::FilterPanel () : listener (nullptr)
     lvb->pack_start (*slens, Gtk::PACK_EXPAND_WIDGET, 0);
     pack_start (*lvb, Gtk::PACK_EXPAND_WIDGET, 4);
 
+    enaOrientation = Gtk::manage(new Gtk::CheckButton(M("EXIFFILTER_ORIENTATION") + ":"));
+    Gtk::VBox* ovb = Gtk::manage(new Gtk::VBox ());
+    ovb->pack_start (*enaOrientation, Gtk::PACK_SHRINK, 0);
+    orientation = Gtk::manage(new Gtk::ListViewText (1, false, Gtk::SELECTION_MULTIPLE));
+    orientation->set_headers_visible (false);
+    Gtk::ScrolledWindow* sorientation = Gtk::manage(new Gtk::ScrolledWindow());
+    sorientation->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
+    sorientation->set_size_request(-1, 80);
+    sorientation->add(*orientation);
+    ovb->pack_start (*sorientation, Gtk::PACK_EXPAND_WIDGET, 0);
+    pack_start (*ovb, Gtk::PACK_EXPAND_WIDGET, 4);
+    
     // add panel ending
     Gtk::VBox* vboxpe = Gtk::manage (new Gtk::VBox ());
     Gtk::HSeparator* hseptpe = Gtk::manage (new Gtk::HSeparator ());
@@ -170,6 +182,7 @@ FilterPanel::FilterPanel () : listener (nullptr)
     sChange.push_back(filetype->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &FilterPanel::valueChanged)));
     sChange.push_back(camera->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &FilterPanel::valueChanged)));
     sChange.push_back(lens->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &FilterPanel::valueChanged)));
+    sChange.push_back(orientation->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &FilterPanel::valueChanged)));
     sChange.push_back(enaFNumber->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
     sChange.push_back(enaShutter->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
     sChange.push_back(enaFocalLen->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
@@ -177,6 +190,7 @@ FilterPanel::FilterPanel () : listener (nullptr)
     sChange.push_back(enaExpComp->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
     sChange.push_back(enaCamera->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
     sChange.push_back(enaLens->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
+    sChange.push_back(enaOrientation->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
     sChange.push_back(enabled->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
     sChange.push_back(enaFiletype->signal_toggled().connect( sigc::mem_fun(*this, &FilterPanel::valueChanged) ));
 
@@ -264,7 +278,12 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
     }
     Glib::RefPtr<Gtk::TreeSelection> lselection = lens->get_selection ();
 
-    if (!update) {
+    if (!!update) {
+        enaOrientation->set_active(defefs.filterOrientation);
+    }
+    Glib::RefPtr<Gtk::TreeSelection> oselection = orientation->get_selection ();
+
+     if (!update) {
         expcomp->clear_items();
         curefs.expcomp.clear();
 
@@ -283,8 +302,18 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
             curefs.lenses.insert(*i);
         }
 
-        lselection->select_all();
+        oselection->select_all();
 
+        orientation->clear_items();
+        curefs.orientations.clear();
+
+        for (std::set<std::string>::iterator i = defefs.orientations.begin(); i != defefs.orientations.end(); ++i) {
+            orientation->append (*i);
+            curefs.orientations.insert(*i);
+        }
+
+        oselection->select_all();
+        
         camera->clear_items();
         curefs.cameras.clear();
 
@@ -331,6 +360,19 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
             }
         }
 
+        if (defefs.filterOrientation) {
+            for( Gtk::TreeModel::Children::iterator iter = orientation->get_model()->children().begin(); iter != orientation->get_model()->children().end(); ++iter) {
+                Glib::ustring v;
+                iter->get_value(0, v);
+
+                if( defefs.orientations.find( v ) != defefs.orientations.end() ) {
+                    oselection->select( iter );
+                } else {
+                    oselection->unselect( iter );
+                }
+            }
+        }
+        
         if (defefs.filterCamera) {
             for( Gtk::TreeModel::Children::iterator iter = camera->get_model()->children().begin(); iter != camera->get_model()->children().end(); ++iter) {
                 Glib::ustring v;
@@ -386,6 +428,7 @@ ExifFilterSettings FilterPanel::getFilter(bool full_data)
     efs.filterExpComp  = enaExpComp->get_active ();
     efs.filterCamera   = enaCamera->get_active ();
     efs.filterLens     = enaLens->get_active ();
+    efs.filterOrientation     = enaOrientation->get_active ();
     efs.filterFiletype = enaFiletype->get_active ();
     efs.filterDate = enaDate->get_active();
 
@@ -434,6 +477,14 @@ ExifFilterSettings FilterPanel::getFilter(bool full_data)
         }
     }
 
+    sel = orientation->get_selected ();
+
+    if (efs.filterOrientation || full_data) {
+        for (size_t i = 0; i < sel.size(); i++) {
+            efs.orientations.insert (orientation->get_text (sel[i]));
+        }
+    }
+    
     sel = filetype->get_selected ();
 
     if (efs.filterFiletype || full_data) {

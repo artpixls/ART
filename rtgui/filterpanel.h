@@ -37,6 +37,7 @@ protected:
     Gtk::ListViewText*      filetype;
     Gtk::ListViewText*      camera;
     Gtk::ListViewText*      lens;
+    Gtk::ListViewText*      orientation;
     Gtk::ListViewText*      expcomp;
     Gtk::Entry* fnumberFrom;
     Gtk::Entry* fnumberTo;
@@ -56,6 +57,7 @@ protected:
     Gtk::CheckButton* enaExpComp;
     Gtk::CheckButton* enaCamera;
     Gtk::CheckButton* enaLens;
+    Gtk::CheckButton* enaOrientation;
     Gtk::CheckButton* enaFiletype;
     Gtk::CheckButton *enaDate;
 
