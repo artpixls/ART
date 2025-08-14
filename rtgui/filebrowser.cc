@@ -1511,7 +1511,7 @@ bool FileBrowser::checkFilter (ThumbBrowserEntryBase* entryb)   // true -> entry
     if (!cfs->exifValid)
         return (!filter.exifFilter.filterCamera || filter.exifFilter.cameras.count(camera) > 0)
                && (!filter.exifFilter.filterLens || filter.exifFilter.lenses.count(cfs->lens) > 0)
-               && (!filter.exifFilter.filterOrientation || filter.exifFilter.orientations.count(cfs->orientation) > 0)
+               && (!filter.exifFilter.filterOrientation || filter.exifFilter.orientations.count(cfs->getOrientationFilter()) > 0)
                && (!filter.exifFilter.filterFiletype || filter.exifFilter.filetypes.count(cfs->filetype) > 0)
                && (!filter.exifFilter.filterExpComp || filter.exifFilter.expcomp.count(cfs->expcomp) > 0);
 
@@ -1530,7 +1530,7 @@ bool FileBrowser::checkFilter (ThumbBrowserEntryBase* entryb)   // true -> entry
         && (!filter.exifFilter.filterExpComp || filter.exifFilter.expcomp.count(cfs->expcomp) > 0)
         && (!filter.exifFilter.filterCamera  || filter.exifFilter.cameras.count(camera) > 0)
         && (!filter.exifFilter.filterLens    || filter.exifFilter.lenses.count(cfs->lens) > 0)
-        && (!filter.exifFilter.filterOrientation    || filter.exifFilter.orientations.count(cfs->orientation) > 0)
+        && (!filter.exifFilter.filterOrientation    || filter.exifFilter.orientations.count(cfs->getOrientationFilter()) > 0)
         && (!filter.exifFilter.filterFiletype  || filter.exifFilter.filetypes.count(cfs->filetype) > 0);
 }
 

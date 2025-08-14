@@ -1146,7 +1146,7 @@ void FileCatalog::previewReady (int dir_id, FileBrowserEntry* fdn)
         dirEFS.filetypes.insert (cfs->filetype);
         dirEFS.cameras.insert (cfs->getCamera());
         dirEFS.lenses.insert (cfs->lens);
-        dirEFS.orientations.insert (cfs->orientation);
+        dirEFS.orientations.insert(cfs->getOrientationFilter());
         dirEFS.expcomp.insert (cfs->expcomp);
 
         filter_panel_update_ = true;

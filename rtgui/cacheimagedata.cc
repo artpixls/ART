@@ -22,6 +22,7 @@
 #include <glib/gstdio.h>
 #include "version.h"
 #include <locale.h>
+#include <unordered_map>
 
 CacheImageData::CacheImageData ()
     : md5(""), supported(false), format(FT_Invalid), recentlySaved(false),
@@ -326,3 +327,24 @@ int CacheImageData::save (const Glib::ustring& fname)
     }
 }
 
+
+std::string CacheImageData::getOrientationFilter() const
+{
+    static const std::unordered_map<std::string, std::string> ormap = {
+        {"Unknown", "Unknown"},
+        {"Horizontal (normal)", "Landscape"},
+        {"Mirror horizontal", "Landscape"},
+        {"Rotate 180", "Landscape"},
+        {"Mirror vertical", "Portrait"},
+        {"Mirror horizontal and rotate 270 CW", "Portrait"},
+        {"Rotate 90 CW", "Portrait"},
+        {"Mirror horizontal and rotate 90 CW", "Portrait"},
+        {"Rotate 270 CW", "Portrait"},
+        {"Unknown", "Unknown"}
+    };
+    auto it = ormap.find(orientation);
+    if (it != ormap.end()) {
+        return it->second;
+    }
+    return "Unknown";
+}

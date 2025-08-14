@@ -302,7 +302,7 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
             curefs.lenses.insert(*i);
         }
 
-        oselection->select_all();
+        lselection->select_all();
 
         orientation->clear_items();
         curefs.orientations.clear();

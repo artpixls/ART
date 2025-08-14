@@ -106,6 +106,7 @@ public:
     std::string getModel() const override { return camModel; }
     std::string getLens() const override { return lens; }
     std::string getOrientation() const override { return orientation; } // TODO
+    std::string getOrientationFilter() const;
     Glib::ustring getFileName() const override { return ""; }
     bool getPixelShift () const override { return isPixelShift; }
     bool getHDR() const override { return isHDR; }
