@@ -92,7 +92,11 @@ public:
 
     std::string getCamera() const
     {
-        return getMake() + " " + getModel();
+        auto res = getMake() + " " + getModel();
+        if (res == " ") {
+            res = "Unknown";
+        }
+        return res;
     }
 
     /** @return the lens on the camera  */
