@@ -98,23 +98,31 @@ IndicateClippedPanel::IndicateClippedPanel (ImageArea* ia) : imageArea(ia)
         indClippedS->set_tooltip_markup (tt);
     }
 
+    grid = Gtk::manage(new Gtk::ToggleButton());
+    grid->set_relief(Gtk::RELIEF_NONE);
+    grid->add(*Gtk::manage(new RTImage("grid.png")));
+    grid->set_tooltip_markup(M("MAIN_TOOLTIP_GRIDOVERLAY"));
+
     falseColors->set_active(false);
     previewFocusMask->set_active (false);
     previewSharpMask->set_active (false);
     indClippedH->set_active (options.showClippedHighlights);
     indClippedS->set_active (options.showClippedShadows);
+    grid->set_active(false);
 
     pack_start(*falseColors, Gtk::PACK_SHRINK, 0);
     pack_start (*previewFocusMask, Gtk::PACK_SHRINK, 0);
     pack_start (*previewSharpMask, Gtk::PACK_SHRINK, 0);
     pack_start (*indClippedS, Gtk::PACK_SHRINK, 0);
     pack_start (*indClippedH, Gtk::PACK_SHRINK, 0);
+    pack_start(*grid, Gtk::PACK_SHRINK, 0);
 
     connFalseColors = falseColors->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &IndicateClippedPanel::buttonToggled), falseColors));
     connSharpMask = previewSharpMask->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &IndicateClippedPanel::buttonToggled), previewSharpMask) );
     connFocusMask = previewFocusMask->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &IndicateClippedPanel::buttonToggled), previewFocusMask) );
     connClippedS = indClippedS->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &IndicateClippedPanel::buttonToggled), indClippedS) );
     connClippedH = indClippedH->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &IndicateClippedPanel::buttonToggled), indClippedH) );
+    connGrid = grid->signal_toggled().connect( sigc::bind(sigc::mem_fun(*this, &IndicateClippedPanel::buttonToggled), grid) );
 
     show_all ();
 }
@@ -161,6 +169,7 @@ void IndicateClippedPanel::buttonToggled (Gtk::ToggleButton* tb)
     ConnectionBlocker b3(connSharpMask);
     ConnectionBlocker b4(connClippedS);
     ConnectionBlocker b5(connClippedH);
+    ConnectionBlocker b6(connGrid);
 
     bool shm = previewSharpMask->get_active();
 

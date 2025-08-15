@@ -33,10 +33,12 @@ protected:
     Gtk::ToggleButton* indClippedS;
     Gtk::ToggleButton *falseColors;
     Gtk::Image *falseColorsOn, *falseColorsOff;
+    Gtk::ToggleButton *grid;
     ImageArea* imageArea;
 
     sigc::connection connFocusMask, connSharpMask, connClippedS, connClippedH;
     sigc::connection connFalseColors;
+    sigc::connection connGrid;
 
 public:
     explicit IndicateClippedPanel(ImageArea* ia);
@@ -65,6 +67,11 @@ public:
     bool showFalseColors()
     {
         return falseColors->get_active();
+    }
+
+    bool showGrid()
+    {
+        return grid->get_active();
     }
 };
 

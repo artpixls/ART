@@ -1551,6 +1551,8 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
         drawDecoration (cr);
     }
 
+    bool show_grid = iarea->indClippedPanel->showGrid();
+    
     int x = xpos, y = ypos;
 
     // draw the background
@@ -1618,6 +1620,9 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
                 int cropX, cropY;
                 cropHandler.getPosition (cropX, cropY);
                 drawCrop(style, cr, posX, posY, rough->get_width(), rough->get_height(), cropX, cropY, zoomSteps[cropZoom].zoom, cropParams, (this == iarea->mainCropWindow), editing_crop, cropHandler.isFullDisplay ());
+                if (!editing_crop) {
+                    show_grid = false;
+                }
             }
         }
 
@@ -1848,6 +1853,9 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
                 int cropX, cropY;
                 cropHandler.getPosition (cropX, cropY);
                 drawCrop(style, cr, x + imgAreaX + imgX, y + imgAreaY + imgY, imgW, imgH, cropX, cropY, zoomSteps[cropZoom].zoom, cropParams, (this == iarea->mainCropWindow), editing_crop, cropHandler.isFullDisplay ());
+                if (!editing_crop) {
+                    show_grid = false;
+                }
             }
 
             if (observedCropWin) {
@@ -1940,6 +1948,9 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
 
                 if (cropParams.enabled) {
                     drawCrop(style, cr, x + imgAreaX + imgX, y + imgAreaY + imgY, rough->get_width(), rough->get_height(), cropX, cropY, zoomSteps[cropZoom].zoom, cropParams, (this == iarea->mainCropWindow), editing_crop, cropHandler.isFullDisplay ());
+                    if (!editing_crop) {
+                        show_grid = false;
+                    }
                 }
 
                 if (observedCropWin) {
@@ -1951,6 +1962,7 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
 
     if (state == SRotateSelecting) {
         drawStraightenGuide (cr);
+        show_grid = false;
     }
 
     if (state == SNormal && isFlawnOver) {
@@ -1961,6 +1973,10 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
         } else if (iarea->getToolMode () == TMSpotWB) {
             drawScaledSpotRectangle (cr, iarea->getSpotWBRectSize ());
         }
+    }
+
+    if (show_grid) {
+        drawGridOverlay(cr);
     }
 
     style->render_frame (cr, x + imgAreaX, y + imgAreaY, imgAreaW, imgAreaH);
@@ -1975,7 +1991,25 @@ void CropWindow::expose (Cairo::RefPtr<Cairo::Context> cr)
 //    printf ("etime --> %d, %d\n", t2.etime (t1), t4.etime (t3));
 }
 
-void CropWindow::setEditSubscriber (EditSubscriber* newSubscriber) {
+
+void CropWindow::drawGridOverlay(Cairo::RefPtr<Cairo::Context> cr)
+{
+    if (this == iarea->mainCropWindow) {
+        rtengine::CropParams cparams;
+        cparams.enabled = true;
+        cparams.guide = ".GridOverlay";
+        cparams.x = 0;
+        cparams.y = 0;
+        cparams.w = imgAreaW;
+        cparams.h = imgAreaH;
+        Glib::RefPtr<Gtk::StyleContext> style = iarea->get_style_context();
+        drawCrop(style, cr, xpos + imgAreaX, ypos + imgAreaY, imgAreaW, imgAreaH, 0, 0, 1, cparams, true, true, false);
+    }
+}
+
+
+void CropWindow::setEditSubscriber (EditSubscriber* newSubscriber)
+{
     // Delete, create, update all buffers based upon newSubscriber's type
     if (newSubscriber) {
         ObjectMOBuffer::resize (imgAreaW, imgAreaH);
@@ -2561,7 +2595,7 @@ void CropWindow::drawStraightenGuide (Cairo::RefPtr<Cairo::Context> cr)
         if (y1>=image->getHeight()) y1 = image->getHeight()-1;
     */
 
-    cr->set_line_width (1);
+    cr->set_line_width (2);
     cr->set_source_rgba (1.0, 1.0, 1.0, 0.618);
     cr->move_to (x1 + 0.5, y1 + 0.5);
     cr->line_to (x2 + 0.5, y2 + 0.5);

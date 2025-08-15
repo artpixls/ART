@@ -285,9 +285,9 @@ void drawCrop(Glib::RefPtr<Gtk::StyleContext> style, Cairo::RefPtr<Cairo::Contex
                 horiz_ratios.push_back (0.618);
                 vert_ratios.push_back (0.618);
                 vert_ratios.push_back (1.0 - 0.618);
-            } else if (cparams.guide == "Grid") {
+            } else if (cparams.guide == "Grid" || cparams.guide == ".GridOverlay") {
                 // To have even distribution, normalize it a bit
-                const int longSideNumLines = 10;
+                const int longSideNumLines = (cparams.guide == "Grid" ? 10 : 20);
 
                 int w = rectx2 - rectx1, h = recty2 - recty1;
 
@@ -327,12 +327,13 @@ void drawCrop(Glib::RefPtr<Gtk::StyleContext> style, Cairo::RefPtr<Cairo::Contex
             }
 
             // Horizontals
+            const double alpha = cparams.guide == ".GridOverlay" ? 0.35 : 0.618;
             for (size_t i = 0; i < horiz_ratios.size(); i++) {
-                cr->set_source_rgba (1.0, 1.0, 1.0, 0.618);
+                cr->set_source_rgba (1.0, 1.0, 1.0, alpha);
                 cr->move_to (rectx1, recty1 + round((recty2 - recty1) * horiz_ratios[i]));
                 cr->line_to (rectx2, recty1 + round((recty2 - recty1) * horiz_ratios[i]));
                 cr->stroke ();
-                cr->set_source_rgba (0.0, 0.0, 0.0, 0.618);
+                cr->set_source_rgba (0.0, 0.0, 0.0, alpha);
                 std::valarray<double> ds (1);
                 ds[0] = 4;
                 cr->set_dash (ds, 0);
@@ -345,11 +346,11 @@ void drawCrop(Glib::RefPtr<Gtk::StyleContext> style, Cairo::RefPtr<Cairo::Contex
 
             // Verticals
             for (size_t i = 0; i < vert_ratios.size(); i++) {
-                cr->set_source_rgba (1.0, 1.0, 1.0, 0.618);
+                cr->set_source_rgba (1.0, 1.0, 1.0, alpha);
                 cr->move_to (rectx1 + round((rectx2 - rectx1) * vert_ratios[i]), recty1);
                 cr->line_to (rectx1 + round((rectx2 - rectx1) * vert_ratios[i]), recty2);
                 cr->stroke ();
-                cr->set_source_rgba (0.0, 0.0, 0.0, 0.618);
+                cr->set_source_rgba (0.0, 0.0, 0.0, alpha);
                 std::valarray<double> ds (1);
                 ds[0] = 4;
                 cr->set_dash (ds, 0);
