@@ -1460,6 +1460,18 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
                 case GDK_KEY_M:
                     showMask->set_active(!showMask->get_active());
                     return true;
+                case GDK_KEY_x:
+                case GDK_KEY_X:
+                    if (selected_ < masks_.size()) {
+                        listEdited = true;
+                        auto it = list_model_->children().begin();
+                        for (size_t i = 0; i < selected_; ++i) {
+                            ++it;
+                        }
+                        onListEnabledToggled(Gtk::TreePath(it).to_string());
+                        maskShow(selected_, true);
+                    }
+                    return true;
                 }
             }
             return false;
