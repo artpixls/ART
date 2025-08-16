@@ -152,6 +152,9 @@ public:
     void setPParamsSnapshotListener(PParamsSnapshotListener *l);
     void setSnapshots(const std::vector<std::pair<Glib::ustring, rtengine::procparams::ProcParams>> &snapshots);
     void enableSnapshots(bool yes);
+
+    void activateNextSnapshot();
+    void activatePrevSnapshot();
 };
 
 #endif

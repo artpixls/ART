@@ -1737,6 +1737,14 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
                 case GDK_KEY_y:
                     history->redo ();
                     return true;
+
+                case GDK_KEY_comma:
+                    history->activatePrevSnapshot();
+                    return true;
+    
+                case GDK_KEY_period:
+                    history->activateNextSnapshot();
+                    return true;
             }
         } //if (!ctrl)
     } //if (!alt)

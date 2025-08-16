@@ -621,3 +621,52 @@ void History::setBeforeAfterLock(bool yes)
         }
     }
 }
+
+
+void History::activateNextSnapshot()
+{
+    auto children = bookmarkModel->children();
+    if (children.size() == 0) {
+        return;
+    }
+    
+    Glib::RefPtr<Gtk::TreeSelection> selection = bTreeView->get_selection();
+    Gtk::TreeModel::iterator iter = selection->get_selected();
+
+    if (!iter) {
+        selection->select(children.begin());
+        return;
+    }
+    ++iter;
+    if (iter == children.end()) {
+        selection->select(children.begin());
+    } else {
+        selection->select(iter);
+    }
+}
+
+
+void History::activatePrevSnapshot()
+{
+    auto children = bookmarkModel->children();
+    if (children.size() == 0) {
+        return;
+    }
+    
+    Glib::RefPtr<Gtk::TreeSelection> selection = bTreeView->get_selection();
+    Gtk::TreeModel::iterator iter = selection->get_selected();
+
+    Gtk::TreeModel::iterator last = children.begin();
+    for (int i = 1; i < children.size(); ++i) {
+        ++last;
+    }
+
+    if (!iter) {
+        selection->select(children.begin());
+    } else if (iter == children.begin()) {
+        selection->select(last);
+    } else {
+        --iter;
+        selection->select(iter);
+    }
+}
