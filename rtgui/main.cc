@@ -145,19 +145,14 @@ int processLineParams(int argc, char **argv)
                 ret = 0;
                 break;
 
-#if 1 //ndef __APPLE__ // TODO agriggio - there seems to be already some "single instance app" support for OSX in rtwindow. Disabling it here until I understand how to merge the two
-
-            case 'R':
-                if (!gimpPlugin) {
-                    remote = true;
-                }
-
-                break;
-#endif
-            case 's':
-                simpleEditor = true;
+            case 'N':
                 remote = false;
                 break;
+                
+            // case 's':
+            //     simpleEditor = true;
+            //     remote = false;
+            //     break;
                 
             case '-':
                 if (currParam.substr(5) == "--gtk" || currParam == "--g-fatal-warnings") {

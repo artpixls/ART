@@ -29,10 +29,8 @@ inline void ART_print_help(std::ostream &out, const char *progname, bool gui)
         out << "  -w Do not open the Windows console\n";
 #endif
         out << "  -v Print version number and exit\n";
-#ifndef __APPLE__
-        out << "  -R Raise an already running instance (if available)\n";
-#endif
-        out << "  -s Simple editor mode\n";
+        out << "  -N Force opening a new app instance\n";
+        // out << "  -s Simple editor mode\n";
         out << "  -S <file> Start with session from file\n"
             << "  -Sc Clear the session\n"
             << "  -Sa <file1> [... <fileN>] Add the files to the session\n"
