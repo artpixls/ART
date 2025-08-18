@@ -1328,6 +1328,14 @@ Camera constants:
     },
 
     { // Quality C
+        "make_model" : "Canon PowerShot V1",
+        "ranges" : {
+            "white" : 15800
+        },
+        "masked_areas" : [84, 4, 3936, 136]
+    },
+    
+    { // Quality C
         "make_model": [ "DJI FC2103" ],
         "ranges": {
             "black": 4080
