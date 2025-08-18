@@ -62,7 +62,7 @@ private:
     std::string internal_make_model_;
     
 public:
-    FramesData (const Glib::ustring& fname);
+    FramesData(const Glib::ustring& fname, bool only_make_model=false);
 
     void setDCRawFrameCount(unsigned int frameCount);
     unsigned int getFrameCount() const override;

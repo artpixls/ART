@@ -55,12 +55,12 @@ std::string validateUtf8(const std::string &str, const std::string &on_error="??
 } // namespace
 
 
-FramesMetaData* FramesMetaData::fromFile (const Glib::ustring& fname)
+FramesMetaData* FramesMetaData::fromFile(const Glib::ustring& fname)
 {
     return new FramesData(fname);
 }
 
-FramesData::FramesData(const Glib::ustring &fname):
+FramesData::FramesData(const Glib::ustring &fname, bool only_make_model):
     ok_(false),
     fname_(fname),
     dcrawFrameCount(0),
@@ -196,6 +196,10 @@ FramesData::FramesData(const Glib::ustring &fname):
 
         if (make.length() > 0 && model.find(make + " ") == 0) {
             model = model.substr(make.length() + 1);
+        }
+
+        if (only_make_model) {
+            return;
         }
 
         if (find_exif_tag("Exif.Image.Software")) {

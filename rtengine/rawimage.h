@@ -68,7 +68,7 @@ protected:
     float *allocation; // pointer to allocated memory
     int maximum_c4[4];
     char *thumb_data;
-    
+
     bool isFoveon() const
     {
         return is_foveon;
@@ -81,6 +81,10 @@ protected:
     std::unique_ptr<LibRaw> libraw_;
 #endif // ART_USE_LIBRAW
 
+    int do_loadRaw(const Glib::ustring &fname, bool loadData, unsigned int imageNum, bool closeFile, ProgressListener *plistener, double progressRange, bool apply_corrections);
+    ThreeValBool use_imgio_;
+    Glib::ustring imgio_filename_;
+    
 public:
     bool has_gain_map(std::vector<uint8_t> *out_buf) const;
 
@@ -138,9 +142,9 @@ public:
     int get_profileLen() const { return profile_length; }
     char *get_profile() const { return profile_data; }
 
+protected:
     IMFILE *get_file() const { return ifp; }
 
-protected:
     bool is_supportedThumb() const;
     bool is_ppmThumb() const;
     int get_thumbOffset() const { return int(thumb_offset); }

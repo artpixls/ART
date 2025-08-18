@@ -17,6 +17,8 @@
 #include "utils.h"
 #include "metadata.h"
 #include "image8.h"
+#include "imagedata.h"
+#include "imgiomanager.h"
 
 #ifdef ART_USE_LIBRAW
 # include <libraw.h>
@@ -39,6 +41,8 @@ RawImage::RawImage(const Glib::ustring &name)
     , allocation(nullptr)
     , thumb_data(nullptr)
     , use_internal_decoder_(true)
+    , use_imgio_(ThreeValBool::X)
+    , imgio_filename_("")
 {
     profile_length = 0;
     memset(maximum_c4, 0, sizeof(maximum_c4));
@@ -84,6 +88,10 @@ RawImage::~RawImage()
 
     if (thumb_data) {
         delete[] thumb_data;
+    }
+
+    if (use_imgio_ == ThreeValBool::T && !imgio_filename_.empty()) {
+        g_remove(imgio_filename_.c_str());
     }
 }
 
@@ -499,9 +507,9 @@ skip_block:
 }
 
 
-int RawImage::loadRaw (bool loadData, unsigned int imageNum, bool closeFile, ProgressListener *plistener, double progressRange, bool apply_corrections)
+int RawImage::do_loadRaw(const Glib::ustring &fname, bool loadData, unsigned int imageNum, bool closeFile, ProgressListener *plistener, double progressRange, bool apply_corrections)
 {
-    ifname = filename.c_str();
+    ifname = fname.c_str(); //filename.c_str();
     image = nullptr;
     verbose = settings->verbose;
     oprof = nullptr;
@@ -1138,6 +1146,26 @@ int RawImage::loadRaw (bool loadData, unsigned int imageNum, bool closeFile, Pro
     }
 
     return 0;
+}
+
+
+int RawImage::loadRaw(bool loadData, unsigned int imageNum, bool closeFile, ProgressListener *plistener, double progressRange, bool apply_corrections)
+{
+    switch (use_imgio_) {
+    case ThreeValBool::F:
+        return do_loadRaw(filename, loadData, imageNum, closeFile, plistener, progressRange, apply_corrections);
+    case ThreeValBool::T:
+        return do_loadRaw(imgio_filename_, loadData, imageNum, closeFile, plistener, progressRange, apply_corrections);
+    default: {
+        FramesData md(filename, true);
+        use_imgio_ = ImageIOManager::getInstance()->loadRaw(filename, md.getMake(), md.getModel(), imgio_filename_) ? ThreeValBool::T : ThreeValBool::F;
+        if (use_imgio_ == ThreeValBool::T) {
+            return do_loadRaw(imgio_filename_, loadData, imageNum, closeFile, plistener, progressRange, apply_corrections);
+        } else {
+            return do_loadRaw(filename, loadData, imageNum, closeFile, plistener, progressRange, apply_corrections);
+        }
+    }
+    }
 }
 
 

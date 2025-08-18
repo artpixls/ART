@@ -113,12 +113,46 @@ void ImageIOManager::do_init(const Glib::ustring &dirname)
             }
 
             try {
-                const Glib::ustring group = "ART ImageIO";
                 Glib::KeyFile kf;
                 if (!kf.load_from_file(pth)) {
                     continue;
                 }
 
+                const Glib::ustring raw_group = "ART RAWImageIO";
+
+                if (kf.has_group(raw_group)) {
+                    RawKey k;
+
+                    if (!kf.has_key(raw_group, "ReadCommand")) {
+                        continue;
+                    }
+                    Glib::ustring cmd = kf.get_string(raw_group, "ReadCommand");
+                    
+                    if (kf.has_key(raw_group, "Extension")) {
+                        k.ext = kf.get_string(raw_group, "Extension").lowercase();
+                    } else {
+                        continue;
+                    }
+
+                    if (kf.has_key(raw_group, "Make")) {
+                        k.make = kf.get_string(raw_group, "Make").lowercase();
+                    }
+
+                    if (kf.has_key(raw_group, "Model")) {
+                        k.model = kf.get_string(raw_group, "Model").lowercase();
+                    }
+
+                    raw_loaders_[k] = Pair(dirname, cmd);
+
+                    if (settings->verbose > 1) {
+                        std::cout << "Found RAW loader for (extension, make, model) \"" << k.ext << ", " << k.make << ", " << k.model << "\": " << S(cmd) << std::endl;
+                    }
+                    
+                    continue;
+                }
+                
+                const Glib::ustring group = "ART ImageIO";
+                
                 Format fmt = FMT_TIFF_FLOAT;
 
                 std::string ext;
@@ -464,5 +498,78 @@ const procparams::PartialProfile *ImageIOManager::getSaveProfile(const std::stri
     }
     return nullptr;
 }
+
+
+bool ImageIOManager::loadRaw(const Glib::ustring &fname, const std::string &make, const std::string &model, Glib::ustring &out_dng_name)
+{
+    auto ext = std::string(getFileExtension(fname).lowercase());
+    RawKey k(ext, make, model);
+    auto it = raw_loaders_.lower_bound(k);
+    if (it == raw_loaders_.end()) {
+        return false;
+    }
+    auto &o = it->first;
+    if (o.ext != k.ext) {
+        return false;
+    }
+    if (!o.make.empty() && o.make != k.make) {
+        return false;
+    }
+    if (!o.model.empty() && o.model != k.model) {
+        return false;
+    }
+    return do_loadRaw(it->second, fname, out_dng_name);
+}
+
+
+bool ImageIOManager::do_loadRaw(const Pair &p, const Glib::ustring &fname, Glib::ustring &out_dng_name)
+{
+    std::string templ = Glib::build_filename(Glib::get_tmp_dir(), Glib::ustring::compose("ART-load_raw-%1-XXXXXX", Glib::path_get_basename(fname)));
+    int fd = Glib::mkstemp(templ);
+    if (fd < 0) {
+        return false;
+    }
+    Glib::ustring outname = fname_to_utf8(templ) + ".dng";
+
+    auto &dir = p.first;
+    auto &cmd = p.second;
+    std::vector<Glib::ustring> argv = subprocess::split_command_line(cmd);
+    argv.push_back(fname);
+    argv.push_back(outname);
+
+    std::string sout, serr;
+    bool ok = true;
+    if (settings->verbose) {
+        std::cout << "loading RAW " << fname << " with " << cmd << std::endl;
+    }
+    try {
+        exec_sync(usrdir_, sysdir_, dir, argv, true, &sout, &serr);
+    } catch (subprocess::error &err) {
+        if (settings->verbose) {
+            std::cout << "  exec error: " << err.what() << std::endl;
+        }
+        ok = false;
+    }
+    close(fd);
+    g_remove(templ.c_str());
+    if (settings->verbose > 1) {
+        if (!sout.empty()) {
+            std::cout << "  stdout: " << sout << std::flush;
+        }
+        if (!serr.empty()) {
+            std::cout << "  stderr: " << serr << std::flush;
+        }
+    }
+    if (!ok) {
+        if (Glib::file_test(outname, Glib::FILE_TEST_EXISTS)) {
+            g_remove(outname.c_str());
+        }
+        return false;
+    }
+
+    out_dng_name = outname;
+    return true;
+}
+
 
 } // namespace rtengine

@@ -27,6 +27,7 @@
 #include <glibmm/ustring.h>
 #include <unordered_map>
 #include <map>
+#include <cctype>
 
 namespace rtengine {
 
@@ -67,19 +68,58 @@ public:
 
     const procparams::PartialProfile *getSaveProfile(const std::string &ext) const;
 
+    bool loadRaw(const Glib::ustring &fname, const std::string &make, const std::string &model, Glib::ustring &out_dng_name);
+
 private:
+    typedef std::pair<Glib::ustring, Glib::ustring> Pair;
+
     void do_init(const Glib::ustring &dir);
     static Glib::ustring get_ext(Format f);
+
+    bool do_loadRaw(const Pair &p, const Glib::ustring &fname, Glib::ustring &out_dng_name);
+    
 
     Glib::ustring sysdir_;
     Glib::ustring usrdir_;
     
-    typedef std::pair<Glib::ustring, Glib::ustring> Pair;
     std::unordered_map<std::string, Pair> loaders_;
     std::unordered_map<std::string, Pair> savers_;
     std::unordered_map<std::string, Format> fmts_;
     std::map<std::string, SaveFormatInfo> savelbls_;
     std::unordered_map<std::string, procparams::FilePartialProfile> saveprofiles_;
+    class RawKey {
+    public:
+        std::string ext;
+        std::string make;
+        std::string model;
+
+        RawKey(const std::string &e="", const std::string &ma="", const std::string &mo=""): ext(e), make(), model()
+        {
+            make.reserve(ma.size());
+            for (auto &c : ma) {
+                make.push_back(std::tolower(c));
+            }
+            model.reserve(mo.size());
+            for (auto &c : mo) {
+                model.push_back(std::tolower(c));
+            }
+        }
+
+        bool operator<(const RawKey &other) const
+        {
+            int r = ext.compare(other.ext);
+            if (r) {
+                return r > 0;
+            }
+            r = make.compare(other.make);
+            if (r) {
+                return r > 0;
+            }
+            r = model.compare(other.model);
+            return r > 0;
+        }
+    };
+    std::map<RawKey, Pair> raw_loaders_;
 };
 
 } // namespace rtengine
