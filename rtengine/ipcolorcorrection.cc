@@ -224,7 +224,7 @@ bool ImProcFunctions::colorCorrection(Imagefloat *rgb)
         }
     }
 
-    int n = params->colorcorrection.regions.size();
+    const int n = params->colorcorrection.regions.size();
     int show_mask_idx = params->colorcorrection.showMask;
     if (show_mask_idx >= n || (cur_pipeline != Pipeline::PREVIEW /*&& cur_pipeline != Pipeline::OUTPUT*/)) {
         show_mask_idx = -1;
@@ -258,17 +258,28 @@ bool ImProcFunctions::colorCorrection(Imagefloat *rgb)
         [&](int i) -> void
         {
             abca[i] = 0.f;
-            abcb[n] = 0.f;
-            rs[n] = 1.f;
-            rsout[n] = 1.f;
+            abcb[i] = 0.f;
+            rs[i] = 1.f;
+            rsout[i] = 1.f;
             enabled[i] = false;
             jzazbz[i] = false;
             hsl[i] = false;
             rhs[i] = 0.f;
             lut[i].reset(nullptr);
+            for (int j = 0; j < 3; ++j) {
+                rslope[i][j] = 1.f;
+                roffset[i][j] = 0.f;
+                rpower[i][j] = 1.f;
+                rpivot[i][j] = 1.f;
+                rcompression[i][j][0] = 0.f;
+                rcompression[i][j][1] = 0.f;
+            }
+            hslgamma[i] = 1.f;
         };
     
     for (int i = 0; i < n; ++i) {
+        reset(i);
+        
         auto &r = params->colorcorrection.regions[i];
         rgbmode[i] = int(r.mode != ColorCorrectionParams::Mode::YUV &&
                          r.mode != ColorCorrectionParams::Mode::JZAZBZ);
