@@ -574,6 +574,8 @@ void Options::setDefaults()
 #endif
     rtSettings.thread_pool_size = 0;
     rtSettings.ctl_scripts_fast_preview = true;
+    rtSettings.imgio_raw_cache_size = 10;
+    
     show_exiftool_makernotes = false;
 
     browser_width_for_inspector = 0;
@@ -1146,6 +1148,10 @@ void Options::readFromFile(Glib::ustring fname)
 
                 if (keyFile.has_key("Performance", "CTLScriptsFastPreview")) {
                     rtSettings.ctl_scripts_fast_preview = keyFile.get_boolean("Performance", "CTLScriptsFastPreview");
+                }
+
+                if (keyFile.has_key("Performance", "RAWImageIOCacheSize")) {
+                    rtSettings.imgio_raw_cache_size = keyFile.get_integer("Performance", "RAWImageIOCacheSize");
                 }
             }
 
@@ -1886,8 +1892,9 @@ void Options::saveToFile(Glib::ustring fname)
         keyFile.set_boolean("Performance", "ThumbLazyCaching", thumb_lazy_caching);
         keyFile.set_boolean("Performance", "ThumbCacheProcessed", thumb_cache_processed);
         keyFile.set_boolean("Performance", "CTLScriptsFastPreview", rtSettings.ctl_scripts_fast_preview);
-        
         keyFile.set_integer("Performance", "WBPreviewMode", wb_preview_mode);
+        keyFile.set_integer("Performance", "RAWImageIOCacheSize", rtSettings.imgio_raw_cache_size);
+        
         keyFile.set_integer("Inspector", "Mode", int(rtSettings.thumbnail_inspector_mode));
         keyFile.set_integer("Inspector", "RawCurve", int(rtSettings.thumbnail_inspector_raw_curve));
         keyFile.set_boolean("Inspector", "ZoomFit", thumbnail_inspector_zoom_fit);

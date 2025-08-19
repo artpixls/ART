@@ -182,7 +182,8 @@ Settings::Settings():
     metadata_xmp_sync(MetadataXmpSync::NONE),
     thread_pool_size(0),
     ctl_scripts_fast_preview(false),
-    os_monitor_profile(StdMonitorProfile::SRGB)
+    os_monitor_profile(StdMonitorProfile::SRGB),
+    imgio_raw_cache_size(10)
 {
 }
 

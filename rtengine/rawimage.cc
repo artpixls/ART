@@ -89,10 +89,6 @@ RawImage::~RawImage()
     if (thumb_data) {
         delete[] thumb_data;
     }
-
-    if (use_imgio_ == ThreeValBool::T && !imgio_filename_.empty()) {
-        g_remove(imgio_filename_.c_str());
-    }
 }
 
 

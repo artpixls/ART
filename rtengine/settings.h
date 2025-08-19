@@ -91,6 +91,8 @@ public:
         OS_STD_MONITOR_PROFILE
     };
     static ColorManagementMode color_mgmt_mode;
+
+    int imgio_raw_cache_size;
 };
 
 } // namespace rtengine

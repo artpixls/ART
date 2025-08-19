@@ -86,6 +86,9 @@ void ImageIOManager::init(const Glib::ustring &base_dir, const Glib::ustring &us
     usrdir_ = Glib::build_filename(user_dir, "imageio");
     do_init(sysdir_);
     do_init(usrdir_);
+    auto d = Glib::build_filename(options.cacheBaseDir, "rawimgio");
+    g_mkdir_with_parents(d.c_str(), 0777);
+    raw_cache_.reset(new RAWCache(std::max(settings->imgio_raw_cache_size, 1), &raw_cache_hook_));
 }
 
 
@@ -522,14 +525,34 @@ bool ImageIOManager::loadRaw(const Glib::ustring &fname, const std::string &make
 }
 
 
+namespace {
+
+Glib::ustring get_cache_name(const Glib::ustring &fname)
+{
+    const auto dirName = Glib::build_filename(options.cacheBaseDir, "rawimgio");
+    const auto md5 = getMD5(fname, true);
+    const auto baseName = Glib::path_get_basename(fname) + "." + md5;
+    return Glib::build_filename(dirName, baseName + ".dng");
+}
+
+} // namespace
+
+
 bool ImageIOManager::do_loadRaw(const Pair &p, const Glib::ustring &fname, Glib::ustring &out_dng_name)
 {
-    std::string templ = Glib::build_filename(Glib::get_tmp_dir(), Glib::ustring::compose("ART-load_raw-%1-XXXXXX", Glib::path_get_basename(fname)));
-    int fd = Glib::mkstemp(templ);
-    if (fd < 0) {
-        return false;
+    Glib::ustring outname;
+    if (raw_cache_->get(fname, outname) && Glib::file_test(outname, Glib::FILE_TEST_EXISTS)) {
+        out_dng_name = outname;
+        return true;
     }
-    Glib::ustring outname = fname_to_utf8(templ) + ".dng";
+    
+    outname = get_cache_name(fname);
+    // std::string templ = Glib::build_filename(Glib::get_tmp_dir(), Glib::ustring::compose("ART-load_raw-%1-XXXXXX", Glib::path_get_basename(fname)));
+    // int fd = Glib::mkstemp(templ);
+    // if (fd < 0) {
+    //     return false;
+    // }
+    // Glib::ustring outname = fname_to_utf8(templ) + ".dng";
 
     auto &dir = p.first;
     auto &cmd = p.second;
@@ -550,8 +573,8 @@ bool ImageIOManager::do_loadRaw(const Pair &p, const Glib::ustring &fname, Glib:
         }
         ok = false;
     }
-    close(fd);
-    g_remove(templ.c_str());
+    // close(fd);
+    // g_remove(templ.c_str());
     if (settings->verbose > 1) {
         if (!sout.empty()) {
             std::cout << "  stdout: " << sout << std::flush;
@@ -568,8 +591,17 @@ bool ImageIOManager::do_loadRaw(const Pair &p, const Glib::ustring &fname, Glib:
     }
 
     out_dng_name = outname;
+    raw_cache_->set(fname, outname);
     return true;
 }
 
+
+void ImageIOManager::Hook::rm(const Glib::ustring &pth)
+{
+    if (settings->verbose > 1) {
+        std::cout << "ImageIO: removing RAW cache entry: " << pth << std::endl;
+    }
+    g_remove(pth.c_str());
+}
 
 } // namespace rtengine

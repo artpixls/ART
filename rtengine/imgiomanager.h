@@ -24,7 +24,9 @@
 #include "rtengine.h"
 #include "imageio.h"
 #include "procparams.h"
+#include "cache.h"
 #include <glibmm/ustring.h>
+#include <glib/gstdio.h>
 #include <unordered_map>
 #include <map>
 #include <cctype>
@@ -120,6 +122,32 @@ private:
         }
     };
     std::map<RawKey, Pair> raw_loaders_;
+
+    typedef Cache<Glib::ustring, Glib::ustring> RAWCache;
+    
+    class Hook: public RAWCache::Hook {
+    public:
+        void onDiscard(const Glib::ustring &key, const Glib::ustring &value) override
+        {
+            rm(value);
+        }
+
+        void onDisplace(const Glib::ustring &key, const Glib::ustring &value) override
+        {
+            rm(value);
+        }
+
+        void onRemove(const Glib::ustring &key, const Glib::ustring &value) override
+        {
+            rm(value);
+        }
+
+        void onDestroy() override {}
+
+        void rm(const Glib::ustring &pth);
+    };
+    Hook raw_cache_hook_;
+    std::unique_ptr<RAWCache> raw_cache_;
 };
 
 } // namespace rtengine
