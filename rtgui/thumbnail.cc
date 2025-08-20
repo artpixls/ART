@@ -682,6 +682,7 @@ rtengine::IImage8* Thumbnail::processThumbImage (const rtengine::procparams::Pro
             return nullptr;
         } else if (options.thumb_lazy_caching) {
             _saveThumbnail();
+            cfs.save(getCacheFileName("data", ".txt"));
         }
     }
 
