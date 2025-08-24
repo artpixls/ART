@@ -504,6 +504,12 @@ if(OPTION_OMP)
     endif()
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-vla-extension")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-vla-cxx-extension")
+endif()
+
+
 # check for libfftw3f_omp
 include(CheckCSourceCompiles)
 if(OPENMP_FOUND)
