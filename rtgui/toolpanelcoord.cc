@@ -161,8 +161,8 @@ ToolPanelCoordinator::ToolPanelCoordinator (bool batch) : ipc (nullptr), favorit
     addfavoritePanel(localPanel, colorcorrection);
     addfavoritePanel(localPanel, smoothing);
     //addfavoritePanel(localPanel, cbdl);
-    addfavoritePanel(localPanel, localContrast);
     addfavoritePanel(localPanel, textureBoost);
+    addfavoritePanel(localPanel, localContrast);
 
     // effects
     addfavoritePanel(effectsPanel, blackwhite);

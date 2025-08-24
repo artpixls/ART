@@ -803,7 +803,102 @@ bool mask_postprocess(int width, int height, float scale, const array2D<float> &
 } // namespace
 
 
-bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *plistener)
+RasterMaskManager::RasterMaskManager()
+{
+}
+
+
+void RasterMaskManager::init(const rtengine::ProcParams &pparams)
+{
+    masks_.clear();
+    needed_.clear();
+    
+    const auto add =
+        [&](const std::vector<procparams::Mask> &masks) -> void
+        {
+            for (auto &m : masks) {
+                if (m.enabled && m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
+                    needed_.insert(key(m.rasterMask.toolname, m.rasterMask.name));
+                }
+            }
+        };
+    auto mp = pparams.get_maskable();
+    for (auto p : mp) {
+        add(p->get_masks());
+    }
+}
+
+
+bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> &mask)
+{
+    if (name.empty()) {
+        return false;
+    }
+    auto k = key(toolname, name);
+    if (needed_.find(k) == needed_.end()) {
+        return false;
+    }
+    float *ptr = static_cast<float *>(const_cast<array2D<float> &>(mask));
+    auto &m = masks_[k];
+    if (ptr) {
+        m(mask.width(), mask.height(), ptr);
+    } else {
+        m(mask.width(), mask.height());
+        for (int y = 0; y < mask.height(); ++y) {
+            for (int x = 0; x < mask.width(); ++x) {
+                m[y][x] = mask[y][x];
+            }
+        }
+    }
+    return true;
+}
+
+
+bool RasterMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread)
+{
+    auto k = key(toolname, name);
+    auto it = masks_.find(k);
+    if (it == masks_.end()) {
+        return false;
+    }
+    auto &m = it->second;
+    const int H = m.height();
+    const int W = m.width();
+
+#ifdef _OPENMP
+#   pragma omp parallel for if (multithread)
+#endif
+    for (int y = 0; y < H; ++y) {
+        for (int x = 0; x < W; ++x) {
+            float f = m[y][x];
+            if (inverted) {
+                f = 1.f - f;
+            }
+            if (out1) {
+                (*out1)[y][x] *= f;
+            }
+            if (out2) {
+                (*out2)[y][x] *= f;
+            }
+        }
+    }
+    return true;
+}
+
+
+std::string RasterMaskManager::key(const Glib::ustring &toolname, const Glib::ustring &name)
+{
+    return toolname.raw() + "|" + name.raw();
+}
+
+
+bool RasterMaskManager::is_needed(const Glib::ustring &toolname, const Glib::ustring &name)
+{
+    return needed_.find(key(toolname, name)) != needed_.end();
+}
+
+
+bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskManager &mmgr, const std::vector<Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *plistener)
 {
     int n = masks.size();
     if (show_mask_idx < 0 || show_mask_idx >= n || !masks[show_mask_idx].enabled) {
@@ -813,6 +908,7 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
     std::vector<std::unique_ptr<FlatCurve>> cmask(n);
     std::vector<std::unique_ptr<FlatCurve>> lmask(n);
     std::vector<float> ldetail(n);
+    std::vector<bool> needed(n, true);
 
     const int W = rgb->getWidth();
     const int H = rgb->getHeight();
@@ -824,8 +920,12 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
     const int end_idx = (show_mask_idx < 0 ? n : show_mask_idx+1);
     bool has_mask = false;
 
-    for (int i = begin_idx; i < end_idx; ++i) {
+    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
         auto &r = masks[i];
+        if (i < begin_idx && !mmgr.is_needed(toolname, r.name)) {
+            needed[i] = false;
+            continue;
+        }
         if (r.deltaEMask.enabled) {
             has_mask = true;
         }
@@ -851,7 +951,10 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
     assert(!Lmask || Lmask->size() == size_t(n));
 
     bool has_lmask = false;
-    for (int i = begin_idx; i < end_idx; ++i) {
+    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+        if (!needed[i]) {
+            continue;
+        }
         if (abmask) {
             (*abmask)[i](W, H, ARRAY2D_CLEAR_DATA);
         }
@@ -981,7 +1084,10 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
                     }
                     h = xlin2log(h, 3.f);
 
-                    for (int i = begin_idx; i < end_idx; ++i) {
+                    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+                        if (!needed[i]) {
+                            continue;
+                        }
                         auto &hm = hmask[i];
                         auto &cm = cmask[i];
                         auto &lm = lmask[i];
@@ -1010,7 +1116,10 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
 
         static constexpr float NO_BLUR = -10.f;
         
-        for (int i = begin_idx; i < end_idx; ++i) {
+        for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+            if (!needed[i]) {
+                continue;
+            }
             float blur = masks[i].parametricMask.enabled ? masks[i].parametricMask.blur : 0.f;
             if (blur > NO_BLUR) {
                 blur = blur < 0.f ? -1.f/blur : 1.f + blur;
@@ -1049,7 +1158,10 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
             }
         }
     } else {
-        for (int i = begin_idx; i < end_idx; ++i) {
+        for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+            if (!needed[i]) {
+                continue;
+            }
             if (Lmask) {
                 (*Lmask)[i].fill(1.f);
             }
@@ -1069,11 +1181,12 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
     array2D<float> amask;
 
     const auto apply_brush =
-        [&](bool add_bounded) -> void
+        [&](int i, bool add_bounded) -> void
         {
-            for (int i = begin_idx; i < end_idx; ++i) {
+//            for (int i = begin_idx; i < end_idx; ++i) {
                 if ((masks[i].drawnMask.mode == DrawnMask::ADD_BOUNDED) != add_bounded) {
-                    continue;
+                    //continue;
+                    return;
                 }
                 if (generate_drawn_mask(offset_x, offset_y, full_width, full_height, masks[i].drawnMask, guide, multithread, amask)) {
                     const bool add = masks[i].drawnMask.mode != DrawnMask::INTERSECT;
@@ -1102,11 +1215,14 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
                         }
                     }
                 }
-            }
+//            }
         };
     
 
-    for (int i = begin_idx; i < end_idx; ++i) {
+    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+        if (!needed[i]) {
+            continue;
+        }
         if (masks[i].parametricMask.enabled && 
             contrast_threshold_mask(full_width, full_height, scale, guide, masks[i].parametricMask.contrastThreshold, masks[i].parametricMask.blur, multithread, amask)) {
             bool neg = masks[i].parametricMask.contrastThreshold < 0;
@@ -1125,11 +1241,11 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
                 }
             }
         }
-    }
+//    }
 
-    apply_brush(true);
+        apply_brush(i, true);
     
-    for (int i = begin_idx; i < end_idx; ++i) {
+        /*    for (int i = begin_idx; i < end_idx; ++i)*/ {
         if (generate_area_mask(offset_x, offset_y, full_width, full_height, guide, masks[i].areaMask, scale, multithread, amask, plistener)) {
 #ifdef _OPENMP
 #           pragma omp parallel for if (multithread)
@@ -1145,11 +1261,15 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
                 }
             }
         }
+        auto &rm = masks[i].rasterMask;
+        if (rm.enabled) {
+            mmgr.apply_mask(rm.toolname, rm.name, rm.inverted, Lmask ? &((*Lmask)[i]) : nullptr, abmask ? &((*abmask)[i]) : nullptr, multithread);
+        }
     }
 
-    apply_brush(false);
+        apply_brush(i, false);
 
-    for (int i = begin_idx; i < end_idx; ++i) {
+        /*for (int i = begin_idx; i < end_idx; ++i)*/ {
         const auto &curve = masks[i].curve;
         auto posterization = masks[i].posterization;
         auto smoothing = masks[i].smoothing;
@@ -1161,7 +1281,7 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
         }
     }
     
-    for (int i = begin_idx; i < end_idx; ++i) {
+        /*for (int i = begin_idx; i < end_idx; ++i)*/ {
         if (masks[i].inverted) {
 #ifdef _OPENMP
 #           pragma omp parallel for if (multithread)
@@ -1193,6 +1313,11 @@ bool generateMasks(Imagefloat *rgb, const std::vector<Mask> &masks, int offset_x
                 }
             }
         }
+
+        if (Lmask || abmask) {
+            mmgr.store_mask(toolname, masks[i].name, Lmask ? (*Lmask)[i] : (*abmask)[i]);
+        }
+    }
     }
 
     if (show_mask_idx >= 0) {

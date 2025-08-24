@@ -207,7 +207,7 @@ bool ImProcFunctions::textureBoost(Imagefloat *rgb)
             show_mask_idx = -1;
         }
         std::vector<array2D<float>> mask(n);
-        if (!generateMasks(rgb, params->textureBoost.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &mask, nullptr, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
+        if (!generateMasks(rgb, "textureboost", raster_mask_mgr_, params->textureBoost.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &mask, nullptr, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
             return true; // show mask is active, nothing more to do
         }
 

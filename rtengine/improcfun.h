@@ -34,6 +34,7 @@
 #include "cplx_wavelet_dec.h"
 #include "pipettebuffer.h"
 #include "gamutwarning.h"
+#include "masks.h"
 
 namespace rtengine {
 
@@ -238,6 +239,7 @@ private:
     int progress_step;
     int progress_end;
 
+    RasterMaskManager raster_mask_mgr_;
     
 private:
     void transformLuminanceOnly(Imagefloat* original, Imagefloat* transformed, int cx, int cy, int oW, int oH, int fW, int fH, bool creative);

@@ -35,12 +35,17 @@ public:
     {
     }
 
+    Glib::ustring getToolName() override
+    {
+        return "textureboost";
+    }
+
     Gtk::Widget *getWidget() override
     {
         return parent_->box;
     }
 
-    void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess) override
+    void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &raster_mask) override
     {
         mask_list = parent_->EvList;
         parametric_mask = parent_->EvParametricMask;
@@ -54,6 +59,7 @@ public:
         contrastThreshold_mask = parent_->EvContrastThresholdMask;
         drawn_mask = parent_->EvDrawnMask;
         mask_postprocess = parent_->EvMaskPostprocess;
+        raster_mask = parent_->EvRasterMask;
     }
 
     ToolPanelListener *listener() override
@@ -170,6 +176,7 @@ TextureBoost::TextureBoost(): FoldableToolPanel(this, "epd", M("TP_EPD_LABEL"), 
     EvContrastThresholdMask = m->newEvent(EVENT, "HISTORY_MSG_EPD_CONTRASTTHRESHOLDMASK");
     EvDrawnMask = m->newEvent(EVENT, "HISTORY_MSG_EPD_DRAWNMASK");
     EvMaskPostprocess = m->newEvent(EVENT, "HISTORY_MSG_EPD_MASK_POSTPROCESS");
+    EvRasterMask = m->newEvent(EVENT, "HISTORY_MSG_EPD_RASTERMASK");
 
     EvToolEnabled.set_action(EVENT);
     EvToolReset.set_action(EVENT);
@@ -289,6 +296,7 @@ void TextureBoost::procParamsChanged(
     const Glib::ustring& descr,
     const ParamsEdited* paramsEdited)
 {
+    labMasks->updateRasterMaskList(params);
 }
 
 

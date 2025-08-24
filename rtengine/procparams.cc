@@ -1070,6 +1070,30 @@ bool ParametricMask::operator!=(const ParametricMask &other) const
 }
 
 
+RasterMask::RasterMask():
+    enabled(false),
+    inverted(false),
+    toolname(""),
+    name("")
+{
+}
+
+
+bool RasterMask::operator==(const RasterMask &other) const
+{
+    return enabled == other.enabled
+        && inverted == other.inverted
+        && toolname == other.toolname
+        && name == other.name;
+}
+
+
+bool RasterMask::operator!=(const RasterMask &other) const
+{
+    return !(*this == other);
+}
+
+
 Mask::Mask():
     enabled(true),
     inverted(false),
@@ -1346,6 +1370,21 @@ bool Mask::load(int ppVersion, const KeyFile &keyfile, const Glib::ustring &grou
     ret |= assignFromKeyfile(keyfile, group_name, prefix + "MaskPosterization" + suffix, posterization);
     ret |= assignFromKeyfile(keyfile, group_name, prefix + "MaskSmoothing" + suffix, smoothing);
     ret |= assignFromKeyfile(keyfile, group_name, prefix + "MaskOpacity" + suffix, opacity);
+
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "RasterMaskEnabled" + suffix, rasterMask.enabled);
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "RasterMaskInverted" + suffix, rasterMask.inverted);
+    {
+        Glib::ustring tmp;
+        if (assignFromKeyfile(keyfile, group_name, prefix + "RasterMask" + suffix, tmp) && !tmp.empty()) {
+            auto idx = tmp.find('|');
+            if (idx == Glib::ustring::npos) {
+                throw Glib::KeyFileError(Glib::KeyFileError::INVALID_VALUE, "invalid value for " + prefix + "RasterMask" + suffix + ": " + tmp);
+            }
+            rasterMask.toolname = tmp.substr(0, idx);
+            rasterMask.name = tmp.substr(idx+1);
+            ret = true;
+        }
+    }
     
     return ret;
 }
@@ -1431,6 +1470,16 @@ void Mask::save(KeyFile &keyfile, const Glib::ustring &group_name, const Glib::u
     std::vector<double> v;
     drawnMask.strokes_to_list(v);
     putToKeyfile(group_name, prefix + "DrawnMaskStrokes" + suffix, pack_list(v), keyfile);
+
+    putToKeyfile(group_name, prefix + "RasterMaskEnabled" + suffix, rasterMask.enabled, keyfile);
+    putToKeyfile(group_name, prefix + "RasterMaskInverted" + suffix, rasterMask.inverted, keyfile);
+    {
+        Glib::ustring tmp;
+        if (!rasterMask.toolname.empty() || !rasterMask.name.empty()) {
+            tmp = rasterMask.toolname + "|" + rasterMask.name;
+        }
+        putToKeyfile(group_name, prefix + "RasterMask" + suffix, tmp, keyfile);
+    }
 }
 
 
@@ -6085,6 +6134,19 @@ std::string ProcParams::to_data() const
         return "";
     }
 }
+
+
+std::vector<const MaskableParams *> ProcParams::get_maskable() const
+{
+    std::vector<const MaskableParams *> ret = {
+        &colorcorrection,
+        &smoothing,
+        &textureBoost,
+        &localContrast
+    };
+    return ret;
+}
+
 
 
 FullPartialProfile::FullPartialProfile():

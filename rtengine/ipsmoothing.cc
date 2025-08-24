@@ -918,7 +918,7 @@ bool ImProcFunctions::guidedSmoothing(Imagefloat *rgb)
             show_mask_idx = -1;
         }
         std::vector<array2D<float>> mask(n);
-        if (!generateMasks(rgb, params->smoothing.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, nullptr, &mask, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
+        if (!generateMasks(rgb, "smoothing", raster_mask_mgr_, params->smoothing.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, nullptr, &mask, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
             return true; // show mask is active, nothing more to do
         }
 

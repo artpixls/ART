@@ -30,6 +30,7 @@
 #include "curveeditor.h"
 #include "clipboard.h"
 #include "thresholdadjuster.h"
+#include <unordered_set>
 
 
 class LabMasksContentProvider {
@@ -37,7 +38,7 @@ public:
     virtual ~LabMasksContentProvider() {}
 
     virtual Gtk::Widget *getWidget() = 0;
-    virtual void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess) = 0;
+    virtual void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &raster_mask) = 0;
 
     virtual ToolPanelListener *listener() = 0;
 
@@ -55,6 +56,8 @@ public:
     virtual Glib::ustring getColumnContent(int col, int row) = 0;
 
     virtual void getEditIDs(EditUniqueID &hcurve, EditUniqueID &ccurve, EditUniqueID &lcurve, EditUniqueID &deltaE) = 0;
+
+    virtual Glib::ustring getToolName() = 0;
 };
 
 
@@ -138,6 +141,8 @@ public:
     void adjusterChanged(ThresholdAdjuster *a, int newBottomLeft, int newTopLeft, int newBottomRight, int newTopRight) override {}
     void adjusterChanged2(ThresholdAdjuster *a, int newBottomL, int newTopL, int newBottomR, int newTopR) override {}
 
+    void updateRasterMaskList(const rtengine::procparams::ProcParams *params);
+
 private:
     void on_map() override;
     void onMaskFold(GdkEventButton *evt);
@@ -204,6 +209,8 @@ private:
 
     void onMaskExpanded(GdkEventButton *evt, MyExpander *exp);
 
+    void onRasterMaskChanged();
+
     LabMasksContentProvider *cp_;
     std::vector<rtengine::procparams::Mask> masks_;
     unsigned int selected_;
@@ -223,6 +230,7 @@ private:
     rtengine::ProcEvent EvDrawnMask;
     rtengine::ProcEvent EvMaskName;
     rtengine::ProcEvent EvMaskPostprocess;
+    rtengine::ProcEvent EvRasterMask;
 
     class ListColumns: public Gtk::TreeModel::ColumnRecord {
     public:
@@ -284,7 +292,6 @@ private:
     Gtk::Button *areaMaskDrawGradientAdd;
     Gtk::Button *areaMaskDrawPolygonAdd;
     Gtk::Button *areaMaskDrawRectangleAdd;
-    // Gtk::ToggleButton *areaMaskDrawRectangle;
     sigc::connection areaMaskDrawConn;
     Gtk::Button *areaMaskCopy;
     Gtk::Button *areaMaskPaste;
@@ -293,7 +300,6 @@ private:
     DiagonalCurveEditor *areaMaskContrast;
     Gtk::ToggleButton *areaMaskMode[3];
     sigc::connection areaMaskModeConn[3];
-    // MyComboBoxText *areaMaskMode;
     Adjuster *areaMaskShapeFeather;
     Adjuster *areaMaskShapeBlur;
     Adjuster *areaMaskX;
@@ -335,4 +341,16 @@ private:
     Adjuster *maskPosterization;
     Adjuster *maskSmoothing;
     Adjuster *maskOpacity;
+
+    MyExpander *raster_mask_;
+    MyComboBoxText *raster_mask_value_;
+    Gtk::CheckButton *raster_mask_inverted_;
+    struct RasterMaskInfo {
+        Glib::ustring toolname;
+        Glib::ustring name;
+        unsigned int idx;
+        RasterMaskInfo(const Glib::ustring &t="", const Glib::ustring &n="", unsigned int i=0): toolname{t}, name{n}, idx{i} {}
+    };
+    std::vector<RasterMaskInfo> available_raster_masks_;
+    std::unordered_set<std::string> used_raster_masks_;
 };

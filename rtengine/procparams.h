@@ -264,6 +264,19 @@ public:
 };
 
 
+class RasterMask {
+public:
+    bool enabled;
+    bool inverted;
+    Glib::ustring toolname;
+    Glib::ustring name;
+
+    RasterMask();
+    bool operator==(const RasterMask &other) const;
+    bool operator!=(const RasterMask &other) const;
+};
+
+
 class Mask {
 public:
     bool enabled;
@@ -272,6 +285,7 @@ public:
     AreaMask areaMask;
     DeltaEMask deltaEMask;
     DrawnMask drawnMask;
+    RasterMask rasterMask;
     Glib::ustring name;
     std::vector<double> curve;
     int posterization;
@@ -290,9 +304,17 @@ public:
 };
 
 
+class MaskableParams {
+public:
+    virtual ~MaskableParams() = default;
+    virtual std::string get_name() const = 0;
+    virtual std::string get_gui_label() const = 0;
+    virtual const std::vector<Mask> &get_masks() const = 0;
+};
+
+
 template<typename T>
-class Threshold final
-{
+class Threshold final {
 public:
     Threshold(T _bottom, T _top, bool _start_at_one) :
         Threshold(_bottom, _top, 0, 0, _start_at_one, false)
@@ -583,7 +605,7 @@ struct LabCurveParams {
 /**
  * Parameters for local contrast
  */
-struct LocalContrastParams {
+struct LocalContrastParams: public MaskableParams {
     struct Region {
         double contrast;
         std::vector<double> curve;
@@ -603,6 +625,10 @@ struct LocalContrastParams {
 
     bool operator==(const LocalContrastParams &other) const;
     bool operator!=(const LocalContrastParams &other) const;
+
+    std::string get_name() const override { return "localcontrast"; }
+    std::string get_gui_label() const override { return "TP_LOCALCONTRAST_LABEL"; }
+    const std::vector<Mask> &get_masks() const override { return labmasks; }
 };
 
 
@@ -744,7 +770,7 @@ struct DenoiseParams {
 };
 
 
-struct TextureBoostParams {
+struct TextureBoostParams: public MaskableParams {
     struct Region {
         double strength;
         double detailThreshold;
@@ -765,6 +791,10 @@ struct TextureBoostParams {
 
     bool operator ==(const TextureBoostParams& other) const;
     bool operator !=(const TextureBoostParams& other) const;
+
+    std::string get_name() const override { return "textureboost"; }
+    std::string get_gui_label() const override { return "TP_EPD_LABEL"; }
+    const std::vector<Mask> &get_masks() const override { return labmasks; }
 };
 
 
@@ -1240,7 +1270,7 @@ struct GrainParams {
 };
 
 
-struct SmoothingParams {
+struct SmoothingParams: public MaskableParams {
     struct Region {
         enum class Channel {
             LUMINANCE,
@@ -1293,10 +1323,15 @@ struct SmoothingParams {
 
     bool operator==(const SmoothingParams &other) const;
     bool operator!=(const SmoothingParams &other) const;
+
+    std::string get_name() const override { return "smoothing"; }
+    std::string get_gui_label() const override { return "TP_SMOOTHING_LABEL"; }
+    const std::vector<Mask> &get_masks() const override { return labmasks; }
+    
 };
 
 
-struct ColorCorrectionParams {
+struct ColorCorrectionParams: public MaskableParams {
     enum class Mode {
         YUV,
         RGB,
@@ -1339,6 +1374,10 @@ struct ColorCorrectionParams {
     ColorCorrectionParams();
     bool operator==(const ColorCorrectionParams &other) const;
     bool operator!=(const ColorCorrectionParams &other) const;
+
+    std::string get_name() const override { return "colorcorrection"; }
+    std::string get_gui_label() const override { return "TP_COLORCORRECTION_LABEL"; }
+    const std::vector<Mask> &get_masks() const override { return labmasks; }
 };
 
 
@@ -1676,6 +1715,8 @@ public:
 
     bool from_data(const char *data);
     std::string to_data() const;
+
+    std::vector<const MaskableParams *> get_maskable() const;
 
 private:
     /** Write the ProcParams's text in the file of the given name.
