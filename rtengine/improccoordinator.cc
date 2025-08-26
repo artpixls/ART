@@ -1528,6 +1528,15 @@ void ImProcCoordinator::endUpdateParams(ProcEvent change)
 void ImProcCoordinator::endUpdateParams(int changeFlags)
 {
     changeSinceLast |= changeFlags;
+    for (auto p : nextParams.get_maskable()) {
+        for (auto &m : p->get_masks()) {
+            if (m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
+                changeSinceLast |= RASTERMASK;
+                goto out;
+            }
+        }
+    }
+  out:
 
     paramsUpdateMutex.unlock();
     startProcessing();
