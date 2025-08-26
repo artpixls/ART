@@ -34,13 +34,13 @@ class RasterMaskManager {
 public:
     RasterMaskManager();
     void init(const rtengine::ProcParams &pparams);
-    bool store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> &mask);
+    bool store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> *mask1, const array2D<float> *mask2, bool multithread);
     bool apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread);
     bool is_needed(const Glib::ustring &toolname, const Glib::ustring &name);
 
 private:
     std::string key(const Glib::ustring &toolname, const Glib::ustring &name);
-    std::unordered_map<std::string, array2D<float>> masks_;
+    std::unordered_map<std::string, array2D<uint32_t>> masks_;
     std::unordered_set<std::string> needed_;
 };
 

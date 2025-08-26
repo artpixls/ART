@@ -1,3 +1,5 @@
+// -*- C++ -*-
+
 #pragma once
 
 #include <inttypes.h>

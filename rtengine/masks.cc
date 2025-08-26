@@ -34,6 +34,7 @@
 #include "rt_math.h"
 #include "opthelper.h"
 #include "rescale.h"
+#include "halffloat.h"
 #include "../rtgui/multilangmgr.h"
 
 namespace rtengine {
@@ -829,7 +830,7 @@ void RasterMaskManager::init(const rtengine::ProcParams &pparams)
 }
 
 
-bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> &mask)
+bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> *mask1, const array2D<float> *mask2, bool multithread)
 {
     if (name.empty()) {
         return false;
@@ -838,16 +839,28 @@ bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::us
     if (needed_.find(k) == needed_.end()) {
         return false;
     }
-    float *ptr = static_cast<float *>(const_cast<array2D<float> &>(mask));
     auto &m = masks_[k];
-    if (ptr) {
-        m(mask.width(), mask.height(), ptr);
-    } else {
-        m(mask.width(), mask.height());
-        for (int y = 0; y < mask.height(); ++y) {
-            for (int x = 0; x < mask.width(); ++x) {
-                m[y][x] = mask[y][x];
+    assert(mask1 || mask2);
+    const int W = mask1 ? mask1->width() : mask2->width();
+    const int H = mask1 ? mask1->height() : mask2->height();
+    m(W, H);
+    constexpr uint32_t shift = 16U;
+#ifdef _OPENMP
+#   pragma omp parallel for if (multithread)
+#endif
+    for (int y = 0; y < H; ++y) {
+        for (int x = 0; x < W; ++x) {
+            uint32_t v1 = mask1 ? uint32_t(DNG_FloatToHalf((*mask1)[y][x])) : 0;
+            uint32_t v2 = mask2 ? uint32_t(DNG_FloatToHalf((*mask2)[y][x])) : 0;
+            uint32_t v = 0;
+            if (mask1 && mask2) {
+                v = (v1 << shift) | v2;
+            } else if (mask1) {
+                v = (v1 << shift) | v1;
+            } else {
+                v = (v2 << shift) | v2;
             }
+            m[y][x] = v;
         }
     }
     return true;
@@ -865,20 +878,26 @@ bool RasterMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::us
     const int H = m.height();
     const int W = m.width();
 
+    constexpr uint32_t shift = 16U;
+    constexpr uint32_t bitmask = (uint32_t(1) << shift)-1U;
+
 #ifdef _OPENMP
 #   pragma omp parallel for if (multithread)
 #endif
     for (int y = 0; y < H; ++y) {
         for (int x = 0; x < W; ++x) {
-            float f = m[y][x];
+            uint32_t v = m[y][x];
+            float f1 = DNG_HalfToFloat(v >> shift);
+            float f2 = DNG_HalfToFloat(v & bitmask);
             if (inverted) {
-                f = 1.f - f;
+                f1 = 1.f - f1;
+                f2 = 1.f - f2;
             }
             if (out1) {
-                (*out1)[y][x] *= f;
+                (*out1)[y][x] *= f1;
             }
             if (out2) {
-                (*out2)[y][x] *= f;
+                (*out2)[y][x] *= f2;
             }
         }
     }
@@ -1315,7 +1334,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
         }
 
         if (Lmask || abmask) {
-            mmgr.store_mask(toolname, masks[i].name, Lmask ? (*Lmask)[i] : (*abmask)[i]);
+            mmgr.store_mask(toolname, masks[i].name, Lmask ? &((*Lmask)[i]) : nullptr, abmask ? &((*abmask)[i]) : nullptr, multithread);
         }
     }
     }
