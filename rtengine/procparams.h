@@ -264,16 +264,16 @@ public:
 };
 
 
-class RasterMask {
+class LinkedMask {
 public:
     bool enabled;
     bool inverted;
     Glib::ustring toolname;
     Glib::ustring name;
 
-    RasterMask();
-    bool operator==(const RasterMask &other) const;
-    bool operator!=(const RasterMask &other) const;
+    LinkedMask();
+    bool operator==(const LinkedMask &other) const;
+    bool operator!=(const LinkedMask &other) const;
 };
 
 
@@ -285,7 +285,7 @@ public:
     AreaMask areaMask;
     DeltaEMask deltaEMask;
     DrawnMask drawnMask;
-    RasterMask rasterMask;
+    LinkedMask rasterMask;
     Glib::ustring name;
     std::vector<double> curve;
     int posterization;

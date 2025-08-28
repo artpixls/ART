@@ -952,7 +952,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     deltaE_provider_(nullptr)
 {
     Gtk::Widget *child = cp_->getWidget();
-    cp_->getEvents(EvMaskList, EvParametricMask, EvHMask, EvCMask, EvLMask, EvMaskBlur, EvShowMask, EvAreaMask, EvDeltaEMask, EvContrastThresholdMask, EvDrawnMask, EvMaskPostprocess, EvRasterMask);
+    cp_->getEvents(EvMaskList, EvParametricMask, EvHMask, EvCMask, EvLMask, EvMaskBlur, EvShowMask, EvAreaMask, EvDeltaEMask, EvContrastThresholdMask, EvDrawnMask, EvMaskPostprocess, EvLinkedMask);
     EvAreaMaskVoid = ProcEventMapper::getInstance()->newEvent(M_VOID, EvAreaMask.get_message());
     EvDeltaEMaskVoid = ProcEventMapper::getInstance()->newEvent(M_VOID, EvDeltaEMask.get_message());
     EvMaskName = ProcEventMapper::getInstance()->newEvent(M_VOID, "HISTORY_MSG_LABMASKS_MASK_NAME");
@@ -1071,7 +1071,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     mask_box->pack_start(*maskOpacity);
     maskOpacity->setAdjusterListener(this);
 
-    raster_mask_ = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_RASTERMASK")));
+    linked_mask_ = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_LINKEDMASK")));
     parametricMask = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_PARAMETRIC")));
     ToolParamBlock *tb = Gtk::manage(new ToolParamBlock());
     parametricMask->add(*tb, false);
@@ -1382,20 +1382,20 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     static_cast<DrawnMaskPanel *>(drawnMask)->signal_draw_updated().connect(sigc::mem_fun(this, &LabMasksPanel::onDrawnMaskUpdated));
     
     tb = Gtk::manage(new ToolParamBlock());
-    raster_mask_->add(*tb, false);
-    raster_mask_->setLevel(1);
-    raster_mask_->signal_enabled_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onRasterMaskChanged));
+    linked_mask_->add(*tb, false);
+    linked_mask_->setLevel(1);
+    linked_mask_->signal_enabled_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onLinkedMaskChanged));
 
-    raster_mask_value_ = Gtk::manage(new MyComboBoxText());
+    linked_mask_value_ = Gtk::manage(new MyComboBoxText());
     hb = Gtk::manage(new Gtk::HBox());
     tb->pack_start(*hb, Gtk::PACK_EXPAND_WIDGET, 0);
-    hb->pack_start(*raster_mask_value_, Gtk::PACK_EXPAND_WIDGET, 4);
-    raster_mask_value_->signal_changed().connect(sigc::mem_fun(*this, &LabMasksPanel::onRasterMaskChanged));
-    raster_mask_inverted_ = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_INVERTED")));
-    hb->pack_start(*raster_mask_inverted_, Gtk::PACK_SHRINK, 4);
-    raster_mask_inverted_->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onRasterMaskChanged));
+    hb->pack_start(*linked_mask_value_, Gtk::PACK_EXPAND_WIDGET, 4);
+    linked_mask_value_->signal_changed().connect(sigc::mem_fun(*this, &LabMasksPanel::onLinkedMaskChanged));
+    linked_mask_inverted_ = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_INVERTED")));
+    hb->pack_start(*linked_mask_inverted_, Gtk::PACK_SHRINK, 4);
+    linked_mask_inverted_->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onLinkedMaskChanged));
     
-    mask_box->pack_start(*raster_mask_);
+    mask_box->pack_start(*linked_mask_);
     
     // -----------------------------------------------------------------------
     MyExpander *ppMask = Gtk::manage(new MyExpander(false, M("TP_LABMASKS_POSTPROCESS")));
@@ -1458,7 +1458,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
         
     maskBlur->delay = options.adjusterMaxDelay;
 
-    mask_expanders_ = { parametricMask, areaMask, deltaEMask, drawnMask, raster_mask_, ppMask };
+    mask_expanders_ = { parametricMask, areaMask, deltaEMask, drawnMask, linked_mask_, ppMask };
     for (auto e : mask_expanders_) {
         e->signal_button_release_event().connect_notify(sigc::bind(sigc::mem_fun(this, &LabMasksPanel::onMaskExpanded), e));
     }
@@ -1623,15 +1623,15 @@ void LabMasksPanel::maskGet(int idx)
     r.posterization = maskPosterization->getValue();
     r.smoothing = maskSmoothing->getValue();
     r.opacity = maskOpacity->getValue();
-    r.rasterMask.enabled = raster_mask_->getEnabled();
-    r.rasterMask.inverted = raster_mask_inverted_->get_active();
-    int raster_idx = raster_mask_value_->get_active_row_number();
+    r.rasterMask.enabled = linked_mask_->getEnabled();
+    r.rasterMask.inverted = linked_mask_inverted_->get_active();
+    int raster_idx = linked_mask_value_->get_active_row_number();
     if (raster_idx == 0) {
         r.rasterMask.toolname = "";
         r.rasterMask.name = "";
-    } else if (raster_idx > 0 && size_t(raster_idx) <= available_raster_masks_.size()) {
-        r.rasterMask.toolname = available_raster_masks_[raster_idx-1].toolname;
-        r.rasterMask.name = available_raster_masks_[raster_idx-1].name;
+    } else if (raster_idx > 0 && size_t(raster_idx) <= available_linked_masks_.size()) {
+        r.rasterMask.toolname = available_linked_masks_[raster_idx-1].toolname;
+        r.rasterMask.name = available_linked_masks_[raster_idx-1].name;
     }
 }
 
@@ -1922,9 +1922,9 @@ void LabMasksPanel::maskShow(int idx, bool list_only, bool unsub)
         deltaEInverted->set_active(r.deltaEMask.decay < 0);
         static_cast<DeltaEArea *>(deltaEColor)->setColor(r.deltaEMask.L, r.deltaEMask.C, r.deltaEMask.H);
 
-        raster_mask_->setEnabled(r.rasterMask.enabled);
-        raster_mask_inverted_->set_active(r.rasterMask.inverted);
-        updateRasterMaskList(nullptr);
+        linked_mask_->setEnabled(r.rasterMask.enabled);
+        linked_mask_inverted_->set_active(r.rasterMask.inverted);
+        updateLinkedMaskList(nullptr);
     }
     static_cast<DrawnMaskPanel *>(drawnMask)->setTargetMask(&r.drawnMask,
                                                             !list_only);
@@ -3135,8 +3135,8 @@ bool LabMasksPanel::onMaskNameFocusOut(GdkEventFocus *e)
     }
     maskShow(selected_, true);
     const bool changed = !curname.empty() && curname != maskName->get_text();
-    if (l && changed && used_raster_masks_.find(curname.raw()) != used_raster_masks_.end()) {
-        l->panelChanged(EvRasterMask, M("GENERAL_CHANGED"));
+    if (l && changed && used_linked_masks_.find(curname.raw()) != used_linked_masks_.end()) {
+        l->panelChanged(EvLinkedMask, M("GENERAL_CHANGED"));
     }
     return false;
 }
@@ -3181,23 +3181,23 @@ void LabMasksPanel::onMaskPastePressed()
 }
 
 
-void LabMasksPanel::updateRasterMaskList(const rtengine::procparams::ProcParams *params)
+void LabMasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams *params)
 {
     static std::unordered_map<std::string, std::string> tools_labels;
     Glib::ustring mytoolname = cp_->getToolName();
     if (params) {
-        available_raster_masks_.clear();
-        used_raster_masks_.clear();
+        available_linked_masks_.clear();
+        used_linked_masks_.clear();
         const auto add =
             [&](const std::vector<rtengine::procparams::Mask> &masks, const Glib::ustring &tool, const Glib::ustring &mytoolname) -> void
             {
                 for (unsigned int i = 0, n = masks.size(); i < n; ++i) {
                     auto &m = masks[i];
                     if (m.enabled && !m.name.empty()) {
-                        available_raster_masks_.emplace_back(tool, m.name, i);
+                        available_linked_masks_.emplace_back(tool, m.name, i);
                     }
                     if (m.rasterMask.enabled && m.rasterMask.toolname == mytoolname) {
-                        used_raster_masks_.insert(m.rasterMask.name.raw());
+                        used_linked_masks_.insert(m.rasterMask.name.raw());
                     }
                 }
             };
@@ -3221,10 +3221,10 @@ void LabMasksPanel::updateRasterMaskList(const rtengine::procparams::ProcParams 
         }
     }
     disableListener();
-    raster_mask_value_->remove_all();
-    raster_mask_value_->append("(" + M("GENERAL_NONE") + ")");
+    linked_mask_value_->remove_all();
+    linked_mask_value_->append("(" + M("GENERAL_NONE") + ")");
     int n = 0;
-    for (auto &p : available_raster_masks_) {
+    for (auto &p : available_linked_masks_) {
         if (p.toolname == mytoolname && p.idx >= selected_) {
             break;
         }
@@ -3233,15 +3233,15 @@ void LabMasksPanel::updateRasterMaskList(const rtengine::procparams::ProcParams 
         if (it != tools_labels.end()) {
             label = M(it->second);
         }
-        raster_mask_value_->append(label + " ▸ " + p.name);
+        linked_mask_value_->append(label + " ▸ " + p.name);
         ++n;
     }
-    raster_mask_value_->set_active(0);
+    linked_mask_value_->set_active(0);
     if (selected_ < masks_.size()) {
         auto &m = masks_[selected_];
         for (int i = 0; i < n; ++i) {
-            if (available_raster_masks_[i].toolname == m.rasterMask.toolname && available_raster_masks_[i].name == m.rasterMask.name) {
-                raster_mask_value_->set_active(i+1);
+            if (available_linked_masks_[i].toolname == m.rasterMask.toolname && available_linked_masks_[i].name == m.rasterMask.name) {
+                linked_mask_value_->set_active(i+1);
                 break;
             }
         }
@@ -3250,10 +3250,10 @@ void LabMasksPanel::updateRasterMaskList(const rtengine::procparams::ProcParams 
 }
 
 
-void LabMasksPanel::onRasterMaskChanged()
+void LabMasksPanel::onLinkedMaskChanged()
 {
     auto l = getListener();
     if (l) {
-        l->panelChanged(EvRasterMask, M("GENERAL_CHANGED"));
+        l->panelChanged(EvLinkedMask, M("GENERAL_CHANGED"));
     }
 }

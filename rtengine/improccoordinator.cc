@@ -1531,7 +1531,7 @@ void ImProcCoordinator::endUpdateParams(int changeFlags)
     for (auto p : nextParams.get_maskable()) {
         for (auto &m : p->get_masks()) {
             if (m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
-                changeSinceLast |= RASTERMASK;
+                changeSinceLast |= LINKEDMASK;
                 goto out;
             }
         }

@@ -83,7 +83,7 @@
 #define DETAIL SHARPENING
 #define DISPLAY (M_LUMINANCE|M_COLOR)
 
-constexpr int RASTERMASK = M_LUMACURVE|M_LUMINANCE|M_COLOR;
+constexpr int LINKEDMASK = M_LUMACURVE|M_LUMINANCE|M_COLOR;
 
 extern int refreshmap[];
 

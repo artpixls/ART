@@ -804,12 +804,12 @@ bool mask_postprocess(int width, int height, float scale, const array2D<float> &
 } // namespace
 
 
-RasterMaskManager::RasterMaskManager()
+LinkedMaskManager::LinkedMaskManager()
 {
 }
 
 
-void RasterMaskManager::init(const rtengine::ProcParams &pparams)
+void LinkedMaskManager::init(const rtengine::ProcParams &pparams)
 {
     masks_.clear();
     needed_.clear();
@@ -830,7 +830,7 @@ void RasterMaskManager::init(const rtengine::ProcParams &pparams)
 }
 
 
-bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> *mask1, const array2D<float> *mask2, bool multithread)
+bool LinkedMaskManager::store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> *mask1, const array2D<float> *mask2, bool multithread)
 {
     if (name.empty()) {
         return false;
@@ -860,7 +860,7 @@ bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::us
 }
 
 
-bool RasterMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread)
+bool LinkedMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread)
 {
     auto k = key(toolname, name);
     auto it = masks_.find(k);
@@ -898,19 +898,19 @@ bool RasterMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::us
 }
 
 
-std::string RasterMaskManager::key(const Glib::ustring &toolname, const Glib::ustring &name)
+std::string LinkedMaskManager::key(const Glib::ustring &toolname, const Glib::ustring &name)
 {
     return toolname.raw() + "|" + name.raw();
 }
 
 
-bool RasterMaskManager::is_needed(const Glib::ustring &toolname, const Glib::ustring &name)
+bool LinkedMaskManager::is_needed(const Glib::ustring &toolname, const Glib::ustring &name)
 {
     return needed_.find(key(toolname, name)) != needed_.end();
 }
 
 
-bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskManager &mmgr, const std::vector<Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *plistener)
+bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskManager &mmgr, const std::vector<Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *plistener)
 {
     int n = masks.size();
     if (show_mask_idx < 0 || show_mask_idx >= n || !masks[show_mask_idx].enabled) {

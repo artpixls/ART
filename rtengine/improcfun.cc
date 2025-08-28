@@ -587,7 +587,7 @@ bool ImProcFunctions::process(Pipeline pipeline, Stage stage, Imagefloat *img)
         }
         break;
     case Stage::STAGE_2:
-        raster_mask_mgr_.init(*params);
+        linked_mask_mgr_.init(*params);
         if (pipeline == Pipeline::OUTPUT ||
             (pipeline == Pipeline::PREVIEW /*&& scale == 1*/)) {
             stop = STEP_s_(sharpening);

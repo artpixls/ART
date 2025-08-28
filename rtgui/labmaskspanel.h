@@ -38,7 +38,7 @@ public:
     virtual ~LabMasksContentProvider() {}
 
     virtual Gtk::Widget *getWidget() = 0;
-    virtual void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &raster_mask) = 0;
+    virtual void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &linked_mask) = 0;
 
     virtual ToolPanelListener *listener() = 0;
 
@@ -141,7 +141,7 @@ public:
     void adjusterChanged(ThresholdAdjuster *a, int newBottomLeft, int newTopLeft, int newBottomRight, int newTopRight) override {}
     void adjusterChanged2(ThresholdAdjuster *a, int newBottomL, int newTopL, int newBottomR, int newTopR) override {}
 
-    void updateRasterMaskList(const rtengine::procparams::ProcParams *params);
+    void updateLinkedMaskList(const rtengine::procparams::ProcParams *params);
 
 private:
     void on_map() override;
@@ -209,7 +209,7 @@ private:
 
     void onMaskExpanded(GdkEventButton *evt, MyExpander *exp);
 
-    void onRasterMaskChanged();
+    void onLinkedMaskChanged();
 
     LabMasksContentProvider *cp_;
     std::vector<rtengine::procparams::Mask> masks_;
@@ -230,7 +230,7 @@ private:
     rtengine::ProcEvent EvDrawnMask;
     rtengine::ProcEvent EvMaskName;
     rtengine::ProcEvent EvMaskPostprocess;
-    rtengine::ProcEvent EvRasterMask;
+    rtengine::ProcEvent EvLinkedMask;
 
     class ListColumns: public Gtk::TreeModel::ColumnRecord {
     public:
@@ -342,15 +342,15 @@ private:
     Adjuster *maskSmoothing;
     Adjuster *maskOpacity;
 
-    MyExpander *raster_mask_;
-    MyComboBoxText *raster_mask_value_;
-    Gtk::CheckButton *raster_mask_inverted_;
-    struct RasterMaskInfo {
+    MyExpander *linked_mask_;
+    MyComboBoxText *linked_mask_value_;
+    Gtk::CheckButton *linked_mask_inverted_;
+    struct LinkedMaskInfo {
         Glib::ustring toolname;
         Glib::ustring name;
         unsigned int idx;
-        RasterMaskInfo(const Glib::ustring &t="", const Glib::ustring &n="", unsigned int i=0): toolname{t}, name{n}, idx{i} {}
+        LinkedMaskInfo(const Glib::ustring &t="", const Glib::ustring &n="", unsigned int i=0): toolname{t}, name{n}, idx{i} {}
     };
-    std::vector<RasterMaskInfo> available_raster_masks_;
-    std::unordered_set<std::string> used_raster_masks_;
+    std::vector<LinkedMaskInfo> available_linked_masks_;
+    std::unordered_set<std::string> used_linked_masks_;
 };

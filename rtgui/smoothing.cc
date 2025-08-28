@@ -47,7 +47,7 @@ public:
         return parent_->box;
     }
 
-    void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &raster_mask) override
+    void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &linked_mask) override
     {
         mask_list = parent_->EvList;
         parametric_mask = parent_->EvParametricMask;
@@ -61,7 +61,7 @@ public:
         contrastThreshold_mask = parent_->EvContrastThresholdMask;
         drawn_mask = parent_->EvDrawnMask;
         mask_postprocess = parent_->EvMaskPostprocess;
-        raster_mask = parent_->EvRasterMask;
+        linked_mask = parent_->EvLinkedMask;
     }
 
     ToolPanelListener *listener() override
@@ -267,7 +267,7 @@ Smoothing::Smoothing(): FoldableToolPanel(this, "smoothing", M("TP_SMOOTHING_LAB
     EvContrastThresholdMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_CONTRASTTHRESHOLDMASK");
     EvDrawnMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_DRAWNMASK");
     EvMaskPostprocess = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_MASK_POSTPROCESS");
-    EvRasterMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_RASTERMASK");
+    EvLinkedMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_LINKEDMASK");
 
     EvToolEnabled.set_action(EVENT);
     EvToolReset.set_action(EVENT);
@@ -549,7 +549,7 @@ void Smoothing::procParamsChanged(
     const Glib::ustring& descr,
     const ParamsEdited* paramsEdited)
 {
-    labMasks->updateRasterMaskList(params);
+    labMasks->updateLinkedMaskList(params);
 }
 
 

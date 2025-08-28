@@ -239,7 +239,7 @@ private:
     int progress_step;
     int progress_end;
 
-    RasterMaskManager raster_mask_mgr_;
+    LinkedMaskManager linked_mask_mgr_;
     
 private:
     void transformLuminanceOnly(Imagefloat* original, Imagefloat* transformed, int cx, int cy, int oW, int oH, int fW, int fH, bool creative);

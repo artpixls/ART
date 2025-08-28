@@ -30,9 +30,9 @@
 
 namespace rtengine {
 
-class RasterMaskManager {
+class LinkedMaskManager {
 public:
-    RasterMaskManager();
+    LinkedMaskManager();
     void init(const rtengine::ProcParams &pparams);
     bool store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> *mask1, const array2D<float> *mask2, bool multithread);
     bool apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread);
@@ -44,7 +44,7 @@ private:
     std::unordered_set<std::string> needed_;
 };
 
-bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskManager &mmgr, const std::vector<procparams::Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *pl);
+bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskManager &mmgr, const std::vector<procparams::Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *pl);
 
 enum class MasksEditID { H = 0, C, L };
 void fillPipetteMasks(Imagefloat *rgb, PlanarWhateverData<float> *editWhatever, MasksEditID id, bool multithread);
