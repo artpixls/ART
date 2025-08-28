@@ -840,9 +840,9 @@ bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::us
         return false;
     }
     auto &m = masks_[k];
-    assert(mask1 || mask2);
-    const int W = mask1 ? mask1->width() : mask2->width();
-    const int H = mask1 ? mask1->height() : mask2->height();
+    assert(mask1);
+    const int W = mask1->width();
+    const int H = mask1->height();
     m(W, H);
     constexpr uint32_t shift = 16U;
 #ifdef _OPENMP
@@ -850,16 +850,9 @@ bool RasterMaskManager::store_mask(const Glib::ustring &toolname, const Glib::us
 #endif
     for (int y = 0; y < H; ++y) {
         for (int x = 0; x < W; ++x) {
-            uint32_t v1 = mask1 ? uint32_t(DNG_FloatToHalf((*mask1)[y][x])) : 0;
-            uint32_t v2 = mask2 ? uint32_t(DNG_FloatToHalf((*mask2)[y][x])) : 0;
-            uint32_t v = 0;
-            if (mask1 && mask2) {
-                v = (v1 << shift) | v2;
-            } else if (mask1) {
-                v = (v1 << shift) | v1;
-            } else {
-                v = (v2 << shift) | v2;
-            }
+            uint32_t v1 = uint32_t(DNG_FloatToHalf((*mask1)[y][x]));
+            uint32_t v2 = mask2 ? uint32_t(DNG_FloatToHalf((*mask2)[y][x])) : v1;
+            uint32_t v = (v1 << shift) | v2;
             m[y][x] = v;
         }
     }
@@ -881,6 +874,8 @@ bool RasterMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::us
     constexpr uint32_t shift = 16U;
     constexpr uint32_t bitmask = (uint32_t(1) << shift)-1U;
 
+    assert(out1);
+
 #ifdef _OPENMP
 #   pragma omp parallel for if (multithread)
 #endif
@@ -893,9 +888,7 @@ bool RasterMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::us
                 f1 = 1.f - f1;
                 f2 = 1.f - f2;
             }
-            if (out1) {
-                (*out1)[y][x] *= f1;
-            }
+            (*out1)[y][x] *= f1;
             if (out2) {
                 (*out2)[y][x] *= f2;
             }
@@ -939,7 +932,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
     const int end_idx = (show_mask_idx < 0 ? n : show_mask_idx+1);
     bool has_mask = false;
 
-    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+    for (int i = 0; i < end_idx; ++i) {
         auto &r = masks[i];
         if (i < begin_idx && !mmgr.is_needed(toolname, r.name)) {
             needed[i] = false;
@@ -970,7 +963,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
     assert(!Lmask || Lmask->size() == size_t(n));
 
     bool has_lmask = false;
-    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+    for (int i = 0; i < end_idx; ++i) {
         if (!needed[i]) {
             continue;
         }
@@ -1103,7 +1096,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
                     }
                     h = xlin2log(h, 3.f);
 
-                    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+                    for (int i = 0; i < end_idx; ++i) {
                         if (!needed[i]) {
                             continue;
                         }
@@ -1135,7 +1128,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
 
         static constexpr float NO_BLUR = -10.f;
         
-        for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+        for (int i = 0; i < end_idx; ++i) {
             if (!needed[i]) {
                 continue;
             }
@@ -1177,7 +1170,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
             }
         }
     } else {
-        for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+        for (int i = 0; i < end_idx; ++i) {
             if (!needed[i]) {
                 continue;
             }
@@ -1202,43 +1195,40 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
     const auto apply_brush =
         [&](int i, bool add_bounded) -> void
         {
-//            for (int i = begin_idx; i < end_idx; ++i) {
-                if ((masks[i].drawnMask.mode == DrawnMask::ADD_BOUNDED) != add_bounded) {
-                    //continue;
-                    return;
-                }
-                if (generate_drawn_mask(offset_x, offset_y, full_width, full_height, masks[i].drawnMask, guide, multithread, amask)) {
-                    const bool add = masks[i].drawnMask.mode != DrawnMask::INTERSECT;
-                    const float alpha = LIM01(masks[i].drawnMask.opacity);
+            if ((masks[i].drawnMask.mode == DrawnMask::ADD_BOUNDED) != add_bounded) {
+                return;
+            }
+            if (generate_drawn_mask(offset_x, offset_y, full_width, full_height, masks[i].drawnMask, guide, multithread, amask)) {
+                const bool add = masks[i].drawnMask.mode != DrawnMask::INTERSECT;
+                const float alpha = LIM01(masks[i].drawnMask.opacity);
 #ifdef _OPENMP
 #                   pragma omp parallel for if (multithread)
 #endif
-                    for (int y = 0; y < H; ++y) {
-                        for (int x = 0; x < W; ++x) {
-                            const float f = alpha * amask[y][x];
-                            if (add) {
-                                if (abmask) {
-                                    (*abmask)[i][y][x] = LIM01((*abmask)[i][y][x] + f);
-                                }
-                                if (Lmask) {
-                                    (*Lmask)[i][y][x] = LIM01((*Lmask)[i][y][x] + f);
-                                }
-                            } else {
-                                if (abmask) {
-                                    (*abmask)[i][y][x] *= f;
-                                }
-                                if (Lmask) {
-                                    (*Lmask)[i][y][x] *= f;
-                                }
+                for (int y = 0; y < H; ++y) {
+                    for (int x = 0; x < W; ++x) {
+                        const float f = alpha * amask[y][x];
+                        if (add) {
+                            if (abmask) {
+                                (*abmask)[i][y][x] = LIM01((*abmask)[i][y][x] + f);
+                            }
+                            if (Lmask) {
+                                (*Lmask)[i][y][x] = LIM01((*Lmask)[i][y][x] + f);
+                            }
+                        } else {
+                            if (abmask) {
+                                (*abmask)[i][y][x] *= f;
+                            }
+                            if (Lmask) {
+                                (*Lmask)[i][y][x] *= f;
                             }
                         }
                     }
                 }
-//            }
+            }
         };
-    
 
-    for (int i = 0/*begin_idx*/; i < end_idx; ++i) {
+
+    for (int i = 0; i < end_idx; ++i) {
         if (!needed[i]) {
             continue;
         }
@@ -1260,11 +1250,9 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
                 }
             }
         }
-//    }
 
         apply_brush(i, true);
     
-        /*    for (int i = begin_idx; i < end_idx; ++i)*/ {
         if (generate_area_mask(offset_x, offset_y, full_width, full_height, guide, masks[i].areaMask, scale, multithread, amask, plistener)) {
 #ifdef _OPENMP
 #           pragma omp parallel for if (multithread)
@@ -1282,13 +1270,21 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
         }
         auto &rm = masks[i].rasterMask;
         if (rm.enabled) {
-            mmgr.apply_mask(rm.toolname, rm.name, rm.inverted, Lmask ? &((*Lmask)[i]) : nullptr, abmask ? &((*abmask)[i]) : nullptr, multithread);
+            array2D<float> *m1 = nullptr;
+            array2D<float> *m2 = nullptr;
+            if (Lmask && abmask) {
+                m1 = &((*abmask)[i]);
+                m2 = &((*Lmask)[i]);
+            } else if (Lmask) {
+                m1 = &((*Lmask)[i]);
+            } else {
+                m1 = &((*abmask)[i]);
+            }
+            mmgr.apply_mask(rm.toolname, rm.name, rm.inverted, m1, m2, multithread);
         }
-    }
 
         apply_brush(i, false);
 
-        /*for (int i = begin_idx; i < end_idx; ++i)*/ {
         const auto &curve = masks[i].curve;
         auto posterization = masks[i].posterization;
         auto smoothing = masks[i].smoothing;
@@ -1298,9 +1294,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
         if (Lmask) {
             mask_postprocess(full_width, full_height, scale, guide, curve, posterization, smoothing, multithread, (*Lmask)[i]);
         }
-    }
     
-        /*for (int i = begin_idx; i < end_idx; ++i)*/ {
         if (masks[i].inverted) {
 #ifdef _OPENMP
 #           pragma omp parallel for if (multithread)
@@ -1334,9 +1328,18 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, RasterMaskMan
         }
 
         if (Lmask || abmask) {
-            mmgr.store_mask(toolname, masks[i].name, Lmask ? &((*Lmask)[i]) : nullptr, abmask ? &((*abmask)[i]) : nullptr, multithread);
+            const array2D<float> *m1 = nullptr;
+            const array2D<float> *m2 = nullptr;
+            if (Lmask && abmask) {
+                m1 = &((*abmask)[i]);
+                m2 = &((*Lmask)[i]);
+            } else if (Lmask) {
+                m1 = &((*Lmask)[i]);
+            } else {
+                m1 = &((*abmask)[i]);
+            }
+            mmgr.store_mask(toolname, masks[i].name, m1, m2, multithread);
         }
-    }
     }
 
     if (show_mask_idx >= 0) {
