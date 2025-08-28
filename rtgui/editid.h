@@ -40,22 +40,22 @@ enum EditUniqueID {
     EUID_HSL_V,
     EUID_ColorCorrection_Wheel,
     EUID_ColorCorrection_Wheel_Jzazbz,
-    EUID_LabMasks_H1,
-    EUID_LabMasks_C1,
-    EUID_LabMasks_L1,
-    EUID_LabMasks_H2,
-    EUID_LabMasks_C2,
-    EUID_LabMasks_L2,
-    EUID_LabMasks_H3,
-    EUID_LabMasks_C3,
-    EUID_LabMasks_L3,
-    EUID_LabMasks_H4,
-    EUID_LabMasks_C4,
-    EUID_LabMasks_L4,
-    EUID_LabMasks_DE1, // color correction
-    EUID_LabMasks_DE2, // local contrast
-    EUID_LabMasks_DE3, // smoothing
-    EUID_LabMasks_DE4  // texture boost
+    EUID_Masks_H1,
+    EUID_Masks_C1,
+    EUID_Masks_L1,
+    EUID_Masks_H2,
+    EUID_Masks_C2,
+    EUID_Masks_L2,
+    EUID_Masks_H3,
+    EUID_Masks_C3,
+    EUID_Masks_L3,
+    EUID_Masks_H4,
+    EUID_Masks_C4,
+    EUID_Masks_L4,
+    EUID_Masks_DE1, // color correction
+    EUID_Masks_DE2, // local contrast
+    EUID_Masks_DE3, // smoothing
+    EUID_Masks_DE4  // texture boost
 };
 
 /// @brief Editing mechanisms

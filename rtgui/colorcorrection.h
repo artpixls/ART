@@ -22,7 +22,7 @@
 #include <gtkmm.h>
 #include "adjuster.h"
 #include "toolpanel.h"
-#include "labmaskspanel.h"
+#include "maskspanel.h"
 #include "colorwheel.h"
 #include "colorprovider.h"
 #include "thresholdadjuster.h"
@@ -111,8 +111,8 @@ private:
     std::vector<rtengine::procparams::ColorCorrectionParams::Region> data;
 
     friend class ColorCorrectionMasksContentProvider;
-    std::unique_ptr<LabMasksContentProvider> labMasksContentProvider;
-    LabMasksPanel *labMasks;
+    std::unique_ptr<MasksContentProvider> masks_content_provider_;
+    MasksPanel *masks_;
     
     Gtk::VBox *box;
     MyComboBoxText *mode;

@@ -30,7 +30,7 @@ using namespace rtengine::procparams;
 // SmoothingMasksContentProvider
 //-----------------------------------------------------------------------------
 
-class SmoothingMasksContentProvider: public LabMasksContentProvider {
+class SmoothingMasksContentProvider: public MasksContentProvider {
 public:
     SmoothingMasksContentProvider(Smoothing *parent):
         parent_(parent)
@@ -103,7 +103,7 @@ public:
     bool resetPressed(int idx) override
     {
         parent_->data[idx] = SmoothingParams::Region();
-        //parent_->labMasks->setMasks({ Mask() }, -1);
+        //parent_->masks_->setMasks({ Mask() }, -1);
         return true;
     }
     
@@ -186,10 +186,10 @@ public:
 
     void getEditIDs(EditUniqueID &hcurve, EditUniqueID &ccurve, EditUniqueID &lcurve, EditUniqueID &deltaE) override
     {
-        hcurve = EUID_LabMasks_H3;
-        ccurve = EUID_LabMasks_C3;
-        lcurve = EUID_LabMasks_L3;
-        deltaE = EUID_LabMasks_DE3;
+        hcurve = EUID_Masks_H3;
+        ccurve = EUID_Masks_C3;
+        lcurve = EUID_Masks_L3;
+        deltaE = EUID_Masks_DE3;
     }
 
 private:
@@ -407,9 +407,9 @@ Smoothing::Smoothing(): FoldableToolPanel(this, "smoothing", M("TP_SMOOTHING_LAB
     wav_levels->delay = options.adjusterMaxDelay;
     wav_gamma->delay = options.adjusterMaxDelay;
 
-    labMasksContentProvider.reset(new SmoothingMasksContentProvider(this));
-    labMasks = Gtk::manage(new LabMasksPanel(labMasksContentProvider.get()));
-    pack_start(*labMasks, Gtk::PACK_EXPAND_WIDGET, 4);   
+    masks_content_provider_.reset(new SmoothingMasksContentProvider(this));
+    masks_ = Gtk::manage(new MasksPanel(masks_content_provider_.get()));
+    pack_start(*masks_, Gtk::PACK_EXPAND_WIDGET, 4);   
 
     show_all_children();
 }
@@ -421,12 +421,12 @@ void Smoothing::read(const ProcParams *pp)
 
     setEnabled(pp->smoothing.enabled);
     data = pp->smoothing.regions;
-    auto m = pp->smoothing.labmasks;
+    auto m = pp->smoothing.masks;
     if (data.empty()) {
         data.emplace_back(rtengine::procparams::SmoothingParams::Region());
         m.emplace_back(rtengine::procparams::Mask());
     }
-    labMasks->setMasks(m, pp->smoothing.selectedRegion, pp->smoothing.showMask >= 0 && pp->smoothing.showMask == pp->smoothing.selectedRegion);
+    masks_->setMasks(m, pp->smoothing.selectedRegion, pp->smoothing.showMask >= 0 && pp->smoothing.showMask == pp->smoothing.selectedRegion);
     modeChanged();
 
     enableListener();
@@ -437,14 +437,14 @@ void Smoothing::write(ProcParams *pp)
 {
     pp->smoothing.enabled = getEnabled();
 
-    regionGet(labMasks->getSelected());
+    regionGet(masks_->getSelected());
     pp->smoothing.regions = data;
 
-    labMasks->getMasks(pp->smoothing.labmasks, pp->smoothing.showMask);
-    pp->smoothing.selectedRegion = labMasks->getSelected();
-    assert(pp->smoothing.regions.size() == pp->smoothing.labmasks.size());
+    masks_->getMasks(pp->smoothing.masks, pp->smoothing.showMask);
+    pp->smoothing.selectedRegion = masks_->getSelected();
+    assert(pp->smoothing.regions.size() == pp->smoothing.masks.size());
 
-    labMasks->updateSelected();
+    masks_->updateSelected();
 }
 
 
@@ -476,7 +476,7 @@ void Smoothing::setDefaults(const ProcParams *defParams)
 void Smoothing::adjusterChanged(Adjuster* a, double newval)
 {
     if (listener && getEnabled()) {
-        labMasks->setEdited(true);
+        masks_->setEdited(true);
         
         if (a == radius) {
             listener->panelChanged(EvRadius, a->getTextValue());
@@ -532,14 +532,14 @@ void Smoothing::enabledChanged ()
     }
 
     if (listener && !getEnabled()) {
-        labMasks->switchOffEditMode();
+        masks_->switchOffEditMode();
     }
 }
 
 
 void Smoothing::setEditProvider(EditDataProvider *provider)
 {
-    labMasks->setEditProvider(provider);
+    masks_->setEditProvider(provider);
 }
 
 
@@ -549,13 +549,13 @@ void Smoothing::procParamsChanged(
     const Glib::ustring& descr,
     const ParamsEdited* paramsEdited)
 {
-    labMasks->updateLinkedMaskList(params);
+    masks_->updateLinkedMaskList(params);
 }
 
 
 void Smoothing::updateGeometry(int fw, int fh)
 {
-    labMasks->updateGeometry(fw, fh);
+    masks_->updateGeometry(fw, fh);
 }
 
 
@@ -673,13 +673,13 @@ void Smoothing::modeChanged()
 
 void Smoothing::setAreaDrawListener(AreaDrawListener *l)
 {
-    labMasks->setAreaDrawListener(l);
+    masks_->setAreaDrawListener(l);
 }
 
 
 void Smoothing::setDeltaEColorProvider(DeltaEColorProvider *p)
 {
-    labMasks->setDeltaEColorProvider(p);
+    masks_->setDeltaEColorProvider(p);
 }
 
 

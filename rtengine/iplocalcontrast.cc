@@ -427,11 +427,11 @@ bool ImProcFunctions::localContrast(Imagefloat *rgb)
     PlanarWhateverData<float> *editWhatever = nullptr;
     EditUniqueID eid = pipetteBuffer ? pipetteBuffer->getEditID() : EUID_None;
 
-    if ((eid == EUID_LabMasks_H2 || eid == EUID_LabMasks_C2 || eid == EUID_LabMasks_L2) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
+    if ((eid == EUID_Masks_H2 || eid == EUID_Masks_C2 || eid == EUID_Masks_L2) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
         editWhatever = pipetteBuffer->getSinglePlaneBuffer();
     }
 
-    if (eid == EUID_LabMasks_DE2) {
+    if (eid == EUID_Masks_DE2) {
         if (getDeltaEColor(rgb, deltaE.x, deltaE.y, offset_x, offset_y, full_width, full_height, scale, deltaE.L, deltaE.C, deltaE.H)) {
             deltaE.ok = true;
         }
@@ -441,7 +441,7 @@ bool ImProcFunctions::localContrast(Imagefloat *rgb)
         rgb->setMode(Imagefloat::Mode::LAB, multiThread);
         
         if (editWhatever) {
-            MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_LabMasks_H2);
+            MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_Masks_H2);
             fillPipetteMasks(rgb, editWhatever, id, multiThread);
         }
         
@@ -451,7 +451,7 @@ bool ImProcFunctions::localContrast(Imagefloat *rgb)
             show_mask_idx = -1;
         }
         std::vector<array2D<float>> mask(n);
-        if (!generateMasks(rgb, "localcontrast", linked_mask_mgr_, params->localContrast.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &mask, nullptr, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
+        if (!generateMasks(rgb, "localcontrast", linked_mask_mgr_, params->localContrast.masks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &mask, nullptr, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
             return true; // show mask is active, nothing more to do
         }
 
@@ -461,7 +461,7 @@ bool ImProcFunctions::localContrast(Imagefloat *rgb)
         array2D<float> L(W, H, rgb->g.ptrs);
 
         for (int i = 0; i < n; ++i) {
-            if (!params->localContrast.labmasks[i].enabled) {
+            if (!params->localContrast.masks[i].enabled) {
                 continue;
             }
             

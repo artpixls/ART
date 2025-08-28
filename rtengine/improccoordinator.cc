@@ -1699,7 +1699,7 @@ bool ImProcCoordinator::is_mask_image() const
     }
 
 #define CHECK_MASK_(p) \
-    if (p.enabled && p.showMask >= 0 && size_t(p.showMask) < p.labmasks.size() && p.labmasks[p.showMask].enabled) { \
+    if (p.enabled && p.showMask >= 0 && size_t(p.showMask) < p.masks.size() && p.masks[p.showMask].enabled) { \
         return true; \
     }
     

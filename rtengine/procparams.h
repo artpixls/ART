@@ -617,7 +617,7 @@ struct LocalContrastParams: public MaskableParams {
 
     bool enabled;
     std::vector<Region> regions;
-    std::vector<Mask> labmasks;
+    std::vector<Mask> masks;
     int showMask;
     int selectedRegion;
 
@@ -628,7 +628,7 @@ struct LocalContrastParams: public MaskableParams {
 
     std::string get_name() const override { return "localcontrast"; }
     std::string get_gui_label() const override { return "TP_LOCALCONTRAST_LABEL"; }
-    const std::vector<Mask> &get_masks() const override { return labmasks; }
+    const std::vector<Mask> &get_masks() const override { return masks; }
 };
 
 
@@ -783,7 +783,7 @@ struct TextureBoostParams: public MaskableParams {
 
     bool enabled;
     std::vector<Region> regions;
-    std::vector<Mask> labmasks;
+    std::vector<Mask> masks;
     int showMask;
     int selectedRegion;
 
@@ -794,7 +794,7 @@ struct TextureBoostParams: public MaskableParams {
 
     std::string get_name() const override { return "textureboost"; }
     std::string get_gui_label() const override { return "TP_EPD_LABEL"; }
-    const std::vector<Mask> &get_masks() const override { return labmasks; }
+    const std::vector<Mask> &get_masks() const override { return masks; }
 };
 
 
@@ -1315,7 +1315,7 @@ struct SmoothingParams: public MaskableParams {
     };
     bool enabled;
     std::vector<Region> regions;
-    std::vector<Mask> labmasks;
+    std::vector<Mask> masks;
     int showMask;
     int selectedRegion;
 
@@ -1326,7 +1326,7 @@ struct SmoothingParams: public MaskableParams {
 
     std::string get_name() const override { return "smoothing"; }
     std::string get_gui_label() const override { return "TP_SMOOTHING_LABEL"; }
-    const std::vector<Mask> &get_masks() const override { return labmasks; }
+    const std::vector<Mask> &get_masks() const override { return masks; }
     
 };
 
@@ -1367,7 +1367,7 @@ struct ColorCorrectionParams: public MaskableParams {
 
     bool enabled;
     std::vector<Region> regions;
-    std::vector<Mask> labmasks;
+    std::vector<Mask> masks;
     int showMask;
     int selectedRegion;
 
@@ -1377,7 +1377,7 @@ struct ColorCorrectionParams: public MaskableParams {
 
     std::string get_name() const override { return "colorcorrection"; }
     std::string get_gui_label() const override { return "TP_COLORCORRECTION_LABEL"; }
-    const std::vector<Mask> &get_masks() const override { return labmasks; }
+    const std::vector<Mask> &get_masks() const override { return masks; }
 };
 
 

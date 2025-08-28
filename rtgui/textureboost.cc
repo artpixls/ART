@@ -28,7 +28,7 @@ using namespace rtengine::procparams;
 // EPDMasksContentProvider
 //-----------------------------------------------------------------------------
 
-class EPDMasksContentProvider: public LabMasksContentProvider {
+class EPDMasksContentProvider: public MasksContentProvider {
 public:
     EPDMasksContentProvider(TextureBoost *parent):
         parent_(parent)
@@ -101,7 +101,7 @@ public:
     bool resetPressed(int idx) override
     {
         parent_->data[idx] = TextureBoostParams::Region();
-        //parent_->labMasks->setMasks({ Mask() }, -1);
+        //parent_->masks_->setMasks({ Mask() }, -1);
         return true;
     }
     
@@ -143,10 +143,10 @@ public:
 
     void getEditIDs(EditUniqueID &hcurve, EditUniqueID &ccurve, EditUniqueID &lcurve, EditUniqueID &deltaE) override
     {
-        hcurve = EUID_LabMasks_H4;
-        ccurve = EUID_LabMasks_C4;
-        lcurve = EUID_LabMasks_L4;
-        deltaE = EUID_LabMasks_DE4;
+        hcurve = EUID_Masks_H4;
+        ccurve = EUID_Masks_C4;
+        lcurve = EUID_Masks_L4;
+        deltaE = EUID_Masks_DE4;
     }
 
 private:
@@ -201,9 +201,9 @@ TextureBoost::TextureBoost(): FoldableToolPanel(this, "epd", M("TP_EPD_LABEL"), 
     box->pack_start(*detailThreshold);
     box->pack_start(*iterations);
 
-    labMasksContentProvider.reset(new EPDMasksContentProvider(this));
-    labMasks = Gtk::manage(new LabMasksPanel(labMasksContentProvider.get()));
-    pack_start(*labMasks, Gtk::PACK_EXPAND_WIDGET, 4);   
+    masks_content_provider_.reset(new EPDMasksContentProvider(this));
+    masks_ = Gtk::manage(new MasksPanel(masks_content_provider_.get()));
+    pack_start(*masks_, Gtk::PACK_EXPAND_WIDGET, 4);   
 
     show_all_children();
 }
@@ -214,12 +214,12 @@ void TextureBoost::read(const ProcParams *pp)
 
     setEnabled(pp->textureBoost.enabled);
     data = pp->textureBoost.regions;
-    auto m = pp->textureBoost.labmasks;
+    auto m = pp->textureBoost.masks;
     if (data.empty()) {
         data.emplace_back(rtengine::procparams::TextureBoostParams::Region());
         m.emplace_back(rtengine::procparams::Mask());
     }
-    labMasks->setMasks(m, pp->textureBoost.selectedRegion, pp->textureBoost.showMask >= 0 && pp->textureBoost.showMask == pp->textureBoost.selectedRegion);
+    masks_->setMasks(m, pp->textureBoost.selectedRegion, pp->textureBoost.showMask >= 0 && pp->textureBoost.showMask == pp->textureBoost.selectedRegion);
 
     enableListener();
 }
@@ -228,14 +228,14 @@ void TextureBoost::write(ProcParams *pp)
 {
     pp->textureBoost.enabled = getEnabled();
 
-    regionGet(labMasks->getSelected());
+    regionGet(masks_->getSelected());
     pp->textureBoost.regions = data;
 
-    labMasks->getMasks(pp->textureBoost.labmasks, pp->textureBoost.showMask);
-    pp->textureBoost.selectedRegion = labMasks->getSelected();
-    assert(pp->textureBoost.regions.size() == pp->textureBoost.labmasks.size());
+    masks_->getMasks(pp->textureBoost.masks, pp->textureBoost.showMask);
+    pp->textureBoost.selectedRegion = masks_->getSelected();
+    assert(pp->textureBoost.regions.size() == pp->textureBoost.masks.size());
 
-    labMasks->updateSelected();
+    masks_->updateSelected();
 }
 
 void TextureBoost::setDefaults(const ProcParams *defParams)
@@ -250,7 +250,7 @@ void TextureBoost::setDefaults(const ProcParams *defParams)
 void TextureBoost::adjusterChanged(Adjuster* a, double newval)
 {
     if (listener && getEnabled()) {
-        labMasks->setEdited(true);
+        masks_->setEdited(true);
 
         if(a == strength) {
             listener->panelChanged(EvEPDStrength, Glib::ustring::format(std::setw(2), std::fixed, std::setprecision(2), a->getValue()));
@@ -279,14 +279,14 @@ void TextureBoost::enabledChanged ()
     }
 
     if (listener && !getEnabled()) {
-        labMasks->switchOffEditMode();
+        masks_->switchOffEditMode();
     }
 }
 
 
 void TextureBoost::setEditProvider(EditDataProvider *provider)
 {
-    labMasks->setEditProvider(provider);
+    masks_->setEditProvider(provider);
 }
 
 
@@ -296,13 +296,13 @@ void TextureBoost::procParamsChanged(
     const Glib::ustring& descr,
     const ParamsEdited* paramsEdited)
 {
-    labMasks->updateLinkedMaskList(params);
+    masks_->updateLinkedMaskList(params);
 }
 
 
 void TextureBoost::updateGeometry(int fw, int fh)
 {
-    labMasks->updateGeometry(fw, fh);
+    masks_->updateGeometry(fw, fh);
 }
 
 
@@ -339,13 +339,13 @@ void TextureBoost::regionShow(int idx)
 
 void TextureBoost::setAreaDrawListener(AreaDrawListener *l)
 {
-    labMasks->setAreaDrawListener(l);
+    masks_->setAreaDrawListener(l);
 }
 
 
 void TextureBoost::setDeltaEColorProvider(DeltaEColorProvider *p)
 {
-    labMasks->setDeltaEColorProvider(p);
+    masks_->setDeltaEColorProvider(p);
 }
 
 

@@ -896,11 +896,11 @@ bool ImProcFunctions::guidedSmoothing(Imagefloat *rgb)
     PlanarWhateverData<float> *editWhatever = nullptr;
     EditUniqueID eid = pipetteBuffer ? pipetteBuffer->getEditID() : EUID_None;
 
-    if ((eid == EUID_LabMasks_H3 || eid == EUID_LabMasks_C3 || eid == EUID_LabMasks_L3) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
+    if ((eid == EUID_Masks_H3 || eid == EUID_Masks_C3 || eid == EUID_Masks_L3) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
         editWhatever = pipetteBuffer->getSinglePlaneBuffer();
     }
 
-    if (eid == EUID_LabMasks_DE3) {
+    if (eid == EUID_Masks_DE3) {
         if (getDeltaEColor(rgb, deltaE.x, deltaE.y, offset_x, offset_y, full_width, full_height, scale, deltaE.L, deltaE.C, deltaE.H)) {
             deltaE.ok = true;
         }
@@ -908,7 +908,7 @@ bool ImProcFunctions::guidedSmoothing(Imagefloat *rgb)
         
     if (params->smoothing.enabled) {
         if (editWhatever) {
-            MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_LabMasks_H3);
+            MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_Masks_H3);
             fillPipetteMasks(rgb, editWhatever, id, multiThread);
         }
         
@@ -918,7 +918,7 @@ bool ImProcFunctions::guidedSmoothing(Imagefloat *rgb)
             show_mask_idx = -1;
         }
         std::vector<array2D<float>> mask(n);
-        if (!generateMasks(rgb, "smoothing", linked_mask_mgr_, params->smoothing.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, nullptr, &mask, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
+        if (!generateMasks(rgb, "smoothing", linked_mask_mgr_, params->smoothing.masks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, nullptr, &mask, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
             return true; // show mask is active, nothing more to do
         }
 
@@ -933,7 +933,7 @@ bool ImProcFunctions::guidedSmoothing(Imagefloat *rgb)
         TMatrix iws = ICCStore::getInstance()->workingSpaceInverseMatrix(params->icm.workingProfile);
 
         for (int i = 0; i < n; ++i) {
-            if (!params->smoothing.labmasks[i].enabled) {
+            if (!params->smoothing.masks[i].enabled) {
                 continue;
             }
 

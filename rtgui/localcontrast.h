@@ -24,7 +24,7 @@
 #include "toolpanel.h"
 #include "curveeditor.h"
 #include "curveeditorgroup.h"
-#include "labmaskspanel.h"
+#include "maskspanel.h"
 
 class LocalContrast: public ToolParamBlock, public AdjusterListener, public FoldableToolPanel, public CurveListener, public PParamsChangeListener {
 private:
@@ -34,8 +34,8 @@ private:
     std::vector<rtengine::procparams::LocalContrastParams::Region> regionData;
 
     friend class LocalContrastMasksContentProvider;
-    std::unique_ptr<LabMasksContentProvider> labMasksContentProvider;
-    LabMasksPanel *labMasks;
+    std::unique_ptr<MasksContentProvider> masks_content_provider_;
+    MasksPanel *masks_;
 
     Gtk::Box *box;
     Adjuster *contrast;

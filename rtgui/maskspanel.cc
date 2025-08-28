@@ -18,7 +18,7 @@
  *  along with RawTherapee.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "labmaskspanel.h"
+#include "maskspanel.h"
 #include "eventmapper.h"
 #include "../rtengine/iccstore.h"
 
@@ -941,7 +941,7 @@ bool on_release_event_ignore(GdkEventButton *event)
 } // namespace
 
 
-LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
+MasksPanel::MasksPanel(MasksContentProvider *cp):
     Gtk::VBox(),
     cp_(cp),
     masks_(),
@@ -982,9 +982,9 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     list_model_ = Gtk::ListStore::create(*list_model_columns_);
 
     list_enabled_renderer_.property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE;
-    list_enabled_renderer_.signal_toggled().connect(sigc::mem_fun(this, &LabMasksPanel::onListEnabledToggled));
+    list_enabled_renderer_.signal_toggled().connect(sigc::mem_fun(this, &MasksPanel::onListEnabledToggled));
     list_enabled_column_.pack_start(list_enabled_renderer_);
-    list_enabled_column_.set_cell_data_func(list_enabled_renderer_, sigc::mem_fun(this, &LabMasksPanel::setListEnabled));
+    list_enabled_column_.set_cell_data_func(list_enabled_renderer_, sigc::mem_fun(this, &MasksPanel::setListEnabled));
     {
         auto img = Gtk::manage(new RTImage("power-on-small-faded.png"));
         img->show();
@@ -1004,7 +1004,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     list->set_activate_on_single_click(true);
     setTreeViewCssProvider(list);
     
-    selectionConn = list->get_selection()->signal_changed().connect(sigc::mem_fun(this, &LabMasksPanel::onSelectionChanged));
+    selectionConn = list->get_selection()->signal_changed().connect(sigc::mem_fun(this, &MasksPanel::onSelectionChanged));
     Gtk::HBox *hb = Gtk::manage(new Gtk::HBox());
     Gtk::ScrolledWindow *scroll = Gtk::manage(new Gtk::ScrolledWindow());
     scroll->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_NEVER);
@@ -1013,27 +1013,27 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     Gtk::VBox *vb = Gtk::manage(new Gtk::VBox());
     reset = Gtk::manage(new Gtk::Button());
     reset->add(*Gtk::manage(new RTImage("undo-small.png")));
-    reset->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onResetPressed));
+    reset->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onResetPressed));
     add_button(reset, vb);
     add = Gtk::manage(new Gtk::Button());
     add->add(*Gtk::manage(new RTImage("add-small.png")));
-    add->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAddPressed));
+    add->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAddPressed));
     add_button(add, vb);
     remove = Gtk::manage(new Gtk::Button());
     remove->add(*Gtk::manage(new RTImage("remove-small.png")));
-    remove->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onRemovePressed));
+    remove->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onRemovePressed));
     add_button(remove, vb);
     up = Gtk::manage(new Gtk::Button());
     up->add(*Gtk::manage(new RTImage("arrow-up-small.png")));
-    up->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onUpPressed));
+    up->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onUpPressed));
     add_button(up, vb);
     down = Gtk::manage(new Gtk::Button());
     down->add(*Gtk::manage(new RTImage("arrow-down-small.png")));
-    down->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onDownPressed));
+    down->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onDownPressed));
     add_button(down, vb);
     copy = Gtk::manage(new Gtk::Button());
     copy->add(*Gtk::manage(new RTImage("copy-small.png")));
-    copy->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onCopyPressed));
+    copy->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onCopyPressed));
     add_button(copy, vb);
     hb->pack_start(*vb, Gtk::PACK_SHRINK);
     pack_start(*hb, true, true);
@@ -1049,21 +1049,21 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     maskCopy = Gtk::manage(new Gtk::Button());
     maskCopy->add(*Gtk::manage(new RTImage("copy.png")));
     maskCopy->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_COPY_TOOLTIP"));
-    maskCopy->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onMaskCopyPressed));
+    maskCopy->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onMaskCopyPressed));
     add_button(maskCopy, hb, 24, Gtk::PackType::PACK_START, 2);
     
     maskPaste = Gtk::manage(new Gtk::Button());
     maskPaste->add(*Gtk::manage(new RTImage("paste.png")));
     maskPaste->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_PASTE_TOOLTIP"));
-    maskPaste->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onMaskPastePressed));
+    maskPaste->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onMaskPastePressed));
     add_button(maskPaste, hb, 24, Gtk::PackType::PACK_START, 2);
     
     showMask = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_SHOW")));
-    showMask->signal_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onShowMaskChanged));
+    showMask->signal_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onShowMaskChanged));
     hb->pack_start(*showMask);
 
     maskInverted = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_INVERTED")));
-    maskInverted->signal_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onMaskInvertedChanged));
+    maskInverted->signal_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onMaskInvertedChanged));
     hb->pack_start(*maskInverted);
     mask_box->pack_start(*hb);
 
@@ -1076,7 +1076,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     ToolParamBlock *tb = Gtk::manage(new ToolParamBlock());
     parametricMask->add(*tb, false);
     parametricMask->setLevel(1);
-    parametricMask->signal_enabled_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onParametricMaskEnableToggled));
+    parametricMask->signal_enabled_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onParametricMaskEnableToggled));
         
     maskEditorGroup = Gtk::manage(new CurveEditorGroup(options.lastColorToningCurvesDir, "", 0.7));
     maskEditorGroup->setCurveListener(this);
@@ -1179,10 +1179,10 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     deltaEMask->add(*tb, false);
     deltaEMask->setLevel(1);
     mask_box->pack_start(*deltaEMask);
-    deltaEMask->signal_enabled_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onDeltaEMaskEnableToggled));
+    deltaEMask->signal_enabled_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onDeltaEMaskEnableToggled));
     dE_area->setEditID(ede, BT_SINGLEPLANE_FLOAT);
-    dE_area->signal_spot_requested().connect(sigc::mem_fun(*this, &LabMasksPanel::onDeltaESpotRequested));
-    deltaEPick->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onDeltaEPickClicked));
+    dE_area->signal_spot_requested().connect(sigc::mem_fun(*this, &MasksPanel::onDeltaESpotRequested));
+    deltaEPick->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onDeltaEPickClicked));
     deltaEInverted->signal_clicked().connect(
         sigc::slot<void>(
             [&]() -> void
@@ -1195,7 +1195,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     //-------------------------------------------------------------------------
         
     areaMask = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_AREA")));
-    areaMask->signal_enabled_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskEnableToggled));
+    areaMask->signal_enabled_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskEnableToggled));
     ToolParamBlock *area = Gtk::manage(new ToolParamBlock());
     hb = Gtk::manage(new Gtk::HBox());
     areaMaskButtonsHb = hb;
@@ -1203,13 +1203,13 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     areaMaskCopy = Gtk::manage(new Gtk::Button());
     areaMaskCopy->add(*Gtk::manage(new RTImage("copy.png")));
     areaMaskCopy->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_COPY_TOOLTIP"));
-    areaMaskCopy->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskCopyPressed));
+    areaMaskCopy->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskCopyPressed));
     add_button(areaMaskCopy, hb, 24);
     
     areaMaskPaste = Gtk::manage(new Gtk::Button());
     areaMaskPaste->add(*Gtk::manage(new RTImage("paste.png")));
     areaMaskPaste->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_PASTE_TOOLTIP"));
-    areaMaskPaste->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskPastePressed));
+    areaMaskPaste->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskPastePressed));
     add_button(areaMaskPaste, hb, 24);
 
     hb->pack_start(*Gtk::manage(new Gtk::Label("")), Gtk::PACK_EXPAND_WIDGET);
@@ -1217,31 +1217,31 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     areaMaskDrawGradientAdd= new Gtk::Button();
     areaMaskDrawGradientAdd->add(*Gtk::manage(new RTImage("area-shape-gradient-add.png")));
     areaMaskDrawGradientAdd->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_GRADIENT_ADD_TOOLTIP"));
-    areaMaskDrawGradientAdd->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskDrawGradientAddPressed));
+    areaMaskDrawGradientAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskDrawGradientAddPressed));
     add_button(areaMaskDrawGradientAdd, hb, 24);
 
     areaMaskDrawPolygonAdd= new Gtk::Button();
     areaMaskDrawPolygonAdd->add(*Gtk::manage(new RTImage("area-shape-polygon-add.png")));
     areaMaskDrawPolygonAdd->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_POLYGON_ADD_TOOLTIP"));
-    areaMaskDrawPolygonAdd->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskDrawPolygonAddPressed));
+    areaMaskDrawPolygonAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskDrawPolygonAddPressed));
     add_button(areaMaskDrawPolygonAdd, hb, 24);
 
     areaMaskDrawRectangleAdd = new Gtk::Button();
     areaMaskDrawRectangleAdd->add(*Gtk::manage(new RTImage("area-shape-draw-add.png")));
     areaMaskDrawRectangleAdd->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_ADD_TOOLTIP"));
-    areaMaskDrawRectangleAdd->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskDrawRectangleAddPressed));
+    areaMaskDrawRectangleAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskDrawRectangleAddPressed));
     add_button(areaMaskDrawRectangleAdd, hb, 24);
 
     // areaMaskDrawRectangle = new Gtk::ToggleButton();
     // areaMaskDrawRectangle->add(*Gtk::manage(new RTImage("area-shape-draw.png")));
     // areaMaskDrawRectangle->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_TOOLTIP"));
-    // areaMaskDrawConn = areaMaskDrawRectangle->signal_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onRectangleAreaMaskDrawChanged));
+    // areaMaskDrawConn = areaMaskDrawRectangle->signal_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onRectangleAreaMaskDrawChanged));
     // add_button(areaMaskDrawRectangle, hb, 24);
     
     areaMaskToggle = new Gtk::ToggleButton();
     areaMaskToggle->add(*Gtk::manage(new RTImage("crosshair-adjust.png")));
     areaMaskToggle->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_TOGGLE_TOOLTIP"));
-    areaMaskToggle->signal_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaMaskToggleChanged));
+    areaMaskToggle->signal_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskToggleChanged));
     add_button(areaMaskToggle, hb, 24);
     area->pack_start(*hb);
 
@@ -1282,7 +1282,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     areaMaskShapes->set_column_title(0, "#");
     areaMaskShapes->set_column_title(1, M("TP_LABMASKS_AREA_SHAPE"));
     areaMaskShapes->set_activate_on_single_click(true);
-    shapeSelectionConn = areaMaskShapes->get_selection()->signal_changed().connect(sigc::mem_fun(this, &LabMasksPanel::onAreaShapeSelectionChanged));
+    shapeSelectionConn = areaMaskShapes->get_selection()->signal_changed().connect(sigc::mem_fun(this, &MasksPanel::onAreaShapeSelectionChanged));
     hb = Gtk::manage(new Gtk::HBox());
     scroll = Gtk::manage(new Gtk::ScrolledWindow());
     scroll->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_NEVER);
@@ -1291,23 +1291,23 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     vb = Gtk::manage(new Gtk::VBox());
     areaMaskReset = Gtk::manage(new Gtk::Button());
     areaMaskReset->add(*Gtk::manage(new RTImage("undo-small.png")));
-    areaMaskReset->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaShapeResetPressed));
+    areaMaskReset->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaShapeResetPressed));
     add_button(areaMaskReset, vb);
     areaMaskAdd = Gtk::manage(new Gtk::Button());
     areaMaskAdd->add(*Gtk::manage(new RTImage("add-small.png")));
-    areaMaskAdd->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaShapeAddPressed));
+    areaMaskAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaShapeAddPressed));
     add_button(areaMaskAdd, vb);
     areaMaskRemove = Gtk::manage(new Gtk::Button());
     areaMaskRemove->add(*Gtk::manage(new RTImage("remove-small.png")));
-    areaMaskRemove->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onAreaShapeRemovePressed));
+    areaMaskRemove->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaShapeRemovePressed));
     add_button(areaMaskRemove, vb);
     areaMaskUp = Gtk::manage(new Gtk::Button());
     areaMaskUp->add(*Gtk::manage(new RTImage("arrow-up-small.png")));
-    areaMaskUp->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &LabMasksPanel::onAreaShapeUpDownPressed), true));
+    areaMaskUp->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MasksPanel::onAreaShapeUpDownPressed), true));
     add_button(areaMaskUp, vb);
     areaMaskDown = Gtk::manage(new Gtk::Button());
     areaMaskDown->add(*Gtk::manage(new RTImage("arrow-down-small.png")));
-    areaMaskDown->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &LabMasksPanel::onAreaShapeUpDownPressed), false));
+    areaMaskDown->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MasksPanel::onAreaShapeUpDownPressed), false));
     add_button(areaMaskDown, vb);
     hb->pack_start(*vb, Gtk::PACK_SHRINK);
     
@@ -1332,7 +1332,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
         areaMaskMode[i] = Gtk::manage(new Gtk::ToggleButton());
         areaMaskMode[i]->add(*Gtk::manage(new RTImage(img[i])));
         areaMaskMode[i]->set_tooltip_text(M(tips[i]));
-        areaMaskModeConn[i] = areaMaskMode[i]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &LabMasksPanel::onAreaShapeModeChanged), i));
+        areaMaskModeConn[i] = areaMaskMode[i]->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &MasksPanel::onAreaShapeModeChanged), i));
         add_button(areaMaskMode[i], hb, 24, Gtk::PackType::PACK_END);
     }
 
@@ -1374,26 +1374,26 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
     vb->pack_start(*areaFrame);
     areaMask->add(*vb, false);
     areaMask->setLevel(1);
-    vb->signal_unmap().connect(sigc::mem_fun(*this, &LabMasksPanel::on_hide));
+    vb->signal_unmap().connect(sigc::mem_fun(*this, &MasksPanel::on_hide));
     mask_box->pack_start(*areaMask);
 
     drawnMask = Gtk::manage(new DrawnMaskPanel());
     mask_box->pack_start(*drawnMask);
-    static_cast<DrawnMaskPanel *>(drawnMask)->signal_draw_updated().connect(sigc::mem_fun(this, &LabMasksPanel::onDrawnMaskUpdated));
+    static_cast<DrawnMaskPanel *>(drawnMask)->signal_draw_updated().connect(sigc::mem_fun(this, &MasksPanel::onDrawnMaskUpdated));
     
     tb = Gtk::manage(new ToolParamBlock());
     linked_mask_->add(*tb, false);
     linked_mask_->setLevel(1);
-    linked_mask_->signal_enabled_toggled().connect(sigc::mem_fun(*this, &LabMasksPanel::onLinkedMaskChanged));
+    linked_mask_->signal_enabled_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onLinkedMaskChanged));
 
     linked_mask_value_ = Gtk::manage(new MyComboBoxText());
     hb = Gtk::manage(new Gtk::HBox());
     tb->pack_start(*hb, Gtk::PACK_EXPAND_WIDGET, 0);
     hb->pack_start(*linked_mask_value_, Gtk::PACK_EXPAND_WIDGET, 4);
-    linked_mask_value_->signal_changed().connect(sigc::mem_fun(*this, &LabMasksPanel::onLinkedMaskChanged));
+    linked_mask_value_->signal_changed().connect(sigc::mem_fun(*this, &MasksPanel::onLinkedMaskChanged));
     linked_mask_inverted_ = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_INVERTED")));
     hb->pack_start(*linked_mask_inverted_, Gtk::PACK_SHRINK, 4);
-    linked_mask_inverted_->signal_clicked().connect(sigc::mem_fun(*this, &LabMasksPanel::onLinkedMaskChanged));
+    linked_mask_inverted_->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onLinkedMaskChanged));
     
     mask_box->pack_start(*linked_mask_);
     
@@ -1445,7 +1445,7 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
         e->signal_activate().connect(sigc::slot<void>(on_activate));
         e->signal_button_release_event().connect(&on_release_event_ignore);
         e->add_events(Gdk::FOCUS_CHANGE_MASK);
-        e->signal_focus_out_event().connect(sigc::mem_fun(*this, &LabMasksPanel::onMaskNameFocusOut));
+        e->signal_focus_out_event().connect(sigc::mem_fun(*this, &MasksPanel::onMaskNameFocusOut));
         maskName = e;
     }
     mask_exp->add(*mask_box, false);
@@ -1454,13 +1454,13 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
 
     mask_exp_ = mask_exp;
     first_mask_exp_ = true;
-    mask_exp_->signal_button_release_event().connect_notify(sigc::mem_fun(this, &LabMasksPanel::onMaskFold));
+    mask_exp_->signal_button_release_event().connect_notify(sigc::mem_fun(this, &MasksPanel::onMaskFold));
         
     maskBlur->delay = options.adjusterMaxDelay;
 
     mask_expanders_ = { parametricMask, areaMask, deltaEMask, drawnMask, linked_mask_, ppMask };
     for (auto e : mask_expanders_) {
-        e->signal_button_release_event().connect_notify(sigc::bind(sigc::mem_fun(this, &LabMasksPanel::onMaskExpanded), e));
+        e->signal_button_release_event().connect_notify(sigc::bind(sigc::mem_fun(this, &MasksPanel::onMaskExpanded), e));
     }
 
     add_events(Gdk::KEY_PRESS_MASK);
@@ -1497,13 +1497,13 @@ LabMasksPanel::LabMasksPanel(LabMasksContentProvider *cp):
 }
 
 
-LabMasksPanel::~LabMasksPanel()
+MasksPanel::~MasksPanel()
 {
     delete areaMaskToggle;
 }
 
 
-ToolPanelListener *LabMasksPanel::getListener()
+ToolPanelListener *MasksPanel::getListener()
 {
     if (listenerDisabled.empty() || !listenerDisabled.back()) {
         return cp_->listener();
@@ -1512,14 +1512,14 @@ ToolPanelListener *LabMasksPanel::getListener()
 }
 
 
-void LabMasksPanel::disableListener()
+void MasksPanel::disableListener()
 {
     listenerDisabled.push_back(true);
     //static_cast<DrawnMaskPanel *>(drawnMask)->setTargetMask(nullptr);
 }
 
 
-void LabMasksPanel::enableListener()
+void MasksPanel::enableListener()
 {
     listenerDisabled.pop_back();
     // if (listenerDisabled.empty() || !listenerDisabled.back()) {
@@ -1528,7 +1528,7 @@ void LabMasksPanel::enableListener()
 }
 
 
-void LabMasksPanel::onSelectionChanged()
+void MasksPanel::onSelectionChanged()
 {
     auto s = list->get_selection()->get_selected_rows();
     if (!s.empty()) {
@@ -1546,7 +1546,7 @@ void LabMasksPanel::onSelectionChanged()
 }
 
 
-void LabMasksPanel::maskGet(int idx)
+void MasksPanel::maskGet(int idx)
 {
     if (idx < 0 || size_t(idx) >= masks_.size()) {
         return;
@@ -1636,7 +1636,7 @@ void LabMasksPanel::maskGet(int idx)
 }
 
 
-void LabMasksPanel::onAddPressed()
+void MasksPanel::onAddPressed()
 {
     int idx = std::min(size_t(selected_)+1, masks_.size());
     if (!cp_->addPressed(idx)) {
@@ -1659,7 +1659,7 @@ void LabMasksPanel::onAddPressed()
 }
 
 
-void LabMasksPanel::onRemovePressed()
+void MasksPanel::onRemovePressed()
 {
     if (list_model_->children().size() <= 1 || !cp_->removePressed(selected_)) {
         return;
@@ -1679,7 +1679,7 @@ void LabMasksPanel::onRemovePressed()
 }
 
 
-void LabMasksPanel::onUpPressed()
+void MasksPanel::onUpPressed()
 {
     if (selected_ > 0 && cp_->moveUpPressed(selected_)) {
         listEdited = true;
@@ -1698,7 +1698,7 @@ void LabMasksPanel::onUpPressed()
 }
 
 
-void LabMasksPanel::onDownPressed()
+void MasksPanel::onDownPressed()
 {
     if (selected_ < masks_.size()-1 && cp_->moveDownPressed(selected_)) {
         listEdited = true;
@@ -1717,7 +1717,7 @@ void LabMasksPanel::onDownPressed()
 }
 
 
-void LabMasksPanel::onCopyPressed()
+void MasksPanel::onCopyPressed()
 {
     if (selected_ < masks_.size() && cp_->copyPressed(selected_)) {
         listEdited = true;
@@ -1738,7 +1738,7 @@ void LabMasksPanel::onCopyPressed()
 }
 
 
-void LabMasksPanel::onResetPressed()
+void MasksPanel::onResetPressed()
 {
     if (selected_ < masks_.size() && cp_->resetPressed(selected_)) {
         listEdited = true;
@@ -1755,7 +1755,7 @@ void LabMasksPanel::onResetPressed()
 }
 
 
-void LabMasksPanel::onShowMaskChanged()
+void MasksPanel::onShowMaskChanged()
 {
     auto l = getListener();
     if (l) {
@@ -1764,7 +1764,7 @@ void LabMasksPanel::onShowMaskChanged()
 }
 
 
-void LabMasksPanel::populateList()
+void MasksPanel::populateList()
 {
     ConnectionBlocker b(selectionConn);
     list_model_->clear();
@@ -1816,7 +1816,7 @@ void LabMasksPanel::populateList()
 }
 
 
-void LabMasksPanel::maskShow(int idx, bool list_only, bool unsub)
+void MasksPanel::maskShow(int idx, bool list_only, bool unsub)
 {
     disableListener();
     rtengine::procparams::Mask dflt;
@@ -1975,7 +1975,7 @@ void LabMasksPanel::maskShow(int idx, bool list_only, bool unsub)
 }
 
 
-void LabMasksPanel::setEditProvider(EditDataProvider *provider)
+void MasksPanel::setEditProvider(EditDataProvider *provider)
 {
     hueMask->setEditProvider(provider);
     chromaticityMask->setEditProvider(provider);
@@ -1986,7 +1986,7 @@ void LabMasksPanel::setEditProvider(EditDataProvider *provider)
 }
 
 
-void LabMasksPanel::onAreaMaskToggleChanged()
+void MasksPanel::onAreaMaskToggleChanged()
 {
     if (areaMaskToggle->get_active()) {
         // areaMaskDrawRectangle->set_active(false);
@@ -2006,7 +2006,7 @@ void LabMasksPanel::onAreaMaskToggleChanged()
 }
 
 
-void LabMasksPanel::onMaskInvertedChanged()
+void MasksPanel::onMaskInvertedChanged()
 {
     auto l = getListener();
     if (l) {
@@ -2015,7 +2015,7 @@ void LabMasksPanel::onMaskInvertedChanged()
 }
 
 
-void LabMasksPanel::setAdjustersVisibility(bool visible, Shape::Type shape_type)
+void MasksPanel::setAdjustersVisibility(bool visible, Shape::Type shape_type)
 {
     visible &= areaMaskToggle->get_active();
     switch (shape_type) {
@@ -2070,7 +2070,7 @@ void LabMasksPanel::setAdjustersVisibility(bool visible, Shape::Type shape_type)
 }
 
 
-void LabMasksPanel::updateRectangleAreaMask(bool from_mask)
+void MasksPanel::updateRectangleAreaMask(bool from_mask)
 {
     disableListener();
     if (from_mask) {
@@ -2091,7 +2091,7 @@ void LabMasksPanel::updateRectangleAreaMask(bool from_mask)
 }
 
 
-void LabMasksPanel::updateGradientAreaMask(bool from_mask)
+void MasksPanel::updateGradientAreaMask(bool from_mask)
 {
     disableListener();
     if (from_mask) {
@@ -2114,13 +2114,13 @@ void LabMasksPanel::updateGradientAreaMask(bool from_mask)
 }
 
 
-inline const rtengine::ProcEvent &LabMasksPanel::areaMaskEvent() const
+inline const rtengine::ProcEvent &MasksPanel::areaMaskEvent() const
 {
     return areaMask->getEnabled() ? EvAreaMask : EvAreaMaskVoid;
 }
 
 
-bool LabMasksPanel::button1Released()
+bool MasksPanel::button1Released()
 {
     if (last_object_ != -1) {
         if (getGeometryType() == Shape::Type::RECTANGLE) {
@@ -2139,7 +2139,7 @@ bool LabMasksPanel::button1Released()
 }
 
 
-bool LabMasksPanel::pick3(bool picked)
+bool MasksPanel::pick3(bool picked)
 {
     if (AreaMask::pick3(picked)) {
         onAreaShapeSelectionChanged();
@@ -2154,13 +2154,13 @@ bool LabMasksPanel::pick3(bool picked)
 }
 
 
-bool LabMasksPanel::scroll(int modifierKey, GdkScrollDirection direction, double deltaX, double deltaY, bool &propagateEvent)
+bool MasksPanel::scroll(int modifierKey, GdkScrollDirection direction, double deltaX, double deltaY, bool &propagateEvent)
 {
     if (AreaMask::scroll(modifierKey, direction, deltaX, deltaY, propagateEvent)) {
         if (scrollDelayConn.connected()) {
             scrollDelayConn.disconnect();
         }
-        scrollDelayConn = Glib::signal_timeout().connect (sigc::mem_fun(*this, &LabMasksPanel::onKnotRoundnessUpdated), 500);
+        scrollDelayConn = Glib::signal_timeout().connect (sigc::mem_fun(*this, &MasksPanel::onKnotRoundnessUpdated), 500);
         return true;
     }
     EditDataProvider *provider = getEditProvider();
@@ -2193,7 +2193,7 @@ bool LabMasksPanel::scroll(int modifierKey, GdkScrollDirection direction, double
                 if (scrollDelayConn.connected()) {
                     scrollDelayConn.disconnect();
                 }
-                scrollDelayConn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &LabMasksPanel::onKnotRoundnessUpdated), 500);
+                scrollDelayConn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &MasksPanel::onKnotRoundnessUpdated), 500);
             }
             propagateEvent = false;
             return true;
@@ -2203,7 +2203,7 @@ bool LabMasksPanel::scroll(int modifierKey, GdkScrollDirection direction, double
 }
 
 
-bool LabMasksPanel::onKnotRoundnessUpdated()
+bool MasksPanel::onKnotRoundnessUpdated()
 {
     auto l = getListener();
     if (l) {
@@ -2213,7 +2213,7 @@ bool LabMasksPanel::onKnotRoundnessUpdated()
 }
 
 
-void LabMasksPanel::switchOffEditMode()
+void MasksPanel::switchOffEditMode()
 {
     static_cast<DeltaEArea *>(deltaEColor)->switchOffEditMode();
     static_cast<DrawnMaskPanel *>(drawnMask)->switchOffEditMode();
@@ -2224,7 +2224,7 @@ void LabMasksPanel::switchOffEditMode()
 }
 
 
-void LabMasksPanel::onAreaMaskEnableToggled()
+void MasksPanel::onAreaMaskEnableToggled()
 {
     auto l = getListener();
     if (l) {
@@ -2233,7 +2233,7 @@ void LabMasksPanel::onAreaMaskEnableToggled()
 }
 
 
-void LabMasksPanel::curveChanged(CurveEditor* ce)
+void MasksPanel::curveChanged(CurveEditor* ce)
 {
     auto l = getListener();
     if (l) {
@@ -2252,7 +2252,7 @@ void LabMasksPanel::curveChanged(CurveEditor* ce)
 }
 
 
-void LabMasksPanel::adjusterChanged(Adjuster *a, double newval)
+void MasksPanel::adjusterChanged(Adjuster *a, double newval)
 {
     auto l = getListener();
 
@@ -2295,7 +2295,7 @@ void LabMasksPanel::adjusterChanged(Adjuster *a, double newval)
 }
 
 
-void LabMasksPanel::adjusterChanged(ThresholdAdjuster *a, double newBottom, double newTop)
+void MasksPanel::adjusterChanged(ThresholdAdjuster *a, double newBottom, double newTop)
 {
     if (a == deltaEL || a == deltaEC || a == deltaEH) {
         auto l = getListener();
@@ -2315,12 +2315,12 @@ void LabMasksPanel::adjusterChanged(ThresholdAdjuster *a, double newBottom, doub
 }
 
 
-void LabMasksPanel::adjusterAutoToggled(Adjuster *a, bool newval)
+void MasksPanel::adjusterAutoToggled(Adjuster *a, bool newval)
 {
 }
 
 
-void LabMasksPanel::setMasks(const std::vector<rtengine::procparams::Mask> &masks, int selected_idx, bool show_mask)
+void MasksPanel::setMasks(const std::vector<rtengine::procparams::Mask> &masks, int selected_idx, bool show_mask)
 {
     disableListener();
     ConnectionBlocker b(selectionConn);
@@ -2342,7 +2342,7 @@ void LabMasksPanel::setMasks(const std::vector<rtengine::procparams::Mask> &mask
 }
         
 
-void LabMasksPanel::getMasks(std::vector<rtengine::procparams::Mask> &masks, int &show_mask_idx)
+void MasksPanel::getMasks(std::vector<rtengine::procparams::Mask> &masks, int &show_mask_idx)
 {
     maskGet(selected_);
     masks = masks_;
@@ -2354,13 +2354,13 @@ void LabMasksPanel::getMasks(std::vector<rtengine::procparams::Mask> &masks, int
 }
 
 
-int LabMasksPanel::getSelected()
+int MasksPanel::getSelected()
 {
     return selected_;
 }
 
 
-void LabMasksPanel::colorForValue(double valX, double valY, enum ColorCaller::ElemType elemType, int callerId, ColorCaller *caller)
+void MasksPanel::colorForValue(double valX, double valY, enum ColorCaller::ElemType elemType, int callerId, ColorCaller *caller)
 {
     float R = 0.f, G = 0.f, B = 0.f;
     double alpha = 0.f;
@@ -2414,7 +2414,7 @@ void LabMasksPanel::colorForValue(double valX, double valY, enum ColorCaller::El
 }
 
 
-float LabMasksPanel::blendPipetteValues(CurveEditor *ce, float chan1, float chan2, float chan3)
+float MasksPanel::blendPipetteValues(CurveEditor *ce, float chan1, float chan2, float chan3)
 {
     if (ce == chromaticityMask && chan1 > 0.f) {
         return rtengine::lin2log(chan1, 50.f);
@@ -2429,7 +2429,7 @@ float LabMasksPanel::blendPipetteValues(CurveEditor *ce, float chan1, float chan
 }
 
 
-void LabMasksPanel::setEdited(bool yes)
+void MasksPanel::setEdited(bool yes)
 {
     listEdited = yes;
     hueMask->setUnChanged(!yes);
@@ -2446,7 +2446,7 @@ void LabMasksPanel::setEdited(bool yes)
 }
 
 
-bool LabMasksPanel::getEdited()
+bool MasksPanel::getEdited()
 {
     for (auto a : areaMaskAdjusters) {
         if (a->getEditedState() == Edited) {
@@ -2465,13 +2465,13 @@ bool LabMasksPanel::getEdited()
 }
 
 
-void LabMasksPanel::updateSelected()
+void MasksPanel::updateSelected()
 {
     maskShow(selected_, true, false);
 }
 
 
-void LabMasksPanel::onAreaShapeSelectionChanged()
+void MasksPanel::onAreaShapeSelectionChanged()
 {
     if (selected_ < masks_.size() && area_shape_index_ < masks_[selected_].areaMask.shapes.size()) {
         disableListener();
@@ -2526,7 +2526,7 @@ void LabMasksPanel::onAreaShapeSelectionChanged()
 }
 
 
-void LabMasksPanel::onAreaShapeResetPressed()
+void MasksPanel::onAreaShapeResetPressed()
 {
     if (selected_ < masks_.size()) {
         disableListener();
@@ -2558,7 +2558,7 @@ void LabMasksPanel::onAreaShapeResetPressed()
 }
 
 
-void LabMasksPanel::shapeAddPressed(Shape::Type type, bool list_only)
+void MasksPanel::shapeAddPressed(Shape::Type type, bool list_only)
 {
     if (selected_ < masks_.size()) {
         listEdited = true;
@@ -2596,7 +2596,7 @@ void LabMasksPanel::shapeAddPressed(Shape::Type type, bool list_only)
 }
 
 
-void LabMasksPanel::onAreaShapeAddPressed()
+void MasksPanel::onAreaShapeAddPressed()
 {
     // shape type automatically chosen, depending on the currently selected shape
     Shape::Type t = Shape::Type::RECTANGLE;
@@ -2607,7 +2607,7 @@ void LabMasksPanel::onAreaShapeAddPressed()
 }
 
 
-void LabMasksPanel::onAreaShapeRemovePressed()
+void MasksPanel::onAreaShapeRemovePressed()
 {
     if (selected_ < masks_.size() && area_shape_index_ < masks_[selected_].areaMask.shapes.size()) {// && masks_[selected_].areaMask.shapes.size() > 1) {
         listEdited = true;
@@ -2623,7 +2623,7 @@ void LabMasksPanel::onAreaShapeRemovePressed()
 }
 
 
-void LabMasksPanel::onAreaShapeUpDownPressed(bool up)
+void MasksPanel::onAreaShapeUpDownPressed(bool up)
 {
     if (selected_ < masks_.size() && area_shape_index_ < masks_[selected_].areaMask.shapes.size() && (up ? area_shape_index_ > 0 : area_shape_index_ + 1 < masks_[selected_].areaMask.shapes.size()) && masks_[selected_].areaMask.shapes.size() > 1) {
         listEdited = true;
@@ -2641,7 +2641,7 @@ void LabMasksPanel::onAreaShapeUpDownPressed(bool up)
 }
 
 
-void LabMasksPanel::toggleAreaShapeMode(int i)
+void MasksPanel::toggleAreaShapeMode(int i)
 {
     for (int j = 0; j < 3; ++j) {
         ConnectionBlocker blocker(areaMaskModeConn[j]);
@@ -2650,7 +2650,7 @@ void LabMasksPanel::toggleAreaShapeMode(int i)
 }
 
 
-void LabMasksPanel::updateShapeButtonsSensitivity()
+void MasksPanel::updateShapeButtonsSensitivity()
 {
     bool has_shape = false;
     // bool is_rectangle = false;
@@ -2673,7 +2673,7 @@ void LabMasksPanel::updateShapeButtonsSensitivity()
 }
 
 
-int LabMasksPanel::getAreaShapeMode()
+int MasksPanel::getAreaShapeMode()
 {
     for (int j = 0; j < 3; ++j) {
         if (areaMaskMode[j]->get_active()) {
@@ -2684,7 +2684,7 @@ int LabMasksPanel::getAreaShapeMode()
 }
 
 
-void LabMasksPanel::onAreaShapeModeChanged(int i)
+void MasksPanel::onAreaShapeModeChanged(int i)
 {
     if (!areaMaskMode[i]->get_active()) {
         ConnectionBlocker blocker(areaMaskModeConn[i]);
@@ -2702,7 +2702,7 @@ void LabMasksPanel::onAreaShapeModeChanged(int i)
 }
 
 
-void LabMasksPanel::populateShapeList(int idx, int sel)
+void MasksPanel::populateShapeList(int idx, int sel)
 {
     ConnectionBlocker b(shapeSelectionConn);
     areaMaskShapes->clear_items();
@@ -2756,7 +2756,7 @@ void LabMasksPanel::populateShapeList(int idx, int sel)
 }
 
 
-void LabMasksPanel::onAreaMaskCopyPressed()
+void MasksPanel::onAreaMaskCopyPressed()
 {
     if (selected_ < masks_.size()) {
         clipboard.setAreaMask(masks_[selected_].areaMask);
@@ -2764,7 +2764,7 @@ void LabMasksPanel::onAreaMaskCopyPressed()
 }
 
 
-void LabMasksPanel::onAreaMaskPastePressed()
+void MasksPanel::onAreaMaskPastePressed()
 {
     if (selected_ < masks_.size() && clipboard.hasAreaMask()) {
         listEdited = true;
@@ -2828,7 +2828,7 @@ void LabMasksPanel::onAreaMaskPastePressed()
 }
 
 
-void LabMasksPanel::areaShapeSelect(int sel, bool update_list)
+void MasksPanel::areaShapeSelect(int sel, bool update_list)
 {
     area_shape_index_ = sel;
     if (size_t(sel) < masks_[selected_].areaMask.shapes.size()) {
@@ -2899,13 +2899,13 @@ void LabMasksPanel::areaShapeSelect(int sel, bool update_list)
 }
 
 
-void LabMasksPanel::setAreaDrawListener(AreaDrawListener *l)
+void MasksPanel::setAreaDrawListener(AreaDrawListener *l)
 {
     adl_ = l;
 }
 
 
-void LabMasksPanel::updateRectangleArea(AreaDrawUpdater::Phase phase, int x1, int y1, int x2, int y2)
+void MasksPanel::updateRectangleArea(AreaDrawUpdater::Phase phase, int x1, int y1, int x2, int y2)
 {
     EditDataProvider *provider = getEditProvider();
 
@@ -2950,14 +2950,14 @@ void LabMasksPanel::updateRectangleArea(AreaDrawUpdater::Phase phase, int x1, in
 }
 
 
-void LabMasksPanel::cancelUpdateRectangleArea()
+void MasksPanel::cancelUpdateRectangleArea()
 {
     updateRectangleAreaMask(false);
     areaMaskToggle->set_active(true);
 }
 
 
-// void LabMasksPanel::onRectangleAreaMaskDrawChanged()
+// void MasksPanel::onRectangleAreaMaskDrawChanged()
 // {
 //     if (adl_) {
 //         if (areaMaskDrawRectangle->get_active()) {
@@ -2970,7 +2970,7 @@ void LabMasksPanel::cancelUpdateRectangleArea()
 // }
 
 
-void LabMasksPanel::onAreaMaskDrawRectangleAddPressed()
+void MasksPanel::onAreaMaskDrawRectangleAddPressed()
 {
     shapeAddPressed(Shape::Type::RECTANGLE, false);
     // areaMaskDrawRectangle->set_active(true);
@@ -2980,13 +2980,13 @@ void LabMasksPanel::onAreaMaskDrawRectangleAddPressed()
     }
 }
 
-void LabMasksPanel::onAreaMaskDrawPolygonAddPressed()
+void MasksPanel::onAreaMaskDrawPolygonAddPressed()
 {
     shapeAddPressed(Shape::Type::POLYGON, false);
     areaMaskToggle->set_active(true);
 }
 
-void LabMasksPanel::onAreaMaskDrawGradientAddPressed()
+void MasksPanel::onAreaMaskDrawGradientAddPressed()
 {
     shapeAddPressed(Shape::Type::GRADIENT, false);
     areaMaskToggle->set_active(true);
@@ -2994,7 +2994,7 @@ void LabMasksPanel::onAreaMaskDrawGradientAddPressed()
 
 
 
-void LabMasksPanel::on_map()
+void MasksPanel::on_map()
 {
     Gtk::VBox::on_map();
     if (first_mask_exp_) {
@@ -3011,7 +3011,7 @@ void LabMasksPanel::on_map()
 }
 
 
-void LabMasksPanel::onMaskFold(GdkEventButton *evt)
+void MasksPanel::onMaskFold(GdkEventButton *evt)
 {
     if (mask_exp_->get_expanded()) {
         if (showMask->get_active()) {
@@ -3024,7 +3024,7 @@ void LabMasksPanel::onMaskFold(GdkEventButton *evt)
 }
 
 
-void LabMasksPanel::on_hide()
+void MasksPanel::on_hide()
 {
     if (isCurrentSubscriber()) {
         switchOffEditMode();
@@ -3032,7 +3032,7 @@ void LabMasksPanel::on_hide()
 }
 
 
-void LabMasksPanel::onParametricMaskEnableToggled()
+void MasksPanel::onParametricMaskEnableToggled()
 {
     auto l = getListener();
     if (l) {
@@ -3041,7 +3041,7 @@ void LabMasksPanel::onParametricMaskEnableToggled()
 }
 
 
-void LabMasksPanel::onDeltaEMaskEnableToggled()
+void MasksPanel::onDeltaEMaskEnableToggled()
 {
     auto l = getListener();
     if (l) {
@@ -3050,19 +3050,19 @@ void LabMasksPanel::onDeltaEMaskEnableToggled()
 }
 
 
-inline const rtengine::ProcEvent &LabMasksPanel::deltaEMaskEvent() const
+inline const rtengine::ProcEvent &MasksPanel::deltaEMaskEvent() const
 {
     return deltaEMask->getEnabled() ? EvDeltaEMask : EvDeltaEMaskVoid;
 }
 
 
-void LabMasksPanel::onDeltaEPickClicked()
+void MasksPanel::onDeltaEPickClicked()
 {
     static_cast<DeltaEArea *>(deltaEColor)->activateSpot();
 }
 
 
-void LabMasksPanel::onDeltaESpotRequested(rtengine::Coord pos)
+void MasksPanel::onDeltaESpotRequested(rtengine::Coord pos)
 {
     if (deltaE_provider_) {
         deltaEMask->set_sensitive(false);
@@ -3087,13 +3087,13 @@ void LabMasksPanel::onDeltaESpotRequested(rtengine::Coord pos)
 }
 
 
-void LabMasksPanel::setDeltaEColorProvider(DeltaEColorProvider *p)
+void MasksPanel::setDeltaEColorProvider(DeltaEColorProvider *p)
 {
     deltaE_provider_ = p;
 }
 
 
-void LabMasksPanel::onListEnabledToggled(const Glib::ustring &path)
+void MasksPanel::onListEnabledToggled(const Glib::ustring &path)
 {
     auto it = list_model_->get_iter(path);
     if (it) {
@@ -3110,14 +3110,14 @@ void LabMasksPanel::onListEnabledToggled(const Glib::ustring &path)
 }
 
 
-void LabMasksPanel::setListEnabled(Gtk::CellRenderer *renderer, const Gtk::TreeModel::iterator &it)
+void MasksPanel::setListEnabled(Gtk::CellRenderer *renderer, const Gtk::TreeModel::iterator &it)
 {
     auto row = *it;
     static_cast<Gtk::CellRendererToggle *>(renderer)->set_active(row[list_model_columns_->enabled]);
 }
 
 
-void LabMasksPanel::onDrawnMaskUpdated()
+void MasksPanel::onDrawnMaskUpdated()
 {
     auto l = getListener();
     if (l) {
@@ -3126,7 +3126,7 @@ void LabMasksPanel::onDrawnMaskUpdated()
 }
 
 
-bool LabMasksPanel::onMaskNameFocusOut(GdkEventFocus *e)
+bool MasksPanel::onMaskNameFocusOut(GdkEventFocus *e)
 {
     Glib::ustring curname = selected_ < masks_.size() ? masks_[selected_].name : "";
     auto l = getListener();
@@ -3142,7 +3142,7 @@ bool LabMasksPanel::onMaskNameFocusOut(GdkEventFocus *e)
 }
 
 
-void LabMasksPanel::onMaskExpanded(GdkEventButton *evt, MyExpander *exp)
+void MasksPanel::onMaskExpanded(GdkEventButton *evt, MyExpander *exp)
 {
     if (evt->button == 3) {
         exp->set_expanded(true);
@@ -3155,7 +3155,7 @@ void LabMasksPanel::onMaskExpanded(GdkEventButton *evt, MyExpander *exp)
 }
 
 
-void LabMasksPanel::onMaskCopyPressed()
+void MasksPanel::onMaskCopyPressed()
 {
     if (selected_ < masks_.size()) {
         clipboard.setMask(masks_[selected_]);
@@ -3163,7 +3163,7 @@ void LabMasksPanel::onMaskCopyPressed()
 }
 
 
-void LabMasksPanel::onMaskPastePressed()
+void MasksPanel::onMaskPastePressed()
 {
     if (selected_ < masks_.size() && clipboard.hasMask()) {
         auto name = masks_[selected_].name;
@@ -3181,7 +3181,7 @@ void LabMasksPanel::onMaskPastePressed()
 }
 
 
-void LabMasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams *params)
+void MasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams *params)
 {
     static std::unordered_map<std::string, std::string> tools_labels;
     Glib::ustring mytoolname = cp_->getToolName();
@@ -3201,12 +3201,6 @@ void LabMasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams 
                     }
                 }
             };
-        std::vector<std::pair<const std::vector<rtengine::procparams::Mask> *, Glib::ustring>> tools = {
-            { &params->colorcorrection.labmasks, "colorcorrection" },
-            { &params->smoothing.labmasks, "smoothing" },
-            { &params->textureBoost.labmasks, "textureboost" },
-            { &params->localContrast.labmasks, "localcontrast" }
-        };
         auto mp = params->get_maskable();
         for (auto p : mp) {
             add(p->get_masks(), p->get_name(), mytoolname);
@@ -3250,7 +3244,7 @@ void LabMasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams 
 }
 
 
-void LabMasksPanel::onLinkedMaskChanged()
+void MasksPanel::onLinkedMaskChanged()
 {
     auto l = getListener();
     if (l) {

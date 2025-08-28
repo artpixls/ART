@@ -93,7 +93,7 @@ void get_builtin_luts()
 // ColorCorrectionMasksContentProvider
 //-----------------------------------------------------------------------------
 
-class ColorCorrectionMasksContentProvider: public LabMasksContentProvider {
+class ColorCorrectionMasksContentProvider: public MasksContentProvider {
 public:
     ColorCorrectionMasksContentProvider(ColorCorrection *parent):
         parent_(parent)
@@ -245,10 +245,10 @@ public:
 
     void getEditIDs(EditUniqueID &hcurve, EditUniqueID &ccurve, EditUniqueID &lcurve, EditUniqueID &deltaE) override
     {
-        hcurve = EUID_LabMasks_H1;
-        ccurve = EUID_LabMasks_C1;
-        lcurve = EUID_LabMasks_L1;
-        deltaE = EUID_LabMasks_DE1;
+        hcurve = EUID_Masks_H1;
+        ccurve = EUID_Masks_C1;
+        lcurve = EUID_Masks_L1;
+        deltaE = EUID_Masks_DE1;
     }
 
 private:
@@ -750,9 +750,9 @@ ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M
     }
     hsl_gamma->delay = options.adjusterMaxDelay;
 
-    labMasksContentProvider.reset(new ColorCorrectionMasksContentProvider(this));
-    labMasks = Gtk::manage(new LabMasksPanel(labMasksContentProvider.get()));
-    pack_start(*labMasks, Gtk::PACK_EXPAND_WIDGET, 4);
+    masks_content_provider_.reset(new ColorCorrectionMasksContentProvider(this));
+    masks_ = Gtk::manage(new MasksPanel(masks_content_provider_.get()));
+    pack_start(*masks_, Gtk::PACK_EXPAND_WIDGET, 4);
 
     box->pack_start(*box_combined);
     box->pack_start(*box_rgb);
@@ -769,12 +769,12 @@ void ColorCorrection::read(const ProcParams *pp)
 
     setEnabled(pp->colorcorrection.enabled);
     data = pp->colorcorrection.regions;
-    auto m = pp->colorcorrection.labmasks;
+    auto m = pp->colorcorrection.masks;
     if (data.empty()) {
         data.emplace_back(rtengine::procparams::ColorCorrectionParams::Region());
         m.emplace_back(rtengine::procparams::Mask());
     }
-    labMasks->setMasks(m, pp->colorcorrection.selectedRegion, pp->colorcorrection.showMask >= 0 && pp->colorcorrection.showMask == pp->colorcorrection.selectedRegion);
+    masks_->setMasks(m, pp->colorcorrection.selectedRegion, pp->colorcorrection.showMask >= 0 && pp->colorcorrection.showMask == pp->colorcorrection.selectedRegion);
 
     modeChanged();
     enabledChanged();
@@ -787,14 +787,14 @@ void ColorCorrection::write(ProcParams *pp)
 {
     pp->colorcorrection.enabled = getEnabled();
 
-    regionGet(labMasks->getSelected());
+    regionGet(masks_->getSelected());
     pp->colorcorrection.regions = data;
 
-    labMasks->getMasks(pp->colorcorrection.labmasks, pp->colorcorrection.showMask);
-    pp->colorcorrection.selectedRegion = labMasks->getSelected();
-    assert(pp->colorcorrection.regions.size() == pp->colorcorrection.labmasks.size());
+    masks_->getMasks(pp->colorcorrection.masks, pp->colorcorrection.showMask);
+    pp->colorcorrection.selectedRegion = masks_->getSelected();
+    assert(pp->colorcorrection.regions.size() == pp->colorcorrection.masks.size());
 
-    labMasks->updateSelected();
+    masks_->updateSelected();
 }
 
 
@@ -932,14 +932,14 @@ void ColorCorrection::enabledChanged ()
     }
 
     if (listener && !getEnabled()) {
-        labMasks->switchOffEditMode();
+        masks_->switchOffEditMode();
     }
 }
 
 
 void ColorCorrection::setEditProvider(EditDataProvider *provider)
 {
-    labMasks->setEditProvider(provider);
+    masks_->setEditProvider(provider);
     wheel->setEditProvider(provider);
 }
 
@@ -950,13 +950,13 @@ void ColorCorrection::procParamsChanged(
     const Glib::ustring& descr,
     const ParamsEdited* paramsEdited)
 {
-    labMasks->updateLinkedMaskList(params);
+    masks_->updateLinkedMaskList(params);
 }
 
 
 void ColorCorrection::updateGeometry(int fw, int fh)
 {
-    labMasks->updateGeometry(fw, fh);
+    masks_->updateGeometry(fw, fh);
 }
 
 
@@ -1128,7 +1128,7 @@ void ColorCorrection::modeChanged()
     satframe->set_visible(mode->get_active_row_number() < 4);
     hueframe->set_visible(mode->get_active_row_number() != 2 && mode->get_active_row_number() < 4);
     if (listener && getEnabled()) {
-        labMasks->setEdited(true);        
+        masks_->setEdited(true);        
         listener->panelChanged(EvMode, mode->get_active_text());
     }
     auto eid = (row == 1) ? EUID_ColorCorrection_Wheel_Jzazbz : EUID_ColorCorrection_Wheel;
@@ -1150,13 +1150,13 @@ void ColorCorrection::setListener(ToolPanelListener *tpl)
 
 void ColorCorrection::setAreaDrawListener(AreaDrawListener *l)
 {
-    labMasks->setAreaDrawListener(l);
+    masks_->setAreaDrawListener(l);
 }
 
 
 void ColorCorrection::setDeltaEColorProvider(DeltaEColorProvider *p)
 {
-    labMasks->setDeltaEColorProvider(p);
+    masks_->setDeltaEColorProvider(p);
 }
 
 

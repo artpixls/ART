@@ -22,7 +22,7 @@
 #include <gtkmm.h>
 #include "adjuster.h"
 #include "toolpanel.h"
-#include "labmaskspanel.h"
+#include "maskspanel.h"
 
 class Smoothing: public ToolParamBlock, public AdjusterListener, public FoldableToolPanel, public PParamsChangeListener
 {
@@ -99,8 +99,8 @@ private:
     std::vector<rtengine::procparams::SmoothingParams::Region> data;
 
     friend class SmoothingMasksContentProvider;
-    std::unique_ptr<LabMasksContentProvider> labMasksContentProvider;
-    LabMasksPanel *labMasks;
+    std::unique_ptr<MasksContentProvider> masks_content_provider_;
+    MasksPanel *masks_;
 
     MyComboBoxText *channel;
     MyComboBoxText *mode;

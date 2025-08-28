@@ -185,11 +185,11 @@ bool ImProcFunctions::textureBoost(Imagefloat *rgb)
     PlanarWhateverData<float> *editWhatever = nullptr;
     EditUniqueID eid = pipetteBuffer ? pipetteBuffer->getEditID() : EUID_None;
 
-    if ((eid == EUID_LabMasks_H4 || eid == EUID_LabMasks_C4 || eid == EUID_LabMasks_L4) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
+    if ((eid == EUID_Masks_H4 || eid == EUID_Masks_C4 || eid == EUID_Masks_L4) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
         editWhatever = pipetteBuffer->getSinglePlaneBuffer();
     }
     
-    if (eid == EUID_LabMasks_DE4) {
+    if (eid == EUID_Masks_DE4) {
         if (getDeltaEColor(rgb, deltaE.x, deltaE.y, offset_x, offset_y, full_width, full_height, scale, deltaE.L, deltaE.C, deltaE.H)) {
             deltaE.ok = true;
         }
@@ -197,7 +197,7 @@ bool ImProcFunctions::textureBoost(Imagefloat *rgb)
     
     if (params->textureBoost.enabled) {
         if (editWhatever) {
-            MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_LabMasks_H4);
+            MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_Masks_H4);
             fillPipetteMasks(rgb, editWhatever, id, multiThread);
         }
         
@@ -207,7 +207,7 @@ bool ImProcFunctions::textureBoost(Imagefloat *rgb)
             show_mask_idx = -1;
         }
         std::vector<array2D<float>> mask(n);
-        if (!generateMasks(rgb, "textureboost", linked_mask_mgr_, params->textureBoost.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &mask, nullptr, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
+        if (!generateMasks(rgb, "textureboost", linked_mask_mgr_, params->textureBoost.masks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &mask, nullptr, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
             return true; // show mask is active, nothing more to do
         }
 
@@ -219,7 +219,7 @@ bool ImProcFunctions::textureBoost(Imagefloat *rgb)
         array2D<float> Y(W, H, rgb->g.ptrs, ARRAY2D_ALIGNED);
 
         for (int i = 0; i < n; ++i) {
-            if (!params->textureBoost.labmasks[i].enabled) {
+            if (!params->textureBoost.masks[i].enabled) {
                 continue;
             }
             

@@ -51,7 +51,7 @@ public:
         const int nlevels = pipeline == ImProcFunctions::Pipeline::OUTPUT ? 3 : int(std::ceil(3 / scale));
         if (color) {
             params_.smoothing.regions.emplace_back();
-            params_.smoothing.labmasks.emplace_back();
+            params_.smoothing.masks.emplace_back();
             auto &r = params_.smoothing.regions.back();
             r.mode = procparams::SmoothingParams::Region::Mode::NOISE;
             r.channel = procparams::SmoothingParams::Region::Channel::CHROMINANCE;
@@ -60,7 +60,7 @@ public:
         }
         for (int i = 0; i < nlevels; ++i) {
             params_.smoothing.regions.emplace_back();
-            params_.smoothing.labmasks.emplace_back();
+            params_.smoothing.masks.emplace_back();
             auto &r = params_.smoothing.regions.back();
             r.mode = procparams::SmoothingParams::Region::Mode::NOISE;
             r.channel = procparams::SmoothingParams::Region::Channel::LUMINANCE;

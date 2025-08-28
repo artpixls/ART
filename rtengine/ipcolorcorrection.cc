@@ -47,11 +47,11 @@ bool ImProcFunctions::colorCorrection(Imagefloat *rgb)
     const int H = rgb->getHeight();
     const int W = rgb->getWidth();
         
-    if ((eid == EUID_LabMasks_H1 || eid == EUID_LabMasks_C1 || eid == EUID_LabMasks_L1) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
+    if ((eid == EUID_Masks_H1 || eid == EUID_Masks_C1 || eid == EUID_Masks_L1) && pipetteBuffer->getDataProvider()->getCurrSubscriber()->getPipetteBufferType() == BT_SINGLEPLANE_FLOAT) {
         editWhatever = pipetteBuffer->getSinglePlaneBuffer();
     }
 
-    if (eid == EUID_LabMasks_DE1) {
+    if (eid == EUID_Masks_DE1) {
         if (getDeltaEColor(rgb, deltaE.x, deltaE.y, offset_x, offset_y, full_width, full_height, scale, deltaE.L, deltaE.C, deltaE.H)) {
             deltaE.ok = true;
         }
@@ -81,7 +81,7 @@ bool ImProcFunctions::colorCorrection(Imagefloat *rgb)
     }
 
     if (editWhatever) {
-        MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_LabMasks_H1);
+        MasksEditID id = static_cast<MasksEditID>(int(eid) - EUID_Masks_H1);
         fillPipetteMasks(rgb, editWhatever, id, multiThread);
     }
     
@@ -233,7 +233,7 @@ bool ImProcFunctions::colorCorrection(Imagefloat *rgb)
     std::vector<array2D<float>> abmask(n);
     std::vector<array2D<float>> Lmask(n);
 
-    if (!generateMasks(rgb, "colorcorrection", linked_mask_mgr_, params->colorcorrection.labmasks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &Lmask, &abmask, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
+    if (!generateMasks(rgb, "colorcorrection", linked_mask_mgr_, params->colorcorrection.masks, offset_x, offset_y, full_width, full_height, scale, multiThread, show_mask_idx, &Lmask, &abmask, cur_pipeline == Pipeline::NAVIGATOR ? plistener : nullptr)) {
         return true; // show mask is active, nothing more to do
     }
     
@@ -782,7 +782,7 @@ bool ImProcFunctions::colorCorrection(Imagefloat *rgb)
 #endif
         for (int y = 0; y < H; ++y) {
             for (int i = 0; i < n; ++i) {
-                if (!params->colorcorrection.labmasks[i].enabled) {
+                if (!params->colorcorrection.masks[i].enabled) {
                     continue;
                 }
                 if (lut[i]) {

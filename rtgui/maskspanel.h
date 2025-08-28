@@ -33,9 +33,9 @@
 #include <unordered_set>
 
 
-class LabMasksContentProvider {
+class MasksContentProvider {
 public:
-    virtual ~LabMasksContentProvider() {}
+    virtual ~MasksContentProvider() {}
 
     virtual Gtk::Widget *getWidget() = 0;
     virtual void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &linked_mask) = 0;
@@ -96,7 +96,7 @@ public:
 };
 
 
-class LabMasksPanel:
+class MasksPanel:
     public Gtk::VBox,
     public AdjusterListener,
     public CurveListener,
@@ -105,8 +105,8 @@ class LabMasksPanel:
     public AreaDrawUpdater,
     public ThresholdAdjusterListener {
 public:
-    LabMasksPanel(LabMasksContentProvider *cp);
-    ~LabMasksPanel();
+    MasksPanel(MasksContentProvider *cp);
+    ~MasksPanel();
 
     void setMasks(const std::vector<rtengine::procparams::Mask> &masks, int selected_idx, bool show_mask);
     void getMasks(std::vector<rtengine::procparams::Mask> &masks, int &show_mask_idx);
@@ -211,7 +211,7 @@ private:
 
     void onLinkedMaskChanged();
 
-    LabMasksContentProvider *cp_;
+    MasksContentProvider *cp_;
     std::vector<rtengine::procparams::Mask> masks_;
     unsigned int selected_;
 

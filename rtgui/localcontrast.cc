@@ -29,7 +29,7 @@ using namespace rtengine::procparams;
 // LocalContrastMasksContentProvider
 //-----------------------------------------------------------------------------
 
-class LocalContrastMasksContentProvider: public LabMasksContentProvider {
+class LocalContrastMasksContentProvider: public MasksContentProvider {
 public:
     LocalContrastMasksContentProvider(LocalContrast *parent):
         parent_(parent)
@@ -102,7 +102,7 @@ public:
     bool resetPressed(int idx) override
     {
         parent_->regionData[idx] = LocalContrastParams::Region();
-        //parent_->labMasks->setMasks({ Mask() }, -1);
+        //parent_->masks_->setMasks({ Mask() }, -1);
         return true;
     }
     
@@ -157,10 +157,10 @@ public:
 
     void getEditIDs(EditUniqueID &hcurve, EditUniqueID &ccurve, EditUniqueID &lcurve, EditUniqueID &deltaE) override
     {
-        hcurve = EUID_LabMasks_H2;
-        ccurve = EUID_LabMasks_C2;
-        lcurve = EUID_LabMasks_L2;
-        deltaE = EUID_LabMasks_DE2;
+        hcurve = EUID_Masks_H2;
+        ccurve = EUID_Masks_C2;
+        lcurve = EUID_Masks_L2;
+        deltaE = EUID_Masks_DE2;
     }
 
 private:
@@ -216,9 +216,9 @@ LocalContrast::LocalContrast(): FoldableToolPanel(this, "localcontrast", M("TP_L
     box->pack_start(*cg);
     box->pack_start(*contrast);
 
-    labMasksContentProvider.reset(new LocalContrastMasksContentProvider(this));
-    labMasks = Gtk::manage(new LabMasksPanel(labMasksContentProvider.get()));
-    pack_start(*labMasks, Gtk::PACK_EXPAND_WIDGET, 4);   
+    masks_content_provider_.reset(new LocalContrastMasksContentProvider(this));
+    masks_ = Gtk::manage(new MasksPanel(masks_content_provider_.get()));
+    pack_start(*masks_, Gtk::PACK_EXPAND_WIDGET, 4);   
 }
 
 
@@ -229,12 +229,12 @@ void LocalContrast::read(const ProcParams *pp)
     setEnabled(pp->localContrast.enabled);
     regionData = pp->localContrast.regions;
 
-    auto m = pp->localContrast.labmasks;
+    auto m = pp->localContrast.masks;
     if (regionData.empty()) {
         regionData.emplace_back(rtengine::procparams::LocalContrastParams::Region());
         m.emplace_back(rtengine::procparams::Mask());
     }
-    labMasks->setMasks(m, pp->localContrast.selectedRegion, pp->localContrast.showMask >= 0 && pp->localContrast.showMask == pp->localContrast.selectedRegion);
+    masks_->setMasks(m, pp->localContrast.selectedRegion, pp->localContrast.showMask >= 0 && pp->localContrast.showMask == pp->localContrast.selectedRegion);
 
     enableListener();
 }
@@ -243,12 +243,12 @@ void LocalContrast::read(const ProcParams *pp)
 void LocalContrast::write(ProcParams *pp)
 {
     pp->localContrast.enabled = getEnabled();
-    regionGet(labMasks->getSelected());
+    regionGet(masks_->getSelected());
     pp->localContrast.regions = regionData;
-    labMasks->getMasks(pp->localContrast.labmasks, pp->localContrast.showMask);
-    pp->localContrast.selectedRegion = labMasks->getSelected();
-    assert(pp->localContrast.regions.size() == pp->localContrast.labmasks.size());
-    labMasks->updateSelected();
+    masks_->getMasks(pp->localContrast.masks, pp->localContrast.showMask);
+    pp->localContrast.selectedRegion = masks_->getSelected();
+    assert(pp->localContrast.regions.size() == pp->localContrast.masks.size());
+    masks_->updateSelected();
 }
 
 void LocalContrast::setDefaults(const ProcParams *defParams)
@@ -285,7 +285,7 @@ void LocalContrast::enabledChanged ()
     }
 
     if (listener && !getEnabled()) {
-        labMasks->switchOffEditMode();
+        masks_->switchOffEditMode();
     }
 }
 
@@ -306,7 +306,7 @@ void LocalContrast::autoOpenCurve()
 
 void LocalContrast::setEditProvider(EditDataProvider *provider)
 {
-    labMasks->setEditProvider(provider);
+    masks_->setEditProvider(provider);
 }
 
 
@@ -316,13 +316,13 @@ void LocalContrast::procParamsChanged(
     const Glib::ustring& descr,
     const ParamsEdited* paramsEdited)
 {
-    labMasks->updateLinkedMaskList(params);
+    masks_->updateLinkedMaskList(params);
 }
 
 
 void LocalContrast::updateGeometry(int fw, int fh)
 {
-    labMasks->updateGeometry(fw, fh);
+    masks_->updateGeometry(fw, fh);
 }
 
 
@@ -357,13 +357,13 @@ void LocalContrast::regionShow(int idx)
 
 void LocalContrast::setAreaDrawListener(AreaDrawListener *l)
 {
-    labMasks->setAreaDrawListener(l);
+    masks_->setAreaDrawListener(l);
 }
 
 
 void LocalContrast::setDeltaEColorProvider(DeltaEColorProvider *p)
 {
-    labMasks->setDeltaEColorProvider(p);
+    masks_->setDeltaEColorProvider(p);
 }
 
 

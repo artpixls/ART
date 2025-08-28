@@ -32,7 +32,7 @@
 #include "cursormanager.h"
 #include "edit.h"
 #include "toolenum.h"
-#include "labmaskspanel.h"
+#include "maskspanel.h"
 
 class CropWindow;
 

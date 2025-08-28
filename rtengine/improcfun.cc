@@ -648,13 +648,13 @@ int ImProcFunctions::setDeltaEData(EditUniqueID id, double x, double y)
     deltaE.H = 0;
 
     switch (id) {
-    case EUID_LabMasks_DE1:
+    case EUID_Masks_DE1:
         return LUMINANCECURVE | M_LUMACURVE;
-    case EUID_LabMasks_DE2:
+    case EUID_Masks_DE2:
         return DISPLAY;
-    case EUID_LabMasks_DE3:
+    case EUID_Masks_DE3:
         return LUMINANCECURVE | M_LUMACURVE;
-    case EUID_LabMasks_DE4:
+    case EUID_Masks_DE4:
         return DISPLAY;
     default:
         return 0;

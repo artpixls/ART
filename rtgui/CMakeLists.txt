@@ -152,7 +152,7 @@ set(NONCLISOURCEFILES
     dehaze.cc
     logencoding.cc
     areamask.cc
-    labmaskspanel.cc
+    maskspanel.cc
     grain.cc
     smoothing.cc
     colorcorrection.cc
