@@ -45,21 +45,21 @@ public:
         return parent_->box;
     }
 
-    void getEvents(rtengine::ProcEvent &mask_list, rtengine::ProcEvent &parametric_mask, rtengine::ProcEvent &h_mask, rtengine::ProcEvent &c_mask, rtengine::ProcEvent &l_mask, rtengine::ProcEvent &blur, rtengine::ProcEvent &show, rtengine::ProcEvent &area_mask, rtengine::ProcEvent &deltaE_mask, rtengine::ProcEvent &contrastThreshold_mask, rtengine::ProcEvent &drawn_mask, rtengine::ProcEvent &mask_postprocess, rtengine::ProcEvent &linked_mask) override
+    void getEvents(Events &events) override
     {
-        mask_list = parent_->EvList;
-        parametric_mask = parent_->EvParametricMask;
-        h_mask = parent_->EvHueMask;
-        c_mask = parent_->EvChromaticityMask;
-        l_mask = parent_->EvLightnessMask;
-        blur = parent_->EvMaskBlur;
-        show = parent_->EvShowMask;
-        area_mask = parent_->EvAreaMask;
-        deltaE_mask = parent_->EvDeltaEMask;
-        contrastThreshold_mask = parent_->EvContrastThresholdMask;
-        drawn_mask = parent_->EvDrawnMask;
-        mask_postprocess = parent_->EvMaskPostprocess;
-        linked_mask = parent_->EvLinkedMask;
+        events.mask_list = parent_->EvList;
+        events.parametric_mask = parent_->EvParametricMask;
+        events.h_mask = parent_->EvHueMask;
+        events.c_mask = parent_->EvChromaticityMask;
+        events.l_mask = parent_->EvLightnessMask;
+        events.blur = parent_->EvMaskBlur;
+        events.show = parent_->EvShowMask;
+        events.area_mask = parent_->EvAreaMask;
+        events.deltaE_mask = parent_->EvDeltaEMask;
+        events.contrastThreshold_mask = parent_->EvContrastThresholdMask;
+        events.drawn_mask = parent_->EvDrawnMask;
+        events.mask_postprocess = parent_->EvMaskPostprocess;
+        events.linked_mask = parent_->EvLinkedMask;
     }
 
     ToolPanelListener *listener() override

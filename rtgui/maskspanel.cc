@@ -952,7 +952,21 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     deltaE_provider_(nullptr)
 {
     Gtk::Widget *child = cp_->getWidget();
-    cp_->getEvents(EvMaskList, EvParametricMask, EvHMask, EvCMask, EvLMask, EvMaskBlur, EvShowMask, EvAreaMask, EvDeltaEMask, EvContrastThresholdMask, EvDrawnMask, EvMaskPostprocess, EvLinkedMask);
+    MasksContentProvider::Events events;
+    cp_->getEvents(events);
+    EvMaskList = events.mask_list;
+    EvParametricMask = events.parametric_mask;
+    EvHMask = events.h_mask;
+    EvCMask = events.c_mask;
+    EvLMask = events.l_mask;
+    EvMaskBlur = events.blur;
+    EvShowMask = events.show;
+    EvAreaMask = events.area_mask;
+    EvDeltaEMask = events.deltaE_mask;
+    EvContrastThresholdMask = events.contrastThreshold_mask;
+    EvDrawnMask = events.drawn_mask;
+    EvMaskPostprocess = events.mask_postprocess;
+    EvLinkedMask = events.linked_mask;
     EvAreaMaskVoid = ProcEventMapper::getInstance()->newEvent(M_VOID, EvAreaMask.get_message());
     EvDeltaEMaskVoid = ProcEventMapper::getInstance()->newEvent(M_VOID, EvDeltaEMask.get_message());
     EvMaskName = ProcEventMapper::getInstance()->newEvent(M_VOID, "HISTORY_MSG_LABMASKS_MASK_NAME");
