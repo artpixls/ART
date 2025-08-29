@@ -26,8 +26,8 @@ using namespace rtengine::procparams;
 
 PreProcess::PreProcess () : FoldableToolPanel(this, "preprocess", M("TP_PREPROCESS_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
 
     Gtk::HBox* hotdeadPixel = Gtk::manage( new Gtk::HBox () );
     hotdeadPixel->set_spacing(4);

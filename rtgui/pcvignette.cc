@@ -13,8 +13,8 @@ PCVignette::PCVignette():
     lastObject(-1)    
 {
     auto m = ProcEventMapper::getInstance();
-    EvCenter = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_PCVIGNETTE_CENTER");
-    EvToolReset.set_action(LUMINANCECURVE);
+    EvCenter = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_PCVIGNETTE_CENTER");
+    EvToolReset.set_action(rtengine::LUMINANCECURVE);
 
     Gtk::HBox *hb = Gtk::manage(new Gtk::HBox());
     edit = Gtk::manage (new Gtk::ToggleButton());

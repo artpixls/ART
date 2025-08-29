@@ -28,8 +28,8 @@ using namespace rtengine::procparams;
 FattalToneMapping::FattalToneMapping(): FoldableToolPanel(this, "fattal", M("TP_TM_FATTAL_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvSatControl = m->newEvent(HDR, "HISTORY_MSG_TM_FATTAL_SATCONTROL");
-    EvToolReset.set_action(HDR);
+    EvSatControl = m->newEvent(rtengine::HDR, "HISTORY_MSG_TM_FATTAL_SATCONTROL");
+    EvToolReset.set_action(rtengine::HDR);
 
     amount = Gtk::manage(new Adjuster(M("TP_TM_FATTAL_AMOUNT"), 1., 100., 1., 20.));
     threshold = Gtk::manage(new Adjuster(M("TP_TM_FATTAL_THRESHOLD"), -100., 300., 1., 30.0));

@@ -232,7 +232,7 @@ const int mode2idx[] = {
 Smoothing::Smoothing(): FoldableToolPanel(this, "smoothing", M("TP_SMOOTHING_LABEL"), true, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    auto EVENT = LUMINANCECURVE | M_LUMACURVE;
+    auto EVENT = rtengine::LUMINANCECURVE | rtengine::M_LUMACURVE;
     EvEnabled = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_ENABLED");
     EvChannel = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_CHANNEL");
     EvRadius = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_RADIUS");

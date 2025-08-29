@@ -117,11 +117,11 @@ Spot::Spot() :
     rect->datum = Geometry::IMAGE;
 
     auto m = ProcEventMapper::getInstance();
-    EvSpotEnabled = m->newEvent(ALLNORAW, "TP_SPOT_LABEL");
-    EvSpotEnabledOPA = m->newAnonEvent(SPOTADJUST);
-    EvSpotEntry = m->newEvent(SPOTADJUST, "HISTORY_MSG_SPOT_ENTRY");
-    EvSpotEntryOPA = m->newEvent(SPOTADJUST, "HISTORY_MSG_SPOT_ENTRY");
-    EvToolReset.set_action(SPOTADJUST);
+    EvSpotEnabled = m->newEvent(rtengine::ALLNORAW, "TP_SPOT_LABEL");
+    EvSpotEnabledOPA = m->newAnonEvent(rtengine::SPOTADJUST);
+    EvSpotEntry = m->newEvent(rtengine::SPOTADJUST, "HISTORY_MSG_SPOT_ENTRY");
+    EvSpotEntryOPA = m->newEvent(rtengine::SPOTADJUST, "HISTORY_MSG_SPOT_ENTRY");
+    EvToolReset.set_action(rtengine::SPOTADJUST);
 
     spot_frame = Gtk::manage(new Gtk::Frame(M("TP_SPOT_CUR_SPOT_LABEL")));
     Gtk::VBox *vb = Gtk::manage(new Gtk::VBox());

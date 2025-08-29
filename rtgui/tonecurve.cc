@@ -66,16 +66,16 @@ ToneCurve::ToneCurve():
     FoldableToolPanel(this, "tonecurve", M("TP_TONECURVE_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvHistMatching = m->newEvent(AUTOEXP, "HISTORY_MSG_HISTMATCHING");
-    EvHistMatchingBatch = m->newEvent(M_VOID, "HISTORY_MSG_HISTMATCHING");
-    EvSatCurve = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_TONECURVE_SATCURVE");
-    EvPerceptualStrength = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_TONECURVE_PERCEPTUAL_STRENGTH");
-    EvContrastLegacy = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_TONECURVE_CONTRAST_LEGACY");
-    EvWhitePoint = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_TONECURVE_WHITEPOINT");
-    EvMode = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_TONECURVE_MODE");
-    EvBaseCurve = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_TONECURVE_BASECURVE");
-    EvToolEnabled.set_action(AUTOEXP);
-    EvToolReset.set_action(AUTOEXP);
+    EvHistMatching = m->newEvent(rtengine::AUTOEXP, "HISTORY_MSG_HISTMATCHING");
+    EvHistMatchingBatch = m->newEvent(rtengine::M_VOID, "HISTORY_MSG_HISTMATCHING");
+    EvSatCurve = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_TONECURVE_SATCURVE");
+    EvPerceptualStrength = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_TONECURVE_PERCEPTUAL_STRENGTH");
+    EvContrastLegacy = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_TONECURVE_CONTRAST_LEGACY");
+    EvWhitePoint = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_TONECURVE_WHITEPOINT");
+    EvMode = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_TONECURVE_MODE");
+    EvBaseCurve = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_TONECURVE_BASECURVE");
+    EvToolEnabled.set_action(rtengine::AUTOEXP);
+    EvToolReset.set_action(rtengine::AUTOEXP);
 
     basecurve_ = Gtk::manage(new MyComboBoxText());
     basecurve_->append(M("TP_TONECURVE_BASECURVE_LINEAR"));

@@ -26,8 +26,8 @@ using namespace rtengine::procparams;
 PrSharpening::PrSharpening () : FoldableToolPanel(this, "prsharpening", M("TP_PRSHARPENING_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvPrShrContrast = m->newEvent(M_LUMINANCE, "HISTORY_MSG_PRSHARPEN_CONTRAST");
-    EvToolReset.set_action(M_LUMINANCE);
+    EvPrShrContrast = m->newEvent(rtengine::M_LUMINANCE, "HISTORY_MSG_PRSHARPEN_CONTRAST");
+    EvToolReset.set_action(rtengine::M_LUMINANCE);
 
     std::vector<GradientMilestone> milestones;
     milestones.push_back( GradientMilestone(0.0, 0.0, 0.0, 0.0) );

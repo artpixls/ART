@@ -25,7 +25,7 @@ using namespace rtengine::procparams;
 
 RGBCurves::RGBCurves () : FoldableToolPanel(this, "rgbcurves", M("TP_RGBCURVES_LABEL"), false, true, true)
 {
-    EvToolReset.set_action(RGBCURVE);
+    EvToolReset.set_action(rtengine::RGBCURVE);
     
     std::vector<GradientMilestone> milestones;
 

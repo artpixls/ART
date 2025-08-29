@@ -30,8 +30,8 @@ DarkFrame::DarkFrame () :
     FoldableToolPanel(this, "darkframe", M("TP_DARKFRAME_LABEL"), false, true, true),
     dfChanged(false), lastDFauto(false), dfp(nullptr), israw(true)
 {
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
     
     hbdf = Gtk::manage(new Gtk::HBox());
     hbdf->set_spacing(4);

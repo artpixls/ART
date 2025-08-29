@@ -24,8 +24,8 @@ using namespace rtengine::procparams;
 
 Vignetting::Vignetting () : FoldableToolPanel(this, "vignetting", M("TP_VIGNETTING_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(TRANSFORM);
-    EvToolReset.set_action(TRANSFORM);
+    EvToolEnabled.set_action(rtengine::TRANSFORM);
+    EvToolReset.set_action(rtengine::TRANSFORM);
 
     amount = Gtk::manage (new Adjuster (M("TP_VIGNETTING_AMOUNT"), -100, 100, 1, 0));
     amount->setAdjusterListener (this);

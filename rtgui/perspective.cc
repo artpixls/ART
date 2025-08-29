@@ -104,13 +104,13 @@ public:
 
 PerspCorrection::PerspCorrection() : FoldableToolPanel(this, "perspective", M("TP_PERSPECTIVE_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(TRANSFORM);
-    EvToolReset.set_action(TRANSFORM);
+    EvToolEnabled.set_action(rtengine::TRANSFORM);
+    EvToolReset.set_action(rtengine::TRANSFORM);
     
     auto m = ProcEventMapper::getInstance();
-    EvPerspCorrLens = m->newEvent(TRANSFORM, "HISTORY_MSG_PERSPECTIVE_LENS");
-    EvPerspControlLines = m->newEvent(M_VOID, "HISTORY_MSG_PERSPECTIVE_CTRL_LINE");
-    EvPerspRender = m->newAnonEvent(TRANSFORM);
+    EvPerspCorrLens = m->newEvent(rtengine::TRANSFORM, "HISTORY_MSG_PERSPECTIVE_LENS");
+    EvPerspControlLines = m->newEvent(rtengine::M_VOID, "HISTORY_MSG_PERSPECTIVE_CTRL_LINE");
+    EvPerspRender = m->newAnonEvent(rtengine::TRANSFORM);
     
     lgl = nullptr;
     panel_listener = nullptr;

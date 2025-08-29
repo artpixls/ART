@@ -26,8 +26,8 @@ using namespace rtengine::procparams;
 
 CACorrection::CACorrection () : FoldableToolPanel(this, "cacorrection", M("TP_CACORRECTION_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(TRANSFORM);
-    EvToolReset.set_action(TRANSFORM);
+    EvToolEnabled.set_action(rtengine::TRANSFORM);
+    EvToolReset.set_action(rtengine::TRANSFORM);
 
     Gtk::Image* icaredL =   Gtk::manage (new RTImage ("circle-red-cyan-small.png"));
     Gtk::Image* icaredR =   Gtk::manage (new RTImage ("circle-cyan-red-small.png"));

@@ -29,7 +29,7 @@ using namespace rtengine::procparams;
 LabCurve::LabCurve():
     FoldableToolPanel(this, "labcurves", M("TP_LABCURVE_LABEL"), false, true, true)
 {
-    EvToolReset.set_action(LUMINANCECURVE);
+    EvToolReset.set_action(rtengine::LUMINANCECURVE);
     
     std::vector<GradientMilestone> milestones;
 

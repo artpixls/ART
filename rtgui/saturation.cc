@@ -31,9 +31,9 @@ Saturation::Saturation():
     FoldableToolPanel(this, "saturation", M("TP_SATURATION_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvVibrance = m->newEvent(LUMINANCECURVE, "HISTORY_MSG_SATURATION_VIBRANCE");
-    EvToolEnabled.set_action(LUMINANCECURVE);
-    EvToolReset.set_action(LUMINANCECURVE);
+    EvVibrance = m->newEvent(rtengine::LUMINANCECURVE, "HISTORY_MSG_SATURATION_VIBRANCE");
+    EvToolEnabled.set_action(rtengine::LUMINANCECURVE);
+    EvToolReset.set_action(rtengine::LUMINANCECURVE);
     // autolevels = nullptr;
     
     saturation = Gtk::manage (new Adjuster (M("TP_SATURATION_SATURATION"), -100, 100, 1, 0));

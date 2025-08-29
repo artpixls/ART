@@ -87,7 +87,7 @@ Crop::Crop():
     lastFixRatio(true),
     selecting_(false)
 {
-    EvToolReset.set_action(CROP);
+    EvToolReset.set_action(rtengine::CROP);
 
     clistener = nullptr;
 

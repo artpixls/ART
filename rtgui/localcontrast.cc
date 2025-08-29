@@ -175,7 +175,7 @@ private:
 LocalContrast::LocalContrast(): FoldableToolPanel(this, "localcontrast", M("TP_LOCALCONTRAST_LABEL"), true, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    auto EVENT = DISPLAY;
+    auto EVENT = rtengine::DISPLAY;
     EvLocalContrastEnabled = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_ENABLED");
     EvLocalContrastContrast = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_CONTRAST");
     EvLocalContrastCurve = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_CURVE");

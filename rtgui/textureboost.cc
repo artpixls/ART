@@ -161,7 +161,7 @@ private:
 TextureBoost::TextureBoost(): FoldableToolPanel(this, "epd", M("TP_EPD_LABEL"), true, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    auto EVENT = LUMINANCECURVE;
+    auto EVENT = rtengine::LUMINANCECURVE;
     EvIterations = m->newEvent(EVENT, "HISTORY_MSG_EPD_ITERATIONS");
     EvDetailThreshold = m->newEvent(EVENT, "HISTORY_MSG_EPD_DETAIL_THRESHOLD");
     EvList = m->newEvent(EVENT, "HISTORY_MSG_EPD_LIST");

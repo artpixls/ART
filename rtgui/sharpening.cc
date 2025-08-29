@@ -26,14 +26,14 @@ using namespace rtengine::procparams;
 Sharpening::Sharpening() : FoldableToolPanel(this, "sharpening", M("TP_SHARPENING_LABEL"), true, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvSharpenContrast = m->newEvent(SHARPENING, "HISTORY_MSG_SHARPENING_CONTRAST");
-    EvAutoRadiusOn = m->newEvent(SHARPENING | M_AUTOEXP, "HISTORY_MSG_SHARPENING_AUTORADIUS");
-    EvAutoRadiusOff = m->newEvent(M_VOID, "HISTORY_MSG_SHARPENING_AUTORADIUS");
-    EvDeconvCornerBoost = m->newEvent(SHARPENING, "HISTORY_MSG_SHARPENING_RLD_CORNERRADIUS");
-    EvDeconvCornerLatitude = m->newEvent(SHARPENING, "HISTORY_MSG_SHARPENING_RLD_CORNERLATITUDE");
-    EvPSFKernel = m->newEvent(SHARPENING, "HISTORY_MSG_SHARPENING_PSF_KERNEL");
-    EvPSFIterations = m->newEvent(SHARPENING, "HISTORY_MSG_SHARPENING_PSF_ITERATIONS");
-    EvToolReset.set_action(SHARPENING);
+    EvSharpenContrast = m->newEvent(rtengine::SHARPENING, "HISTORY_MSG_SHARPENING_CONTRAST");
+    EvAutoRadiusOn = m->newEvent(rtengine::SHARPENING | rtengine::M_AUTOEXP, "HISTORY_MSG_SHARPENING_AUTORADIUS");
+    EvAutoRadiusOff = m->newEvent(rtengine::M_VOID, "HISTORY_MSG_SHARPENING_AUTORADIUS");
+    EvDeconvCornerBoost = m->newEvent(rtengine::SHARPENING, "HISTORY_MSG_SHARPENING_RLD_CORNERRADIUS");
+    EvDeconvCornerLatitude = m->newEvent(rtengine::SHARPENING, "HISTORY_MSG_SHARPENING_RLD_CORNERLATITUDE");
+    EvPSFKernel = m->newEvent(rtengine::SHARPENING, "HISTORY_MSG_SHARPENING_PSF_KERNEL");
+    EvPSFIterations = m->newEvent(rtengine::SHARPENING, "HISTORY_MSG_SHARPENING_PSF_ITERATIONS");
+    EvToolReset.set_action(rtengine::SHARPENING);
 
     Gtk::HBox* hb = Gtk::manage (new Gtk::HBox ());
     hb->show ();

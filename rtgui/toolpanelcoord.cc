@@ -620,7 +620,7 @@ void ToolPanelCoordinator::profileChange(
 
     // start the IPC processing
     if (filterRawRefresh) {
-        ipc->endUpdateParams ( rtengine::RefreshMapper::getInstance()->getAction(event) & ALLNORAW );
+        ipc->endUpdateParams ( rtengine::RefreshMapper::getInstance()->getAction(event) & rtengine::ALLNORAW );
     } else {
         ipc->endUpdateParams (event);
     }

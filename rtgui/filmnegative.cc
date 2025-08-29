@@ -217,11 +217,11 @@ FilmNegative::FilmNegative() :
     FoldableToolPanel(this, "filmnegative", M("TP_FILMNEGATIVE_LABEL"), false, true, true),
     EditSubscriber(ET_OBJECTS),
     NEUTRAL_TEMP(rtengine::ColorTemp(1., 1., 1., 1.)),
-    evFilmNegativeExponents(ProcEventMapper::getInstance()->newEvent(ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_VALUES")),
-    evFilmNegativeEnabled(ProcEventMapper::getInstance()->newEvent(ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_ENABLED")),
-    evFilmNegativeRefSpot(ProcEventMapper::getInstance()->newEvent(ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_REF_SPOT")),
-    evFilmNegativeBalance(ProcEventMapper::getInstance()->newEvent(ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_BALANCE")),
-    evFilmNegativeColorSpace(ProcEventMapper::getInstance()->newEvent(ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_COLORSPACE")),
+    evFilmNegativeExponents(ProcEventMapper::getInstance()->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_VALUES")),
+    evFilmNegativeEnabled(ProcEventMapper::getInstance()->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_ENABLED")),
+    evFilmNegativeRefSpot(ProcEventMapper::getInstance()->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_REF_SPOT")),
+    evFilmNegativeBalance(ProcEventMapper::getInstance()->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_BALANCE")),
+    evFilmNegativeColorSpace(ProcEventMapper::getInstance()->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_FILMNEGATIVE_COLORSPACE")),
     refInputValues({0.f, 0.f, 0.f}),
     paramsUpgraded(false),
     refLuminance({{0.f, 0.f, 0.f}, 0.f}),
@@ -237,7 +237,7 @@ FilmNegative::FilmNegative() :
     greenBalance(createBalanceAdjuster(this, M("TP_FILMNEGATIVE_GREENBALANCE"), -3.0, 3.0, 0.0, "circle-magenta-small.png", "circle-green-small.png")),  // green balance
     blueBalance(createBalanceAdjuster(this, M("TP_FILMNEGATIVE_BLUEBALANCE"), -3.0, 3.0, 0.0, "circle-blue-small.png", "circle-yellow-small.png"))  // blue balance
 {
-    EvToolReset.set_action(ALLNORAW);
+    EvToolReset.set_action(rtengine::ALLNORAW);
         
     setExpandAlignProperties(spotButton, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
     spotButton->get_style_context()->add_class("independent");

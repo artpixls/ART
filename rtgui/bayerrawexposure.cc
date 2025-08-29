@@ -25,8 +25,8 @@ using namespace rtengine::procparams;
 
 BayerRAWExposure::BayerRAWExposure () : FoldableToolPanel(this, "bayerrawexposure", M("TP_EXPOS_BLACKPOINT_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
     
     PexBlack1 = Gtk::manage(new Adjuster (M("TP_RAWEXPOS_BLACK_1"), -2048, 2048, 1, 0)); //black level
     PexBlack1->setAdjusterListener (this);

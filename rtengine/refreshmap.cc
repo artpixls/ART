@@ -20,13 +20,10 @@
 #include "procevents.h"
 
 
-
-
-
-
+namespace rtengine {
 
 // Aligned so the first entry starts on line 30.
-int refreshmap[rtengine::NUMOFEVENTS] = {
+int refreshmap[NUMOFEVENTS] = {
     ALL,              // EvPhotoLoaded,
     ALL,              // EvProfileLoaded,
     ALL,              // EvProfileChanged,
@@ -522,8 +519,6 @@ int refreshmap[rtengine::NUMOFEVENTS] = {
     LUMINANCECURVE    // EvLEnabled
 };
 
-
-namespace rtengine {
 
 RefreshMapper::RefreshMapper():
     next_event_(rtengine::NUMOFEVENTS)

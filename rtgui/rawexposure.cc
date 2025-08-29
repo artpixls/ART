@@ -26,8 +26,8 @@ using namespace rtengine::procparams;
 
 RAWExposure::RAWExposure () : FoldableToolPanel(this, "rawexposure", M("TP_EXPOS_WHITEPOINT_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
     
     PexPos = Gtk::manage(new Adjuster (M("TP_RAWEXPOS_LINEAR"), 0.1, 32.0, 0.01, 1));
     PexPos->setAdjusterListener (this);

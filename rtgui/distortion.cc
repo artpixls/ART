@@ -29,12 +29,12 @@ Distortion::Distortion (): FoldableToolPanel(this, "distortion", M("TP_DISTORTIO
     rlistener = nullptr;
 
     auto m = ProcEventMapper::getInstance();
-    EvAuto = m->newEvent(TRANSFORM, "HISTORY_MSG_DISTORTION_AUTO");
-    EvAutoLoad = m->newAnonEvent(TRANSFORM);
+    EvAuto = m->newEvent(rtengine::TRANSFORM, "HISTORY_MSG_DISTORTION_AUTO");
+    EvAutoLoad = m->newAnonEvent(rtengine::TRANSFORM);
     is_auto_load_event_ = false;
     
-    EvToolEnabled.set_action(TRANSFORM);
-    EvToolReset.set_action(TRANSFORM);
+    EvToolEnabled.set_action(rtengine::TRANSFORM);
+    EvToolReset.set_action(rtengine::TRANSFORM);
     
     autoDistor = Gtk::manage (new Gtk::ToggleButton(M("GENERAL_AUTO")));
     autoDistor->set_image (*Gtk::manage (new RTImage ("distortion-auto-small.png")));

@@ -28,11 +28,11 @@ using namespace rtengine::procparams;
 FilmGrain::FilmGrain(): FoldableToolPanel(this, "grain", M("TP_GRAIN_LABEL"), true, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvEnabled = m->newEvent(DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_ENABLED");
-    EvStrength = m->newEvent(DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_STRENGTH");
-    EvISO = m->newEvent(DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_ISO");
-    EvColor = m->newEvent(DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_COLOR");
-    EvToolReset.set_action(DIRPYREQUALIZER);
+    EvEnabled = m->newEvent(rtengine::DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_ENABLED");
+    EvStrength = m->newEvent(rtengine::DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_STRENGTH");
+    EvISO = m->newEvent(rtengine::DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_ISO");
+    EvColor = m->newEvent(rtengine::DIRPYREQUALIZER, "HISTORY_MSG_GRAIN_COLOR");
+    EvToolReset.set_action(rtengine::DIRPYREQUALIZER);
 
     Gtk::HBox *hb = Gtk::manage (new Gtk::HBox ());
     hb->pack_start(*Gtk::manage(new Gtk::Label(M("TP_GRAIN_MODE") + ": ")), Gtk::PACK_SHRINK);

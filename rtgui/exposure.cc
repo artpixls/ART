@@ -31,10 +31,10 @@ Exposure::Exposure():
     FoldableToolPanel(this, "exposure", M("TP_EXPOSURE_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
-    EvBlack = m->newEvent(AUTOEXP, "HISTORY_MSG_EXPOSURE_BLACK");
-    EvHRBlur = m->newEvent(DARKFRAME, "HISTORY_MSG_EXPOSURE_HRBLUR");
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
+    EvBlack = m->newEvent(rtengine::AUTOEXP, "HISTORY_MSG_EXPOSURE_BLACK");
+    EvHRBlur = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_EXPOSURE_HRBLUR");
 
 //-------------- Highlight Reconstruction -----------------
     pack_start (*Gtk::manage (new  Gtk::HSeparator()));

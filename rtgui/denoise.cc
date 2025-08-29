@@ -31,13 +31,13 @@ Denoise::Denoise():
     FoldableToolPanel(this, "dirpyrdenoise", M("TP_DIRPYRDENOISE_LABEL"), true, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvGuidedChromaRadius = m->newEvent(HDR, "HISTORY_MSG_DENOISE_GUIDED_CHROMA_RADIUS");
-    EvChrominanceAutoFactor = m->newEvent(HDR, "HISTORY_MSG_DENOISE_CHROMINANCE_AUTO_FACTOR");
-    EvLuminanceDetailThreshold = m->newEvent(HDR, "HISTORY_MSG_DENOISE_LUMINANCE_DETAIL_THRESHOLD");
-    EvColorSpace = m->newEvent(HDR, "HISTORY_MSG_203");
-    EvNlDetail = m->newEvent(HDR, "HISTORY_MSG_DENOISE_NL_DETAIL");
-    EvNlStrength = m->newEvent(HDR, "HISTORY_MSG_DENOISE_NL_STRENGTH");
-    EvToolReset.set_action(HDR);
+    EvGuidedChromaRadius = m->newEvent(rtengine::HDR, "HISTORY_MSG_DENOISE_GUIDED_CHROMA_RADIUS");
+    EvChrominanceAutoFactor = m->newEvent(rtengine::HDR, "HISTORY_MSG_DENOISE_CHROMINANCE_AUTO_FACTOR");
+    EvLuminanceDetailThreshold = m->newEvent(rtengine::HDR, "HISTORY_MSG_DENOISE_LUMINANCE_DETAIL_THRESHOLD");
+    EvColorSpace = m->newEvent(rtengine::HDR, "HISTORY_MSG_203");
+    EvNlDetail = m->newEvent(rtengine::HDR, "HISTORY_MSG_DENOISE_NL_DETAIL");
+    EvNlStrength = m->newEvent(rtengine::HDR, "HISTORY_MSG_DENOISE_NL_STRENGTH");
+    EvToolReset.set_action(rtengine::HDR);
 
     Gtk::Frame *lumaFrame = Gtk::manage(new Gtk::Frame(M("TP_DIRPYRDENOISE_LUMINANCE_FRAME")));
     lumaFrame->set_label_align(0.025, 0.5);

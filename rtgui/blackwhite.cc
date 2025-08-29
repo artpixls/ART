@@ -77,7 +77,7 @@ BlackWhite::BlackWhite():
 {
     auto m = ProcEventMapper::getInstance();
     EvColorCast = m->newEvent(M_LUMINANCE, "HISTORY_MSG_BWMIX_COLORCAST");
-    EvToolReset.set_action(M_LUMINANCE);
+    EvToolReset.set_action(rtengine::M_LUMINANCE);
     
     nextredbw = 0.3333;
     nextgreenbw = 0.3333;

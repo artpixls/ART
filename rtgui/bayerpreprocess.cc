@@ -26,13 +26,13 @@ using namespace rtengine::procparams;
 
 BayerPreProcess::BayerPreProcess() : FoldableToolPanel(this, "bayerpreprocess", M("TP_PREPROCESS_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
     
     auto m = ProcEventMapper::getInstance();
-    EvLineDenoiseDirection = m->newEvent(DARKFRAME, "HISTORY_MSG_PREPROCESS_LINEDENOISE_DIRECTION");
-    EvPDAFLinesFilter = m->newEvent(DARKFRAME, "HISTORY_MSG_PREPROCESS_PDAFLINESFILTER");
-    EvDynamicRowNoiseFilter = m->newEvent(DARKFRAME, "HISTORY_MSG_PREPROCESS_DYNROWNOISEFILTER");
+    EvLineDenoiseDirection = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_PREPROCESS_LINEDENOISE_DIRECTION");
+    EvPDAFLinesFilter = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_PREPROCESS_PDAFLINESFILTER");
+    EvDynamicRowNoiseFilter = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_PREPROCESS_DYNROWNOISEFILTER");
 
     lineDenoise = Gtk::manage(new Adjuster(M("TP_PREPROCESS_LINEDENOISE"), 0, 1000, 1, 0));
     lineDenoise->setAdjusterListener(this);

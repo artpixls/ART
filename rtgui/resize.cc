@@ -32,10 +32,10 @@ Resize::Resize():
     maxw(100000), maxh(100000)
 {
     auto m = ProcEventMapper::getInstance();
-    EvResizeAllowUpscaling = m->newEvent(RESIZE, "HISTORY_MSG_RESIZE_ALLOWUPSCALING");
-    EvUnit = m->newEvent(RESIZE, "HISTORY_MSG_RESIZE_UNIT");
-    EvPPI = m->newEvent(RESIZE, "HISTORY_MSG_RESIZE_PPI");
-    EvToolReset.set_action(RESIZE);
+    EvResizeAllowUpscaling = m->newEvent(rtengine::RESIZE, "HISTORY_MSG_RESIZE_ALLOWUPSCALING");
+    EvUnit = m->newEvent(rtengine::RESIZE, "HISTORY_MSG_RESIZE_UNIT");
+    EvPPI = m->newEvent(rtengine::RESIZE, "HISTORY_MSG_RESIZE_PPI");
+    EvToolReset.set_action(rtengine::RESIZE);
 
     cropw = 0;
     croph = 0;

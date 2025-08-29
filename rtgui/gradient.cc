@@ -13,7 +13,7 @@ Gradient::Gradient():
     FoldableToolPanel(this, "gradient", M("TP_GRADIENT_LABEL"), false, true, true),
     EditSubscriber(ET_OBJECTS), lastObject(-1), draggedPointOldAngle(-1000.)
 {
-    EvToolReset.set_action(LUMINANCECURVE);
+    EvToolReset.set_action(rtengine::LUMINANCECURVE);
     
     editHBox = Gtk::manage (new Gtk::HBox());
     edit = Gtk::manage (new Gtk::ToggleButton());

@@ -48,8 +48,8 @@ HSLEqualizer::HSLEqualizer():
     FoldableToolPanel(this, "hslequalizer", M("TP_HSVEQUALIZER_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvHSLSmoothing = m->newEvent(RGBCURVE, "HISTORY_MSG_HSL_SMOOTHING");
-    EvToolReset.set_action(RGBCURVE);
+    EvHSLSmoothing = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_HSL_SMOOTHING");
+    EvToolReset.set_action(rtengine::RGBCURVE);
     
     std::vector<GradientMilestone> bottomMilestones;
     for (int i = 0; i < 7; i++) {

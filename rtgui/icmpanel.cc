@@ -41,8 +41,8 @@ ICMPanel::ICMPanel():
     filename("")
 {
     auto m = ProcEventMapper::getInstance();
-    EvUseCAT = m->newEvent(ALLNORAW, "HISTORY_MSG_ICM_INPUT_CAT");
-    EvToolReset.set_action(DEMOSAIC);
+    EvUseCAT = m->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_ICM_INPUT_CAT");
+    EvToolReset.set_action(rtengine::DEMOSAIC);
 
     ipDialog = Gtk::manage(new MyFileChooserButton(M("TP_ICM_INPUTDLGLABEL"), Gtk::FILE_CHOOSER_ACTION_OPEN));
     ipDialog->set_tooltip_text(M("TP_ICM_INPUTCUSTOM_TOOLTIP"));

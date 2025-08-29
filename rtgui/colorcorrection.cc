@@ -464,7 +464,7 @@ private:
 ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M("TP_COLORCORRECTION_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    auto EVENT = LUMINANCECURVE | M_LUMACURVE;
+    auto EVENT = rtengine::LUMINANCECURVE | rtengine::M_LUMACURVE;
     EvEnabled = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_ENABLED");
     EvColorWheel = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_AB");
     EvInSaturation = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_INSATURATION");

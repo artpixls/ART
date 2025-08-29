@@ -30,9 +30,9 @@ using namespace rtengine::procparams;
 FlatField::FlatField () : FoldableToolPanel(this, "flatfield", M("TP_FLATFIELD_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
-    EvEmbedded = m->newEvent(DARKFRAME, "HISTORY_MSG_FLATFIELD_EMBEDDED");
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
+    EvEmbedded = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_FLATFIELD_EMBEDDED");
     
     hbff = Gtk::manage(new Gtk::HBox());
     hbff->set_spacing(2);

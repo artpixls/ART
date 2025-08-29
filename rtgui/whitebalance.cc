@@ -101,8 +101,8 @@ double wbTemp2Slider(double temp)
 WhiteBalance::WhiteBalance () : FoldableToolPanel(this, "whitebalance", M("TP_WBALANCE_LABEL"), false, true, true), wbp(nullptr), wblistener(nullptr)
 {
     auto m = ProcEventMapper::getInstance();
-    EvToolReset.set_action(WHITEBALANCE);
-    EvWBMult = m->newEvent(WHITEBALANCE, "HISTORY_MSG_WBALANCE_MULT");
+    EvToolReset.set_action(rtengine::WHITEBALANCE);
+    EvWBMult = m->newEvent(rtengine::WHITEBALANCE, "HISTORY_MSG_WBALANCE_MULT");
 
     Gtk::Grid* methodgrid = Gtk::manage(new Gtk::Grid());
     methodgrid->get_style_context()->add_class("grid-spacing");

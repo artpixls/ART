@@ -26,13 +26,13 @@ using namespace rtengine::procparams;
 
 RAWCACorr::RAWCACorr () : FoldableToolPanel(this, "rawcacorrection", M("TP_RAWCACORR_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(DARKFRAME);
-    EvToolReset.set_action(DARKFRAME);
+    EvToolEnabled.set_action(rtengine::DARKFRAME);
+    EvToolReset.set_action(rtengine::DARKFRAME);
     
     auto m = ProcEventMapper::getInstance();
-    EvPreProcessCAAutoiterations = m->newEvent(DARKFRAME, "HISTORY_MSG_RAWCACORR_AUTOIT");
-    EvPreProcessCAColourshift = m->newEvent(DARKFRAME, "HISTORY_MSG_RAWCACORR_COLORSHIFT");
-    EvPreProcessCAColourshiftHistory = m->newEvent(M_VOID, "HISTORY_MSG_RAWCACORR_COLORSHIFT");
+    EvPreProcessCAAutoiterations = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_RAWCACORR_AUTOIT");
+    EvPreProcessCAColourshift = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_RAWCACORR_COLORSHIFT");
+    EvPreProcessCAColourshiftHistory = m->newEvent(rtengine::M_VOID, "HISTORY_MSG_RAWCACORR_COLORSHIFT");
 
     Gtk::Image* icaredL =   Gtk::manage (new RTImage ("circle-red-cyan-small.png"));
     Gtk::Image* icaredR =   Gtk::manage (new RTImage ("circle-cyan-red-small.png"));

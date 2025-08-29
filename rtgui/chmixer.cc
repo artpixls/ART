@@ -26,11 +26,11 @@ using namespace rtengine::procparams;
 ChMixer::ChMixer (): FoldableToolPanel(this, "chmixer", M("TP_CHMIXER_LABEL"), false, true, true)
 {
     auto m = ProcEventMapper::getInstance();
-    EvMode = m->newEvent(RGBCURVE, "HISTORY_MSG_CHMIXER_MODE");
-    EvRedPrimary = m->newEvent(RGBCURVE, "HISTORY_MSG_CHMIXER_RED_PRIMARY");
-    EvGreenPrimary = m->newEvent(RGBCURVE, "HISTORY_MSG_CHMIXER_GREEN_PRIMARY");
-    EvBluePrimary = m->newEvent(RGBCURVE, "HISTORY_MSG_CHMIXER_BLUE_PRIMARY");
-    EvToolReset.set_action(RGBCURVE);
+    EvMode = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_CHMIXER_MODE");
+    EvRedPrimary = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_CHMIXER_RED_PRIMARY");
+    EvGreenPrimary = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_CHMIXER_GREEN_PRIMARY");
+    EvBluePrimary = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_CHMIXER_BLUE_PRIMARY");
+    EvToolReset.set_action(rtengine::RGBCURVE);
 
     imgIcon[0] = Gtk::manage (new RTImage ("circle-red-small.png"));
     imgIcon[1] = Gtk::manage (new RTImage ("circle-green-red-small.png"));

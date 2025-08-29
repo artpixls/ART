@@ -29,8 +29,8 @@ Rotate::Rotate () : FoldableToolPanel(this, "rotate", M("TP_ROTATE_LABEL"), fals
 {
     rlistener = nullptr;
 
-    EvToolEnabled.set_action(TRANSFORM);
-    EvToolReset.set_action(TRANSFORM);
+    EvToolEnabled.set_action(rtengine::TRANSFORM);
+    EvToolReset.set_action(rtengine::TRANSFORM);
 
     //TODO the action of the rotation slider is counter-intuitive
     Gtk::Image* irotateL =   Gtk::manage (new RTImage ("rotate-right-small.png"));

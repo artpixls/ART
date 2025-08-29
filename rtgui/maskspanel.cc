@@ -967,9 +967,9 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     EvDrawnMask = events.drawn_mask;
     EvMaskPostprocess = events.mask_postprocess;
     EvLinkedMask = events.linked_mask;
-    EvAreaMaskVoid = ProcEventMapper::getInstance()->newEvent(M_VOID, EvAreaMask.get_message());
-    EvDeltaEMaskVoid = ProcEventMapper::getInstance()->newEvent(M_VOID, EvDeltaEMask.get_message());
-    EvMaskName = ProcEventMapper::getInstance()->newEvent(M_VOID, "HISTORY_MSG_LABMASKS_MASK_NAME");
+    EvAreaMaskVoid = ProcEventMapper::getInstance()->newEvent(rtengine::M_VOID, EvAreaMask.get_message());
+    EvDeltaEMaskVoid = ProcEventMapper::getInstance()->newEvent(rtengine::M_VOID, EvDeltaEMask.get_message());
+    EvMaskName = ProcEventMapper::getInstance()->newEvent(rtengine::M_VOID, "HISTORY_MSG_LABMASKS_MASK_NAME");
     
     CurveListener::setMulti(true);
     

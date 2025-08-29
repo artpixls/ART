@@ -64,9 +64,9 @@ bool notifySlowParseDir (const std::chrono::system_clock::time_point& startedAt)
 FilmSimulation::FilmSimulation():
     FoldableToolPanel(this, "filmsimulation", M("TP_FILMSIMULATION_LABEL"), false, true, true)
 {
-    EvToolEnabled.set_action(RGBCURVE);
-    EvAfterToneCurve = ProcEventMapper::getInstance()->newEvent(RGBCURVE, "HISTORY_MSG_FILMSIMULATION_AFTER_TONE_CURVE");
-    EvClutParams = ProcEventMapper::getInstance()->newEvent(RGBCURVE, "HISTORY_MSG_FILMSIMULATION_CLUT_PARAMS");
+    EvToolEnabled.set_action(rtengine::RGBCURVE);
+    EvAfterToneCurve = ProcEventMapper::getInstance()->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_FILMSIMULATION_AFTER_TONE_CURVE");
+    EvClutParams = ProcEventMapper::getInstance()->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_FILMSIMULATION_CLUT_PARAMS");
     
     m_clutComboBox = Gtk::manage(new ClutComboBox({Glib::build_filename(options.ART_base_dir, "luts"), options.clutsDir}));
     int foundClutsCount = m_clutComboBox->foundClutsCount();
