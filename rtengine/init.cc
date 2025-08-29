@@ -35,6 +35,11 @@
 #include "metadata.h"
 #include "imgiomanager.h"
 #include "threadpool.h"
+#include "masks.h"
+
+#ifdef ART_USE_OCIO
+# include "extclut.h"
+#endif
 
 #ifdef _OPENMP
 # include <omp.h>
@@ -128,6 +133,10 @@ int init (const Settings* s, Glib::ustring baseDir, Glib::ustring userSettingsDi
 
     DynamicProfileRules::init(baseDir);
     ImageIOManager::getInstance()->init(baseDir, userSettingsDir);
+#ifdef ART_USE_OCIO
+    ExternalLUT3D::init();
+#endif
+    ExternalMaskManager::init();
     
     delete lcmsMutex;
     lcmsMutex = new MyMutex;
@@ -152,6 +161,10 @@ void cleanup ()
     fftwf_cleanup();
 #endif
 
+#ifdef ART_USE_OCIO
+    ExternalLUT3D::cleanup();
+#endif
+    ExternalMaskManager::cleanup();
 }
 
 StagedImageProcessor* StagedImageProcessor::create (InitialImage* initialImage)

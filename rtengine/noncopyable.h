@@ -1,4 +1,5 @@
-/*
+/* -*- C++ -*-
+ *  
  *  This file is part of RawTherapee.
  *
  *  Copyright (c) 2016 Flössie <floessie.mail@gmail.com>
@@ -19,11 +20,9 @@
 
 #pragma once
 
-namespace rtengine
-{
+namespace rtengine {
 
-class NonCopyable
-{
+class NonCopyable {
 public:
     NonCopyable() = default;
 
@@ -31,4 +30,5 @@ public:
     NonCopyable& operator =(const NonCopyable&) = delete;
 };
 
-}
+} // namespace rtengine
+

@@ -61,6 +61,7 @@ public:
         events.drawn_mask = parent_->EvDrawnMask;
         events.mask_postprocess = parent_->EvMaskPostprocess;
         events.linked_mask = parent_->EvLinkedMask;
+        events.external_mask = parent_->EvExternalMask;
     }
 
     ToolPanelListener *listener() override
@@ -193,6 +194,7 @@ LocalContrast::LocalContrast(): FoldableToolPanel(this, "localcontrast", M("TP_L
     EvDrawnMask = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_DRAWNMASK");
     EvMaskPostprocess = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_MASK_POSTPROCESS");
     EvLinkedMask = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_LINKEDMASK");
+    EvExternalMask = m->newEvent(EVENT, "HISTORY_MSG_LOCALCONTRAST_EXTERNALMASK");
 
     EvToolEnabled.set_action(EVENT);
     EvToolReset.set_action(EVENT);

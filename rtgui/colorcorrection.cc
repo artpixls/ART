@@ -125,6 +125,7 @@ public:
         events.drawn_mask = parent_->EvDrawnMask;
         events.mask_postprocess = parent_->EvMaskPostprocess;
         events.linked_mask = parent_->EvLinkedMask;
+        events.external_mask = parent_->EvExternalMask;
     }
 
     ToolPanelListener *listener() override
@@ -496,6 +497,7 @@ ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M
     EvDrawnMask = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_DRAWNMASK");
     EvMaskPostprocess = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_MASK_POSTPROCESS");
     EvLinkedMask = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_LINKEDMASK");
+    EvExternalMask = m->newEvent(EVENT, "HISTORY_MSG_COLORCORRECTION_EXTERNALMASK");
 
     EvToolReset.set_action(EVENT);
 

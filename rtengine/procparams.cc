@@ -1094,6 +1094,30 @@ bool LinkedMask::operator!=(const LinkedMask &other) const
 }
 
 
+ExternalMask::ExternalMask():
+    enabled(false),
+    inverted(false),
+    filename(""),
+    feather(0)
+{
+}
+
+
+bool ExternalMask::operator==(const ExternalMask &other) const
+{
+    return enabled == other.enabled
+        && inverted == other.inverted
+        && filename == other.filename
+        && feather == other.feather;
+}
+
+
+bool ExternalMask::operator!=(const ExternalMask &other) const
+{
+    return !(*this == other);
+}
+
+
 Mask::Mask():
     enabled(true),
     inverted(false),
@@ -1101,6 +1125,8 @@ Mask::Mask():
     areaMask(),
     deltaEMask(),
     drawnMask(),
+    externalMask(),
+    linkedMask(),
     name(""),
     curve{DCT_Linear},
     posterization(0),
@@ -1118,6 +1144,8 @@ bool Mask::operator==(const Mask &other) const
         && areaMask == other.areaMask
         && deltaEMask == other.deltaEMask
         && drawnMask == other.drawnMask
+        && externalMask == other.externalMask
+        && linkedMask == other.linkedMask
         && name == other.name
         && curve == other.curve
         && posterization == other.posterization
@@ -1185,7 +1213,7 @@ Glib::ustring type2str(AreaMask::Shape::Type type)
 } // namespace
 
 
-bool Mask::load(int ppVersion, const KeyFile &keyfile, const Glib::ustring &group_name, const Glib::ustring &prefix, const Glib::ustring &suffix)
+bool Mask::load(int ppVersion, const KeyFile &keyfile, const Glib::ustring &basedir, const Glib::ustring &group_name, const Glib::ustring &prefix, const Glib::ustring &suffix)
 {
     bool ret = false;
     ret |= assignFromKeyfile(keyfile, group_name, prefix + "MaskEnabled" + suffix, enabled);
@@ -1371,8 +1399,8 @@ bool Mask::load(int ppVersion, const KeyFile &keyfile, const Glib::ustring &grou
     ret |= assignFromKeyfile(keyfile, group_name, prefix + "MaskSmoothing" + suffix, smoothing);
     ret |= assignFromKeyfile(keyfile, group_name, prefix + "MaskOpacity" + suffix, opacity);
 
-    ret |= assignFromKeyfile(keyfile, group_name, prefix + "LinkedMaskEnabled" + suffix, rasterMask.enabled);
-    ret |= assignFromKeyfile(keyfile, group_name, prefix + "LinkedMaskInverted" + suffix, rasterMask.inverted);
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "LinkedMaskEnabled" + suffix, linkedMask.enabled);
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "LinkedMaskInverted" + suffix, linkedMask.inverted);
     {
         Glib::ustring tmp;
         if (assignFromKeyfile(keyfile, group_name, prefix + "LinkedMask" + suffix, tmp) && !tmp.empty()) {
@@ -1380,17 +1408,25 @@ bool Mask::load(int ppVersion, const KeyFile &keyfile, const Glib::ustring &grou
             if (idx == Glib::ustring::npos) {
                 throw Glib::KeyFileError(Glib::KeyFileError::INVALID_VALUE, "invalid value for " + prefix + "LinkedMask" + suffix + ": " + tmp);
             }
-            rasterMask.toolname = tmp.substr(0, idx);
-            rasterMask.name = tmp.substr(idx+1);
+            linkedMask.toolname = tmp.substr(0, idx);
+            linkedMask.name = tmp.substr(idx+1);
             ret = true;
         }
     }
+
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "ExternalMaskEnabled" + suffix, externalMask.enabled);
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "ExternalMaskInverted" + suffix, externalMask.inverted);
+    if (assignFromKeyfile(keyfile, group_name, prefix + "ExternalMaskFilename" + suffix, externalMask.filename)) {
+        externalMask.filename = filenameFromUri(externalMask.filename, basedir);
+        ret = true;
+    }
+    ret |= assignFromKeyfile(keyfile, group_name, prefix + "ExternalMaskFeather" + suffix, externalMask.feather);
     
     return ret;
 }
 
 
-void Mask::save(KeyFile &keyfile, const Glib::ustring &group_name, const Glib::ustring &prefix, const Glib::ustring &suffix) const
+void Mask::save(KeyFile &keyfile, const Glib::ustring &basedir, const Glib::ustring &group_name, const Glib::ustring &prefix, const Glib::ustring &suffix) const
 {
     putToKeyfile(group_name, prefix + "MaskEnabled" + suffix, enabled, keyfile);
     putToKeyfile(group_name, prefix + "MaskInverted" + suffix, inverted, keyfile);
@@ -1471,15 +1507,20 @@ void Mask::save(KeyFile &keyfile, const Glib::ustring &group_name, const Glib::u
     drawnMask.strokes_to_list(v);
     putToKeyfile(group_name, prefix + "DrawnMaskStrokes" + suffix, pack_list(v), keyfile);
 
-    putToKeyfile(group_name, prefix + "LinkedMaskEnabled" + suffix, rasterMask.enabled, keyfile);
-    putToKeyfile(group_name, prefix + "LinkedMaskInverted" + suffix, rasterMask.inverted, keyfile);
+    putToKeyfile(group_name, prefix + "LinkedMaskEnabled" + suffix, linkedMask.enabled, keyfile);
+    putToKeyfile(group_name, prefix + "LinkedMaskInverted" + suffix, linkedMask.inverted, keyfile);
     {
         Glib::ustring tmp;
-        if (!rasterMask.toolname.empty() || !rasterMask.name.empty()) {
-            tmp = rasterMask.toolname + "|" + rasterMask.name;
+        if (!linkedMask.toolname.empty() || !linkedMask.name.empty()) {
+            tmp = linkedMask.toolname + "|" + linkedMask.name;
         }
         putToKeyfile(group_name, prefix + "LinkedMask" + suffix, tmp, keyfile);
     }
+
+    putToKeyfile(group_name, prefix + "ExternalMaskEnabled" + suffix, externalMask.enabled, keyfile);
+    putToKeyfile(group_name, prefix + "ExternalMaskInverted" + suffix, externalMask.inverted, keyfile);
+    putToKeyfile(group_name, prefix + "ExternalMaskFilename" + suffix, filenameToUri(externalMask.filename, basedir), keyfile);
+    putToKeyfile(group_name, prefix + "ExternalMaskFeather" + suffix, externalMask.feather, keyfile);
 }
 
 
@@ -3569,7 +3610,7 @@ int ProcParams::save(ProgressListener *pl, bool save_general,
                 auto &r = localContrast.regions[j];
                 putToKeyfile("Local Contrast", Glib::ustring("Contrast") + n, r.contrast, keyFile);
                 putToKeyfile("Local Contrast", Glib::ustring("Curve") + n, r.curve, keyFile);
-                localContrast.masks[j].save(keyFile, "Local Contrast", "", n);
+                localContrast.masks[j].save(keyFile, basedir, "Local Contrast", "", n);
             }
             saveToKeyfile("Local Contrast", "ShowMask", localContrast.showMask, keyFile);
             saveToKeyfile("Local Contrast", "SelectedRegion", localContrast.selectedRegion, keyFile);
@@ -3739,7 +3780,7 @@ int ProcParams::save(ProgressListener *pl, bool save_general,
                 putToKeyfile("TextureBoost", Glib::ustring("Strength") + n, r.strength, keyFile);
                 putToKeyfile("TextureBoost", Glib::ustring("DetailThreshold") + n, r.detailThreshold, keyFile);
                 putToKeyfile("TextureBoost", Glib::ustring("Iterations") + n, r.iterations, keyFile);
-                textureBoost.masks[j].save(keyFile, "TextureBoost", "", n);
+                textureBoost.masks[j].save(keyFile, basedir, "TextureBoost", "", n);
             }
             saveToKeyfile("TextureBoost", "ShowMask", textureBoost.showMask, keyFile);
             saveToKeyfile("TextureBoost", "SelectedRegion", textureBoost.selectedRegion, keyFile);
@@ -4007,7 +4048,7 @@ int ProcParams::save(ProgressListener *pl, bool save_general,
                 putToKeyfile("Smoothing", Glib::ustring("WavStrength_") + n, r.wav_strength, keyFile);
                 putToKeyfile("Smoothing", Glib::ustring("WavLevels_") + n, r.wav_levels, keyFile);
                 putToKeyfile("Smoothing", Glib::ustring("WavGamma_") + n, r.wav_gamma, keyFile);
-                smoothing.masks[j].save(keyFile, "Smoothing", "", Glib::ustring("_") + n);
+                smoothing.masks[j].save(keyFile, basedir, "Smoothing", "", Glib::ustring("_") + n);
             }
             saveToKeyfile("Smoothing", "ShowMask", smoothing.showMask, keyFile);
             saveToKeyfile("Smoothing", "SelectedRegion", smoothing.selectedRegion, keyFile);
@@ -4074,7 +4115,7 @@ int ProcParams::save(ProgressListener *pl, bool save_general,
                     save_lut_params(keyFile, "ColorCorrection", Glib::ustring("LUTParams_") + n, l.lut_params);
                     putToKeyfile("ColorCorrection", Glib::ustring("HSLGamma_") + n, l.hsl_gamma, keyFile);
                 }
-                colorcorrection.masks[j].save(keyFile, "ColorCorrection", "", Glib::ustring("_") + n);
+                colorcorrection.masks[j].save(keyFile, basedir, "ColorCorrection", "", Glib::ustring("_") + n);
             }
             saveToKeyfile("ColorCorrection", "ShowMask", colorcorrection.showMask, keyFile);
             saveToKeyfile("ColorCorrection", "SelectedRegion", colorcorrection.selectedRegion, keyFile);
@@ -4599,7 +4640,7 @@ int ProcParams::load(ProgressListener *pl, bool load_general,
                     found = true;
                     done = false;
                 }
-                if (curmask.load(ppVersion, keyFile, "Local Contrast", "", n)) {
+                if (curmask.load(ppVersion, keyFile, basedir, "Local Contrast", "", n)) {
                     found = true;
                     done = false;
                 }
@@ -4797,7 +4838,7 @@ int ProcParams::load(ProgressListener *pl, bool load_general,
                     found = true;
                     done = false;
                 }
-                if (curmask.load(ppVersion, keyFile, tbgroup, "", n)) {
+                if (curmask.load(ppVersion, keyFile, basedir, tbgroup, "", n)) {
                     found = true;
                     done = false;
                 }
@@ -5337,7 +5378,7 @@ int ProcParams::load(ProgressListener *pl, bool load_general,
                     found = true;
                     done = false;
                 }
-                if (curmask.load(ppVersion, keyFile, smoothing_group, "", Glib::ustring("_") + n)) {
+                if (curmask.load(ppVersion, keyFile, basedir, smoothing_group, "", Glib::ustring("_") + n)) {
                     found = true;
                     done = false;
                 }
@@ -5602,7 +5643,7 @@ int ProcParams::load(ProgressListener *pl, bool load_general,
                     cur.hsl_gamma = 1.0;
                 }
                 
-                if (curmask.load(ppVersion, keyFile, ccgroup, prefix, Glib::ustring("_") + n)) {
+                if (curmask.load(ppVersion, keyFile, basedir, ccgroup, prefix, Glib::ustring("_") + n)) {
                     found = true;
                     done = false;
                 }

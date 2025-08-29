@@ -1531,7 +1531,7 @@ int ImProcCoordinator::update_change_flags(const ProcParams &pp, int flags)
     if (flags & (LINKEDMASK & ~LINKEDMASK_FIRST)) {
         for (auto p : pp.get_maskable()) {
             for (auto &m : p->get_masks()) {
-                if (m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
+                if (m.linkedMask.enabled && !m.linkedMask.toolname.empty() && !m.linkedMask.name.empty()) {
                     flags |= LINKEDMASK;
                     goto out;
                 }

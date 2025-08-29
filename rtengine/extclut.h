@@ -43,6 +43,9 @@ public:
 
     static void clear_cache();
     static void trim_cache();
+
+    static void init();
+    static void cleanup();
     
 private:
     class SubprocessManager {
@@ -53,7 +56,7 @@ private:
     private:
         std::unordered_map<std::string, std::unique_ptr<subprocess::SubprocessInfo>> procs_;
     };
-    static Cache<std::string, OCIO::ConstProcessorRcPtr> cache_;
+    static std::unique_ptr<Cache<std::string, OCIO::ConstProcessorRcPtr>> cache_;
     static MyMutex disk_cache_mutex_;
     static SubprocessManager smgr_;
 

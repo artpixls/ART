@@ -277,6 +277,19 @@ public:
 };
 
 
+class ExternalMask {
+public:
+    bool enabled;
+    bool inverted;
+    Glib::ustring filename;
+    double feather;
+
+    ExternalMask();
+    bool operator==(const ExternalMask &other) const;
+    bool operator!=(const ExternalMask &other) const;
+};
+
+
 class Mask {
 public:
     bool enabled;
@@ -285,7 +298,8 @@ public:
     AreaMask areaMask;
     DeltaEMask deltaEMask;
     DrawnMask drawnMask;
-    LinkedMask rasterMask;
+    ExternalMask externalMask;
+    LinkedMask linkedMask;
     Glib::ustring name;
     std::vector<double> curve;
     int posterization;
@@ -296,10 +310,11 @@ public:
     bool operator==(const Mask &other) const;
     bool operator!=(const Mask &other) const;
 
-    bool load(int ppVersion,
-              const KeyFile &keyfile, const Glib::ustring &group_name,
+    bool load(int ppVersion, const KeyFile &keyfile,
+              const Glib::ustring &basedir, const Glib::ustring &group_name,
               const Glib::ustring &prefix, const Glib::ustring &suffix);
-    void save(KeyFile &keyfile, const Glib::ustring &group_name,
+    void save(KeyFile &keyfile, const Glib::ustring &basedir,
+              const Glib::ustring &group_name,
               const Glib::ustring &prefix, const Glib::ustring &suffix) const;
 };
 

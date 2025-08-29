@@ -107,6 +107,7 @@ private:
     rtengine::ProcEvent EvDrawnMask;
     rtengine::ProcEvent EvMaskPostprocess;
     rtengine::ProcEvent EvLinkedMask;
+    rtengine::ProcEvent EvExternalMask;
 
     std::vector<rtengine::procparams::ColorCorrectionParams::Region> data;
 

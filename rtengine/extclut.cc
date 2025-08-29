@@ -316,9 +316,21 @@ bool ExternalLUT3D::SubprocessManager::process(const Glib::ustring &filename, co
 //-----------------------------------------------------------------------------
 
 
-Cache<std::string, OCIO::ConstProcessorRcPtr> ExternalLUT3D::cache_(options.clutCacheSize * 4);
+std::unique_ptr<Cache<std::string, OCIO::ConstProcessorRcPtr>> ExternalLUT3D::cache_;
 MyMutex ExternalLUT3D::disk_cache_mutex_;
 ExternalLUT3D::SubprocessManager ExternalLUT3D::smgr_;
+
+
+void ExternalLUT3D::init()
+{
+    cache_.reset(new Cache<std::string, OCIO::ConstProcessorRcPtr>(options.clutCacheSize * 4));
+}
+
+
+void ExternalLUT3D::cleanup()
+{
+    cache_.reset(nullptr);
+}
 
 
 ExternalLUT3D::ExternalLUT3D():
@@ -441,7 +453,7 @@ bool ExternalLUT3D::set_param_values(const CLUTParamValueMap &values)
     bool success = true;
     OCIO::ConstProcessorRcPtr lut;
     std::pair<std::string, std::string> key = get_cache_keys(filename_, params_, values);
-    bool found = cache_.get(key.first, lut);
+    bool found = cache_->get(key.first, lut);
     if (!found) {
         if (settings->verbose) {
             std::cout << "computing 3dlut for " << filename_ << std::endl;
@@ -461,7 +473,7 @@ bool ExternalLUT3D::set_param_values(const CLUTParamValueMap &values)
             t->setSrc(fn.c_str());
             t->setInterpolation(OCIO::INTERP_BEST);
             lut = config->getProcessor(t);
-            cache_.set(key.first, lut);
+            cache_->set(key.first, lut);
         } catch (...) {
             ok_ = false;
             success = false;

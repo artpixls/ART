@@ -59,6 +59,7 @@ private:
     rtengine::ProcEvent EvDrawnMask;
     rtengine::ProcEvent EvMaskPostprocess;
     rtengine::ProcEvent EvLinkedMask;
+    rtengine::ProcEvent EvExternalMask;
 
     rtengine::procparams::LocalContrastParams initial_params;
 

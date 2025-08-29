@@ -60,6 +60,7 @@ public:
         events.drawn_mask = parent_->EvDrawnMask;
         events.mask_postprocess = parent_->EvMaskPostprocess;
         events.linked_mask = parent_->EvLinkedMask;
+        events.external_mask = parent_->EvExternalMask;
     }
 
     ToolPanelListener *listener() override
@@ -177,6 +178,7 @@ TextureBoost::TextureBoost(): FoldableToolPanel(this, "epd", M("TP_EPD_LABEL"), 
     EvDrawnMask = m->newEvent(EVENT, "HISTORY_MSG_EPD_DRAWNMASK");
     EvMaskPostprocess = m->newEvent(EVENT, "HISTORY_MSG_EPD_MASK_POSTPROCESS");
     EvLinkedMask = m->newEvent(EVENT, "HISTORY_MSG_EPD_LINKEDMASK");
+    EvExternalMask = m->newEvent(EVENT, "HISTORY_MSG_EPD_EXTERNALMASK");
 
     EvToolEnabled.set_action(EVENT);
     EvToolReset.set_action(EVENT);

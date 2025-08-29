@@ -62,6 +62,7 @@ public:
         events.drawn_mask = parent_->EvDrawnMask;
         events.mask_postprocess = parent_->EvMaskPostprocess;
         events.linked_mask = parent_->EvLinkedMask;
+        events.external_mask = parent_->EvExternalMask;
     }
 
     ToolPanelListener *listener() override
@@ -268,6 +269,7 @@ Smoothing::Smoothing(): FoldableToolPanel(this, "smoothing", M("TP_SMOOTHING_LAB
     EvDrawnMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_DRAWNMASK");
     EvMaskPostprocess = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_MASK_POSTPROCESS");
     EvLinkedMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_LINKEDMASK");
+    EvExternalMask = m->newEvent(EVENT, "HISTORY_MSG_SMOOTHING_EXTERNALMASK");
 
     EvToolEnabled.set_action(EVENT);
     EvToolReset.set_action(EVENT);

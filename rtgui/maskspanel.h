@@ -49,6 +49,7 @@ public:
         rtengine::ProcEvent drawn_mask;
         rtengine::ProcEvent mask_postprocess;
         rtengine::ProcEvent linked_mask;
+        rtengine::ProcEvent external_mask;
     };
     
     virtual ~MasksContentProvider() {}
@@ -226,6 +227,7 @@ private:
     void onMaskExpanded(GdkEventButton *evt, MyExpander *exp);
 
     void onLinkedMaskChanged();
+    void onExternalMaskChanged();
 
     MasksContentProvider *cp_;
     std::vector<rtengine::procparams::Mask> masks_;
@@ -247,6 +249,7 @@ private:
     rtengine::ProcEvent EvMaskName;
     rtengine::ProcEvent EvMaskPostprocess;
     rtengine::ProcEvent EvLinkedMask;
+    rtengine::ProcEvent EvExternalMask;
 
     class ListColumns: public Gtk::TreeModel::ColumnRecord {
     public:
@@ -369,4 +372,9 @@ private:
     };
     std::vector<LinkedMaskInfo> available_linked_masks_;
     std::unordered_set<std::string> used_linked_masks_;
+
+    MyExpander *external_mask_;
+    Gtk::CheckButton *external_mask_inverted_;
+    MyFileChooserButton *external_mask_filename_;
+    Adjuster *external_mask_feather_;
 };

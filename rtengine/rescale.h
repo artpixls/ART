@@ -24,7 +24,8 @@
 
 namespace rtengine {
 
-inline float getBilinearValue(const array2D<float> &src, float x, float y)
+template <class T>
+inline T getBilinearValue(const array2D<T> &src, float x, float y)
 {
     const int W = src.width();
     const int H = src.height();
@@ -37,15 +38,17 @@ inline float getBilinearValue(const array2D<float> &src, float x, float y)
     int xi1 = std::min(xi + 1, W - 1);
     int yi1 = std::min(yi + 1, H - 1);
 
-    float bl = src[yi][xi];
-    float br = src[yi][xi1];
-    float tl = src[yi1][xi];
-    float tr = src[yi1][xi1];
+    T bl = src[yi][xi];
+    T br = src[yi][xi1];
+    T tl = src[yi1][xi];
+    T tr = src[yi1][xi1];
+
+    constexpr T one(1);
 
     // interpolate
-    float b = xf * br + (1.f - xf) * bl;
-    float t = xf * tr + (1.f - xf) * tl;
-    float pxf = yf * t + (1.f - yf) * b;
+    T b = xf * br + (one - xf) * bl;
+    T t = xf * tr + (one - xf) * tl;
+    T pxf = yf * t + (one - yf) * b;
     return pxf;
 }
 

@@ -24,6 +24,7 @@
 #include "array2D.h"
 #include "labimage.h"
 #include "imagefloat.h"
+#include "cache.h"
 #include <unordered_map>
 #include <unordered_set>
 
@@ -43,6 +44,23 @@ private:
     std::unordered_map<std::string, array2D<uint32_t>> masks_;
     std::unordered_set<std::string> needed_;
 };
+
+
+class ExternalMaskManager: public NonCopyable {
+public:
+    static ExternalMaskManager *getInstance();
+    bool apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread);
+
+    static void init();
+    static void cleanup();
+
+private:
+    ExternalMaskManager();
+
+    Cache<std::string, std::shared_ptr<array2D<uint16_t>>> cache_;
+    static std::unique_ptr<ExternalMaskManager> instance_;
+};
+
 
 bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskManager &mmgr, const std::vector<procparams::Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *pl);
 

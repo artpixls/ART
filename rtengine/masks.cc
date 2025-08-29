@@ -35,6 +35,7 @@
 #include "opthelper.h"
 #include "rescale.h"
 #include "halffloat.h"
+#include "stdimagesource.h"
 #include "../rtgui/multilangmgr.h"
 
 namespace rtengine {
@@ -804,6 +805,10 @@ bool mask_postprocess(int width, int height, float scale, const array2D<float> &
 } // namespace
 
 
+//-----------------------------------------------------------------------------
+// LinkedMaskManager
+//-----------------------------------------------------------------------------
+
 LinkedMaskManager::LinkedMaskManager()
 {
 }
@@ -818,8 +823,8 @@ void LinkedMaskManager::init(const rtengine::ProcParams &pparams)
         [&](const std::vector<procparams::Mask> &masks) -> void
         {
             for (auto &m : masks) {
-                if (m.enabled && m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
-                    needed_.insert(key(m.rasterMask.toolname, m.rasterMask.name));
+                if (m.enabled && m.linkedMask.enabled && !m.linkedMask.toolname.empty() && !m.linkedMask.name.empty()) {
+                    needed_.insert(key(m.linkedMask.toolname, m.linkedMask.name));
                 }
             }
         };
@@ -909,6 +914,111 @@ bool LinkedMaskManager::is_needed(const Glib::ustring &toolname, const Glib::ust
     return needed_.find(key(toolname, name)) != needed_.end();
 }
 
+
+//-----------------------------------------------------------------------------
+// ExternalMaskManager
+//-----------------------------------------------------------------------------
+
+std::unique_ptr<ExternalMaskManager> ExternalMaskManager::instance_;
+
+ExternalMaskManager::ExternalMaskManager():
+    cache_(4)
+{
+}
+
+
+ExternalMaskManager *ExternalMaskManager::getInstance()
+{
+    return instance_.get();
+}
+
+
+void ExternalMaskManager::init()
+{
+    instance_.reset(new ExternalMaskManager());
+}
+
+
+void ExternalMaskManager::cleanup()
+{
+    instance_.reset(nullptr);
+}
+
+
+bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread)
+{
+    std::string key = Glib::filename_from_utf8(filename) + "\n" + getMD5(filename, true);
+    std::shared_ptr<array2D<uint16_t>> mask;
+    if (!cache_.get(key, mask)) {
+        StdImageSource src;
+        if (src.load(filename) != 0) {
+            return false;
+        }
+        ImageIO *imio = src.getImageIO();
+        const int W = imio->getWidth();
+        const int H = imio->getHeight();
+        Imagefloat img(W, H);
+        PreviewProps pp(0, 0, W, H, 1);
+        imio->getStdImage(ColorTemp(), TR_NONE, &img, pp);
+
+        mask = std::make_shared<array2D<uint16_t>>();
+        array2D<uint16_t> &a = *mask;
+        a(W, H);
+
+#ifdef _OPENMP
+#       pragma omp parallel for if (multithread)
+#endif
+        for (int y = 0; y < H; ++y) {
+            for (int x = 0; x < W; ++x) {
+                a[y][x] = DNG_FloatToHalf(LIM01(img.g(y, x) / 65535.f));
+            }
+        }
+
+        cache_.set(key, mask);
+    }
+
+    const array2D<uint16_t> &a = *mask;
+    
+    const int dW = full_width;
+    const int dH = full_height;
+
+    const int W = a.width();
+    const int H = a.height();
+    
+    const float col_scale = float(W) / float(dW);
+    const float row_scale = float(H) / float(dH);
+
+    const int oW = guide.width();
+    const int oH = guide.height();
+    (*out)(oW, oH);
+
+    
+#ifdef _OPENMP
+#   pragma omp parallel for if (multithread)
+#endif
+    for (int y = 0; y < oH; ++y) {
+        float sy = (y + offset_y) * row_scale;
+        for (int x = 0; x < oW; ++x) {
+            float sx = (x + offset_x) * col_scale;
+            float val = DNG_HalfToFloat(getBilinearValue(a, sx, sy));
+            if (inverted) {
+                val = 1.f - val;
+            }
+            (*out)[y][x] = val;
+        }
+    }
+
+    if (feather > 0) {
+        int radius = int(feather / 100.0 * std::min(full_width, full_height) * 0.1 + 0.5);
+        if (radius > 0) {
+            guidedFilter(guide, *out, *out, radius, 1e-7, multithread);
+        }
+    }
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
 
 bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskManager &mmgr, const std::vector<Mask> &masks, int offset_x, int offset_y, int full_width, int full_height, double scale, bool multithread, int show_mask_idx, std::vector<array2D<float>> *Lmask, std::vector<array2D<float>> *abmask, ProgressListener *plistener)
 {
@@ -1268,7 +1378,23 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskMan
                 }
             }
         }
-        auto &rm = masks[i].rasterMask;
+        auto &em = masks[i].externalMask;
+        if (em.enabled && ExternalMaskManager::getInstance()->apply_mask(em.filename, em.inverted, em.feather, offset_x, offset_y, full_width, full_height, guide, &amask, multithread)) {
+#ifdef _OPENMP
+#           pragma omp parallel for if (multithread)
+#endif
+            for (int y = 0; y < H; ++y) {
+                for (int x = 0; x < W; ++x) {
+                    if (abmask) {
+                        (*abmask)[i][y][x] *= amask[y][x];
+                    }
+                    if (Lmask) {
+                        (*Lmask)[i][y][x] *= amask[y][x];
+                    }
+                }
+            }            
+        }
+        auto &rm = masks[i].linkedMask;
         if (rm.enabled) {
             array2D<float> *m1 = nullptr;
             array2D<float> *m2 = nullptr;

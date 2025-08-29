@@ -967,6 +967,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     EvDrawnMask = events.drawn_mask;
     EvMaskPostprocess = events.mask_postprocess;
     EvLinkedMask = events.linked_mask;
+    EvExternalMask = events.external_mask;
     EvAreaMaskVoid = ProcEventMapper::getInstance()->newEvent(rtengine::M_VOID, EvAreaMask.get_message());
     EvDeltaEMaskVoid = ProcEventMapper::getInstance()->newEvent(rtengine::M_VOID, EvDeltaEMask.get_message());
     EvMaskName = ProcEventMapper::getInstance()->newEvent(rtengine::M_VOID, "HISTORY_MSG_LABMASKS_MASK_NAME");
@@ -1085,7 +1086,6 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     mask_box->pack_start(*maskOpacity);
     maskOpacity->setAdjusterListener(this);
 
-    linked_mask_ = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_LINKEDMASK")));
     parametricMask = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_PARAMETRIC")));
     ToolParamBlock *tb = Gtk::manage(new ToolParamBlock());
     parametricMask->add(*tb, false);
@@ -1394,8 +1394,33 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     drawnMask = Gtk::manage(new DrawnMaskPanel());
     mask_box->pack_start(*drawnMask);
     static_cast<DrawnMaskPanel *>(drawnMask)->signal_draw_updated().connect(sigc::mem_fun(this, &MasksPanel::onDrawnMaskUpdated));
+
+    tb = Gtk::manage(new ToolParamBlock());
+    external_mask_ = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_EXTERNALMASK")));
+    external_mask_->add(*tb, false);
+    external_mask_->setLevel(1);
+    external_mask_->signal_enabled_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onExternalMaskChanged));
+
+    external_mask_filename_ = Gtk::manage(new MyFileChooserButton(M("TP_LABMASKS_EXTERNALMASK_SELECT")));
+    external_mask_filename_->signal_selection_changed().connect(sigc::mem_fun(*this, &MasksPanel::onExternalMaskChanged));
+    external_mask_feather_ = Gtk::manage(new Adjuster(M("TP_LABMASKS_AREA_FEATHER"), 0, 100, 0.1, 0));
+    external_mask_feather_->setAdjusterListener(this);
+
+    hb = Gtk::manage(new Gtk::HBox());
+    hb->pack_start(*Gtk::manage(new Gtk::Label(M("TP_LABMASKS_EXTERNALMASK_FILENAME") + ": ")), Gtk::PACK_SHRINK, 4);
+    hb->pack_start(*external_mask_filename_, Gtk::PACK_EXPAND_WIDGET, 4);
+    tb->pack_start(*hb);
+    
+    hb = Gtk::manage(new Gtk::HBox());
+    tb->pack_start(*hb, Gtk::PACK_EXPAND_WIDGET, 0);    
+    hb->pack_start(*external_mask_feather_, Gtk::PACK_EXPAND_WIDGET, 4);
+    external_mask_inverted_ = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_INVERTED")));
+    hb->pack_start(*external_mask_inverted_, Gtk::PACK_SHRINK, 4);
+    external_mask_inverted_->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onExternalMaskChanged));    
+    mask_box->pack_start(*external_mask_);
     
     tb = Gtk::manage(new ToolParamBlock());
+    linked_mask_ = Gtk::manage(new MyExpander(true, M("TP_LABMASKS_LINKEDMASK")));
     linked_mask_->add(*tb, false);
     linked_mask_->setLevel(1);
     linked_mask_->signal_enabled_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onLinkedMaskChanged));
@@ -1472,7 +1497,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
         
     maskBlur->delay = options.adjusterMaxDelay;
 
-    mask_expanders_ = { parametricMask, areaMask, deltaEMask, drawnMask, linked_mask_, ppMask };
+    mask_expanders_ = { parametricMask, areaMask, deltaEMask, drawnMask, external_mask_, linked_mask_, ppMask };
     for (auto e : mask_expanders_) {
         e->signal_button_release_event().connect_notify(sigc::bind(sigc::mem_fun(this, &MasksPanel::onMaskExpanded), e));
     }
@@ -1637,16 +1662,20 @@ void MasksPanel::maskGet(int idx)
     r.posterization = maskPosterization->getValue();
     r.smoothing = maskSmoothing->getValue();
     r.opacity = maskOpacity->getValue();
-    r.rasterMask.enabled = linked_mask_->getEnabled();
-    r.rasterMask.inverted = linked_mask_inverted_->get_active();
+    r.linkedMask.enabled = linked_mask_->getEnabled();
+    r.linkedMask.inverted = linked_mask_inverted_->get_active();
     int raster_idx = linked_mask_value_->get_active_row_number();
     if (raster_idx == 0) {
-        r.rasterMask.toolname = "";
-        r.rasterMask.name = "";
+        r.linkedMask.toolname = "";
+        r.linkedMask.name = "";
     } else if (raster_idx > 0 && size_t(raster_idx) <= available_linked_masks_.size()) {
-        r.rasterMask.toolname = available_linked_masks_[raster_idx-1].toolname;
-        r.rasterMask.name = available_linked_masks_[raster_idx-1].name;
+        r.linkedMask.toolname = available_linked_masks_[raster_idx-1].toolname;
+        r.linkedMask.name = available_linked_masks_[raster_idx-1].name;
     }
+    r.externalMask.enabled = external_mask_->getEnabled();
+    r.externalMask.inverted = external_mask_inverted_->get_active();
+    r.externalMask.filename = Glib::filename_to_utf8(external_mask_filename_->get_filename());
+    r.externalMask.feather = external_mask_feather_->getValue();
 }
 
 
@@ -1809,11 +1838,18 @@ void MasksPanel::populateList()
                 }
                 am += Glib::ustring::compose("%1 stroke%2", r.drawnMask.strokes.size(), r.drawnMask.strokes.size() == 1 ? "" : "s");
             }
-            if (r.rasterMask.enabled && !r.rasterMask.toolname.empty() && !r.rasterMask.name.empty()) {
+            if (r.externalMask.enabled && !r.externalMask.filename.empty()) {
                 if (am.empty()) {
-                    am = "\nR";
+                    am = "\nE";
                 } else {
-                    am += " R";
+                    am += " E";
+                }
+            }
+            if (r.linkedMask.enabled && !r.linkedMask.toolname.empty() && !r.linkedMask.name.empty()) {
+                if (am.empty()) {
+                    am = "\n⇡";
+                } else {
+                    am += " ⇡";
                 }
             }
             row[list_model_columns_->mask] = 
@@ -1936,8 +1972,13 @@ void MasksPanel::maskShow(int idx, bool list_only, bool unsub)
         deltaEInverted->set_active(r.deltaEMask.decay < 0);
         static_cast<DeltaEArea *>(deltaEColor)->setColor(r.deltaEMask.L, r.deltaEMask.C, r.deltaEMask.H);
 
-        linked_mask_->setEnabled(r.rasterMask.enabled);
-        linked_mask_inverted_->set_active(r.rasterMask.inverted);
+        external_mask_->setEnabled(r.externalMask.enabled);
+        external_mask_inverted_->set_active(r.externalMask.inverted);
+        external_mask_filename_->set_filename(Glib::filename_from_utf8(r.externalMask.filename));
+        external_mask_feather_->setValue(r.externalMask.feather);
+        
+        linked_mask_->setEnabled(r.linkedMask.enabled);
+        linked_mask_inverted_->set_active(r.linkedMask.inverted);
         updateLinkedMaskList(nullptr);
     }
     static_cast<DrawnMaskPanel *>(drawnMask)->setTargetMask(&r.drawnMask,
@@ -1965,11 +2006,18 @@ void MasksPanel::maskShow(int idx, bool list_only, bool unsub)
             }
             am += Glib::ustring::compose("%1 stroke%2", r.drawnMask.strokes.size(), r.drawnMask.strokes.size() == 1 ? "" : "s");
         }
-        if (r.rasterMask.enabled && !r.rasterMask.toolname.empty() && !r.rasterMask.name.empty()) {
+        if (r.externalMask.enabled && !r.externalMask.filename.empty()) {
             if (am.empty()) {
-                am = "\nR";
+                am = "\nE";
             } else {
-                am += " R";
+                am += " E";
+            }
+        }
+        if (r.linkedMask.enabled && !r.linkedMask.toolname.empty() && !r.linkedMask.name.empty()) {
+            if (am.empty()) {
+                am = "\n⇡";
+            } else {
+                am += " ⇡";
             }
         }
         row[list_model_columns_->mask] = 
@@ -2303,6 +2351,10 @@ void MasksPanel::adjusterChanged(Adjuster *a, double newval)
     } else if (a == maskOpacity) {
         if (l) {
             l->panelChanged(EvMaskPostprocess, M("TP_LABMASKS_DRAWNMASK_OPACITY") + ": " + a->getTextValue());
+        }
+    } else if (a == external_mask_feather_) {
+        if (l) {
+            l->panelChanged(EvExternalMask, M("GENERAL_CHANGED"));
         }
     }
     maskShow(selected_, true);
@@ -3210,8 +3262,8 @@ void MasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams *pa
                     if (m.enabled && !m.name.empty()) {
                         available_linked_masks_.emplace_back(tool, m.name, i);
                     }
-                    if (m.rasterMask.enabled && m.rasterMask.toolname == mytoolname) {
-                        used_linked_masks_.insert(m.rasterMask.name.raw());
+                    if (m.linkedMask.enabled && m.linkedMask.toolname == mytoolname) {
+                        used_linked_masks_.insert(m.linkedMask.name.raw());
                     }
                 }
             };
@@ -3248,7 +3300,7 @@ void MasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams *pa
     if (selected_ < masks_.size()) {
         auto &m = masks_[selected_];
         for (int i = 0; i < n; ++i) {
-            if (available_linked_masks_[i].toolname == m.rasterMask.toolname && available_linked_masks_[i].name == m.rasterMask.name) {
+            if (available_linked_masks_[i].toolname == m.linkedMask.toolname && available_linked_masks_[i].name == m.linkedMask.name) {
                 linked_mask_value_->set_active(i+1);
                 break;
             }
@@ -3263,5 +3315,14 @@ void MasksPanel::onLinkedMaskChanged()
     auto l = getListener();
     if (l) {
         l->panelChanged(EvLinkedMask, M("GENERAL_CHANGED"));
+    }
+}
+
+
+void MasksPanel::onExternalMaskChanged()
+{
+    auto l = getListener();
+    if (l) {
+        l->panelChanged(EvExternalMask, M("GENERAL_CHANGED"));
     }
 }
