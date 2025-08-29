@@ -57,7 +57,7 @@ public:
 private:
     ExternalMaskManager();
 
-    Cache<std::string, std::shared_ptr<array2D<uint16_t>>> cache_;
+    Cache<std::string, std::shared_ptr<array2D<float>>> cache_;
     static std::unique_ptr<ExternalMaskManager> instance_;
 };
 

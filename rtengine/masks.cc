@@ -948,7 +948,7 @@ void ExternalMaskManager::cleanup()
 bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread)
 {
     std::string key = Glib::filename_from_utf8(filename) + "\n" + getMD5(filename, true);
-    std::shared_ptr<array2D<uint16_t>> mask;
+    std::shared_ptr<array2D<float>> mask;
     if (!cache_.get(key, mask)) {
         StdImageSource src;
         if (src.load(filename) != 0) {
@@ -961,8 +961,8 @@ bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverte
         PreviewProps pp(0, 0, W, H, 1);
         imio->getStdImage(ColorTemp(), TR_NONE, &img, pp);
 
-        mask = std::make_shared<array2D<uint16_t>>();
-        array2D<uint16_t> &a = *mask;
+        mask = std::make_shared<array2D<float>>();
+        array2D<float> &a = *mask;
         a(W, H);
 
 #ifdef _OPENMP
@@ -970,14 +970,14 @@ bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverte
 #endif
         for (int y = 0; y < H; ++y) {
             for (int x = 0; x < W; ++x) {
-                a[y][x] = DNG_FloatToHalf(LIM01(img.g(y, x) / 65535.f));
+                a[y][x] = LIM01(img.g(y, x) / 65535.f);
             }
         }
 
         cache_.set(key, mask);
     }
 
-    const array2D<uint16_t> &a = *mask;
+    const array2D<float> &a = *mask;
     
     const int dW = full_width;
     const int dH = full_height;
@@ -1000,7 +1000,7 @@ bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverte
         float sy = (y + offset_y) * row_scale;
         for (int x = 0; x < oW; ++x) {
             float sx = (x + offset_x) * col_scale;
-            float val = DNG_HalfToFloat(getBilinearValue(a, sx, sy));
+            float val = getBilinearValue(a, sx, sy);
             if (inverted) {
                 val = 1.f - val;
             }
