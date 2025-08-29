@@ -49,8 +49,7 @@ class Crop;
   * but using this class' LUT and other precomputed parameters. The main preview area is displaying a non framed Crop object,
   * while detail windows are framed Crop objects.
   */
-class ImProcCoordinator : public StagedImageProcessor, public HistogramObservable
-{
+class ImProcCoordinator: public StagedImageProcessor, public HistogramObservable {
 
     friend class Crop;
 
@@ -184,6 +183,7 @@ protected:
 
     void wait_not_running();
     void set_updater_running(bool val);
+    int update_change_flags(const ProcParams &pp, int flags);
     
 public:
 

@@ -84,6 +84,7 @@
 #define DISPLAY (M_LUMINANCE|M_COLOR)
 
 constexpr int LINKEDMASK = M_LUMACURVE|M_LUMINANCE|M_COLOR;
+constexpr int LINKEDMASK_FIRST = M_LUMACURVE;
 
 extern int refreshmap[];
 

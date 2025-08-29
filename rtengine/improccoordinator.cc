@@ -1454,7 +1454,7 @@ void ImProcCoordinator::startProcessing()
 void ImProcCoordinator::startProcessing(int changeCode)
 {
     paramsUpdateMutex.lock();
-    changeSinceLast |= changeCode;
+    changeSinceLast |= update_change_flags(nextParams, changeCode);
     paramsUpdateMutex.unlock();
 
     startProcessing();
@@ -1525,18 +1525,27 @@ void ImProcCoordinator::endUpdateParams(ProcEvent change)
     endUpdateParams(action);
 }
 
-void ImProcCoordinator::endUpdateParams(int changeFlags)
+
+int ImProcCoordinator::update_change_flags(const ProcParams &pp, int flags)
 {
-    changeSinceLast |= changeFlags;
-    for (auto p : nextParams.get_maskable()) {
-        for (auto &m : p->get_masks()) {
-            if (m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
-                changeSinceLast |= LINKEDMASK;
-                goto out;
+    if (flags & (LINKEDMASK & ~LINKEDMASK_FIRST)) {
+        for (auto p : pp.get_maskable()) {
+            for (auto &m : p->get_masks()) {
+                if (m.rasterMask.enabled && !m.rasterMask.toolname.empty() && !m.rasterMask.name.empty()) {
+                    flags |= LINKEDMASK;
+                    goto out;
+                }
             }
         }
     }
   out:
+    return flags;
+}
+
+
+void ImProcCoordinator::endUpdateParams(int changeFlags)
+{
+    changeSinceLast |= update_change_flags(nextParams, changeFlags);
 
     paramsUpdateMutex.unlock();
     startProcessing();
