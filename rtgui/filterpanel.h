@@ -34,37 +34,39 @@ public:
 
 class FilterPanel: public Gtk::VBox {
 protected:
-    Gtk::ListViewText*      filetype;
-    Gtk::ListViewText*      camera;
-    Gtk::ListViewText*      lens;
-    Gtk::ListViewText*      orientation;
-    Gtk::ListViewText*      expcomp;
-    Gtk::Entry* fnumberFrom;
-    Gtk::Entry* fnumberTo;
-    Gtk::Entry* shutterFrom;
-    Gtk::Entry* shutterTo;
-    Gtk::Entry* focalFrom;
-    Gtk::Entry* focalTo;
-    Gtk::Entry* isoFrom;
-    Gtk::Entry* isoTo;
+    Gtk::ListViewText *filetype;
+    Gtk::ListViewText *camera;
+    Gtk::ListViewText *lens;
+    Gtk::ListViewText *orientation;
+    Gtk::ListViewText *expcomp;
+    Gtk::Entry *fnumberFrom;
+    Gtk::Entry *fnumberTo;
+    Gtk::Entry *shutterFrom;
+    Gtk::Entry *shutterTo;
+    Gtk::Entry *focalFrom;
+    Gtk::Entry *focalTo;
+    Gtk::Entry *isoFrom;
+    Gtk::Entry *isoTo;
     DateEntry *dateFrom;
     DateEntry *dateTo;
-    Gtk::CheckButton* enabled;
-    Gtk::CheckButton* enaFNumber;
-    Gtk::CheckButton* enaShutter;
-    Gtk::CheckButton* enaFocalLen;
-    Gtk::CheckButton* enaISO;
-    Gtk::CheckButton* enaExpComp;
-    Gtk::CheckButton* enaCamera;
-    Gtk::CheckButton* enaLens;
-    Gtk::CheckButton* enaOrientation;
-    Gtk::CheckButton* enaFiletype;
+    Gtk::CheckButton *enabled;
+    Gtk::CheckButton *enaFNumber;
+    Gtk::CheckButton *enaShutter;
+    Gtk::CheckButton *enaFocalLen;
+    Gtk::CheckButton *enaISO;
+    Gtk::CheckButton *enaExpComp;
+    Gtk::CheckButton *enaCamera;
+    Gtk::CheckButton *enaLens;
+    Gtk::CheckButton *enaOrientation;
+    Gtk::CheckButton *enaFiletype;
     Gtk::CheckButton *enaDate;
 
     std::vector<sigc::connection> sChange;
 
     ExifFilterSettings curefs;
-    FilterPanelListener* listener;
+    FilterPanelListener *listener;
+
+    std::vector<Glib::ustring> orientation_values_;
 
 public:
     FilterPanel();

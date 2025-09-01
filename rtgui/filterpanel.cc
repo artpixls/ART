@@ -23,6 +23,16 @@
 
 using namespace rtengine;
 
+namespace {
+
+const std::map<std::string, Glib::ustring> orientation_translations = {
+    {"Portrait", "GENERAL_PORTRAIT"},
+    {"Landscape", "GENERAL_LANDSCAPE"},
+    {"Unknown", "GENERAL_UNKNOWN"}
+};
+
+} // namespace
+
 FilterPanel::FilterPanel () : listener (nullptr)
 {
     enabled = Gtk::manage (new Gtk::CheckButton (M("EXIFFILTER_METADATAFILTER")));
@@ -152,7 +162,7 @@ FilterPanel::FilterPanel () : listener (nullptr)
     Gtk::VBox* ovb = Gtk::manage(new Gtk::VBox ());
     ovb->pack_start (*enaOrientation, Gtk::PACK_SHRINK, 0);
     orientation = Gtk::manage(new Gtk::ListViewText (1, false, Gtk::SELECTION_MULTIPLE));
-    orientation->set_headers_visible (false);
+    orientation->set_headers_visible(false);
     Gtk::ScrolledWindow* sorientation = Gtk::manage(new Gtk::ScrolledWindow());
     sorientation->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
     sorientation->set_size_request(-1, 80);
@@ -281,7 +291,7 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
     if (!!update) {
         enaOrientation->set_active(defefs.filterOrientation);
     }
-    Glib::RefPtr<Gtk::TreeSelection> oselection = orientation->get_selection ();
+    Glib::RefPtr<Gtk::TreeSelection> oselection = orientation->get_selection();
 
      if (!update) {
         expcomp->clear_items();
@@ -305,10 +315,17 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
         lselection->select_all();
 
         orientation->clear_items();
+        orientation_values_.clear();
         curefs.orientations.clear();
 
         for (std::set<std::string>::iterator i = defefs.orientations.begin(); i != defefs.orientations.end(); ++i) {
-            orientation->append (*i);
+            orientation_values_.push_back(*i);
+            auto it = orientation_translations.find(*i);
+            if (it != orientation_translations.end()) {
+                orientation->append(M(it->second));
+            } else {
+                orientation->append(M("GENERAL_UNKNOWN"));
+            }
             curefs.orientations.insert(*i);
         }
 
@@ -366,9 +383,9 @@ void FilterPanel::setFilter(ExifFilterSettings& defefs, bool update)
                 iter->get_value(0, v);
 
                 if( defefs.orientations.find( v ) != defefs.orientations.end() ) {
-                    oselection->select( iter );
+                    oselection->select(iter);
                 } else {
-                    oselection->unselect( iter );
+                    oselection->unselect(iter);
                 }
             }
         }
@@ -477,11 +494,13 @@ ExifFilterSettings FilterPanel::getFilter(bool full_data)
         }
     }
 
-    sel = orientation->get_selected ();
+    sel = orientation->get_selected();
 
     if (efs.filterOrientation || full_data) {
         for (size_t i = 0; i < sel.size(); i++) {
-            efs.orientations.insert (orientation->get_text (sel[i]));
+            auto j = sel[i];
+            assert(j >= 0 && j < orientation_values_.size());
+            efs.orientations.insert(orientation_values_[j]);
         }
     }
     
