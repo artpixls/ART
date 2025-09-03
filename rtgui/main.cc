@@ -149,10 +149,10 @@ int processLineParams(int argc, char **argv)
                 remote = false;
                 break;
                 
-            // case 's':
-            //     simpleEditor = true;
-            //     remote = false;
-            //     break;
+            case 's':
+                simpleEditor = true;
+                remote = false;
+                break;
                 
             case '-':
                 if (currParam.substr(5) == "--gtk" || currParam == "--g-fatal-warnings") {
