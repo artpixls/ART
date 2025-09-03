@@ -2336,7 +2336,15 @@ void Preferences::themeChanged ()
     theme_fg_color->set_visible(theme_color_visible);
     theme_hl_color->set_visible(theme_color_visible);
     theme_colors_reset->set_visible(theme_color_visible);
-    
+
+    RTImage::cleanup(true);
+    options.svg_color = options.svg_dark_color;
+    if (theme_color_visible) {
+        auto lum = rtengine::Color::rgbLuminance(moptions.theme_bg_color[0]/255.0, moptions.theme_bg_color[1]/255.0, moptions.theme_bg_color[2]/255.0);
+        if (lum >= 0.45) {
+            options.svg_color = options.svg_light_color;
+        }
+    }
     RTImage::updateImages();
     switchThemeTo(moptions.theme, &moptions);
 }

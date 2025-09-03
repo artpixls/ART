@@ -1,4 +1,5 @@
-/*
+/* -*- C++ -*-
+ *  
  *  This file is part of RawTherapee.
  *
  *  Copyright (c) 2018 Jean-Christophe FRISCH <natureh.510@gmail.com>
@@ -24,8 +25,7 @@
 /**
  * @brief A master class for derived class of Gtk::Image in order to handle theme-related icon sets.
  */
-class RTScalable
-{
+class RTScalable {
     static double dpi;
     static int scale;
     static Gtk::TextDirection direction;  // cached value for text-direction

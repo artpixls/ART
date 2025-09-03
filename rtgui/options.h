@@ -459,6 +459,9 @@ public:
     std::vector<int> theme_bg_color; // RGB in 0-255
     std::vector<int> theme_fg_color;
     std::vector<int> theme_hl_color;
+    std::string svg_color;
+    static const std::string svg_dark_color;
+    static const std::string svg_light_color;
 
     struct ExportProfileInfo {
         Glib::ustring profile;

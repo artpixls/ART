@@ -49,6 +49,9 @@ Glib::ustring Options::user_config_dir;
 // User's cached datas' directory
 Glib::ustring Options::cacheBaseDir;
 
+const std::string Options::svg_dark_color{"#CCCCCC"};
+const std::string Options::svg_light_color{"#151515"};
+
 Options options;
 Glib::ustring versionString = RTVERSION;
 Glib::ustring paramFileExtension = ".arp";
@@ -618,6 +621,7 @@ void Options::setDefaults()
     theme_bg_color.assign({72, 72, 72});
     theme_fg_color.assign({170, 170, 170});
     theme_hl_color.assign({227, 146, 67});
+    svg_color = svg_dark_color;
 
     rtSettings.os_monitor_profile = rtengine::Settings::StdMonitorProfile::SRGB;
 }
@@ -2401,6 +2405,17 @@ void Options::load(bool lightweight, int verbose)
         user_default_translation, defaultTranslation, user_ctl_default_translation, ctl_default_translation
     };
     langMgr.load(options.language, fnames);
+
+    options.svg_color = Options::svg_dark_color;
+    if (options.theme == Options::DEFAULT_THEME) {
+        auto lum = rtengine::Color::rgbLuminance(options.theme_bg_color[0]/255.0, options.theme_bg_color[1]/255.0, options.theme_bg_color[2]/255.0);
+        if (options.rtSettings.verbose) {
+            std::cout << "Theme colors changed! Background luminance: " << lum << " (color: " << options.theme_bg_color[0] << " " << options.theme_bg_color[1] << " " << options.theme_bg_color[2] << ")" << std::endl;
+        }
+        if (lum >= 0.45) {
+            options.svg_color = Options::svg_light_color;
+        }
+    }
 
     rtengine::init(&options.rtSettings, ART_base_dir, user_config_dir, !lightweight);
 }

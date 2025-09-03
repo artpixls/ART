@@ -90,6 +90,10 @@ void RTScalable::init(Gtk::Window *window)
 
 void RTScalable::deleteDir(const Glib::ustring& path)
 {
+    if (options.rtSettings.verbose > 1) {
+        std::cout << "RTScalable::deleteDir(" << path << ")" << std::endl;
+    }
+    
     int error = 0;
     try {
 
@@ -104,7 +108,10 @@ void RTScalable::deleteDir(const Glib::ustring& path)
             std::cerr << "Failed to delete all entries in '" << path << "': " << g_strerror(errno) << std::endl;
         }
 
-    } catch (Glib::Error&) {
+    } catch (Glib::Error &exc) {
+        if (options.rtSettings.verbose) {
+            std::cerr << "Error in deleteDir(" << path << "): " << exc.what() << std::endl;
+        }
         error = 1;
     }
 
@@ -114,7 +121,11 @@ void RTScalable::deleteDir(const Glib::ustring& path)
 
             error = g_remove (path.c_str());
 
-        } catch (Glib::Error&) {}
+        } catch (Glib::Error &exc) {
+            if (options.rtSettings.verbose) {
+                std::cerr << "Error in deleteDir(" << path << "): " << exc.what() << std::endl;
+            }    
+        }
     }
 }
 
@@ -137,7 +148,10 @@ void RTScalable::cleanup(bool all)
                 deleteDir(filePath);
             }
         }
-    } catch (Glib::Exception&) {
+    } catch (Glib::Exception &exc) {
+        if (options.rtSettings.verbose) {
+            std::cerr << "Error in RTScalable::cleanup: " << exc.what() << std::endl;
+        }
     }
 
 }
@@ -232,7 +246,7 @@ Cairo::RefPtr<Cairo::ImageSurface> RTScalable::loadImage(const Glib::ustring &fn
 
     // -------------------- Updating the the magic color --------------------
 
-    std::string updatedSVG = Glib::Regex::create("#2a7fff")->replace(svgFile, 0, "#CCCCCC", Glib::RegexMatchFlags());
+    std::string updatedSVG = Glib::Regex::create("#2a7fff")->replace(svgFile, 0, options.svg_color, Glib::RegexMatchFlags());
 
     // -------------------- Creating the rsvg handle --------------------
 
