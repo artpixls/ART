@@ -119,6 +119,8 @@ EXPORT_RAW_DMETHOD;Méthode de dématriçage
 EXPORT_USE_FAST_PIPELINE;Dédié (traitement complet sur une image redimmensionnée)
 EXPORT_USE_FAST_PIPELINE_TIP;Utiliser une chaîne de traitement dédiée pour les images en Export Rapide, qui privilégie la vitesse sur la qualité. Le redimensionnement des images est fait le plus en amont possible, au lieu d'être fait à la fin comme dans le pipeline normal. L'accélération peut être significative, mais soyez prêt à voir des artéfacts et une dégradation générale de la qualité de sortie.
 EXPORT_USE_NORMAL_PIPELINE;Standard (ignorer certaines étapes, redimensionner à la fin)
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;Attention : le format de l'image ne correspond pas à celui du masque externe
+EXTERNAL_MASK_LOAD_FAILED_WARNING;Attention : échec de chargement du masque à partir de "%1"
 FILEBROWSER_APPLYPROFILE;Appliquer le profil
 FILEBROWSER_APPLYPROFILE_PARTIAL;Appliquer le profil (partiel)
 FILEBROWSER_AUTODARKFRAME;Soustraction auto. de Trame Noire
@@ -551,6 +553,8 @@ HISTORY_MSG_COLORCORRECTION_PARAMETRICMASK;CC - Masque paramétrique
 HISTORY_MSG_COLORCORRECTION_MASK_POSTPROCESS;CC - Post-traitement du masque
 HISTORY_MSG_COLORCORRECTION_LUT;CC - LUT
 HISTORY_MSG_COLORCORRECTION_LUT_PARAMS;CC - LUT paramétres
+HISTORY_MSG_COLORCORRECTION_HSL_GAMMA;CC - Gamma
+HISTORY_MSG_COLORCORRECTION_LINKEDMASK;CC - Masque lié
 HISTORY_MSG_COLORTONING_LABGRID_VALUE;CC - Correction de Couleur
 HISTORY_MSG_DENOISE_CHROMINANCE_AUTO_FACTOR;RdB - Force Chroma auto.
 HISTORY_MSG_DENOISE_GUIDED_CHROMA_RADIUS;NR - Lissage final C
@@ -583,6 +587,7 @@ HISTORY_MSG_EPD_DELTAEMASK;TB - masque similarité de couleurs
 HISTORY_MSG_EPD_DRAWNMASK;TB - masque au pinceau
 HISTORY_MSG_EPD_PARAMETRICMASK;TB - masque paramétrique
 HISTORY_MSG_EPD_MASK_POSTPROCESS;TB - Post-traitement du masque
+HISTORY_MSG_EPD_LINKEDMASK;TB - Masque lié
 HISTORY_MSG_EXPOSURE_BLACK;Exposition - Point noir
 HISTORY_MSG_EXPOSURE_HRBLUR;Exposition - Propagation de la couleur, adoucissement
 HISTORY_MSG_FILMNEGATIVE_ENABLED;Film Négatif
@@ -617,6 +622,7 @@ HISTORY_MSG_LOCALCONTRAST_DELTAEMASK;Contraste Local - Masque similarité de cou
 HISTORY_MSG_LOCALCONTRAST_DRAWNMASK;Contraste Local - Masque au pinceau
 HISTORY_MSG_LOCALCONTRAST_PARAMETRICMASK;Contraste Local - Masque paramétrique
 HISTORY_MSG_LOCALCONTRAST_MASK_POSTPROCESS;Contraste Local - Post-traitement du masque
+HISTORY_MSG_LOCALCONTRAST_LINKEDMASK;Contraste Local - Masque lié
 HISTORY_MSG_LOGENC_AUTO;Log - Auto
 HISTORY_MSG_LOGENC_AUTOGAIN;Log - Gain auto
 HISTORY_MSG_LOGENC_REGULARIZATION;Log - Régularisation
@@ -683,6 +689,7 @@ HISTORY_MSG_SMOOTHING_MASK_POSTPROCESS;Lissage - Post-traitement du masque
 HISTORY_MSG_SMOOTHING_HALATION_SIZE;Lissage - Force du halo
 HISTORY_MSG_SMOOTHING_HALATION_COLOR;Lissage - Teinte du halo
 HISTORY_MSG_SMOOTHING_NOISE_COARSENESS;Lissage - Dureté du bruit
+HISTORY_MSG_SMOOTHING_LINKEDMASK;Lissage - Masque lié
 HISTORY_MSG_SOFTLIGHT_ENABLED;Lumière douce
 HISTORY_MSG_SOFTLIGHT_STRENGTH;Lumière douce - Force
 HISTORY_MSG_SPOT;Retrait de taches
@@ -801,6 +808,7 @@ IPTCPANEL_TITLE;Titre
 IPTCPANEL_TITLEHINT;Entrez un nom court et humainement lisible pour l'image, cela peut être le nom du fichier
 IPTCPANEL_TRANSREFERENCE;Identifiant du travail
 IPTCPANEL_TRANSREFERENCEHINT;Entrez un nombre ou identifiant servant au contrôle du flux de travail ou au suivi
+LINKED_MASK_NOT_FOUND_WARNING;Attention : masque lié "%1->%2" introuvable
 MAIN_BUTTON_FULLSCREEN;Plein écran
 MAIN_BUTTON_ICCPROFCREATOR;Créateur de Profil ICC
 MAIN_BUTTON_NAVNEXT_TOOLTIP;Naviguer à l'image Suivante relativement à l'image ouverte dans l'Éditeur.\nRaccourci : <b>Shift-F4</b>\n\nPour naviguer à l'image suivante relativement à la vignette sélectionnée dans le Navigateur de fichiers ou la Pellicule :\nRaccourci : <b>F4</b>
@@ -1684,6 +1692,7 @@ TP_LABMASKS_POSTPROCESS;Post-traitement du masque
 TP_LABMASKS_POSTPROCESS_CURVE;Courbe tonale
 TP_LABMASKS_POSTPROCESS_POSTERIZATION;Postérisation
 TP_LABMASKS_POSTPROCESS_SMOOTHING;Lissage
+TP_LABMASKS_LINKEDMASK;Masque lié
 TP_LENSGEOM_AUTOCROP;Rognage auto
 TP_LENSGEOM_FILL;Remplir automatiquement
 TP_GEOM_LABEL;Geométrie
