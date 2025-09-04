@@ -120,7 +120,7 @@ void CropWindow::initZoomSteps()
     char lbl[64];
     // NOTE(zoulu): 1000 is the watershed for zoomed in and zoomed out, >=1000 (inclusive) indicates zoomed in.
     // TODO(zoulu): avoid magic numbers, it's used widely among multiple files.
-    for (int s = 1000 - 1; s >= 10; --s) {
+    for (int s = 1000 - 1; s > 10; --s) {
         float z = 10./float(s);
         sprintf(lbl, "% 2d%%", int(z * 100));
         bool is_major = (s == s/10 * 10);
