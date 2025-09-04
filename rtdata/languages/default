@@ -119,6 +119,8 @@ EXPORT_RAW_DMETHOD;Demosaic method
 EXPORT_USE_FAST_PIPELINE;Dedicated (full processing on resized image)
 EXPORT_USE_FAST_PIPELINE_TIP;Use a dedicated processing pipeline for images in Fast Export mode, that trades speed for quality. Resizing of the image is done as early as possible, instead of doing it at the end like in the normal pipeline. The speedup can be significant, but be prepared to see artifacts and a general degradation of output quality.
 EXPORT_USE_NORMAL_PIPELINE;Standard (bypass some steps, resize at the end)
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;Warning: aspect ratio mismatch between image and external mask
+EXTERNAL_MASK_LOAD_FAILED_WARNING;Warning: failed to load external mask from "%1"
 FILEBROWSER_APPLYPROFILE;Apply
 FILEBROWSER_APPLYPROFILE_PARTIAL;Apply - partial
 FILEBROWSER_AUTODARKFRAME;Auto dark-frame
@@ -813,6 +815,7 @@ IPTCPANEL_TITLEHINT;Enter a short verbal and human readable name for the image, 
 IPTCPANEL_TRANSREFERENCE;Job ID
 IPTCPANEL_TRANSREFERENCEHINT;Enter a number or identifier needed for workflow control or tracking.
 LABMASKS_AREA_MASK_EMPTY_WARNING;Warning: the current combination of area shapes results in an empty mask
+LINKED_MASK_NOT_FOUND_WARNING;Warning: linked mask "%1->%2" not found
 MAIN_BUTTON_FULLSCREEN;Fullscreen
 MAIN_BUTTON_ICCPROFCREATOR;ICC Profile Creator
 MAIN_BUTTON_NAVNEXT_TOOLTIP;Navigate to the next image relative to image opened in the Editor.\nShortcut: <b>Shift-F4</b>\n\nTo navigate to the next image relative to the currently selected thumbnail in the File Browser or Filmstrip:\nShortcut: <b>F4</b>

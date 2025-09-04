@@ -865,11 +865,14 @@ bool LinkedMaskManager::store_mask(const Glib::ustring &toolname, const Glib::us
 }
 
 
-bool LinkedMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread)
+bool LinkedMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread, ProgressListener *plistener)
 {
     auto k = key(toolname, name);
     auto it = masks_.find(k);
     if (it == masks_.end()) {
+        if (plistener) {
+            plistener->error(Glib::ustring::compose(M("LINKED_MASK_NOT_FOUND_WARNING"), toolname, name));
+        }
         return false;
     }
     auto &m = it->second;
@@ -945,13 +948,16 @@ void ExternalMaskManager::cleanup()
 }
 
 
-bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread)
+bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread, ProgressListener *plistener)
 {
     std::string key = Glib::filename_from_utf8(filename) + "\n" + getMD5(filename, true);
     std::shared_ptr<array2D<float>> mask;
     if (!cache_.get(key, mask)) {
         StdImageSource src;
         if (src.load(filename) != 0) {
+            if (plistener && !filename.empty()) {
+                plistener->error(Glib::ustring::compose(M("EXTERNAL_MASK_LOAD_FAILED_WARNING"), filename));
+            }
             return false;
         }
         ImageIO *imio = src.getImageIO();
@@ -984,6 +990,14 @@ bool ExternalMaskManager::apply_mask(const Glib::ustring &filename, bool inverte
 
     const int W = a.width();
     const int H = a.height();
+
+    if (plistener) {
+        int mask_ratio = int(float(W)/float(H) * 100 + 0.5);
+        int image_ratio = int(float(full_width)/float(full_height) * 100 + 0.5);
+        if (mask_ratio != image_ratio) {
+            plistener->error(M("EXTERNAL_MASK_ASPECT_RATIO_WARNING"));
+        }
+    }
     
     const float col_scale = float(W) / float(dW);
     const float row_scale = float(H) / float(dH);
@@ -1379,7 +1393,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskMan
             }
         }
         auto &em = masks[i].externalMask;
-        if (em.enabled && ExternalMaskManager::getInstance()->apply_mask(em.filename, em.inverted, em.feather, offset_x, offset_y, full_width, full_height, guide, &amask, multithread)) {
+        if (em.enabled && ExternalMaskManager::getInstance()->apply_mask(em.filename, em.inverted, em.feather, offset_x, offset_y, full_width, full_height, guide, &amask, multithread, plistener)) {
 #ifdef _OPENMP
 #           pragma omp parallel for if (multithread)
 #endif
@@ -1406,7 +1420,7 @@ bool generateMasks(Imagefloat *rgb, const Glib::ustring &toolname, LinkedMaskMan
             } else {
                 m1 = &((*abmask)[i]);
             }
-            mmgr.apply_mask(rm.toolname, rm.name, rm.inverted, m1, m2, multithread);
+            mmgr.apply_mask(rm.toolname, rm.name, rm.inverted, m1, m2, multithread, plistener);
         }
 
         apply_brush(i, false);

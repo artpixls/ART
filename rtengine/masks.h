@@ -36,7 +36,7 @@ public:
     LinkedMaskManager();
     void init(const rtengine::ProcParams &pparams);
     bool store_mask(const Glib::ustring &toolname, const Glib::ustring &name, const array2D<float> *mask1, const array2D<float> *mask2, bool multithread);
-    bool apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread);
+    bool apply_mask(const Glib::ustring &toolname, const Glib::ustring &name, bool inverted, array2D<float> *out1, array2D<float> *out2, bool multithread, ProgressListener *plistener);
     bool is_needed(const Glib::ustring &toolname, const Glib::ustring &name);
 
 private:
@@ -49,7 +49,7 @@ private:
 class ExternalMaskManager: public NonCopyable {
 public:
     static ExternalMaskManager *getInstance();
-    bool apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread);
+    bool apply_mask(const Glib::ustring &filename, bool inverted, double feather, int offset_x, int offset_y, int full_width, int full_height, const array2D<float> &guide, array2D<float> *out, bool multithread, ProgressListener *plistener);
 
     static void init();
     static void cleanup();
