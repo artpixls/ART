@@ -267,6 +267,7 @@ GENERAL_SAVE;Enregistrer
 GENERAL_SAVE_AS;Enregistrer sous...
 GENERAL_SLIDER;Curseur
 GENERAL_UNCHANGED;(Inchangé)
+GENERAL_UNKNOWN;Inconnu
 GENERAL_WARNING;Attention
 GENERAL_DEPRECATED;Obsolète
 GENERAL_DEPRECATED_TOOLTIP;Obsolète ! sera éliminée dans une prochaine version.
