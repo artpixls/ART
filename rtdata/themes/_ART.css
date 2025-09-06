@@ -2586,6 +2586,10 @@ checkbutton check, radiobutton radio {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+.app-notification > label {
+    color: mix(black, white, 0.7);
+}
+
 button {
     background-image: linear-gradient(to bottom, @ART-bgDark025, @ART-bgDark045);
     border-style: solid;
