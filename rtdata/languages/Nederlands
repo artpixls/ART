@@ -41,6 +41,7 @@
 #40 23-01-2024 update naar ART v1.21.1 door pm
 #41 23-05-24 update naar ART v1.23 door pm
 #42 28-07-24 update naar ART v1.24 door pm
+#43 08-09-25 update naar ART v1.25.8 door pm
 
 ABOUT_TAB_BUILD;Versie
 ABOUT_TAB_CREDITS;Credits
@@ -2042,3 +2043,51 @@ HISTORY_MSG_GRAIN_COLOR;Filmkorrel - Modus
 TP_GRAIN_MODE;Modus
 TP_GRAIN_COLOR;Kleur
 TP_GRAIN_BW;Z-W
+EXIFFILTER_ORIENTATION;Oriëntatie
+EXIFPANEL_METADATUM_TOOLTIP;<b>Tag: </b>%1\n<b>Sleutel: </b>%2\n<b>Waarde: </b>%3
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;Waarschuwing: beeldverhoudingen afbeelding en extern masker komen niet overeen
+EXTERNAL_MASK_LOAD_FAILED_WARNING;Waarschuwing: kon extern masker van "%1" niet laden
+GENERAL_UNKNOWN;Onbekend
+HISTORY_MSG_72;Vignetting correction - Amount
+HISTORY_MSG_124;Versterking/witpuntcorrectie
+HISTORY_MSG_LOCALCONTRAST_LIST;Lokaal contrast - gebieden
+HISTORY_MSG_LOCALCONTRAST_HUEMASK;Lokaal contrast - H-masker
+HISTORY_MSG_LOCALCONTRAST_CHROMATICITYMASK;Lokaal contrast - C-masker
+HISTORY_MSG_LOCALCONTRAST_LIGHTNESSMASK;Lokaal contrast - L-masker
+HISTORY_MSG_LOCALCONTRAST_MASKBLUR;Lokaal contrast - maskervervaging
+HISTORY_MSG_LOCALCONTRAST_AREAMASK;Lokaal contrast - gebiedsmasker
+HISTORY_MSG_COLORCORRECTION_LINKEDMASK;CC - gekoppeld masker
+HISTORY_MSG_COLORCORRECTION_EXTERNALMASK;CC - extern masker
+HISTORY_MSG_EPD_LINKEDMASK;TB - gekoppeld masker
+HISTORY_MSG_EPD_EXTERNALMASK;TB - extern masker
+HISTORY_MSG_LOCALCONTRAST_LINKEDMASK;Lokaal contrast - gekoppeld masker
+HISTORY_MSG_LOCALCONTRAST_EXTERNALMASK;Lokaal contrast - extern masker
+HISTORY_MSG_PREPROCESS_DYNROWNOISEFILTER;Dynamische rijruisreductie
+HISTORY_MSG_SMOOTHING_WAVELETS_STRENGTH;Verzachten - wavelets sterkte
+HISTORY_MSG_SMOOTHING_WAVELETS_LEVELS;Verzachten - wavelets niveaus
+HISTORY_MSG_SMOOTHING_WAVELETS_GAMMA;Verzachten - wavelets gamma
+HISTORY_MSG_SMOOTHING_LINKEDMASK;Verzachten - gekoppeld masker
+HISTORY_MSG_SMOOTHING_EXTERNALMASK;Verzachten - extern masker
+LINKED_MASK_NOT_FOUND_WARNING;Waarschuwing: gekoppeld masker "%1->%2" niet gevonden
+MAIN_TAB_ADVANCED;Geavanceerd
+MAIN_TAB_ADVANCED_TOOLTIP;Sneltoets: <b>Alt+w</b>
+MAIN_TOOLTIP_GRIDOVERLAY;Toon/verberg raster-overlay
+PARTIALPASTE_DIRPYREQUALIZER;Contrast per detailniveaus
+PARTIALPASTE_EQUALIZER;Wavelet-niveaus
+PARTIALPASTE_RETINEX;Retinex
+PARTIALPASTE_SHADOWSHIGHLIGHTS;Schaduwen/hoge lichten
+PARTIALPASTE_SHARPENEDGE;Randen
+PARTIALPASTE_SHARPENMICRO;Microcontrast
+TP_LABMASKS_LINKEDMASK;Gekoppeld masker
+TP_LABMASKS_EXTERNALMASK;Extern masker
+TP_LABMASKS_EXTERNALMASK_SELECT;Selecteer maskerbestand...
+TP_LABMASKS_EXTERNALMASK_FILENAME;Maskerbestand
+TP_SMOOTHING_MODE_WAVELETS;Wavelets
+TP_SMOOTHING_WAVELETS_LEVELS;Niveaus
+FILEBROWSER_BROWSEPATH_RECURSIVE_TOOLTIP;Zoek afbeeldingen ook in submappen.
+FILEBROWSER_RENAME_DIALOG_COPY_LABEL;Kopieer bestand(en)
+RENAME_DIALOG_ERROR_COPY;Kopiëren %1 naar %2 mislukt
+RENAME_DIALOG_FILENAMES_COPY;Te kopiëren bestanden
+PROGRESSBAR_FILE_RENAME;Bestanden hernoemen...
+PROGRESSBAR_FILE_COPY;Bestanden kopiëren...
+PROGRESSBAR_FILE_DELETE;Bestanden wissen...

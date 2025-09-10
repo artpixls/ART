@@ -1,7 +1,8 @@
 #00 Hungary - Hungarian
 #01 Developers should add translations to this file and then run the 'generateTranslationDiffs' Bash script to update other locales.
 #02 Translators please append a comment here with the current date and your name(s) as used in the RawTherapee/ART forum or Bitbucket page, e.g.:
-#03 2025-08-01 Bereczky Péter
+#03 2025-09-09 Bereczky Péter
+# ART version: 1.25.9
 ABOUT_TAB_BUILD;Verzió
 ABOUT_TAB_CREDITS;Szerzők
 ABOUT_TAB_LICENSE;Licenc
@@ -390,7 +391,7 @@ HISTORY_MSG_120;Zöldegyensúly
 HISTORY_MSG_121;Raw CA javítás - Auto
 HISTORY_MSG_122;Dark-Frame - Auto
 HISTORY_MSG_123;Dark-Frame - Fájl
-HISTORY_MSG_124;Nyereség/Fehérpont-korrekció
+HISTORY_MSG_124;Erősítés/Fehérpont-korrekció
 HISTORY_MSG_126;Flat-Field - Fájl
 HISTORY_MSG_127;Flat-Field - Auto
 HISTORY_MSG_128;Flat-Field - Elmosás sugara
@@ -545,7 +546,7 @@ HISTORY_MSG_COLORCORRECTION_RGBLUMINANCE;CC - fényerő mód
 HISTORY_MSG_COLORCORRECTION_INSATURATION;CC - bemeneti telítettség
 HISTORY_MSG_COLORCORRECTION_OUTSATURATION;CC - kimeneti telítettség
 HISTORY_MSG_COLORCORRECTION_SHOWMASK;CC - maszk megjelenítése
-HISTORY_MSG_COLORCORRECTION_SLOPE;CC - csúcsfények/nyereség
+HISTORY_MSG_COLORCORRECTION_SLOPE;CC - csúcsfények/erősítés
 HISTORY_MSG_COLORCORRECTION_DELTAEMASK;CC - színbeli hasonlóság maszk
 HISTORY_MSG_COLORCORRECTION_DRAWNMASK;CC - ecsetmaszk
 HISTORY_MSG_COLORCORRECTION_PARAMETRICMASK;CC - parametrikus maszk
@@ -967,7 +968,7 @@ PARTIALPASTE_PRSHARPENING;Kimenet élesítése
 PARTIALPASTE_RAWCA;Raw CA korrekció
 PARTIALPASTE_RAW_DEMOSAIC;Színrekonstrukció
 PARTIALPASTE_RAW_BLACK;Fekete szint
-PARTIALPASTE_RAW_WHITE;Nyereség/Fehérpont-korrekció
+PARTIALPASTE_RAW_WHITE;Erősítés/Fehérpont-korrekció
 PARTIALPASTE_RAWGROUP;Raw beállítások
 PARTIALPASTE_RAW_PREPROCESSING;Raw előfeldolgozás
 PARTIALPASTE_HOT_DEAD_PIXEL_FILTER;Forró/halott pixel szűrő
@@ -1392,7 +1393,7 @@ TP_COLORCORRECTION_POWER;Középtónusok/Gamma
 TP_COLORCORRECTION_COMPRESSION;Tömörítés
 TP_COLORCORRECTION_RGBLUMINANCE;Fényerő mód
 TP_COLORCORRECTION_SATURATION;Telítettség
-TP_COLORCORRECTION_SLOPE;Csúcsfények/Nyereség
+TP_COLORCORRECTION_SLOPE;Csúcsfények/Erősítés
 TP_COLORCORRECTION_SYNC_SLIDERS;Megfelelő csúszkák összekapcsolása
 TP_COLORCORRECTION_L;Világosság
 TP_COLORCORRECTION_H;Színezet
@@ -1510,7 +1511,7 @@ TP_EXPOSURE_TCMODE_SATANDVALBLENDING;Telítettség és érték keverése
 TP_EXPOSURE_TCMODE_STANDARD;Standard
 TP_EXPOSURE_TCMODE_WEIGHTEDSTD;Súlyozott Standard
 TP_EXPOS_BLACKPOINT_LABEL;Raw fekete pontok
-TP_EXPOS_WHITEPOINT_LABEL;Raw Nyereség/Fehér pont
+TP_EXPOS_WHITEPOINT_LABEL;Raw Erősítés/Fehér pont
 TP_FILMNEGATIVE_BLUE;Kék arány
 TP_FILMNEGATIVE_BLUEBALANCE;Hideg/Meleg
 TP_FILMNEGATIVE_FILMBASE_PICK;Válassza ki a film alapszínét
@@ -1778,7 +1779,7 @@ TP_RAWEXPOS_BLACK_3;Zöld 2
 TP_RAWEXPOS_BLACK_BLUE;Kék
 TP_RAWEXPOS_BLACK_GREEN;Zöld
 TP_RAWEXPOS_BLACK_RED;Vörös
-TP_RAWEXPOS_LINEAR;Nyereség/Fehérpont-korrekció
+TP_RAWEXPOS_LINEAR;Erősítés/Fehérpont-korrekció
 TP_RAWEXPOS_TWOGREEN;Zöldek összekapcsolása
 TP_RAW_1PASSMEDIUM;1-menetes (Markesteijn)
 TP_RAW_2PASS;1-menetes+gyors
@@ -1975,6 +1976,7 @@ TP_TONE_EQUALIZER_LABEL;Tónuskiegyenlítő
 TP_TONE_EQUALIZER_SHOW_COLOR_MAP;Tónustérkép megjelenítése
 TP_TONE_EQUALIZER_PIVOT;Pivot (középtónusok eltolása) (Fé)
 TP_VIGNETTING_AMOUNT;Mérték
+TP_VIGNETTING_CENTER;Középpont
 TP_VIGNETTING_CENTER_X;Középpont X
 TP_VIGNETTING_CENTER_Y;Középpont Y
 TP_VIGNETTING_LABEL;Peremsötétedés-korrekció
@@ -2001,3 +2003,42 @@ ZOOMPANEL_ZOOM100;Nagyítás 100%-ra\nGyorsbillentyű: <b>z</b>
 ZOOMPANEL_ZOOMFITSCREEN;A képernyő méretéhez igazítás\nGyorsbillentyű: <b>f</b>
 ZOOMPANEL_ZOOMIN;Nagyítás +\nGyorsbillentyű: <b>+</b>
 ZOOMPANEL_ZOOMOUT;Kicsinyítés -\nGyorsbillentyű: <b>-</b>
+PREFERENCES_SINGLETABVERTAB;Egylapos mód, függőleges fülek
+TP_LABMASKS_DRAWNMASK_HARDNESS;Keménység
+TP_LABMASKS_DRAWNMASK_TRANSPARENCY;Átlátszóság
+TP_LOGENC_EV_LEVELS;Relatív expozíciós szintek
+PREFERENCES_MONPROFILE_WARN_SRGB;Ebben az operációs rendszerben/asztali környezetben csak az sRGB támogatott monitorprofilként.
+HISTORY_MSG_GRAIN_COLOR;Filmszemcse - Mód
+TP_GRAIN_MODE;Mód
+TP_GRAIN_COLOR;Szín
+TP_GRAIN_BW;Fekete-fehér
+EXIFFILTER_ORIENTATION;Tájolás
+EXIFPANEL_METADATUM_TOOLTIP;<b>Címke: </b>%1\n<b>Kulcs: </b>%2\n<b>Érték: </b>%3
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;Figyelmeztetés: a kép és a külső maszk képaránya eltérő.
+EXTERNAL_MASK_LOAD_FAILED_WARNING;Figyelmeztetés: nem sikerült betölteni a külső maszkot "% 1“ - ből
+GENERAL_UNKNOWN;Ismeretlen
+HISTORY_MSG_COLORCORRECTION_LINKEDMASK;CC - linkelt maszk
+HISTORY_MSG_COLORCORRECTION_EXTERNALMASK;CC - külső maszk
+HISTORY_MSG_EPD_LINKEDMASK;TB - linkelt maszk
+HISTORY_MSG_EPD_EXTERNALMASK;TB - külső maszk
+HISTORY_MSG_LOCALCONTRAST_LINKEDMASK;Helyi kontraszt - linkelt maszk
+HISTORY_MSG_LOCALCONTRAST_EXTERNALMASK;Helyi kontraszt - külső maszk
+HISTORY_MSG_SMOOTHING_WAVELETS_STRENGTH;Simítás - wavelets erősség
+HISTORY_MSG_SMOOTHING_WAVELETS_LEVELS;Simítás - wavelets szintek
+HISTORY_MSG_SMOOTHING_WAVELETS_GAMMA;Simítás - wavelets gamma
+HISTORY_MSG_SMOOTHING_LINKEDMASK;Simítás - linkelt maszk
+HISTORY_MSG_SMOOTHING_EXTERNALMASK;Simítás - külső maszk
+LINKED_MASK_NOT_FOUND_WARNING;Figyelmeztetés: A "%1->%2“ linkelt maszk nem található.
+MAIN_TOOLTIP_GRIDOVERLAY;Négyzetrács megjelenítése/elrejtése
+TP_LABMASKS_LINKEDMASK;Linkelt maszk
+TP_LABMASKS_EXTERNALMASK;Külső maszk
+TP_LABMASKS_EXTERNALMASK_SELECT;Maszkfájl kiválasztása...
+TP_LABMASKS_EXTERNALMASK_FILENAME;Maszkfájl
+TP_SMOOTHING_MODE_WAVELETS;Wavelets
+FILEBROWSER_BROWSEPATH_RECURSIVE_TOOLTIP;Képek rekurzív keresése az alkönyvtárakban is.
+FILEBROWSER_RENAME_DIALOG_COPY_LABEL;Fájl(ok) másolása
+RENAME_DIALOG_ERROR_COPY;A % 1 másolása % 2-re nem sikerült.
+RENAME_DIALOG_FILENAMES_COPY;Másolandó fájlok
+PROGRESSBAR_FILE_RENAME;Fájlok átnevezése...
+PROGRESSBAR_FILE_COPY;Fájlok másolása...
+PROGRESSBAR_FILE_DELETE;Fájlok törlése...
