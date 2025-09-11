@@ -1022,7 +1022,12 @@ bool MyScrolledWindow::on_scroll_event (GdkEventScroll* event)
                 scroll->set_value(value2);
             }
         } else if (event->direction == GDK_SCROLL_SMOOTH) {
-            const double value2 = rtengine::LIM<double>(value + event->delta_y * step, lowerBound, upperBound);
+#ifdef __APPLE__
+            const auto incr = event->delta_y;
+#else
+            const auto incr = event->delta_y * step;
+#endif // __APPLE__
+            const double value2 = rtengine::LIM<double>(value + incr, lowerBound, upperBound);
 
             if (value2 != value) {
                 scroll->set_value(value2);

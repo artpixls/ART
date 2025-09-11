@@ -101,7 +101,13 @@ void ThumbBrowserBase::scroll (int direction, double deltaX, double deltaY)
     if (direction == GDK_SCROLL_UP || direction == GDK_SCROLL_DOWN || direction == GDK_SCROLL_SMOOTH) {
         if (arrangement == TB_Vertical) {
             double currValue = vscroll.get_value();
-            double newValue = rtengine::LIM<double>(currValue + coef * vscroll.get_adjustment()->get_step_increment(),
+            double incr = coef * vscroll.get_adjustment()->get_step_increment();
+#ifdef __APPLE__
+            if (direction == GDK_SCROLL_SMOOTH) {
+                incr = coef;
+            }
+#endif // __APPLE__
+            double newValue = rtengine::LIM<double>(currValue + incr,
                                                     vscroll.get_adjustment()->get_lower (),
                                                     vscroll.get_adjustment()->get_upper());
             if (newValue != currValue) {
@@ -109,6 +115,12 @@ void ThumbBrowserBase::scroll (int direction, double deltaX, double deltaY)
             }
         } else {
             double currValue = hscroll.get_value();
+            double incr = coef * hscroll.get_adjustment()->get_step_increment();
+#ifdef __APPLE__
+            if (direction == GDK_SCROLL_SMOOTH) {
+                incr = coef;
+            }
+#endif // __APPLE__
             double newValue = rtengine::LIM<double>(currValue + coef * hscroll.get_adjustment()->get_step_increment(),
                                                     hscroll.get_adjustment()->get_lower(),
                                                     hscroll.get_adjustment()->get_upper());
