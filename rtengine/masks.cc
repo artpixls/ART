@@ -753,7 +753,7 @@ bool mask_postprocess(int width, int height, float scale, const array2D<float> &
 #endif
         for (int y = 0; y < H; ++y) {
             for (int x = 0; x < W; ++x) {
-                mask[y][x] = int(mask[y][x] * p) / p;
+                mask[y][x] = int(mask[y][x] * p + 0.5) / p;
             }
         }
     }
