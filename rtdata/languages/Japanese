@@ -24,7 +24,8 @@
 #23 2024-01-20 Ohnishi, Yasuo, updates for 1.21.1
 #24 2024-05-21 Ohnishi, Yasuo, updates for 1.22
 #25 2024-07-28 Ohnishi, Yasuo, updates for 1.22.2
-#26 2025-08-01 Ohnishi, Yasuo, updates for 1.25.7
+#26 2025-06-20 Ohnishi, Yasuo, updates for 1.25.6
+#27 2025-09-10  Ohnishi, Yasuo, updates for 1.25.9
 ABOUT_TAB_BUILD;バージョン
 ABOUT_TAB_CREDITS;クレジット
 ABOUT_TAB_LICENSE;ライセンス
@@ -36,7 +37,7 @@ CTL_SIGMOID_BASE_PRIMARIES;基本原色
 CTL_SIGMOID_INSET;純色度の減衰
 CTL_SIGMOID_PURITY;純色に戻す
 CTL_SIGMOID_ROTATION;回転
-CTL_SIGMOID_SKEW;傾き(Skew)
+CTL_SIGMOID_SKEW;傾き (Skew)
 CTL_SIGMOID_USE_PRIMARIES;調整した原色を使用
 CURVEEDITOR_AXIS_IN;I:
 CURVEEDITOR_AXIS_LEFT_TAN;LT:
@@ -99,6 +100,7 @@ EXIFFILTER_FOCALLEN;焦点距離
 EXIFFILTER_IMAGETYPE;画像の種類
 EXIFFILTER_ISO;ISO
 EXIFFILTER_LENS;レンズ
+EXIFFILTER_ORIENTATION;向き
 EXIFFILTER_METADATAFILTER;メタデータ絞り込みの適用
 EXIFFILTER_SHUTTER;シャッター
 EXIFFILTER_SOFTWARE;ソフトウェア
@@ -141,13 +143,14 @@ EXPORT_RAW_DMETHOD;デモザイクの方式
 EXPORT_USE_FAST_PIPELINE;処理速度優先 (リサイズした画像に調整を全て行う)
 EXPORT_USE_FAST_PIPELINE_TIP;速度を優先すると 処理は速くなりますが 画像の質は落ちます. 通常 画像のリサイズは全現像処理工程の最後で行われますが ここでは処理工程の初めの方でリサイズが行われます. 処理速度は著しく上がりますが 現像処理された画像に不自然な効果が発生したり 全体的な質が低下したりします.
 EXPORT_USE_NORMAL_PIPELINE;標準 (リサイズ処理は最後 幾つかの処理を迂回)
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;警告: 画像と外部マスクファイルの縦横比が合いません
+EXTERNAL_MASK_LOAD_FAILED_WARNING;警告: "%1" から外部マスクの読み込みに失敗しました
 FILEBROWSER_APPLYPROFILE;プロファイルの適用
 FILEBROWSER_APPLYPROFILE_PARTIAL;プロファイルの適用 (一部)
 FILEBROWSER_AUTODARKFRAME;オート･ダークフレーム
 FILEBROWSER_AUTOFLATFIELD;オート･フラットフィールド
 FILEBROWSER_BROWSEPATHBUTTONHINT;サムネイルのリストを更新\nショートカット: <b>F5</b>
 FILEBROWSER_BROWSEPATHHINT;参照するパスを入力します\n<b>Ctrl-O</b> パスのテキストボックスにフォーカス\n<b>Enter</b> / <b>Ctrl-Enter</b>その場所をブラウズします\n<b>Esc</b> 変更をクリア\n<b>Shift-Esc</b>フォーカスを削除\nパスのショートカット:\n  <b>~</b> - ユーザーのホームディレクトリ\n  <b>!</b> - ユーザーの画像ディレクトリ
-FILEBROWSER_BROWSEPATH_RECURSIVE_TOOLTIP;下位ディレクトリの画像も探します
 FILEBROWSER_CACHE;キャッシュ
 FILEBROWSER_CACHECLEARFROMFULL;プロファイルを含めcache内をクリアにする
 FILEBROWSER_CACHECLEARFROMPARTIAL;プロファイルを除き cache内をクリアにする
@@ -209,7 +212,6 @@ FILEBROWSER_RANK3_TOOLTIP;ランク 3 *\nショートカット: <b>Shift-3</b>
 FILEBROWSER_RANK4_TOOLTIP;ランク 4 *\nショートカット: <b>Shift-4</b>
 FILEBROWSER_RANK5_TOOLTIP;ランク 5 *\nショートカット: <b>Shift-5</b>
 FILEBROWSER_RENAMEDLGLABEL;ファイル名変更
-FILEBROWSER_RENAME_DIALOG_COPY_LABEL;ファイルをコピー
 FILEBROWSER_RESETDEFAULTPROFILE;デフォルトにリセット
 FILEBROWSER_SELECTDARKFRAME;ダークフレームの選択...
 FILEBROWSER_SELECTFLATFIELD;フラットフィールドの選択...
@@ -290,6 +292,7 @@ GENERAL_SAVE;保存
 GENERAL_SAVE_AS;...で保存
 GENERAL_SLIDER;スライダー
 GENERAL_UNCHANGED;(変更なし)
+GENERAL_UNKNOWN;不明
 GENERAL_WARNING;警告
 GENERAL_DEPRECATED;非推奨
 GENERAL_DEPRECATED_TOOLTIP;<b>非推奨 (Deprecated) !</b> は 将来のバージョンで削除されます.
@@ -337,8 +340,8 @@ HISTORY_MSG_23;シャープニング 閾値
 HISTORY_MSG_24;シャープニング エッジのみ
 HISTORY_MSG_25;シャープニング エッジ検出 半径
 HISTORY_MSG_26;シャープニング エッジ許容
-HISTORY_MSG_27;シャープニング 光背効果(ハロ)抑制
-HISTORY_MSG_28;光背効果(ハロ)抑制 適用量
+HISTORY_MSG_27;シャープニング 光背効果 (ハロ) 抑制
+HISTORY_MSG_28;光背効果 (ハロ) 抑制 適用量
 HISTORY_MSG_29;入力画像シャープニング 方式
 HISTORY_MSG_30;デコンボリューション 半径
 HISTORY_MSG_31;デコンボリューション 適用量
@@ -497,7 +500,7 @@ HISTORY_MSG_374;出力シャープニング - アンシャープマスク - 閾�
 HISTORY_MSG_375;出力シャープニング - アンシャープマスク - エッジのみ
 HISTORY_MSG_376;出力シャープニング - アンシャープマスク - 半径
 HISTORY_MSG_377;出力シャープニング - アンシャープマスク - エッジの許容
-HISTORY_MSG_378;出力シャープニング - アンシャープマスク - 光背効果(ハロ)抑制
+HISTORY_MSG_378;出力シャープニング - アンシャープマスク - 光背効果 (ハロ) 抑制
 HISTORY_MSG_379;出力シャープニング - アンシャープマスク - 適用量
 HISTORY_MSG_380;出力シャープニング - 方式
 HISTORY_MSG_381;出力シャープニング - RLD - 半径
@@ -574,6 +577,9 @@ HISTORY_MSG_COLORCORRECTION_PARAMETRICMASK;色補正 - パラメータ指定マ�
 HISTORY_MSG_COLORCORRECTION_MASK_POSTPROCESS;色補正 - マスク追加処理
 HISTORY_MSG_COLORCORRECTION_LUT;色補正 - LUT
 HISTORY_MSG_COLORCORRECTION_LUT_PARAMS;色補正 - LUT パラメータ
+HISTORY_MSG_COLORCORRECTION_HSL_GAMMA;色補正 - ガンマ
+HISTORY_MSG_COLORCORRECTION_LINKEDMASK;色補正 - マスクの転用
+HISTORY_MSG_COLORCORRECTION_EXTERNALMASK;色補正 - 外部マスク
 HISTORY_MSG_COLORTONING_LABGRID_VALUE;色補正 - カラー補正
 HISTORY_MSG_DENOISE_CHROMINANCE_AUTO_FACTOR;NR - 自動彩度 (chroma) 伸長
 HISTORY_MSG_DENOISE_GUIDED_CHROMA_RADIUS;NR - 最終スムージング C
@@ -606,6 +612,8 @@ HISTORY_MSG_EPD_DELTAEMASK;TB - 類似色マスク
 HISTORY_MSG_EPD_DRAWNMASK;TB - ブラシマスク
 HISTORY_MSG_EPD_PARAMETRICMASK;TB - パラメータ指定マスク
 HISTORY_MSG_EPD_MASK_POSTPROCESS;TB - マスク追加処理
+HISTORY_MSG_EPD_LINKEDMASK;TB - マスクの転用
+HISTORY_MSG_EPD_EXTERNALMASK;TB - 外部マスク
 HISTORY_MSG_EXPOSURE_BLACK;露出 - ブラックポイント
 HISTORY_MSG_EXPOSURE_HRBLUR;露出 - 色の波及 (Color propagation) のスムーズさ
 HISTORY_MSG_FILMNEGATIVE_BALANCE;ネガフィルム - 基準出力
@@ -640,6 +648,8 @@ HISTORY_MSG_LOCALCONTRAST_DELTAEMASK;ローカルコントラスト - 類似色�
 HISTORY_MSG_LOCALCONTRAST_DRAWNMASK;ローカルコントラスト - ブラシマスク
 HISTORY_MSG_LOCALCONTRAST_PARAMETRICMASK;ローカルコントラスト - パラメータ設定マスク
 HISTORY_MSG_LOCALCONTRAST_MASK_POSTPROCESS;ローカルコントラスト - マスク追加処理
+HISTORY_MSG_LOCALCONTRAST_LINKEDMASK;ローカルコントラスト - マスクの転用
+HISTORY_MSG_LOCALCONTRAST_EXTERNALMASK;ローカルコントラスト - 外部マスク
 HISTORY_MSG_LOGENC_AUTO;Log - 自動
 HISTORY_MSG_LOGENC_AUTOGAIN;Log - 自動増幅 (gain)
 HISTORY_MSG_LOGENC_REGULARIZATION;Log - 遷移のスムーズ化 (Regularization)
@@ -706,6 +716,11 @@ HISTORY_MSG_SMOOTHING_NOISE_STRENGTH;スムージング - ノイズ強化
 HISTORY_MSG_SMOOTHING_NOISE_COARSENESS;スムージング - ノイズ 粗さ
 HISTORY_MSG_SMOOTHING_HALATION_SIZE;スムージング - ハレーションの強さ
 HISTORY_MSG_SMOOTHING_HALATION_COLOR;スムージング - ハレーションの色合い
+HISTORY_MSG_スムージング_WAVELETS_STRENGTH;スムージング - ウェーブレットの強さ
+HISTORY_MSG_スムージング_WAVELETS_LEVELS;スムージング - ウェーブレット レベル
+HISTORY_MSG_スムージング_WAVELETS_GAMMA;スムージング - ウェーブレット ガンマ
+HISTORY_MSG_スムージング_LINKEDMASK;スムージング - マスクの転用
+HISTORY_MSG_スムージング_EXTERNALMASK;スムージング - 外部マスク
 HISTORY_MSG_SOFTLIGHT_ENABLED;ソフトライト
 HISTORY_MSG_SOFTLIGHT_STRENGTH;ソフトライト - 強さ
 HISTORY_MSG_SPOT;スポット削除
@@ -824,6 +839,7 @@ IPTCPANEL_TITLEHINT;画像を短く表す言葉や撮影者名 または画像�
 IPTCPANEL_TRANSREFERENCE;作業のID
 IPTCPANEL_TRANSREFERENCEHINT;作業工程の管理やトラッキングのための画像の数字または識別
 LABMASKS_AREA_MASK_EMPTY_WARNING;警告: 今のエリアの形の組合わせではマスクは作成されません
+LINKED_MASK_NOT_FOUND_WARNING;警告: 転用するマスク "%1->%2" が見当たりません
 MAIN_BUTTON_FULLSCREEN;フルスクリーン
 MAIN_BUTTON_ICCPROFCREATOR;ICCプロファイルクリエーター
 MAIN_BUTTON_NAVNEXT_TOOLTIP;エディタで開いている画像の次の画像に移動します\nショートカット: <b>Shift-F4</b>\n\nファイルブラウザで選択したサムネイルの次の画像に移動するには\nショートカット: <b>F4</b>
@@ -894,6 +910,7 @@ MAIN_TOOLTIP_BACKCOLOR2;プレビューの背景色を指定します: <b>白</b
 MAIN_TOOLTIP_BACKCOLOR3;プレビューの背景色を指定します: <b>中間のグレー</b>\nショートカット: <b>9</b>
 MAIN_TOOLTIP_BEFOREAFTERLOCK;<b>固定</b> / <b>固定解除</b> - <b>補正前</b> の表示設定\n\n<b>固定</b>: <b>補正前</b>をそのまま表示し変更されません\n<b>固定解除</b>: <b>補正前</b>表示は<b>補正後</b>表示と連動します
 MAIN_TOOLTIP_FALSECOLORS;着色による露光量表示の切替.\nショートカット: <b>Shift-e</b>\n\n凡例 (IRE指数の範囲) :\n%1
+MAIN_TOOLTIP_GRIDOVERLAY;グリッド オーバーレイの切替
 MAIN_TOOLTIP_HIDEHP;左パネル 表示/非表示 (履歴含む)\nショートカット:  <b>l</b>
 MAIN_TOOLTIP_INDCLIPPEDH;ハイライト･クリッピング領域の表示\nショートカット: <b>&gt;</b>
 MAIN_TOOLTIP_INDCLIPPEDS;シャドウ･クリッピング領域の表示\nショートカット: <b>&lt;</b>
@@ -1096,6 +1113,8 @@ PREFERENCES_HISTOGRAM_TOOLTIP;これを有効にすると ヒストグラムと�
 PREFERENCES_HLTHRESHOLD;ハイライト･クリッピング領域の閾値
 PREFERENCES_ICCDIR;出力カラープロファイルを含むディレクトリ
 PREFERENCES_MONITORICCDIR;モニタカラープロファイルのあるディレクトリ
+PREFERENCES_MONITOR_GAMUT;モニターの色域
+PREFERENCES_OSCOLORMGMT_INFO;カラーマネジメントは、オペレーティングシステム/デスクトップ環境に組み込まれており、グローバルに有効になっています。\n環境機能を使用してモニタープロファイルを設定し、ここで最適な色域を選択します。
 PREFERENCES_IMPROCPARAMS;画像処理のデフォルト値
 PREFERENCES_INSPECT_LABEL;画像確認
 PREFERENCES_INSPECT_MAXBUFFERS_LABEL;cacheに入れる画像の最大数
@@ -1122,6 +1141,7 @@ PREFERENCES_METADATA_SYNC_READWRITE;読書き可
 PREFERENCES_MONINTENT;レンダリング方式 (目標)
 PREFERENCES_MONITOR;モニター
 PREFERENCES_MONPROFILE;デフォルトのモニタープロファイル
+PREFERENCES_MONPROFILE_WARN_SRGB;このオペレーティング システム/デスクトップ環境では、モニター プロファイルとして sRGB のみがサポートされます。
 PREFERENCES_MULTITAB;マルチ編集タブモード
 PREFERENCES_MULTITABDUALMON;独自のウィンドウモードによるマルチ編集タブ
 PREFERENCES_NAVIGATIONFRAME;ナビゲーション
@@ -1236,9 +1256,6 @@ PROFILEPANEL_TOOLTIPLOAD;ファイルからプロファイルを読み込みま�
 PROFILEPANEL_TOOLTIPPASTE; クリップボードからプロファイルを貼り付けます\nCtrl-クリックで貼り付けるパラメータを選択します
 PROFILEPANEL_TOOLTIPSAVE;現在のプロファイルを保存\nCtrl-クリックで保存するパラメータを選択します
 PROGRESSBAR_DENOISING;ノイズ低減中...
-PROGRESSBAR_FILE_RENAME;ファイル名変更中...
-PROGRESSBAR_FILE_COPY; ファイルコピー中...
-PROGRESSBAR_FILE_DELETE;ファイル削除中...
 PROGRESSBAR_HLREC;ハイライトの復元. . .
 PROGRESSBAR_LOADING;画像読み込み中...
 PROGRESSBAR_LOADINGTHUMBS;サムネイルの読み込み...
@@ -1274,8 +1291,6 @@ RENAME_DIALOG_BASEDIR;基本ディレクトリ
 RENAME_DIALOG_PATTERN;ファイル名のパターン
 RENAME_DIALOG_PATTERN_TIP;元の写真やメタデータ名に基づき出力名を指定して下さい.\n\n形式を指定する文字列の意味は以下の通りです:\n<b>%f</b>: 拡張子のないファイル名\n<b>%e</b>: 拡張子\n<b>%#</b>: ファイル名と付加番号\n<b>%C</b>: カメラ名 (メーカー及モデル)\n<b>%M</b>: カメラブランド\n<b>%N</b>: カメラモデル\n<b>%Y</b>: 写真の年 (4桁)\n<b>%y</b>: 写真の年 (2桁)\n<b>%m</b>: 写真の月 (数字)\n<b>%b</b>: 写真の月 (英略称)\n<b>%B</b>: 写真の月 (英フルネーム)\n<b>%d</b>: 写真の日付 (数字)\n<b>%a</b>: 写真の日付 (英略称)\n<b>%A</b>: 写真の日付 (英フルネーム)\n<b>%n1</b> to <b>%n9</b>: 増分値の桁指定 (例: <b>%n2</b> は <i>01</i> となる)\n<b>%I</b>: ISO感度\n<b>%L</b>: レンズ名\n<b>%F</b>: レンズ絞り (F番号)\n<b>%l</b>: 焦点距離\n<b>%E</b>: 露出補正量 (compensation)\n<b>%s</b>: シャッター速度\n<b>%r</b>: 写真の評価\n<b>%T[<i>タグ名</i>]</b>: メタデータタグの内容 <i>タグ名</i> (無効な文字は '_' で代替)\n<b>%%</b>: '%' 文字.
 RENAME_DIALOG_ALLOW_WHITESPACE;出力名に空白を許容
-RENAME_DIALOG_ERROR_COPY; %1 から %2 にコピーできませんでいた
-RENAME_DIALOG_FILENAMES_COPY; コピーするファイル
 RENAME_DIALOG_NAME_NORMALIZATION;ファイル名の標準化 (normalization)
 RENAME_DIALOG_NORM_OFF;なし
 RENAME_DIALOG_NORM_UPPERCASE;大文字
@@ -1425,6 +1440,7 @@ TP_COLORCORRECTION_HUESHIFT;色相のシフト
 TP_COLORCORRECTION_LUT_FILENAME;LUT ファイル
 TP_COLORCORRECTION_MODE_LUT;LUT
 TP_COLORCORRECTION_LUT_SELECT;LUT ファイルを選択...
+TP_COLORCORRECTION_HSL_GAMMA;ガンマ
 TP_CROP_FIXRATIO;縦横比固定
 TP_CROP_GTDIAGONALS;対角線
 TP_CROP_GTEPASSPORT;顔認証パスポート用
@@ -1712,6 +1728,10 @@ TP_LABMASKS_POSTPROCESS;マスク追加処理 (Post Processing)
 TP_LABMASKS_POSTPROCESS_CURVE;トーンカーブ
 TP_LABMASKS_POSTPROCESS_POSTERIZATION;ポスタリゼーション
 TP_LABMASKS_POSTPROCESS_SMOOTHING;スムージング
+TP_LABMASKS_LINKEDMASK;マスクの転用
+TP_LABMASKS_EXTERNALMASK;外部マスク
+TP_LABMASKS_EXTERNALMASK_SELECT;マスクファイルを選択...
+TP_LABMASKS_EXTERNALMASK_FILENAME;マスクファイル
 TP_LENSGEOM_AUTOCROP;自動的に切り抜き選択
 TP_LENSGEOM_FILL;オートフィル
 TP_GEOM_LABEL;ジオメトリ
@@ -1910,7 +1930,7 @@ TP_SHARPENING_BLUR;ぼかし (Blur) の半径
 TP_SHARPENING_CONTRAST;コントラストの閾値
 TP_SHARPENING_EDRADIUS;半径
 TP_SHARPENING_EDTOLERANCE;エッジ許容
-TP_SHARPENING_HALOCONTROL;光背効果(ハロ)抑制
+TP_SHARPENING_HALOCONTROL;光背効果 (ハロ) 抑制
 TP_SHARPENING_HCAMOUNT;適用量
 TP_SHARPENING_LABEL;入力画像シャープニング
 TP_SHARPENING_METHOD;方式
@@ -1935,7 +1955,7 @@ TP_SMOOTHING_HALATION_COLOR;色合い
 TP_SMOOTHING_MODE;モード
 TP_SMOOTHING_MODE_GUIDED;ガイド付き
 TP_SMOOTHING_MODE_GAUSSIAN;ガウス
-TP_SMOOTHING_MODE_GAUSSIAN_GLOW;グロー(光線)効果
+TP_SMOOTHING_MODE_GAUSSIAN_GLOW;グロー (光線) 効果
 TP_SMOOTHING_MODE_HALATION;ハレーション
 TP_SMOOTHING_MODE_NLMEANS;非局所平均 (Non-local means)
 TP_SMOOTHING_MODE_LENS;レンズぼけ効果
@@ -1964,7 +1984,7 @@ TP_SPOT_COUNTLABEL;%1 箇所
 TP_SPOT_ENTRYCHANGED;補修点変更
 TP_SPOT_HINT;プレビュー領域を操作するにはこのボタンをクリックします.\n\nスポットを編集するには, 編集部分の形 (editing geometry) が見えるようにした上で, 白い十字のカーソルを編集したい場所の上に置きます.\n\n編集スポットの追加には, Ctrlを押して左マウスボタンをクリックします. そしてそのままドラッグし, 編集部分を穴埋めするコピー元の場所にカーソルを移動させ (Ctrlキーは放しても良い) マウスボタンを放します.\n\nコピー元や編集部分を移動するには, その円の中心にカーソルを置いてドラッグします.\n\n編集部分の内側の円 (もっとも効果が強い部分) および "境界のぼかし (Feather) " (外側の) 円は その上にカーソルを置いて (すると円はオレンジになる), ドラッグする (すると円は赤になる) ことにより, サイズを変えられます.\n\n修正が終わったら, 任意のスポットの外側を右クリックするかこのボタンを再度クリックして, スポット編集モードを終わらせます.
 TP_SPOT_LABEL;スポット除去
-TP_SPOT_LIGHTPIPELINE_HINT;簡易プレビュー使用中(パフォーマンスオプション)は このボタンを押してスポットを編集します.\n\nプレビュー編集使用中のみ有効です.
+TP_SPOT_LIGHTPIPELINE_HINT;簡易プレビュー使用中 (パフォーマンスオプション) は このボタンを押してスポットを編集します.\n\nプレビュー編集使用中のみ有効です.
 TP_SPOT_CUR_SPOT_LABEL;現在のスポット
 TP_SPOT_SOURCE_X;適用元 X
 TP_SPOT_SOURCE_Y;適用元 Y
@@ -1996,7 +2016,7 @@ TP_TONE_EQUALIZER_BAND_4;ホワイト領域
 TP_TONE_EQUALIZER_DETAIL;領域間変化の円滑化 (Regularization)
 TP_TONE_EQUALIZER_LABEL;トーンイコライザー
 TP_TONE_EQUALIZER_SHOW_COLOR_MAP;トーン領域を色で表示
-TP_TONE_EQUALIZER_PIVOT;トーン領域境界の移動(Pivot) (Ev)
+TP_TONE_EQUALIZER_PIVOT;トーン領域境界の移動 (Pivot) (Ev)
 TP_VIGNETTING_AMOUNT;適用量
 TP_VIGNETTING_CENTER_X;中心 X軸
 TP_VIGNETTING_CENTER_Y;中心 Y軸
@@ -2024,13 +2044,14 @@ ZOOMPANEL_ZOOM100;100%にズーム\nショートカット: <b>z</b>
 ZOOMPANEL_ZOOMFITSCREEN;画像全体を画面に合わせる\nショートカット: <b>f</b>
 ZOOMPANEL_ZOOMIN;ズームイン\nショートカット: <b>+</b>
 ZOOMPANEL_ZOOMOUT;ズームアウト\nショートカット: <b>-</b>
-# added with automatic translation
-HISTORY_MSG_COLORCORRECTION_HSL_GAMMA;色補正 - ガンマ
-PREFERENCES_MONITOR_GAMUT;モニターの色域
-PREFERENCES_OSCOLORMGMT_INFO;カラーマネジメントは、オペレーティングシステム/デスクトップ環境に組み込まれており、グローバルに有効になっています。\n環境機能を使用してモニタープロファイルを設定し、ここで最適な色域を選択します。
-TP_COLORCORRECTION_HSL_GAMMA;ガンマ
-PREFERENCES_MONPROFILE_WARN_SRGB;このオペレーティング システム/デスクトップ環境では、モニター プロファイルとして sRGB のみがサポートされます。
 HISTORY_MSG_GRAIN_COLOR;フィルムグレイン - モード
 TP_GRAIN_MODE;モード
 TP_GRAIN_COLOR;カラー
 TP_GRAIN_BW;白黒
+FILEBROWSER_BROWSEPATH_RECURSIVE_TOOLTIP;下位ディレクトリの画像も探します
+FILEBROWSER_RENAME_DIALOG_COPY_LABEL;ファイルをコピー
+RENAME_DIALOG_ERROR_COPY; %1 から %2 にコピーできませんでした
+RENAME_DIALOG_FILENAMES_COPY; コピーするファイル
+PROGRESSBAR_FILE_RENAME;ファイル名変更中...
+PROGRESSBAR_FILE_COPY; ファイルコピー中...
+PROGRESSBAR_FILE_DELETE;ファイル削除中...
