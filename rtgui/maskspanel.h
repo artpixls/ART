@@ -160,6 +160,8 @@ public:
 
     void updateLinkedMaskList(const rtengine::procparams::ProcParams *params);
 
+    void setExternalMaskPath(const Glib::ustring &dir);
+
 private:
     void on_map() override;
     void onMaskFold(GdkEventButton *evt);

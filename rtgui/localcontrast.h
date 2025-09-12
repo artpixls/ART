@@ -91,5 +91,7 @@ public:
     void setDeltaEColorProvider(DeltaEColorProvider *p);
 
     void toolReset(bool to_initial) override;
+
+    void setExternalMaskPath(const Glib::ustring &dir) { masks_->setExternalMaskPath(dir); }
 };
 

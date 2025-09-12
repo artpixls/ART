@@ -66,6 +66,8 @@ public:
     void toolReset(bool to_initial) override;
 
     void drawCurve(bool rgb, Cairo::RefPtr<Cairo::Context> cr, Glib::RefPtr<Gtk::StyleContext> style, int W, int H);
+
+    void setExternalMaskPath(const Glib::ustring &dir) { masks_->setExternalMaskPath(dir); }
     
 private:
     void regionGet(int idx);

@@ -24,8 +24,7 @@
 #include "toolpanel.h"
 #include "maskspanel.h"
 
-class Smoothing: public ToolParamBlock, public AdjusterListener, public FoldableToolPanel, public PParamsChangeListener
-{
+class Smoothing: public ToolParamBlock, public AdjusterListener, public FoldableToolPanel, public PParamsChangeListener {
 public:
 
     Smoothing();
@@ -54,6 +53,8 @@ public:
 
     void toolReset(bool to_initial) override;
 
+    void setExternalMaskPath(const Glib::ustring &dir) { masks_->setExternalMaskPath(dir); }
+    
 private:
     void regionGet(int idx);
     void regionShow(int idx);

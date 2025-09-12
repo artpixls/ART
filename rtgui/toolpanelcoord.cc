@@ -672,7 +672,13 @@ void ToolPanelCoordinator::initImage (rtengine::StagedImageProcessor* ipc_, bool
         ipc->setAutoLogListener(logenc);
         ipc->setAutoDeconvRadiusListener(sharpening);
         ipc->setFilmNegListener(filmNegative);
-        flatfield->setShortcutPath(Glib::path_get_dirname(ipc->getInitialImage()->getFileName()));
+
+        auto dn = Glib::path_get_dirname(ipc->getInitialImage()->getFileName());
+        flatfield->setShortcutPath(dn);
+        colorcorrection->setExternalMaskPath(dn);
+        localContrast->setExternalMaskPath(dn);
+        textureBoost->setExternalMaskPath(dn);
+        smoothing->setExternalMaskPath(dn);
 
         icm->setRawMeta (raw, (const rtengine::FramesData*)pMetaData);
         lensProf->setRawMeta(raw, pMetaData);

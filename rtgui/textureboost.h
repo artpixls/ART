@@ -53,6 +53,8 @@ public:
 
     void toolReset(bool to_initial) override;
 
+    void setExternalMaskPath(const Glib::ustring &dir) { masks_->setExternalMaskPath(dir); }
+
 private:
     void regionGet(int idx);
     void regionShow(int idx);
