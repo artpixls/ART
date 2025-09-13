@@ -105,6 +105,7 @@ EXIFFILTER_IMAGETYPE;Tipo immagine
 EXIFFILTER_ISO;ISO
 EXIFFILTER_LENS;Obiettivo
 EXIFFILTER_METADATAFILTER;Abilita filtri metadati
+EXIFFILTER_ORIENTATION;Orientamento
 EXIFFILTER_SHUTTER;Tempo di esposizione
 EXIFFILTER_SOFTWARE;Software
 EXIFPANEL_ACTIVATE_ALL_HINT;Seleziona tutte le tag
@@ -145,6 +146,8 @@ EXPORT_RAW_DMETHOD;Metodo di Demosaicizzazione
 EXPORT_USE_FAST_PIPELINE;Dedicato (Elaborazione completa su immagine ridimensionata)
 EXPORT_USE_FAST_PIPELINE_TIP;Usa una catena di elaborazione dedicata alla modalità Esportazione Veloce, che aumenta la velocità a scapito della qualità. Il ridimensionamento dell'immagine avviene prima possibile, invece di farlo alla fine come nella normale elaborazione. Il tempo di elaborazione potrebbe ridursi di molto, ma si potrebbero presentare artefatti e una generale degradazione della qualità dell'immagine.
 EXPORT_USE_NORMAL_PIPELINE;Standard (salta qualche passo, ridimensiona alla fine)
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;Attenzione: il rapporto d'aspetto della maschera esterna non corrisponde all'immagine
+EXTERNAL_MASK_LOAD_FAILED_WARNING;Attenzione: fallito caricamento maschera esterna da "%1"
 FILEBROWSER_APPLYPROFILE;Applica
 FILEBROWSER_APPLYPROFILE_PARTIAL;Applica (parziale)
 FILEBROWSER_AUTODARKFRAME;Dark Frame automatico
@@ -295,6 +298,7 @@ GENERAL_SAVE;Salva
 GENERAL_SAVE_AS;Salva come...
 GENERAL_SLIDER;Slider
 GENERAL_UNCHANGED;(Invariato)
+GENERAL_UNKNOWN;Sconosciuto
 GENERAL_WARNING;Attenzione
 GIMP_PLUGIN_INFO;Benvenuti nel plugin Gimp di ART!\nQuando hai terminato le modifiche, chiudi semplicemente la finestra principale di ART e l'immagine sara automaticamente importata in GIMP.
 HISTOGRAM_RAW_STATS_TOOLTIP;min: %1 (%2), max: %3 (%4), peak: %5 (%6)\n    range: %7 EV, valori: %8, pixel: %9
@@ -570,6 +574,8 @@ HISTORY_MSG_COLORCORRECTION_POWER;CC - Tonimedi/gamma
 HISTORY_MSG_COLORCORRECTION_RGBLUMINANCE;CC - Modalità luminanza
 HISTORY_MSG_COLORCORRECTION_SHOWMASK;CC - Mostra maschera regione
 HISTORY_MSG_COLORCORRECTION_SLOPE;CC - Alte luci/guadagno
+HISTORY_MSG_COLORCORRECTION_LINKEDMASK;CC - Maschera collegata
+HISTORY_MSG_COLORCORRECTION_EXTERNALMASK;CC - Maschera esterna
 HISTORY_MSG_COLORTONING_LABGRID_VALUE;CC - Correzione colore
 HISTORY_MSG_DEHAZE_BLACKPOINT;Rimozione foschia - Correzione punto del nero
 HISTORY_MSG_DEHAZE_DEPTH;Rimozione foschia - Profondità
@@ -602,6 +608,8 @@ HISTORY_MSG_EPD_MASKBLUR;TB - Sfocatura maschera
 HISTORY_MSG_EPD_MASK_POSTPROCESS;TB - Maschera post-elaborazione
 HISTORY_MSG_EPD_PARAMETRICMASK;TB - Maschera parametrica
 HISTORY_MSG_EPD_SHOWMASK;TB - Mostra maschera
+HISTORY_MSG_EPD_LINKEDMASK;TB - Maschera collegata
+HISTORY_MSG_EPD_EXTERNALMASK;TB - Maschera esterna
 HISTORY_MSG_EXPOSURE_BLACK;Exposure - Punto nero
 HISTORY_MSG_EXPOSURE_HRBLUR;Exposure - Sfumatura propagazione colore
 HISTORY_MSG_FILMNEGATIVE_BALANCE;PN - Uscita di riferimento
@@ -643,6 +651,8 @@ HISTORY_MSG_LOCALCONTRAST_MODE;Contrasto locale - Metodo
 HISTORY_MSG_LOCALCONTRAST_PARAMETRICMASK;Contrasto locale - Maschera parametrica
 HISTORY_MSG_LOCALCONTRAST_RADIUS;Contrasto locale - Raggio
 HISTORY_MSG_LOCALCONTRAST_SHOWMASK;Contrasto locale - Mostra maschera
+HISTORY_MSG_LOCALCONTRAST_LINKEDMASK;Contrasto locale - Maschera collegata
+HISTORY_MSG_LOCALCONTRAST_EXTERNALMASK;Contrasto locale - Maschera esterna
 HISTORY_MSG_LOGENC_AUTO;Log - Automatico
 HISTORY_MSG_LOGENC_AUTOGAIN;Log - Guadagno automatico
 HISTORY_MSG_LOGENC_BLACK_EV;Log - Ev nero
@@ -710,6 +720,8 @@ HISTORY_MSG_SMOOTHING_PARAMETRICMASK;Sfocatura - maschera parametrica
 HISTORY_MSG_SMOOTHING_RADIUS;Sfocatura - raggio
 HISTORY_MSG_SMOOTHING_SHOWMASK;Sfocatura - mostra maschera
 HISTORY_MSG_SMOOTHING_SIGMA;Sfocatura - raggio
+HISTORY_MSG_SMOOTHING_LINKEDMASK;Sfocatura - Maschera collegata
+HISTORY_MSG_SMOOTHING_EXTERNALMASK;Sfocatura - Maschera esterna
 HISTORY_MSG_SOFTLIGHT_ENABLED;Soft light
 HISTORY_MSG_SOFTLIGHT_STRENGTH;Soft light - Intensità
 HISTORY_MSG_SPOT;Rimozione punti
@@ -828,6 +840,7 @@ IPTCPANEL_TITLEHINT;Inserisci un breve nome per l'immagine, può anche essere un
 IPTCPANEL_TRANSREFERENCE;Job ID
 IPTCPANEL_TRANSREFERENCEHINT;Inserisci un numero o identificatore necessario per il controllo di flusso o il tracciamento.
 LABMASKS_AREA_MASK_EMPTY_WARNING;Attenzione: l'attuale combinazione di aree fornisce come risultato una maschera vuota
+LINKED_MASK_NOT_FOUND_WARNING;Attenzione: maschera collegata "%1->%2" non trovata
 MAIN_BUTTON_FULLSCREEN;Schermo intero
 MAIN_BUTTON_ICCPROFCREATOR;Creatore profilo ICC
 MAIN_BUTTON_NAVNEXT_TOOLTIP;Passa all'immagine successiva a quella che si sta modificando\nScorciatoia: <b>Shift-F4</b>\n\nPer passare all'immagine successiva alla miniatura selezionata nel Navigatore o nel Rullino:\nScorciatoia: <b>F4</b>
@@ -898,6 +911,7 @@ MAIN_TOOLTIP_BACKCOLOR2;Colore di sfondo dell'anteprima: <b>Bianco</b>\nScorciat
 MAIN_TOOLTIP_BACKCOLOR3;Colore di sfondo dell'anteprima: <b>Grigio medio</b>\nScorciatoia: <b>9</b>
 MAIN_TOOLTIP_BEFOREAFTERLOCK;<b>Blocca</b>/<b>Sblocca</b> la vista <b>Prima</b>\n\n<b>Blocca</b>: mantiene la vista <b>Prima</b>.\n<b>Sblocca</b>: la vista <b>Prima</b> viene sincronizzata con la vista <b>Dopo</b>.
 MAIN_TOOLTIP_FALSECOLORS;Imposta l'indicazione dell'esposizione usando falsi colori.\nScorciatoia: <b>Shift-e</b>\n\nColori (gamma IRE):\n%1
+MAIN_TOOLTIP_GRIDOVERLAY;Mostra/nascondi griglia
 MAIN_TOOLTIP_HIDEHP;Mostra/Nascondi il pannello sinistro (inclusa la cronologia)\nScorciatoia: <b>l</b>
 MAIN_TOOLTIP_INDCLIPPEDH;Indicazione delle alte luci bruciate.\nScorciatoia: <b>&gt;</b>
 MAIN_TOOLTIP_INDCLIPPEDS;Indicazione delle ombre tagliate.\nScorciatoia: <b>&lt;</b>
@@ -1714,6 +1728,10 @@ TP_LABMASKS_POSTPROCESS_CURVE;Curva di tono
 TP_LABMASKS_POSTPROCESS_POSTERIZATION;Posterizzazione
 TP_LABMASKS_POSTPROCESS_SMOOTHING;Morbidezza
 TP_LABMASKS_SHOW;Mostra maschera
+TP_LABMASKS_LINKEDMASK;Maschera collegata
+TP_LABMASKS_EXTERNALMASK;Maschera esterna
+TP_LABMASKS_EXTERNALMASK_SELECT;Seleziona file maschera...
+TP_LABMASKS_EXTERNALMASK_FILENAME;File maschera
 TP_LENSGEOM_AUTOCROP;Ritaglio automatico
 TP_LENSGEOM_FILL;Adattamento automatico
 TP_LENSPROFILE_CORRECTION_AUTOMATCH;Automatico dal database

@@ -1,3 +1,4 @@
+# added with automatic translation
 #00 Als Grundlage die Übersetzung von RawTherapee übernommen.
 #01 Vielen Dank an die Übersetzer von RT: cytrinox, Ingo, keenonkites, klonk, marter, MaWe, Metex, mozzihh, oduis, phberlin, TooWaBoo
 #02 12.2022 Übernahme identischer Strings von RT nach ART. Kleinere Änderungen, weiterer Anpassungen und Übersetzung ART-exklusiver Strings (apostel338)
@@ -8,6 +9,7 @@
 #07 25.05.2024 Update für neue Version (apostel338)
 #08 28.07.2024 Update für neue Version (apostel338)
 #09 31.07.2025 Update für neue Version (apostel338)
+#10 13.09.2025 Update für neue Version (apostel338)
 ABOUT_TAB_BUILD;Version
 ABOUT_TAB_CREDITS;Danksagungen
 ABOUT_TAB_LICENSE;Lizenz
@@ -56,11 +58,8 @@ DYNPROFILEEDITOR_EDIT;Ändern
 DYNPROFILEEDITOR_EDIT_RULE;Profilregel ändern
 DYNPROFILEEDITOR_ENTRY_TOOLTIP;Groß-/Kleinschreibung wird NICHT berücksichtigt.\nFür einen regulären Ausdruck benutzen Sie 're:' als Prefix.
 DYNPROFILEEDITOR_IMGTYPE_ANY;Alle
-DYNPROFILEEDITOR_IMGTYPE_HDR;HDR
 DYNPROFILEEDITOR_IMGTYPE_NONRAW;Nicht-Raw
-DYNPROFILEEDITOR_IMGTYPE_PS;Pixel-Shift
 DYNPROFILEEDITOR_IMGTYPE_RAW;Raw
-DYNPROFILEEDITOR_IMGTYPE_STD;Standard
 DYNPROFILEEDITOR_MOVE_DOWN;Runter
 DYNPROFILEEDITOR_MOVE_UP;Hoch
 DYNPROFILEEDITOR_NEW;Neu
@@ -86,6 +85,7 @@ EXIFFILTER_IMAGETYPE;Bildtyp
 EXIFFILTER_ISO;ISO
 EXIFFILTER_LENS;Objektiv
 EXIFFILTER_METADATAFILTER;Metadatenfilter einschalten
+EXIFFILTER_ORIENTATION;Ausrichtung
 EXIFFILTER_SHUTTER;Verschlusszeit
 EXIFFILTER_SOFTWARE;Software
 EXIFPANEL_ACTIVATE_ALL_HINT;Alle Tags auswählen
@@ -96,6 +96,7 @@ EXIFPANEL_ADDTAGDLG_ENTERVALUE;Wert eingeben
 EXIFPANEL_ADDTAGDLG_SELECTTAG;Attribut auswählen
 EXIFPANEL_ADDTAGDLG_TITLE;Attribut hinzufügen/ändern
 EXIFPANEL_BASIC_GROUP;Grundlagen
+EXIFPANEL_METADATUM_TOOLTIP;<b>Tag: </b>%1\n<b>Schlüssel: </b>%2\n<b>Wert: </b>%3
 EXIFPANEL_RESET;Zurücksetzen
 EXIFPANEL_RESETALL;Alle zurücksetzen
 EXIFPANEL_RESETALLHINT;Alle Attribute auf die ursprünglichen Werte zurücksetzen
@@ -126,12 +127,15 @@ EXPORT_RAW_DMETHOD;Demosaicing-Methode
 EXPORT_USE_FAST_PIPELINE;Priorität Geschwindigkeit
 EXPORT_USE_FAST_PIPELINE_TIP;Verwendet eine gesonderte Verarbeitungspipeline im Schnell-Export-Modus, was die Geschwindigkeit auf Kosten der Qualität erhöht. Die Größenänderung des Bildes wird entgegen der normalen Pipeline so früh wir möglich durchgeführt. Der Geschwindigkeitsvorteil kann erheblich sein, jedoch muss mit Artefakten und einer generell reduzierten Ausgabequalität gerechnet werden.
 EXPORT_USE_NORMAL_PIPELINE;Standard (überspringt einige Schritte, Skalieren zuletzt)
+EXTERNAL_MASK_ASPECT_RATIO_WARNING;Warnung: Seitenverhältnis von Bild und externer Maske stimmen nicht überein.
+EXTERNAL_MASK_LOAD_FAILED_WARNING;Warnung: Kann externe Maske von "%1" nicht laden.
 FILEBROWSER_APPLYPROFILE;Profil anwenden
 FILEBROWSER_APPLYPROFILE_PARTIAL;Profil selektiv anwenden
 FILEBROWSER_AUTODARKFRAME;Automatisches Dunkelbild
 FILEBROWSER_AUTOFLATFIELD;Automatisches Weißbild
 FILEBROWSER_BROWSEPATHBUTTONHINT;Ansicht aktualisieren.\nTaste: <b>F5</b>
 FILEBROWSER_BROWSEPATHHINT;Einen Pfad eingeben:\nTaste:\n<b>Strg + o</b>  Setzt den Cursor in das Eingabefeld\n<b>Enter</b> / <b>Strg + Enter</b>  Öffnet den Pfad\n<b>Esc</b>  Anderungen verwerfen\n<b>Shift + Esc</b>  Eingabefeld verlassen\n\nSchnellnavigation:\n<b>~</b>  'Home'-Verzeichnis des Benutzers\n<b>!</b>  Bilder-Verzeichnis des Benutzers
+FILEBROWSER_BROWSEPATH_RECURSIVE_TOOLTIP;Bilder in Unterverzeichnissen rekursiv suchen.
 FILEBROWSER_CACHE;Festplatten-Cache
 FILEBROWSER_CACHECLEARFROMFULL;Alle zwischengespeicherte Profile löschen
 FILEBROWSER_CACHECLEARFROMPARTIAL;Alle NICHT zwischengespeicherte Profile löschen
@@ -179,7 +183,6 @@ FILEBROWSER_POPUPRANK4;Bewertung 4 ****
 FILEBROWSER_POPUPRANK5;Bewertung 5 *****
 FILEBROWSER_POPUPRANK;Bewertung
 FILEBROWSER_POPUPREMOVE;Unwiderruflich löschen
-FILEBROWSER_POPUPREMOVEINCLPROC;Unwiderruflich löschen\n(einschl. aller Dateien der Stapelverarbeitung)
 FILEBROWSER_POPUPRENAME;Umbenennen
 FILEBROWSER_POPUPSELECTALL;Alle auswählen
 FILEBROWSER_POPUPTRASH;In den Papierkorb verschieben
@@ -194,6 +197,7 @@ FILEBROWSER_RANK3_TOOLTIP;Bewertung 3 *\nTaste: <b>Shift + 3</b>
 FILEBROWSER_RANK4_TOOLTIP;Bewertung 4 *\nTaste: <b>Shift + 4</b>
 FILEBROWSER_RANK5_TOOLTIP;Bewertung 5 *\nTaste: <b>Shift + 5</b>
 FILEBROWSER_RENAMEDLGLABEL;Datei(en) umbenennen
+FILEBROWSER_RENAME_DIALOG_COPY_LABEL;Datei(en) kopieren
 FILEBROWSER_RESETDEFAULTPROFILE;Profil auf Vorgabe zurücksetzen
 FILEBROWSER_SELECTDARKFRAME;Dunkelbild wählen...
 FILEBROWSER_SELECTFLATFIELD;Weißbild wählen...
@@ -276,6 +280,7 @@ GENERAL_SAVE;Speichern
 GENERAL_SAVE_AS;Speichern als
 GENERAL_SLIDER;Regler
 GENERAL_UNCHANGED;(Unverändert)
+GENERAL_UNKNOWN;Unbekannt
 GENERAL_WARNING;Warnung
 GIMP_PLUGIN_INFO;Willkommen beim ART GIMP-Plugin!\nNach den Änderungen bitte das ART-Fenster schließen.\nDas Bild wird dann automatisch in GIMP importiert.
 HISTOGRAM_RAW_STATS_TOOLTIP;Min: %1 (%2), Max: %3 (%4), Spitze: %5 (%6)\n    Bereich: %7 EV, Werte: %8, Pixel: %9
@@ -531,11 +536,14 @@ HISTORY_MSG_COLORCORRECTION_CONTRASTTHRESHOLDMASK;Farb-/Tonkorrektur - Kontrast-
 HISTORY_MSG_COLORCORRECTION_DELTAEMASK;Farb-/Tonkorrektur - Farbähnlichkeitsmaske
 HISTORY_MSG_COLORCORRECTION_DRAWNMASK;Farb-/Tonkorrektur - Gezeichnete Maske
 HISTORY_MSG_COLORCORRECTION_ENABLED;Farb-/Tonkorrektur
+HISTORY_MSG_COLORCORRECTION_EXTERNALMASK;CC - external mask
+HISTORY_MSG_COLORCORRECTION_HSL_GAMMA;CC - Gamma
 HISTORY_MSG_COLORCORRECTION_HUEMASK;Farb-/Tonkorrektur - H-Maske
 HISTORY_MSG_COLORCORRECTION_HUESHIFT;Farb-/Tonkorrektur - Farbverschiebung
 HISTORY_MSG_COLORCORRECTION_INSATURATION;Farb-/Tonkorrektur - Eingabesättigung
 HISTORY_MSG_COLORCORRECTION_LIGHTNESS;Farb-/Tonkorrektur - Helligkeit
 HISTORY_MSG_COLORCORRECTION_LIGHTNESSMASK;Farb-/Tonkorrektur - L-Maske
+HISTORY_MSG_COLORCORRECTION_LINKEDMASK;Farb-/Tonkorrektur  - Verknüpfte Maske
 HISTORY_MSG_COLORCORRECTION_LIST;Farb-/Tonkorrektur - Ebenen
 HISTORY_MSG_COLORCORRECTION_LUT;Farb-/Tonkorrektur - LUT
 HISTORY_MSG_COLORCORRECTION_LUT_PARAMS;Farb-/Tonkorrektur - LUT-Parameter
@@ -574,9 +582,11 @@ HISTORY_MSG_EPD_CONTRASTTHRESHOLDMASK;Struktur erhöhen - Kontrast-Schwellenwert
 HISTORY_MSG_EPD_DELTAEMASK;Struktur erhöhen - Farbähnlichkeitsmaske
 HISTORY_MSG_EPD_DETAIL_THRESHOLD;Struktur erhöhen - Detailgröße
 HISTORY_MSG_EPD_DRAWNMASK;Struktur erhöhen - Gezeichnete Maske
+HISTORY_MSG_EPD_EXTERNALMASK;Struktur erhöhen - Externe Maske
 HISTORY_MSG_EPD_HUEMASK;Struktur erhöhen
 HISTORY_MSG_EPD_ITERATIONS;Struktur erhöhen - Iterationen
 HISTORY_MSG_EPD_LIGHTNESSMASK;Struktur erhöhen - L-Maske
+HISTORY_MSG_EPD_LINKEDMASK;Struktur erhöhen - Verknüpfte Maske
 HISTORY_MSG_EPD_LIST;Struktur erhöhen - Ebenen
 HISTORY_MSG_EPD_MASKBLUR;Struktur erhöhen - Maske weichzeichnen
 HISTORY_MSG_EPD_MASK_POSTPROCESS;Struktur erhöhen - Maske Nachbearbeitung
@@ -592,6 +602,7 @@ HISTORY_MSG_FILMNEGATIVE_VALUES;Negativfilm - Werte
 HISTORY_MSG_FILMSIMULATION_AFTER_TONE_CURVE;Filmsimulation - Nach Tonwertkurve
 HISTORY_MSG_FILMSIMULATION_CLUT_PARAMS;Filmsimulation - LUT-Parameters
 HISTORY_MSG_FLATFIELD_EMBEDDED;Weißbild eingebettet
+HISTORY_MSG_GRAIN_COLOR;Filmkörnung – Modus
 HISTORY_MSG_GRAIN_ENABLED;Filmkörnung
 HISTORY_MSG_GRAIN_ISO;Filmkörnung - ISO
 HISTORY_MSG_GRAIN_SCALE;Filmkörnung - Skala
@@ -613,9 +624,11 @@ HISTORY_MSG_LOCALCONTRAST_DARKNESS;Lokaler Kontrast - Dunkle Bereiche
 HISTORY_MSG_LOCALCONTRAST_DELTAEMASK;Lokaler Kontrast - Farbähnlichkeitsmaske
 HISTORY_MSG_LOCALCONTRAST_DRAWNMASK;Local Kontrast - Gezeichnete Maske
 HISTORY_MSG_LOCALCONTRAST_ENABLED;Lokaler Kontrast
+HISTORY_MSG_LOCALCONTRAST_EXTERNALMASK;Lokaler Kontrast - Externe Maske
 HISTORY_MSG_LOCALCONTRAST_HUEMASK;Lokaler Kontrast - H-Maske
 HISTORY_MSG_LOCALCONTRAST_LIGHTNESS;Lokaler Kontrast - Helle Bereiche
 HISTORY_MSG_LOCALCONTRAST_LIGHTNESSMASK;Lokaler Kontrast - L-Maske
+HISTORY_MSG_LOCALCONTRAST_LINKEDMASK;Lokaler Kontrast - Verknüpfte Maske
 HISTORY_MSG_LOCALCONTRAST_LIST;Lokaler Kontrast - Bereiche
 HISTORY_MSG_LOCALCONTRAST_MASKBLUR;Lokaler Kontrast - Maske weichzeichnen
 HISTORY_MSG_LOCALCONTRAST_MASK_POSTPROCESS;Lokaler Kontrast - Maske Nachbearbeitung
@@ -670,12 +683,14 @@ HISTORY_MSG_SMOOTHING_DELTAEMASK;Weichzeichnen - Farbähnlichkeitsmaske
 HISTORY_MSG_SMOOTHING_DRAWNMASK;Weichzeichnen - Gezeichnete Maske
 HISTORY_MSG_SMOOTHING_ENABLED;Weichzeichnen
 HISTORY_MSG_SMOOTHING_EPSILON;Weichzeichnen - Details
+HISTORY_MSG_SMOOTHING_EXTERNALMASK;Weichzeichnen - Externe Maske
 HISTORY_MSG_SMOOTHING_FALLOFF;Weichzeichnen - Rückgang
 HISTORY_MSG_SMOOTHING_HALATION_COLOR;Weichzeichnen - Halo-Tönung
 HISTORY_MSG_SMOOTHING_HALATION_SIZE;Weichzeichnen - Halo-Stärke
 HISTORY_MSG_SMOOTHING_HUEMASK;Weichzeichnen - H-Maske
 HISTORY_MSG_SMOOTHING_ITERATIONS;Weichzeichnen - Iterationen
 HISTORY_MSG_SMOOTHING_LIGHTNESSMASK;Weichzeichnen - L-Maske
+HISTORY_MSG_SMOOTHING_LINKEDMASK;Weichzeichnen - Verknüpfte Maske
 HISTORY_MSG_SMOOTHING_LIST;Weichzeichnen - Ebenen
 HISTORY_MSG_SMOOTHING_MASKBLUR;Weichzeichnen - Maske weichzeichnen
 HISTORY_MSG_SMOOTHING_MASK_POSTPROCESS;Weichzeichnen - Nachbearbeitung
@@ -690,6 +705,9 @@ HISTORY_MSG_SMOOTHING_PARAMETRICMASK;Weichzeichnen - Parametische Maske
 HISTORY_MSG_SMOOTHING_RADIUS;Weichzeichnen - Radius
 HISTORY_MSG_SMOOTHING_SHOWMASK;Weichzeichnen - Maske anzeigen
 HISTORY_MSG_SMOOTHING_SIGMA;Weichzeichnen - Radius
+HISTORY_MSG_SMOOTHING_WAVELETS_GAMMA;Weichzeichnen - Wavelets Gamma
+HISTORY_MSG_SMOOTHING_WAVELETS_LEVELS;Weichzeichnen - Wavelets Stufen
+HISTORY_MSG_SMOOTHING_WAVELETS_STRENGTH;Weichzeichnen - Wavelets Stärke
 HISTORY_MSG_SOFTLIGHT_ENABLED;Weiches Licht
 HISTORY_MSG_SOFTLIGHT_STRENGTH;Weiches Licht - Intensität
 HISTORY_MSG_SPOT;Flecken entfernen
@@ -808,6 +826,7 @@ IPTCPANEL_TITLEHINT;Geben Sie einen kurzen lesbaren Namen für das Bild ein, z.B
 IPTCPANEL_TRANSREFERENCE;Verarbeitungs-ID
 IPTCPANEL_TRANSREFERENCEHINT;Geben Sie eine Kennung zur Kontrolle oder Verfolgung des Arbeitsablaufes ein.
 LABMASKS_AREA_MASK_EMPTY_WARNING;Achtung: Die aktuelle Kombination von Flächen resultiert in eine leere Maske.
+LINKED_MASK_NOT_FOUND_WARNING;Warnung: Verknüpfte Maske "%1->%2" nicht gefunden
 MAIN_BUTTON_FULLSCREEN;Vollbild\nTaste: <b>F11</b>
 MAIN_BUTTON_ICCPROFCREATOR;ICC-Profil erstellen.
 MAIN_BUTTON_NAVNEXT_TOOLTIP;Navigiert zum nächsten Bild in der\nDateiverwaltung oder Filmstreifen, bezogen\nauf das ausgewählte Miniaturbild.\nTaste: <b>F4</b>\n\nNavigiert zum nächsten Bild in der\nDateiverwaltung oder Filmstreifen, bezogen\nauf das im Editor geöffnete Bild.\nTaste: <b>Shift + F4</b>
@@ -878,6 +897,7 @@ MAIN_TOOLTIP_BACKCOLOR2;Hintergrundfarbe der Vorschau: <b>Weiß</b>\nFarbe umsch
 MAIN_TOOLTIP_BACKCOLOR3;Hintergrundfarbe der Vorschau: <b>Mittleres Grau</b>\nFarbe umschalten, Taste: <b>9</b>
 MAIN_TOOLTIP_BEFOREAFTERLOCK;<b>Vorher-Ansicht:</b> Sperren / Entsperren\n\n<b>Gesperrt</b>: Friert die Vorher-Ansicht ein,\nsodass sich die Gesamtwirkung mehrerer\nBearbeitungsschritte beurteilen lässt.\n\n<b>Entsperrt</b>: Die Vorher-Ansicht hinkt dem\naktuellen Bild immer einen Bearbeitungs-\nschritt hinterher.
 MAIN_TOOLTIP_FALSECOLORS;Belichtungsanzeige unter Verwendung von Falschfarben.\nTaste: <b>Shift + e</b>\n\nLegende (IRE-Bereich):\n%1
+MAIN_TOOLTIP_GRIDOVERLAY;Gitter einblenden
 MAIN_TOOLTIP_HIDEHP;Linkes Bedienfeld ein-/ausblenden.\nTaste: <b>l</b>
 MAIN_TOOLTIP_INDCLIPPEDH;Anzeige zu heller Bereiche ein-/ausschalten.\nTaste: <b>&gt;</b>
 MAIN_TOOLTIP_INDCLIPPEDS;Anzeige zu dunkler Bereiche ein-/ausschalten.\nTaste: <b>&lt;</b>
@@ -1023,10 +1043,8 @@ PREFERENCES_CACHEOPTS;Einstellungen des Festplatten-Cache für Miniaturbilder
 PREFERENCES_CACHETHUMBHEIGHT;Maximale Höhe der Miniaturbilder
 PREFERENCES_CLIPPINGIND;Anzeige zu heller/dunkler Bereiche
 PREFERENCES_CLUTSCACHE;CLUT-Cache
-PREFERENCES_CLUTSCACHE;HaldCLUT-Zwischenspeicher
 PREFERENCES_CLUTSCACHE_LABEL;Maximale Anzahl CLUTs im Zwischenspeicher
 PREFERENCES_CLUTSDIR;CLUT-Verzeichnis
-PREFERENCES_CLUTSDIR;HaldCLUT-Verzeichnis
 PREFERENCES_CMMBPC;Schwarzpunkt-Kompensation
 PREFERENCES_CTL_SCRIPTS_FAST_PREVIEW;Verwende schnellere, jedoch weniger akkurate Vorschau für CTL-Skripte bei Zoomstufen <100%
 PREFERENCES_CURVEBBOXPOS;Position der Kurven-Schaltflächen
@@ -1107,10 +1125,13 @@ PREFERENCES_METADATA_SYNC_READWRITE;Bidirektional
 PREFERENCES_MONINTENT;Standard Monitor-Wiedergabe
 PREFERENCES_MONITOR;Monitor
 PREFERENCES_MONITORICCDIR;Verzeichnis für Monitorprofile
+PREFERENCES_MONITOR_GAMUT;Monitor-Gamut
 PREFERENCES_MONPROFILE;Standardfarbprofil
+PREFERENCES_MONPROFILE_WARN_SRGB;In diesem Betriebssystem/dieser Desktopumgebung wird nur sRGB als Monitorprofil unterstützt.
 PREFERENCES_MULTITAB;Multi-Tab-Modus
 PREFERENCES_MULTITABDUALMON;Mehrfache Editor-Tabs in eigenem Fenster
 PREFERENCES_NAVIGATIONFRAME;Navigation
+PREFERENCES_OSCOLORMGMT_INFO;Das Farbmanagement ist in das Betriebssystem/die Desktop-Umgebung integriert und global aktiviert.\nUtzen Sie die Einrichtungen Ihrer Umgebung, um das Monitorprofil einzustellen, und wählen Sie dann hier den am besten geeigneten Gamut.
 PREFERENCES_OVERLAY_FILENAMES;Bildinformationen überlagern die Miniaturbilder in der Dateiverwaltung
 PREFERENCES_OVERLAY_FILENAMES_FILMSTRIP;Bildinformationen der Miniaturbilder im Filmstreifen anzeigen
 PREFERENCES_OVERWRITEOUTPUTFILE;Bestehende Ausgabedateien überschreiben
@@ -1222,6 +1243,9 @@ PROFILEPANEL_TOOLTIPLOAD;Profil aus Datei laden.\n\nStrg beim Klicken gedrückt 
 PROFILEPANEL_TOOLTIPPASTE;Profil aus Zwischenablage einfügen.\n\nStrg beim Klicken gedrückt halten, um\neinzufügende Parameter auszuwählen.
 PROFILEPANEL_TOOLTIPSAVE;Profil speichern.\n\nStrg beim Klicken gedrückt halten, um\nzu speichernde Parameter auszuwählen.
 PROGRESSBAR_DENOISING;Rauschreduzierung
+PROGRESSBAR_FILE_COPY;Dateien kopieren...
+PROGRESSBAR_FILE_DELETE;Dateien löschen...
+PROGRESSBAR_FILE_RENAME;Dateien umbenennen...
 PROGRESSBAR_HLREC;Lichterrekonstruktion...
 PROGRESSBAR_LOADING;Lade Bild...
 PROGRESSBAR_LOADINGTHUMBS;Lade Miniaturbilder...
@@ -1250,15 +1274,16 @@ QUEUE_DESTFILENAME;Pfad und Dateiname
 QUEUE_FORMAT_TITLE;Dateiformat
 QUEUE_LOCATION_FOLDER;In Ordner speichern
 QUEUE_LOCATION_TEMPLATE;Dynamisches Verzeichnis verwenden
-QUEUE_LOCATION_TEMPLATE_TOOLTIP;Die folgenden Variablen können verwendet werden:\n<b>%f</b>, <b>%d1</b>, <b>%d2</b>, ..., <b>%p1</b>, <b>%p2</b>, ..., <b>%r</b>, <b>%s1</b>, <b>%s2</b>, ...\n\nDiese Variablen beinhalten bestimmte Teile des Verzeichnispfades, in welchem sich das Bild befindet, oder Attribute des Bildes.\n\nWenn zum Beispiel <b><i>/home/tom/photos/2010-10-31/dsc0042.nef</i></b> geöffnet wurde, dann haben die Variablen den folgenden Inhalt:\n<b>%d4</b> = <i>home</i>\n<b>%d3</b> = <i>tom</i>\n<b>%d2</b> = <i>photos</i>\n<b>%d1</b> = <i>2010-10-31</i>\n<b>%f</b> = <i>dsc0042</i>\n<b>%p1</b> = <i>/home/tom/photos/2010-10-31</i>\n<b>%p2</b> = <i>/home/tom/photos</i>\n<b>%p3</b> = <i>/home/tom</i>\n<b>%p4</b> = <i>/home</i>\n\nWenn Sie die Ausgabedatei in dasselbe Verzeichnis wie das Originalbild speichern wollen, dann wählen Sie:\n<b>%p1/%f</b>\n\nWenn Sie die Ausgabedatei in ein Unterverzeichnis mit dem Namen '<i>converted</i>' schreiben wollen, dann wählen Sie:\n<b>%p1/converted/%f</b>\n\nWenn Sie die Ausgabedatei im Verzeichnispfad '<i>/home/tom/photos/converted</i>' speichern wollen, dort jedoch in einem mit dem Namen des Ursprungsverzeichnisses betitelten Unterverzeichnis, dann wählen Sie:\n<b>%p2/converted/%d1/%f</b>\n\nDie Variable <b>%r</b> enthält die Bewertung des Bildes.\n\nDie Variablen <b>%s3, %s4</b> etc. entsprechen der Position in der Warteschlange zu dem Zeitpunkt, wenn die Verarbeitung gestartet wird. Die Ziffer gibt die Anzahl der Stellen an, z.B. <b>%s3</b> = 001
 QUEUE_LOCATION_TEMPLATE_TOOLTIP;Legt das Zeilverzeichnis anhand des Quellverzeichnisses des Fotos, der Bewertung, des Papierkorb-Statuses oder der Position in der Warteschlange fest.\n\nBeispiel anhand des folgenden Pfades:\n<b>/home/tom/photos/2010-10-31/photo1.raw</b>\nDie Bedeutung der Variablen ist wie folgt:\n<b>%d4</b> = <i>home</i>\n<b>%d3</b> = <i>tom</i>\n<b>%d2</b> = <i>photos</i>\n<b>%d1</b> = <i>2010-10-31</i>\n<b>%f</b> = <i>photo1</i>\n<b>%p1</b> = <i>/home/tom/photos/2010-10-31/</i>\n<b>%p2</b> = <i>/home/tom/photos/</i>\n<b>%p3</b> = <i>/home/tom/</i>\n<b>%p4</b> = <i>/home/</i>\n\n<b>%r</b> wird durch die Bewertung des Fotos ersetzt. Ist das Foto unbewertet, wird '<i>0</i>' verwendet. Ist das Foto im Papierkorb, wird '<i>x</i>' verwendet.\n\n<b>%s1</b>, ..., <b>%s9</b> wird durch die Anfangsposition des Fotos in der Warteschlange zum Zeitpunkt des Starts der Verarbeitung ersetzt. Die Ziffer gibt die Anzahl der Stellen an, z.B. <b>%s3</b> ergibt '<i>001</i>'.\n\n<b>%n</b> wird durch den Namen des aktuell angewendeten Schnappschusses ersetzt. Existiert kein Schnappschuss, wird der leere String verwendet. <b>%u</b> kann anstelle von <b>%n</b> verwendet werden, um Leerstellen im Schnappschussnamen durch Unterstriche zu ersetzen.\n\nWenn Sie das exportierte Bild im Ordner des Urpsrungsfotos speichern möchten, verwenden Sie:\n<b>%p1/%f</b>\n\nWenn Sie das exportierte Bild in einem Ordner namens '<i>converted</i>' innerhalb vom Ordner des Ursprungsfotos speichern möchten, verwenden Sie:\n<b>%p1/converted/%f</b>\n\nWenn Sie das exportierte Bild in\n'<i>/home/tom/photos/converted/2010-10-31</i>'\nspeichern möchten, verwenden Sie:\n<b>%p2/converted/%d1/%f</b>
 QUEUE_LOCATION_TITLE;Ausgabeverzeichnis
 QUEUE_STARTSTOP_TOOLTIP;Startet/Stoppt die Verarbeitung\nder Warteschlange.\n\nTaste: <b>Strg + s</b>
 RENAME_DIALOG_ALLOW_WHITESPACE;Leerzeichen in Ausgabenamen erlauben
 RENAME_DIALOG_BASEDIR;Hauptverzeichniss
 RENAME_DIALOG_ERROR;Umbenennen von %1 zu %2 fehlgeschlagen
+RENAME_DIALOG_ERROR_COPY;Fehler beim Kopieren von %1 nach %2
 RENAME_DIALOG_EXT_NORMALIZATION;Einheitliche Buchstabengröße in Erweiterungen
 RENAME_DIALOG_FILENAMES;Dateien zum Umbenennen
+RENAME_DIALOG_FILENAMES_COPY;Zu kopierende Dateien
 RENAME_DIALOG_INVALID_PATTERN;Ungültige Zusammensetzung
 RENAME_DIALOG_INVALID_SIDECARS;Ungültige Sidecars-Liste
 RENAME_DIALOG_NAME_NORMALIZATION;Einheitliche Buchstabengröße in Dateinamen
@@ -1380,6 +1405,7 @@ TP_COLORCORRECTION_CHANNEL_G;Grün
 TP_COLORCORRECTION_CHANNEL_R;Rot
 TP_COLORCORRECTION_COMPRESSION;Kompression
 TP_COLORCORRECTION_H;Farbton
+TP_COLORCORRECTION_HSL_GAMMA;Gamma
 TP_COLORCORRECTION_HUESAT;Farbton/Sättigung
 TP_COLORCORRECTION_HUESHIFT;Farbverschiebung
 TP_COLORCORRECTION_IN;Eingabe
@@ -1535,7 +1561,6 @@ TP_FILMSIMULATION_LABEL;Filmsimulation
 TP_FILMSIMULATION_SLOWPARSEDIR;ART sucht nach Hald-CLUT-Bildern, die für die Filmsimulation benötigt werden, in einem Ordner, der zu viel Zeit zum Laden benötigt.\nGehen Sie zu\nEinstellungen > Bildbearbeitung > Verzeichnisse - HaldCLUT-Verzeichnis\nund prüfen Sie, welcher Order benutzt wird. Wählen Sie den Ordner aus, der nur die Hald-CLUT-Bilder beinhaltet oder einen leeren Ordner, wenn Sie die Filmsimulation nicht verwenden möchten.\n\nWeitere Informationen über die Filmsimulation finden Sie auf RawPedia.\n\nMöchten Sie die Suche beenden?
 TP_FILMSIMULATION_STRENGTH;Intensität
 TP_FILMSIMULATION_ZEROCLUTSFOUND;CLUT-Verzeichnis in den Einstellungen festlegen
-TP_FILMSIMULATION_ZEROCLUTSFOUND;HaldCLUT-Verzeichnis in den Einstellungen festlegen
 TP_FLATFIELD_AUTOSELECT;Automatische Auswahl
 TP_FLATFIELD_BLURRADIUS;Unschärferadius
 TP_FLATFIELD_BLURTYPE;Unschärfetyp
@@ -1563,8 +1588,11 @@ TP_GRADIENT_FEATHER_TOOLTIP;Bereich des Verlaufs in Prozent der Bilddiagonalen.
 TP_GRADIENT_LABEL;Grauverlaufsfilter
 TP_GRADIENT_STRENGTH;Intensität
 TP_GRADIENT_STRENGTH_TOOLTIP;Filterstärke in Blendenstufen.
+TP_GRAIN_BW;Schwarz/Weiß
+TP_GRAIN_COLOR;Farbe
 TP_GRAIN_ISO;Grobkörnigkeit (ISO)
 TP_GRAIN_LABEL;Filmkörnung
+TP_GRAIN_MODE;Modus
 TP_GRAIN_SCALE;Skalierung
 TP_GRAIN_STRENGTH;Stärke
 TP_HLREC_BLEND;Überlagerung
@@ -1680,10 +1708,14 @@ TP_LABMASKS_DRAWNMASK_RESET_TIP;Alle Striche löschen
 TP_LABMASKS_DRAWNMASK_SMOOTHNESS;Weichzeichnen
 TP_LABMASKS_DRAWNMASK_TOGGLE_TIP;Malpinsel einschalten.\n\n<i>Bei Verwendung der Maus:</i>\n<b>Alt</b> gedrückt halten, um vorübergehend den\nLöschmodus zu aktivieren.
 TP_LABMASKS_DRAWNMASK_UNDO_TIP;Letzte Gruppe von Strichen löschen
+TP_LABMASKS_EXTERNALMASK;Externe Maske
+TP_LABMASKS_EXTERNALMASK_FILENAME;Maskendatei
+TP_LABMASKS_EXTERNALMASK_SELECT;Maskendatei auswählen...
 TP_LABMASKS_HUE;H
 TP_LABMASKS_INVERTED;Invertieren
 TP_LABMASKS_LIGHTNESS;L
 TP_LABMASKS_LIGHTNESS_DETAIL;L-Maske Details erhalten
+TP_LABMASKS_LINKEDMASK;Verknüpfte Maske
 TP_LABMASKS_MASK;Maske
 TP_LABMASKS_MASK_UNNAMED;Unbenannt
 TP_LABMASKS_PARAMETRIC;Parametische Maske
@@ -1932,6 +1964,7 @@ TP_SMOOTHING_MODE_LENS;Objektivunschärfe
 TP_SMOOTHING_MODE_MOTION;Bewegungsunschärfe
 TP_SMOOTHING_MODE_NLMEANS;Nicht-lokales Mittel
 TP_SMOOTHING_MODE_NOISE;Rauschen hinzufügen
+TP_SMOOTHING_MODE_WAVELETS;Wavelets
 TP_SMOOTHING_NLDETAIL;Details
 TP_SMOOTHING_NLSTRENGTH;Stärke
 TP_SMOOTHING_NOISE_COARSENESS;Grobkörnigkeit
@@ -1939,6 +1972,7 @@ TP_SMOOTHING_NUMBLADES;Lamellen
 TP_SMOOTHING_OFFSET;Versatz
 TP_SMOOTHING_RADIUS;Radius
 TP_SMOOTHING_SIGMA;Radius
+TP_SMOOTHING_WAVELETS_LEVELS;Stufen
 TP_SOFTLIGHT_LABEL;Weiches Licht
 TP_SOFTLIGHT_STRENGTH;Intensität
 TP_SPOT_COUNTLABEL;%1 Punkt(e)
@@ -2005,13 +2039,3 @@ ZOOMPANEL_ZOOM100;Zoom 100%\nTaste: <b>z</b>
 ZOOMPANEL_ZOOMFITSCREEN;An Fenster anpassen.\nTaste: <b>f</b>
 ZOOMPANEL_ZOOMIN;Hineinzoomen\nTaste: <b>+</b>
 ZOOMPANEL_ZOOMOUT;Herauszoomen\nTaste: <b>-</b>
-# added with automatic translation
-HISTORY_MSG_COLORCORRECTION_HSL_GAMMA;CC - Gamma
-PREFERENCES_MONITOR_GAMUT;Monitor-Gamut
-PREFERENCES_OSCOLORMGMT_INFO;Das Farbmanagement ist in das Betriebssystem/die Desktop-Umgebung integriert und global aktiviert.\nUtzen Sie die Einrichtungen Ihrer Umgebung, um das Monitorprofil einzustellen, und wählen Sie dann hier den am besten geeigneten Gamut.
-TP_COLORCORRECTION_HSL_GAMMA;Gamma
-PREFERENCES_MONPROFILE_WARN_SRGB;In diesem Betriebssystem/dieser Desktopumgebung wird nur sRGB als Monitorprofil unterstützt.
-HISTORY_MSG_GRAIN_COLOR;Filmkörnung – Modus
-TP_GRAIN_MODE;Modus
-TP_GRAIN_COLOR;Farbe
-TP_GRAIN_BW;Schwarz/Weiß
