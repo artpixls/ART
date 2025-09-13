@@ -52,6 +52,24 @@ std::ostream &operator<<(std::ostream &out, const S &s)
     }
 }
 
+class PathSetter {
+public:
+    PathSetter()
+    {
+        auto uc = UserCommandStore::getInstance();
+        pth_ = uc->getPathEnvVar(false);
+        Glib::setenv("PATH", uc->getPathEnvVar(true));
+    }
+
+    ~PathSetter()
+    {
+        Glib::setenv("PATH", pth_);
+    }
+
+private:
+    std::string pth_;
+};
+
 } // namespace
 
 
@@ -153,6 +171,7 @@ void UserCommand::execute(const std::vector<Thumbnail *> &args) const
         [=](bool verb) -> void
         {
             try {
+                PathSetter ps;
                 rtengine::subprocess::exec_sync(UserCommandStore::getInstance()->dir(), argv, true, nullptr, nullptr);
             } catch (rtengine::subprocess::error &exc) {
                 if (verb) {
@@ -174,6 +193,20 @@ UserCommandStore *UserCommandStore::getInstance()
 
 void UserCommandStore::init(const Glib::ustring &dirname)
 {
+    origpath_ = Glib::getenv("PATH");
+    std::string extrapath;
+#ifdef BUILD_BUNDLE
+# ifdef __APPLE__
+    extrapath = Glib::build_filename(options.ART_base_dir, "../MacOS") + G_SEARCHPATH_SEPARATOR_S + options.ART_base_dir;
+# endif // __APPLE__
+    extrapath = options.ART_base_dir;
+#endif // BUILD_BUNDLE
+    auto epth = Glib::getenv("ART_EXIFTOOL_BASE_DIR");
+    if (!epth.empty()) {
+        extrapath += G_SEARCHPATH_SEPARATOR_S + epth;
+    }
+    ucpath_ = extrapath + G_SEARCHPATH_SEPARATOR_S + origpath_;
+    
     commands_.clear();
 
     if (!Glib::file_test(dirname, Glib::FILE_TEST_IS_DIR)) {

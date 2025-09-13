@@ -65,9 +65,12 @@ public:
     std::vector<UserCommand> getCommands(const std::vector<Thumbnail *> &sel) const;
     const std::vector<UserCommand> &getAllCommands() const { return commands_; }
     const std::string &dir() const { return dir_; }
+    const std::string &getPathEnvVar(bool for_user_command) const { return for_user_command ? ucpath_ : origpath_; }
 
 private:
     std::string dir_;
+    std::string origpath_;
+    std::string ucpath_;
     std::vector<UserCommand> commands_;
 };
 
