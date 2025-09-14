@@ -626,7 +626,7 @@ ExternalLUT3D CLUTStore::getExternalLut(const Glib::ustring& filename) const
 
 namespace {
 
-bool fill_from_json(std::unordered_map<std::string, int> &name2pos, std::vector<CLUTParamDescriptor> &params, cJSON *root, std::string &name)
+bool fill_from_json(std::unordered_map<std::string, int> &name2pos, CLUTParamDescriptorList &params, cJSON *root, std::string &name)
 {
     if (!cJSON_IsArray(root)) {
         return false;
@@ -686,7 +686,7 @@ bool fill_from_json(std::unordered_map<std::string, int> &name2pos, std::vector<
  *    // ...
  * }
  */ 
-bool get_CTL_params(const Glib::ustring &filename, std::shared_ptr<Ctl::Interpreter> intp, Ctl::FunctionCallPtr func, std::vector<CLUTParamDescriptor> &out, Glib::ustring &colorspace, int &lut_dim)
+bool get_CTL_params(const Glib::ustring &filename, std::shared_ptr<Ctl::Interpreter> intp, Ctl::FunctionCallPtr func, CLUTParamDescriptorList &out, Glib::ustring &colorspace, int &lut_dim)
 {
     setlocale(LC_NUMERIC, "C");
     
@@ -833,6 +833,17 @@ bool get_CTL_params(const Glib::ustring &filename, std::shared_ptr<Ctl::Interpre
                 if (lut_dim < -1 || v != lut_dim) {
                     return err("invalid lut definition:\n  " + line);
                 }
+            } else if (line.find("@ART-preset:", s) == s) {
+                line = line.substr(12+s);
+                cJSON *root = cJSON_Parse(line.c_str());
+                if (!root) {
+                    return err("invalid preset definition:\n  " + line);
+                }
+                bool ok = out.add_preset_from_json(root);
+                cJSON_Delete(root);
+                if (!ok) {
+                    return err("invalid preset definition:\n  " + line);
+                }
             }
         }
     } else {
@@ -862,7 +873,7 @@ bool get_CTL_params(const Glib::ustring &filename, std::shared_ptr<Ctl::Interpre
 
 } // namespace
 
-std::pair<std::shared_ptr<Ctl::Interpreter>, std::vector<Ctl::FunctionCallPtr>> rtengine::CLUTStore::getCTLLut(const Glib::ustring& filename, int num_threads, int &chunk_size, std::vector<CLUTParamDescriptor> &params, Glib::ustring &colorspace, int &lut_dim) const
+std::pair<std::shared_ptr<Ctl::Interpreter>, std::vector<Ctl::FunctionCallPtr>> rtengine::CLUTStore::getCTLLut(const Glib::ustring& filename, int num_threads, int &chunk_size, CLUTParamDescriptorList &params, Glib::ustring &colorspace, int &lut_dim) const
 {
     MyMutex::MyLock lock(mutex_);
 
@@ -1357,7 +1368,7 @@ void CLUTApplication::CTL_init_lut(int dim)
 #endif // ART_USE_CTL
 
 
-std::vector<CLUTParamDescriptor> CLUTApplication::get_param_descriptors() const
+CLUTParamDescriptorList CLUTApplication::get_param_descriptors() const
 {
 #ifdef ART_USE_CTL
     if (!ctl_func_.empty()) {
@@ -1394,7 +1405,7 @@ bool CLUTApplication::set_param_values(const CLUTParamValueMap &values, Quality 
 }
 
 
-std::vector<CLUTParamDescriptor> CLUTApplication::get_param_descriptors(const Glib::ustring &filename)
+CLUTParamDescriptorList CLUTApplication::get_param_descriptors(const Glib::ustring &filename)
 {
 #ifdef ART_USE_OCIO
     if (getFileExtension(filename) == "json") {
@@ -1408,7 +1419,7 @@ std::vector<CLUTParamDescriptor> CLUTApplication::get_param_descriptors(const Gl
 #endif // ART_USE_OCIO
 #ifdef ART_USE_CTL
     try {
-        std::vector<CLUTParamDescriptor> params;
+        CLUTParamDescriptorList params;
         int n = 0;
         Glib::ustring colorspace;
         auto p = CLUTStore::getInstance().getCTLLut(filename, 1, n, params, colorspace, n);

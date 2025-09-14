@@ -30,7 +30,7 @@ class CLUTParamsPanel: public Gtk::VBox, public AdjusterListener, public CurveLi
 public:
     CLUTParamsPanel();
 
-    void setParams(const std::vector<rtengine::CLUTParamDescriptor> &params);
+    void setParams(const rtengine::CLUTParamDescriptorList &params);
     void setValue(const rtengine::CLUTParamValueMap &val);
     rtengine::CLUTParamValueMap getValue() const;
     
@@ -45,9 +45,12 @@ public:
 
 private:
     void emit_signal();
+    void apply_preset();
     
     sigc::signal<void> sig_changed_;
     bool sig_blocked_;
-    std::vector<rtengine::CLUTParamDescriptor> params_;
+    rtengine::CLUTParamDescriptorList params_;
     std::vector<void *> widgets_;
+    sigc::connection presets_conn_;
+    MyComboBoxText *presets_combo_;
 };

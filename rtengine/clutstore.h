@@ -85,7 +85,7 @@ public:
     ExternalLUT3D getExternalLut(const Glib::ustring &filename) const;
 #endif // ART_USE_OCIO
 #ifdef ART_USE_CTL
-    std::pair<std::shared_ptr<Ctl::Interpreter>, std::vector<Ctl::FunctionCallPtr>> getCTLLut(const Glib::ustring &filename, int num_threads, int &chunk_size, std::vector<CLUTParamDescriptor> &params, Glib::ustring &colorspace, int &lut_dim) const;
+    std::pair<std::shared_ptr<Ctl::Interpreter>, std::vector<Ctl::FunctionCallPtr>> getCTLLut(const Glib::ustring &filename, int num_threads, int &chunk_size, CLUTParamDescriptorList &params, Glib::ustring &colorspace, int &lut_dim) const;
     float CTL_shaper(float a, bool inv);
 #endif // ART_USE_CTL
 
@@ -129,7 +129,7 @@ private:
     struct CTLCacheEntry {
         std::shared_ptr<Ctl::Interpreter> intp;
         std::string md5;
-        std::vector<CLUTParamDescriptor> params;
+        CLUTParamDescriptorList params;
         Glib::ustring colorspace;
         int lut_dim;
     };
@@ -155,10 +155,10 @@ public:
     void apply(int thread_id, int W, float *r, float *g, float *b);
     operator bool() const { return ok_; }
 
-    std::vector<CLUTParamDescriptor> get_param_descriptors() const;
+    CLUTParamDescriptorList get_param_descriptors() const;
     bool set_param_values(const CLUTParamValueMap &values, Quality q=Quality::HIGH);
 
-    static std::vector<CLUTParamDescriptor> get_param_descriptors(const Glib::ustring &filename);
+    static CLUTParamDescriptorList get_param_descriptors(const Glib::ustring &filename);
 
 private:
     void init(int num_threads);
@@ -198,7 +198,7 @@ private:
     std::shared_ptr<Ctl::Interpreter> ctl_intp_;
     std::vector<Ctl::FunctionCallPtr> ctl_func_;
     int ctl_chunk_size_;
-    std::vector<CLUTParamDescriptor> ctl_params_;
+    CLUTParamDescriptorList ctl_params_;
     LUT3D ctl_lut_;
     int ctl_lut_dim_;
 #endif // ART_USE_CTL

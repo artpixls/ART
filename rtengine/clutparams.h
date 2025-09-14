@@ -55,6 +55,20 @@ struct CLUTParamDescriptor {
     bool fill_from_json(cJSON *root);
 };
 
+
 typedef std::map<std::string, std::vector<double>> CLUTParamValueMap;
+
+class CLUTParamDescriptorList: public std::vector<CLUTParamDescriptor> {
+public:
+    const std::vector<std::pair<std::string, Glib::ustring>> &get_presets() const;
+    bool apply_preset(const std::string &key, CLUTParamValueMap &out);
+    bool add_preset(const std::string &key, const Glib::ustring &gui_name, const CLUTParamValueMap &value);
+    bool add_preset_from_json(cJSON *root);
+
+private:
+    std::vector<std::pair<std::string, Glib::ustring>> presets_;
+    std::map<std::string, CLUTParamValueMap> presets_map_;
+};
+
 
 } // namespace rtengine

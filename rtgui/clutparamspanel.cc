@@ -39,7 +39,8 @@ public:
 
 
 CLUTParamsPanel::CLUTParamsPanel():
-    sig_blocked_(false)
+    sig_blocked_(false),
+    presets_combo_(nullptr)
 {
     set_orientation(Gtk::ORIENTATION_VERTICAL);
 }
@@ -51,12 +52,13 @@ Gtk::SizeRequestMode CLUTParamsPanel::get_request_mode_vfunc() const
 }
 
 
-void CLUTParamsPanel::setParams(const std::vector<rtengine::CLUTParamDescriptor> &params)
+void CLUTParamsPanel::setParams(const rtengine::CLUTParamDescriptorList &params)
 {
     widgets_.clear();
     for (auto c : get_children()) {
         remove(*c);
     }
+    presets_combo_ = nullptr;
 
     params_ = params;
 
@@ -109,6 +111,20 @@ void CLUTParamsPanel::setParams(const std::vector<rtengine::CLUTParamDescriptor>
     hb->pack_start(*sep);
     hb->pack_start(*r, Gtk::PACK_SHRINK, 2);
     vb->pack_start(*hb);
+
+    const auto &presets = params_.get_presets();
+    if (!presets.empty()) {
+        Gtk::HBox *b = Gtk::manage(new Gtk::HBox());
+        b->pack_start(*Gtk::manage(new Gtk::Label(M("TP_COLORCORRECTION_LUT_PRESET") + ": ")), Gtk::PACK_SHRINK);
+        presets_combo_ = Gtk::manage(new MyComboBoxText());
+        presets_combo_->append("(" + M("GENERAL_NONE") + ")");
+        for (auto &p : presets) {
+            presets_combo_->append(lbl(p.second));
+        }
+        b->pack_start(*presets_combo_, Gtk::PACK_EXPAND_WIDGET);
+        vb->pack_start(*b, Gtk::PACK_SHRINK, 4);
+        presets_conn_ = presets_combo_->signal_changed().connect(sigc::mem_fun(*this, &CLUTParamsPanel::apply_preset));
+    }
 
     for (auto &d : params) {
         if (!d.gui_group.empty()) {
@@ -321,6 +337,28 @@ void CLUTParamsPanel::setValue(const rtengine::CLUTParamValueMap &val)
         }
     }
 
+    const auto &presets = params_.get_presets();
+    if (!presets.empty()) {
+        ConnectionBlocker b(presets_conn_);
+        presets_combo_->set_active(0);
+        for (size_t i = 0; i < presets.size(); ++i) {
+            rtengine::CLUTParamValueMap pv;
+            params_.apply_preset(presets[i].first, pv);
+            bool found = true;
+            for (auto &p : pv) {
+                auto it = val.find(p.first);
+                if (it == val.end() || p.second != it->second) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                presets_combo_->set_active(i+1);
+                break;
+            }
+        } 
+    }
+
     sig_blocked_ = prev;
 }
 
@@ -329,5 +367,36 @@ void CLUTParamsPanel::emit_signal()
 {
     if (!sig_blocked_) {
         sig_changed_.emit();
+        const auto &presets = params_.get_presets();
+        if (!presets.empty()) {
+            ConnectionBlocker b(presets_conn_);
+            int idx = presets_combo_->get_active_row_number();
+            if (idx > 0) {
+                rtengine::CLUTParamValueMap pv;
+                params_.apply_preset(presets[idx-1].first, pv);
+                auto val = getValue();
+                for (auto &p : pv) {
+                    if (p.second != val[p.first]) {
+                        presets_combo_->set_active(0);
+                        break;
+                    }
+                }
+            }     
+        }
+    }
+}
+
+
+void CLUTParamsPanel::apply_preset()
+{
+    if (presets_combo_) {
+        const auto &presets = params_.get_presets();
+        auto idx = presets_combo_->get_active_row_number();
+        if (idx > 0) {
+            auto val = getValue();
+            params_.apply_preset(presets[idx-1].first, val);
+            setValue(val);
+            emit_signal();
+        }
     }
 }

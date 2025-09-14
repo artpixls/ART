@@ -27,6 +27,32 @@
 
 namespace rtengine {
 
+namespace {
+
+bool set_int(cJSON *n, double &out)
+{
+    if (cJSON_IsNumber(n)) {
+        int v = n->valuedouble;
+        if (v == n->valuedouble) {
+            out = v;
+            return true;
+        }
+    }
+    return false;
+}
+
+
+static const std::unordered_map<std::string, double> curvetypes = {
+    {"Linear", double(DCT_Linear)},
+    {"Spline", double(DCT_Spline)},
+    {"CatmullRom", double(DCT_CatmullRom)},
+    {"NURBS", double(DCT_NURBS)},
+    {"Parametric", double(DCT_Parametric)},
+    {"ControlPoints", double(FCT_MinMaxCPoints)}
+};
+
+} // namespace
+
 /**
  * LUT parameters can be specified via JSON arrays, whose content depends on
  * the parameter type. The array must be at least of size 2; the first element
@@ -115,19 +141,6 @@ bool CLUTParamDescriptor::fill_from_json(cJSON *root)
             return true;
         };
 
-    const auto set_int =
-        [&](cJSON *n, double &out) -> bool
-        {
-            if (cJSON_IsNumber(n)) {
-                int v = n->valuedouble;
-                if (v == n->valuedouble) {
-                    out = v;
-                    return true;
-                }
-            }
-            return false;
-        };
-
     const auto set_gradient =
         [&](cJSON *n, std::vector<std::array<float, 4>> &out) -> bool
         {
@@ -155,15 +168,6 @@ bool CLUTParamDescriptor::fill_from_json(cJSON *root)
             }
             return false;
         };
-
-    std::unordered_map<std::string, double> curvetypes = {
-        {"Linear", double(DCT_Linear)},
-        {"Spline", double(DCT_Spline)},
-        {"CatmullRom", double(DCT_CatmullRom)},
-        {"NURBS", double(DCT_NURBS)},
-        {"Parametric", double(DCT_Parametric)},
-        {"ControlPoints", double(FCT_MinMaxCPoints)}
-    };
 
     switch (type) {
     case CLUTParamType::PT_BOOL:
@@ -342,6 +346,148 @@ bool CLUTParamDescriptor::fill_from_json(cJSON *root)
     }
 
     return false;  
+}
+
+
+const std::vector<std::pair<std::string, Glib::ustring>> &CLUTParamDescriptorList::get_presets() const
+{
+    return presets_;
+}
+
+
+bool CLUTParamDescriptorList::apply_preset(const std::string &key, CLUTParamValueMap &out)
+{
+    auto it = presets_map_.find(key);
+    if (it == presets_map_.end()) {
+        return false;
+    }
+
+    for (auto &p : it->second) {
+        out[p.first] = p.second;
+    }
+
+    return true;
+}
+
+
+bool CLUTParamDescriptorList::add_preset_from_json(cJSON *root)
+{
+    if (!cJSON_IsArray(root)) {
+        return false;
+    }
+    
+    auto sz = cJSON_GetArraySize(root);
+    if (sz < 3) {
+        return false;
+    }
+    
+    auto n = cJSON_GetArrayItem(root, 0);
+    if (!cJSON_IsString(n)) {
+        return false;
+    }
+    std::string key = cJSON_GetStringValue(n);
+
+    n = cJSON_GetArrayItem(root, 1);
+    if (!cJSON_IsString(n)) {
+        return false;
+    }
+    Glib::ustring gui_name = cJSON_GetStringValue(n);
+
+    CLUTParamValueMap vmap;
+
+    n = cJSON_GetArrayItem(root, 2);
+    if (!cJSON_IsObject(n)) {
+        return false;
+    }
+
+    std::unordered_map<std::string, CLUTParamType> tpmap;
+    for (auto &d : *this) {
+        tpmap[d.name] = d.type;
+    }
+
+    for (auto c = n->child; c; c = c->next) {
+        std::vector<double> value;
+        
+        if (!c->string) {
+            return false;
+        }
+        auto jt = tpmap.find(c->string);
+        if (jt == tpmap.end()) {
+            return false;
+        }
+        auto type = jt->second;
+    
+        switch (type) {
+        case CLUTParamType::PT_BOOL:
+            if (cJSON_IsBool(c)) {
+                value = { double(cJSON_IsTrue(c)) };
+            } else {
+                return false;
+            }
+            break;
+        case CLUTParamType::PT_FLOAT:
+            if (cJSON_IsNumber(c)) {
+                value.push_back(c->valuedouble);
+            } else {
+                return false;
+            }
+            break;
+        case CLUTParamType::PT_INT:
+        case CLUTParamType::PT_CHOICE:
+            value.push_back(0);
+            if (!set_int(c, value.back())) {
+                return false;
+            }
+            break;
+        case CLUTParamType::PT_CURVE:
+        case CLUTParamType::PT_FLATCURVE:
+        case CLUTParamType::PT_FLATCURVE_PERIODIC:
+            if (cJSON_IsNumber(c) && c->valuedouble == 0) {
+                // 0 is a special case for a default curve
+                value = { 0 };
+            } else if (cJSON_IsArray(c)) {
+                for (int i = 0, k = cJSON_GetArraySize(c); i < k; ++i) {
+                    auto v = cJSON_GetArrayItem(c, i);
+                    double d = 0;
+                    if (i == 0 && cJSON_IsString(v)) {
+                        auto it = curvetypes.find(cJSON_GetStringValue(v));
+                        if (it == curvetypes.end()) {
+                            return false;
+                        } else {
+                            d = it->second;
+                        }
+                    } else if (cJSON_IsNumber(v)) {
+                        d = v->valuedouble;
+                    } else {
+                        return false;
+                    }
+                    value.push_back(d);
+                }
+            } else {
+                return false;
+            }
+            break;
+        default:
+            return false;
+        }
+
+        vmap[c->string] = value;
+    }
+
+    return add_preset(key, gui_name, vmap);
+}
+
+
+bool CLUTParamDescriptorList::add_preset(const std::string &key, const Glib::ustring &gui_name, const CLUTParamValueMap &value)
+{
+    if (presets_map_.find(key) != presets_map_.end()) {
+        return false;
+    }
+
+    presets_.push_back(std::make_pair(key, gui_name));
+    presets_map_[key] = value;
+
+    return true;
 }
 
 } // namespace rtengine

@@ -42,7 +42,7 @@ extern const Settings *settings;
 
 namespace {
 
-bool add_param(std::vector<CLUTParamDescriptor> &params, cJSON *elem)
+bool add_param(CLUTParamDescriptorList &params, cJSON *elem)
 {
     params.emplace_back();
     auto &p = params.back();
@@ -62,7 +62,7 @@ bool add_param(std::vector<CLUTParamDescriptor> &params, cJSON *elem)
 }
 
 
-std::string get_params_json(const std::vector<CLUTParamDescriptor> &params,
+std::string get_params_json(const CLUTParamDescriptorList &params,
                             const CLUTParamValueMap &values)
 {
     setlocale(LC_NUMERIC, "C");
@@ -102,7 +102,7 @@ std::string get_params_json(const std::vector<CLUTParamDescriptor> &params,
 }
 
 
-std::string generate_params(const std::vector<CLUTParamDescriptor> &params,
+std::string generate_params(const CLUTParamDescriptorList &params,
                             const CLUTParamValueMap &values)
 {
     std::string fn = "";
@@ -124,7 +124,7 @@ std::string generate_params(const std::vector<CLUTParamDescriptor> &params,
 }
 
 
-std::pair<std::string, std::string> get_cache_keys(const Glib::ustring &filename, const std::vector<CLUTParamDescriptor> &params, const CLUTParamValueMap &values)
+std::pair<std::string, std::string> get_cache_keys(const Glib::ustring &filename, const CLUTParamDescriptorList &params, const CLUTParamValueMap &values)
 {
     auto md5 = getMD5(filename, true);
     auto json = get_params_json(params, values);
@@ -404,6 +404,18 @@ bool ExternalLUT3D::init(const Glib::ustring &filename)
         }
         for (size_t i = 0, n = cJSON_GetArraySize(params); i < n; ++i) {
             if (!add_param(params_, cJSON_GetArrayItem(params, i))) {
+                return false;
+            }
+        }
+    }
+
+    cJSON *presets = cJSON_GetObjectItem(root, "presets");
+    if (presets) {
+        if (!cJSON_IsArray(presets)) {
+            return false;
+        }
+        for (size_t i = 0, n = cJSON_GetArraySize(params); i < n; ++i) {
+            if (!params_.add_preset_from_json(cJSON_GetArrayItem(params, i))) {
                 return false;
             }
         }

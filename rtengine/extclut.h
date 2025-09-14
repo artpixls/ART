@@ -35,7 +35,7 @@ public:
     ExternalLUT3D();
     explicit ExternalLUT3D(const Glib::ustring &filename);
     bool init(const Glib::ustring &filename);
-    std::vector<CLUTParamDescriptor> get_param_descriptors() const { return params_; }
+    CLUTParamDescriptorList get_param_descriptors() const { return params_; }
     bool set_param_values(const CLUTParamValueMap &values);
     OCIO::ConstCPUProcessorRcPtr get_processor() const { return proc_; }
     bool ok() const { return ok_; }
@@ -65,7 +65,7 @@ private:
     bool ok_;
     bool is_server_;
     Glib::ustring filename_;
-    std::vector<CLUTParamDescriptor> params_;
+    CLUTParamDescriptorList params_;
     OCIO::ConstCPUProcessorRcPtr proc_;
     Glib::ustring workdir_;
     std::vector<Glib::ustring> argv_;
