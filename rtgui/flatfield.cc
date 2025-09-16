@@ -90,8 +90,9 @@ FlatField::FlatField () : FoldableToolPanel(this, "flatfield", M("TP_FLATFIELD_L
     pack_start( *ffInfo, Gtk::PACK_SHRINK, 0);
     vbff->pack_start( *hbffbt, Gtk::PACK_SHRINK, 2);
     vbff->pack_start( *flatFieldBlurRadius, Gtk::PACK_SHRINK, 0);
-    vbff->pack_start( *flatFieldClipControl, Gtk::PACK_SHRINK, 0);
+    //vbff->pack_start( *flatFieldClipControl, Gtk::PACK_SHRINK, 0);
     pack_start(*vbff);
+    pack_start( *flatFieldClipControl, Gtk::PACK_SHRINK, 0);
 
     flatFieldFileconn = flatFieldFile->signal_file_set().connect ( sigc::mem_fun(*this, &FlatField::flatFieldFileChanged)); //, true);
     flatFieldFileReset->signal_clicked().connect( sigc::mem_fun(*this, &FlatField::flatFieldFile_Reset), true );
@@ -412,6 +413,16 @@ void FlatField::embeddedToggled()
     flatFieldAutoSelect->set_sensitive(!active);
     hbff->set_sensitive(!active);
     vbff->set_sensitive(!active);
+    bool ena = disableListener();
+    flatFieldBlurType->set_active(0);
+    if (active) {
+        flatFieldClipControl->delAutoButton();
+    } else {
+        flatFieldClipControl->addAutoButton("");
+    }
+    if (ena) {
+        enableListener();
+    }
 
     if (listener && getEnabled()) {
         listener->panelChanged(EvEmbedded, active ? M("GENERAL_ENABLED") : M("GENERAL_DISABLED"));

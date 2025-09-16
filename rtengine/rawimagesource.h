@@ -300,7 +300,7 @@ protected:
 
     bool getDeconvAutoRadius(float *out=nullptr) override;
 
-    void apply_gain_map(unsigned short black[4], std::vector<GainMap> &&maps);
+    void apply_gain_map(unsigned short black[4], std::vector<GainMap> &&maps, float scale_factor);
 
 public:
     float get_pre_mul(int c) const { return ri ? ri->get_pre_mul(c) : 1.f; }

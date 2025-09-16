@@ -2417,7 +2417,8 @@ void RawImageSource::copyOriginalPixels(const RAWParams &raw, RawImage *src, Raw
     }
 
     if (raw.enable_flatfield && raw.ff_embedded) {
-        apply_gain_map(black, idata->getGainMaps());
+        float scale_factor = max((float)(100 - raw.ff_clipControl) / 100.f, 0.01f);
+        apply_gain_map(black, idata->getGainMaps(), scale_factor);
     }
 }
 

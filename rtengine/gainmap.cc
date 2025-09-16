@@ -176,7 +176,7 @@ std::string GainMap::to_str() const
 }
 
 
-void RawImageSource::apply_gain_map(unsigned short black[4], std::vector<GainMap> &&maps)
+void RawImageSource::apply_gain_map(unsigned short black[4], std::vector<GainMap> &&maps, float scale_factor)
 {
     if (maps.size() != 4) {
         if (settings->verbose) {
@@ -204,7 +204,7 @@ void RawImageSource::apply_gain_map(unsigned short black[4], std::vector<GainMap
     for (int i = 0; i < 4; ++i) {
         fblack[i] = black[i];
     }
-    
+
     // now we can apply each gain map to raw_data
     array2D<float> mvals;
     for (auto &m : maps) {
@@ -223,7 +223,7 @@ void RawImageSource::apply_gain_map(unsigned short black[4], std::vector<GainMap
             float ys = y * row_scale;
             for (unsigned x = m.left; x < xend; x += m.col_pitch) {
                 float xs = x * col_scale;
-                float f = getBilinearValue(mvals, xs, ys);
+                float f = getBilinearValue(mvals, xs, ys) * scale_factor;
                 float b = fblack[FC(y, x)];
                 rawData[y][x] = CLIP((rawData[y][x] - b) * f + b);
             }
