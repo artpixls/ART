@@ -870,7 +870,7 @@ bool LinkedMaskManager::apply_mask(const Glib::ustring &toolname, const Glib::us
     auto k = key(toolname, name);
     auto it = masks_.find(k);
     if (it == masks_.end()) {
-        if (plistener) {
+        if (plistener && !toolname.empty() && !name.empty()) {
             plistener->error(Glib::ustring::compose(M("LINKED_MASK_NOT_FOUND_WARNING"), toolname, name));
         }
         return false;
