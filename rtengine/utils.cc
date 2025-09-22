@@ -24,6 +24,9 @@
 #include "utils.h"
 #include "rt_math.h"
 
+#include <sstream>
+#include <iomanip>
+
 #include <glib/gstdio.h>
 #include <giomm.h>
 #ifdef WIN32
@@ -309,6 +312,15 @@ std::string getMD5(const Glib::ustring& fname, bool extended)
 #endif
 
     return {};
+}
+
+
+std::string get_html_color(int r, int g, int b)
+{
+    std::ostringstream out;
+    out << "#";
+    out << std::setbase(16) << LIM(r, 0, 255) << LIM(g, 0, 255) << LIM(b, 0, 255);
+    return out.str();
 }
 
 

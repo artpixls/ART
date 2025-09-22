@@ -2340,9 +2340,9 @@ void Preferences::themeChanged ()
     RTImage::cleanup(true);
     options.svg_color = options.svg_dark_color;
     if (theme_color_visible) {
-        auto lum = rtengine::Color::rgbLuminance(moptions.theme_bg_color[0]/255.0, moptions.theme_bg_color[1]/255.0, moptions.theme_bg_color[2]/255.0);
-        if (lum >= 0.45) {
-            options.svg_color = options.svg_light_color;
+        options.svg_color = rtengine::get_html_color(moptions.theme_fg_color[0], moptions.theme_fg_color[1], moptions.theme_fg_color[2]);
+        if (options.rtSettings.verbose > 1) {
+            std::cout << "switched to svg color: " << options.svg_color << std::endl;
         }
     }
     RTImage::updateImages();

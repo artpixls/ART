@@ -56,6 +56,9 @@ void swab(const void* from, void* to, ssize_t n);
 
 std::string getMD5(const Glib::ustring &fname, bool extended=false);
 
+std::string get_html_color(int r, int g, int b);
+
+
 } // namespace rtengine
 
 #if __SIZEOF_WCHAR_T__ == 4
