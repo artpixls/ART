@@ -121,7 +121,7 @@ void ThumbBrowserBase::scroll (int direction, double deltaX, double deltaY)
                 incr = coef;
             }
 #endif // __APPLE__
-            double newValue = rtengine::LIM<double>(currValue + coef * hscroll.get_adjustment()->get_step_increment(),
+            double newValue = rtengine::LIM<double>(currValue + incr,
                                                     hscroll.get_adjustment()->get_lower(),
                                                     hscroll.get_adjustment()->get_upper());
             if (newValue != currValue) {
