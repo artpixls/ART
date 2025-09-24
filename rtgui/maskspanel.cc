@@ -3259,7 +3259,7 @@ void MasksPanel::updateLinkedMaskList(const rtengine::procparams::ProcParams *pa
             {
                 for (unsigned int i = 0, n = masks.size(); i < n; ++i) {
                     auto &m = masks[i];
-                    if (m.enabled && !m.name.empty()) {
+                    if (!m.name.empty()) {
                         available_linked_masks_.emplace_back(tool, m.name, i);
                     }
                     if (m.linkedMask.enabled && m.linkedMask.toolname == mytoolname) {
