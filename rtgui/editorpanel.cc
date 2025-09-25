@@ -1745,6 +1745,10 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
                 case GDK_KEY_period:
                     history->activateNextSnapshot();
                     return true;
+
+                case GDK_KEY_g:
+                    iareapanel->imageArea->indClippedPanel->toggleGrid();
+                    return true;
             }
         } //if (!ctrl)
     } //if (!alt)

@@ -50,6 +50,7 @@ public:
     void silentlyDisableSharpMask();  // toggle the button off without throwing a toggle event
     void toggleSharpMask();
     void toggleFalseColors();
+    void toggleGrid();
 
     bool showFocusMask ()
     {

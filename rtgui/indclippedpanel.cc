@@ -162,6 +162,12 @@ void IndicateClippedPanel::toggleFalseColors()
 }
 
 
+void IndicateClippedPanel::toggleGrid()
+{
+    grid->set_active(!grid->get_active());
+}
+
+
 void IndicateClippedPanel::buttonToggled (Gtk::ToggleButton* tb)
 {
     ConnectionBlocker b1(connFalseColors);
