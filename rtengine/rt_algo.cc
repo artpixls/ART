@@ -1489,7 +1489,8 @@ void inpaint(Imagefloat *img, const array2D<float> &mask, float threshold, int r
             rescaleBilinear(asrc, adst, multithread);
         }
 
-        Inpainting op(img, mask, threshold, radius / skip, border / skip, limit / skip, multithread);
+        int radius_scaled = radius > 0 ? std::max(radius / skip, 1) : 0;
+        Inpainting op(&tmp, tmpm, threshold, radius_scaled, border / skip, limit / skip, multithread);
         op();
 
         array2D<float> r(dW, dH, tmp.r.ptrs, ARRAY2D_BYREFERENCE);

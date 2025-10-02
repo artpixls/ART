@@ -274,8 +274,16 @@ bool do_inpainting(const Imagefloat *src, Imagefloat *dst, const array2D<float> 
         }
     }
 
+    // dst->normalizeFloatTo65535(false);
+    // dst->saveAsTIFF("/tmp/input.tif", 16, false);
+    // dst->normalizeFloatTo1(false);
+
     float threshold = r.mode == SmoothingParams::Region::Mode::LENS ? 0.25f : 0.95f;
-    inpaint(dst, mask, -threshold, 16.f / scale + 0.5, radius / 2, radius * 2, multithread, 4);
+    inpaint(dst, mask, -threshold, 16.f / scale + 0.5, std::max(radius / 2, 1), radius * 2, multithread, 4);
+
+    // dst->normalizeFloatTo65535(false);
+    // dst->saveAsTIFF("/tmp/inpaint.tif", 16, false);
+    // dst->normalizeFloatTo1(false);
 
     return true;
 }
