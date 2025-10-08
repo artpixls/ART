@@ -100,12 +100,22 @@ void RTSurface::changeImage (Glib::ustring imageName)
 
 int RTSurface::getWidth() const
 {
-    return surface ? surface->get_width() : -1;
+//    return surface ? surface->get_width() : -1;
+    if (surface) {
+        return surface->get_width() / RTSurface::getDeviceScale();
+    } else {
+        return -1;
+    }
 }
 
 int RTSurface::getHeight() const
 {
-    return surface ? surface->get_height() : -1;
+//    return surface ? surface->get_height() : -1;
+    if (surface) {
+        return surface->get_height() / RTSurface::getDeviceScale();
+    } else {
+        return -1;
+    }
 }
 
 void RTSurface::init()

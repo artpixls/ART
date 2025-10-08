@@ -48,10 +48,10 @@ const std::vector<std::string> labels = {
 
 void WhiteBalance::init ()
 {
-    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-camera-small.png"));
-    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-auto-small.png"));
-    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-custom-small.png"));
-    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-custom2-small.png"));
+    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-camera-small.svg"));
+    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-auto-small.svg"));
+    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-custom-small.svg"));
+    wbPixbufs.push_back(RTImage::createPixbufFromFile("wb-custom2-small.svg"));
 }
 
 void WhiteBalance::cleanup ()
@@ -144,7 +144,7 @@ WhiteBalance::WhiteBalance () : FoldableToolPanel(this, "whitebalance", M("TP_WB
     setExpandAlignProperties(spotbutton, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
     spotbutton->get_style_context()->add_class("independent");
     spotbutton->set_tooltip_text(M("TP_WBALANCE_SPOTWB"));
-    spotbutton->set_image (*Gtk::manage (new RTImage ("color-picker-small.png")));
+    spotbutton->set_image (*Gtk::manage (new RTImage ("color-picker-small.svg")));
 
     Gtk::Label* slab = Gtk::manage (new Gtk::Label (M("TP_WBALANCE_SIZE")));
     setExpandAlignProperties(slab, false, false, Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
@@ -196,12 +196,12 @@ WhiteBalance::WhiteBalance () : FoldableToolPanel(this, "whitebalance", M("TP_WB
     separator->get_style_context()->add_class("grid-row-separator");
     pack_start(*separator, Gtk::PACK_SHRINK, 0);
 
-    Gtk::Image* itempL =  Gtk::manage (new RTImage ("circle-blue-small.png"));
-    Gtk::Image* itempR =  Gtk::manage (new RTImage ("circle-yellow-small.png"));
-    Gtk::Image* igreenL = Gtk::manage (new RTImage ("circle-magenta-small.png"));
-    Gtk::Image* igreenR = Gtk::manage (new RTImage ("circle-green-small.png"));
-    Gtk::Image* iblueredL = Gtk::manage (new RTImage ("circle-blue-small.png"));
-    Gtk::Image* iblueredR = Gtk::manage (new RTImage ("circle-red-small.png"));
+    Gtk::Image* itempL =  Gtk::manage (new RTImage ("circle-blue-small.svg"));
+    Gtk::Image* itempR =  Gtk::manage (new RTImage ("circle-yellow-small.svg"));
+    Gtk::Image* igreenL = Gtk::manage (new RTImage ("circle-magenta-small.svg"));
+    Gtk::Image* igreenR = Gtk::manage (new RTImage ("circle-green-small.svg"));
+    Gtk::Image* iblueredL = Gtk::manage (new RTImage ("circle-blue-small.svg"));
+    Gtk::Image* iblueredR = Gtk::manage (new RTImage ("circle-red-small.svg"));
 
     temp = Gtk::manage(new Adjuster(M("TP_WBALANCE_TEMPERATURE"), MINTEMP, MAXTEMP, 5, CENTERTEMP, itempL, itempR, &wbSlider2Temp, &wbTemp2Slider));
     green = Gtk::manage (new Adjuster(M("TP_WBALANCE_GREEN"), MINGREEN, MAXGREEN, 0.001, 1.0, igreenL, igreenR));
@@ -222,7 +222,7 @@ WhiteBalance::WhiteBalance () : FoldableToolPanel(this, "whitebalance", M("TP_WB
     tempBox = Gtk::manage(new Gtk::VBox());
 
     temp_warning_ = Gtk::manage(new Gtk::HBox());
-    auto warnico = Gtk::manage(new RTImage("warning.png"));
+    auto warnico = Gtk::manage(new RTImage("warning.svg"));
     auto warnlbl = Gtk::manage(new Gtk::Label(M("WARNING_INVALID_WB_TEMP_TINT")));
     warnico->show();
     warnlbl->show();
@@ -250,9 +250,9 @@ WhiteBalance::WhiteBalance () : FoldableToolPanel(this, "whitebalance", M("TP_WB
             "TP_COLORCORRECTION_CHANNEL_B"
         };
         static const std::vector<std::string> icon = {
-            "circle-red-small.png",
-            "circle-green-small.png",
-            "circle-blue-small.png"
+            "circle-red-small.svg",
+            "circle-green-small.svg",
+            "circle-blue-small.svg"
         };
         for (size_t i = 0; i < 3; ++i) {
             mult[i] = Gtk::manage(new Adjuster(M(label[i]), 0.1, 20, 0.0001, 1, Gtk::manage(new RTImage(icon[i]))));

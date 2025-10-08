@@ -125,7 +125,7 @@ ToneCurve::ToneCurve():
         [&](MyComboBoxText *b) -> Gtk::HBox *
         {
             Gtk::HBox *hb = Gtk::manage(new Gtk::HBox());
-            Gtk::Image *w = Gtk::manage(new RTImage("warning-small.png"));
+            Gtk::Image *w = Gtk::manage(new RTImage("warning-small.svg"));
             w->set_tooltip_markup(M("GENERAL_DEPRECATED_TOOLTIP"));
             hb->pack_start(*b, Gtk::PACK_EXPAND_WIDGET);
             hb->pack_start(*w, Gtk::PACK_SHRINK, 2);
@@ -204,7 +204,7 @@ ToneCurve::ToneCurve():
     contrast_legacy_box_ = new Gtk::HBox();
     contrast_legacy_box_->pack_start(*contrast_legacy_, Gtk::PACK_EXPAND_WIDGET, 0);
     {
-        Gtk::Image *w = Gtk::manage(new RTImage("warning-small.png"));
+        Gtk::Image *w = Gtk::manage(new RTImage("warning-small.svg"));
         w->set_tooltip_markup(M("GENERAL_DEPRECATED_TOOLTIP"));
         contrast_legacy_box_->pack_start(*w, Gtk::PACK_SHRINK, 2);
     }

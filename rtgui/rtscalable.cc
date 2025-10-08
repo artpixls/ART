@@ -24,14 +24,18 @@
 #include <iostream>
 #include <librsvg/rsvg.h>
 #include "options.h"
+#include "pathutils.h"
+#include <unordered_map>
 
 double RTScalable::dpi = 0.;
 int RTScalable::scale = 0;
+int RTScalable::device_scale = 1;
 
 extern Options options;
 extern unsigned char initialGdkScale;
 extern float fontScale;
 Gtk::TextDirection RTScalable::direction = Gtk::TextDirection::TEXT_DIR_NONE;
+
 
 void RTScalable::setDPInScale (const double newDPI, const int newScale)
 {
@@ -74,6 +78,11 @@ int RTScalable::getScale ()
     return scale;
 }
 
+int RTScalable::getDeviceScale()
+{
+    return device_scale;
+}
+
 Gtk::TextDirection RTScalable::getDirection()
 {
     return direction;
@@ -83,9 +92,14 @@ void RTScalable::init(Gtk::Window *window)
 {
     dpi = 0.;
     scale = 0;
+    device_scale = 1;
 
     setDPInScale(window->get_screen()->get_resolution(), rtengine::max((int)initialGdkScale, window->get_scale_factor()));
     direction = window->get_direction();
+#ifdef __APPLE__
+    device_scale = window->get_scale_factor();
+    std::cout << "GOT DEVICE SCALE: " << device_scale << std::endl;
+#endif
 }
 
 void RTScalable::deleteDir(const Glib::ustring& path)
@@ -156,95 +170,49 @@ void RTScalable::cleanup(bool all)
 
 }
 
-/*
- * This function try to find the svg file converted to png in a cache and return
- * the Cairo::ImageSurface. If it can't find it, it will generate it.
- *
- * If the provided filename doesn't end with ".svg" (and then we're assuming it's a png file),
- * it will try to load that file directly from the source images folder. Scaling is disabled
- * for anything else than svg files.
- *
- * This function will always return a usable value, but it might be a garbage image
- * if something went wrong.
- */
+
+namespace {
+
+std::unordered_map<std::string, Cairo::RefPtr<Cairo::ImageSurface>> image_cache;
+
+Cairo::RefPtr<Cairo::ImageSurface> cache_put(const Glib::ustring &fname, Cairo::RefPtr<Cairo::ImageSurface> surf)
+{
+    image_cache[fname] = surf;
+    return surf;
+}
+
+} // namespace
+
+
 Cairo::RefPtr<Cairo::ImageSurface> RTScalable::loadImage(const Glib::ustring &fname, double dpi)
 {
-    // Magic color       : #2a7fff
-    // Dark theme color  : #CCCCCC
-    // Light theme color : #252525  -- not used
-
     Glib::ustring imagesFolder = Glib::build_filename (options.ART_base_dir, "images");
-    Glib::ustring imagesCacheFolder = Glib::build_filename (options.cacheBaseDir, "svg2png");
 
-    // -------------------- Looking for the cached PNG file first --------------------
+    auto it = image_cache.find(fname);
+    if (it != image_cache.end()) {
+        return it->second;
+    }
 
-    Glib::ustring imagesCacheFolderDPI = Glib::build_filename (imagesCacheFolder, Glib::ustring::compose("%1", (int)dpi));
-    auto path = Glib::build_filename(imagesCacheFolderDPI, fname);
+    auto path = Glib::build_filename(imagesFolder, fname);
 
     std::string svgFile;
-    Glib::ustring iconNameSVG;
-    if (fname.find(".png") != Glib::ustring::npos) {
-        iconNameSVG = fname.substr(0, fname.length() - 3) + Glib::ustring("svg");
-    }
 
-    bool png_is_good = true;
-    if (!Glib::file_test(path.c_str(), Glib::FILE_TEST_EXISTS)) {
-        png_is_good = false;
-    } else {
-        auto svgpath = Glib::build_filename(imagesFolder, iconNameSVG);
-        if (Glib::file_test(svgpath.c_str(), Glib::FILE_TEST_EXISTS)) {
-            auto pnginfo = Gio::File::create_for_path(path)->query_info(G_FILE_ATTRIBUTE_TIME_MODIFIED);
-            auto svginfo = Gio::File::create_for_path(svgpath)->query_info(G_FILE_ATTRIBUTE_TIME_MODIFIED);
-            if (pnginfo->modification_time() < svginfo->modification_time()) {
-                png_is_good = false;
-            }
-        }
-    }
-    
-    if (png_is_good) {
-        return Cairo::ImageSurface::create_from_png(path);
-    } else {
-
-        // -------------------- Looking for the PNG file in install directory --------------------
-
-        path = Glib::build_filename(imagesFolder, fname);
-        if (Glib::file_test(path.c_str(), Glib::FILE_TEST_EXISTS)) {
-            return Cairo::ImageSurface::create_from_png(path);
-        }
-    }
-
-    // Last chance: looking for the svg file and creating the cached image file
-
-    // -------------------- Creating the cache folder for PNGs --------------------
-
-    if (!Glib::file_test(imagesCacheFolderDPI.c_str(), Glib::FILE_TEST_EXISTS)) {
-        auto error = g_mkdir_with_parents (imagesCacheFolderDPI.c_str(), 0777);
-        if (error != 0) {
-            std::cerr << "ERROR: Can't create \"" << imagesCacheFolderDPI << "\" cache folder: " << g_strerror(error)  << std::endl;
-            Cairo::RefPtr<Cairo::ImageSurface> surf = Cairo::ImageSurface::create(Cairo::FORMAT_RGB24, 10, 10);
-            return surf;
-        }
+    if (getExtension(fname) == "png") {
+        return cache_put(fname, Cairo::ImageSurface::create_from_png(path));
     }
 
     // -------------------- Loading the SVG file --------------------
 
-    // std::string svgFile;
-    // Glib::ustring iconNameSVG;
-    // if (fname.find(".png") != Glib::ustring::npos) {
-    //     iconNameSVG = fname.substr(0, fname.length() - 3) + Glib::ustring("svg");
-    // }
     try {
-        path = Glib::build_filename (imagesFolder, iconNameSVG);
-        //printf("Trying to get content of %s\n", path.c_str());
-        svgFile = Glib::file_get_contents(Glib::build_filename (imagesFolder, iconNameSVG));
-    }
-    catch (Glib::FileError &err) {
+        svgFile = Glib::file_get_contents(path);
+    } catch (Glib::FileError &err) {
         std::cerr << "ERROR: " << err.what() << std::endl;
         Cairo::RefPtr<Cairo::ImageSurface> surf = Cairo::ImageSurface::create(Cairo::FORMAT_RGB24, 10, 10);
         return surf;
     }
 
     // -------------------- Updating the the magic color --------------------
+    // Magic color       : #2a7fff
 
     std::string updatedSVG = Glib::Regex::create("#2a7fff")->replace(svgFile, 0, options.svg_color, Glib::RegexMatchFlags());
 
@@ -264,7 +232,8 @@ Cairo::RefPtr<Cairo::ImageSurface> RTScalable::loadImage(const Glib::ustring &fn
 
     RsvgDimensionData dim;
     rsvg_handle_get_dimensions(handle, &dim);
-    double r = dpi / baseDPI;
+    int scale = getDeviceScale();
+    double r = dpi / baseDPI * scale;
     Cairo::RefPtr<Cairo::ImageSurface> surf = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, (int)(dim.width * r + 0.499), (int)(dim.height * r + 0.499));
     Cairo::RefPtr<Cairo::Context> c = Cairo::Context::create(surf);
     c->set_source_rgba (0., 0., 0., 0.);
@@ -275,11 +244,14 @@ Cairo::RefPtr<Cairo::ImageSurface> RTScalable::loadImage(const Glib::ustring &fn
     rsvg_handle_render_cairo(handle, c->cobj());
     rsvg_handle_free(handle);
 
-    // -------------------- Saving the image in cache --------------------
+    setDeviceScale(surf, scale);
 
-    surf->write_to_png(Glib::build_filename(imagesCacheFolderDPI, fname));
+    return cache_put(fname, surf);
+}
 
-    // -------------------- Finished! Pfeeew ! --------------------
 
-    return surf;
+void RTScalable::setDeviceScale(const Cairo::RefPtr<Cairo::Surface>& surface, int scale)
+{
+    cairo_surface_t* cobj = surface->cobj();
+    cairo_surface_set_device_scale(cobj, scale, scale);
 }

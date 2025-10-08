@@ -129,7 +129,7 @@ Crop::Crop():
     selectCrop = Gtk::manage(new Gtk::Button(M("TP_CROP_SELECTCROP")));
     setExpandAlignProperties(selectCrop, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
     selectCrop->get_style_context()->add_class("independent");
-    selectCrop->set_image (*Gtk::manage (new RTImage ("crop-small.png")));
+    selectCrop->set_image (*Gtk::manage (new RTImage ("crop-small.svg")));
 
     resetCrop = Gtk::manage(new Gtk::Button(M("TP_CROP_RESETCROP")));
     setExpandAlignProperties(resetCrop, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);

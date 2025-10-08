@@ -548,7 +548,7 @@ ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M
     nb->set_tab_pos(Gtk::POS_BOTTOM);
     nb->set_name("ExpanderBox");
     {
-        auto w = Gtk::manage(new RTImage("circle-dot-big.png"));
+        auto w = Gtk::manage(new RTImage("circle-dot-big.svg"));
         nb->append_page(*wheel, *w);
     }    
     box_combined->pack_start(*nb, Gtk::PACK_SHRINK, 4);//wheel);
@@ -570,7 +570,7 @@ ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M
 
     curve_lum = Gtk::manage(new CurveDisplay(this, false));
     {
-        auto w = Gtk::manage(new RTImage("curve-spline.png"));
+        auto w = Gtk::manage(new RTImage("curve-spline.svg"));
         nb->append_page(*curve_lum, *w);
     }
     //box_combined->pack_start(*curve_lum, Gtk::PACK_SHRINK, 4);    
@@ -621,7 +621,7 @@ ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M
         const char *img = (c == 0 ? "red" : (c == 1 ? "green" : "blue"));
         //Gtk::Frame *f = Gtk::manage(new Gtk::Frame(""));
         Gtk::HBox *lbl = Gtk::manage(new Gtk::HBox());
-        lbl->pack_start(*Gtk::manage(new RTImage(std::string("circle-") + img + "-small.png")), Gtk::PACK_SHRINK, 2);
+        lbl->pack_start(*Gtk::manage(new RTImage(std::string("circle-") + img + "-small.svg")), Gtk::PACK_SHRINK, 2);
         lbl->pack_start(*Gtk::manage(new Gtk::Label(M(std::string("TP_COLORCORRECTION_CHANNEL_") + chan))));
         //f->set_label_align(0.025, 0.5);
         //f->set_label_widget(*lbl);
@@ -676,9 +676,9 @@ ColorCorrection::ColorCorrection(): FoldableToolPanel(this, "colorcorrection", M
         vb->pack_start(*hb);
 
         if (c == 1) {
-            lfactor[c] = Gtk::manage(new Adjuster("", -10.0, 10.0, 0.001, 0, Gtk::manage(new RTImage("circle-black-small.png")), Gtk::manage(new RTImage("circle-white-small.png")), nullptr, nullptr, false, false));
+            lfactor[c] = Gtk::manage(new Adjuster("", -10.0, 10.0, 0.001, 0, Gtk::manage(new RTImage("circle-black-small.svg")), Gtk::manage(new RTImage("circle-white-small.svg")), nullptr, nullptr, false, false));
         } else {
-            lfactor[c] = Gtk::manage(new Adjuster("", -50.0, 50.0, 0.1, 0, Gtk::manage(new RTImage("circle-black-small.png")), Gtk::manage(new RTImage("circle-white-small.png")), nullptr, nullptr, false, false));
+            lfactor[c] = Gtk::manage(new Adjuster("", -50.0, 50.0, 0.1, 0, Gtk::manage(new RTImage("circle-black-small.svg")), Gtk::manage(new RTImage("circle-white-small.svg")), nullptr, nullptr, false, false));
         }
         lfactor[c]->setAdjusterListener(this);
         vb->pack_start(*lfactor[c]);

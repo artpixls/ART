@@ -220,11 +220,11 @@ void EditWindow::addEditorPanel (EditorPanel* ep, const std::string &name)
 
     // construct closeable tab for the image
     Gtk::HBox* hb = Gtk::manage (new Gtk::HBox ());
-    hb->pack_start (*Gtk::manage (new RTImage ("aperture.png")));
+    hb->pack_start (*Gtk::manage (new RTImage ("aperture.svg")));
     hb->pack_start (*Gtk::manage (new Gtk::Label (Glib::path_get_basename (name))));
     hb->set_tooltip_markup (name);
     Gtk::Button* closeb = Gtk::manage (new Gtk::Button ());
-    closeb->set_image (*Gtk::manage(new RTImage ("cancel-small.png")));
+    closeb->set_image (*Gtk::manage(new RTImage ("cancel-small.svg")));
     closeb->set_relief (Gtk::RELIEF_NONE);
     closeb->set_focus_on_click (false);
 

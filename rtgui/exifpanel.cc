@@ -58,10 +58,10 @@ ExifPanel::ExifPanel():
     exifTree->set_enable_search(false);
     exifTree->set_search_column(0);
         
-    //keepicon = RTImage::createPixbufFromFile("tick-small.png");
-    editicon = RTImage::createPixbufFromFile("edit-small.png");
-    open_icon_ = RTImage::createPixbufFromFile("expander-open-small.png");
-    closed_icon_ = RTImage::createPixbufFromFile("expander-closed-small.png");
+    //keepicon = RTImage::createPixbufFromFile("tick-small.svg");
+    editicon = RTImage::createPixbufFromFile("edit-small.svg");
+    open_icon_ = RTImage::createPixbufFromFile("expander-open-small.svg");
+    closed_icon_ = RTImage::createPixbufFromFile("expander-closed-small.svg");
 
     exif_active_renderer_.property_mode() = Gtk::CELL_RENDERER_MODE_ACTIVATABLE;
     exif_active_renderer_.signal_toggled().connect(sigc::mem_fun(this, &ExifPanel::onKeyActiveToggled));
@@ -128,11 +128,11 @@ ExifPanel::ExifPanel():
             return b;
         };
 
-    activate_all_ = addbtn("EXIFPANEL_ACTIVATE_ALL_HINT", "tick.png");
-    activate_none_ = addbtn("EXIFPANEL_ACTIVATE_NONE_HINT", "box.png");
-    add = addbtn("EXIFPANEL_ADDEDIT", "edit.png");
-    reset = addbtn("EXIFPANEL_RESETHINT", "undo.png", "redo.png");
-    resetAll = addbtn("EXIFPANEL_RESETALLHINT", "undo-all.png", "redo-all.png");
+    activate_all_ = addbtn("EXIFPANEL_ACTIVATE_ALL_HINT", "tick.svg");
+    activate_none_ = addbtn("EXIFPANEL_ACTIVATE_NONE_HINT", "box.svg");
+    add = addbtn("EXIFPANEL_ADDEDIT", "edit.svg");
+    reset = addbtn("EXIFPANEL_RESETHINT", "undo.svg", "redo.svg");
+    resetAll = addbtn("EXIFPANEL_RESETALLHINT", "undo-all.svg", "redo-all.svg");
 
     pack_end (*buttons1, Gtk::PACK_SHRINK);
 

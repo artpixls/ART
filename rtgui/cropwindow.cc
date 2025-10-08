@@ -75,11 +75,11 @@ CropWindow::CropWindow (ImageArea* parent, bool isLowUpdatePriority_, bool isDet
         closett = "Close";
         initialized = true;
     }
-    bZoomOut = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-minus-small.png")), 0, nullptr, LWButton::Left, LWButton::Center, &zoomOuttt);
-    bZoomIn  = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-plus-small.png")), 1, nullptr, LWButton::Left, LWButton::Center, &zoomIntt);
-    bZoom100 = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-1to1-small.png")), 2, nullptr, LWButton::Left, LWButton::Center, &zoom100tt);
-     //bZoomFit = new LWButton (Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-fit.png")), 3, NULL, LWButton::Left, LWButton::Center, "Zoom Fit");
-    bClose   = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("cancel-small.png")), 4, nullptr, LWButton::Right, LWButton::Center, &closett);
+    bZoomOut = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-minus-small.svg")), 0, nullptr, LWButton::Left, LWButton::Center, &zoomOuttt);
+    bZoomIn  = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-plus-small.svg")), 1, nullptr, LWButton::Left, LWButton::Center, &zoomIntt);
+    bZoom100 = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-1to1-small.svg")), 2, nullptr, LWButton::Left, LWButton::Center, &zoom100tt);
+     //bZoomFit = new LWButton (Cairo::RefPtr<RTSurface>(new RTSurface("magnifier-fit.svg")), 3, NULL, LWButton::Left, LWButton::Center, "Zoom Fit");
+    bClose   = new LWButton(Cairo::RefPtr<RTSurface>(new RTSurface("cancel-small.svg")), 4, nullptr, LWButton::Right, LWButton::Center, &closett);
 
     buttonSet.add (bZoomOut);
     buttonSet.add (bZoomIn);

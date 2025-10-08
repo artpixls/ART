@@ -541,11 +541,11 @@ void ExpanderBox::hideBox()
 void MyExpander::init()
 {
     if (!inconsistentImage) {  // if one is null, all are null
-        inconsistentImage = Glib::RefPtr<RTImage>(new RTImage("power-inconsistent-small.png"));
-        enabledImage = Glib::RefPtr<RTImage>(new RTImage("power-on-small.png"));
-        disabledImage = Glib::RefPtr<RTImage>(new RTImage("power-off-small.png"));
-        openedImage = Glib::RefPtr<RTImage>(new RTImage("expander-open-small.png"));
-        closedImage = Glib::RefPtr<RTImage>(new RTImage("expander-closed-small.png"));
+        inconsistentImage = Glib::RefPtr<RTImage>(new RTImage("power-inconsistent-small.svg"));
+        enabledImage = Glib::RefPtr<RTImage>(new RTImage("power-on-small.svg"));
+        disabledImage = Glib::RefPtr<RTImage>(new RTImage("power-off-small.svg"));
+        openedImage = Glib::RefPtr<RTImage>(new RTImage("expander-open-small.svg"));
+        closedImage = Glib::RefPtr<RTImage>(new RTImage("expander-closed-small.svg"));
     }
 }
 

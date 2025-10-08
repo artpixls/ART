@@ -72,7 +72,7 @@ void MessageWindow::init(Gtk::Widget *main_widget)
         info_box_->set_can_focus(false);
 
         box->get_style_context()->add_class("app-notification");
-        RTImage *icon = Gtk::manage(new RTImage("warning.png"));
+        RTImage *icon = Gtk::manage(new RTImage("warning.svg"));
         info_image_ = icon;
         setExpandAlignProperties(icon, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
         icon->set_can_focus(false);
@@ -457,11 +457,11 @@ RTWindow::RTWindow():
         if (!options.tabbedUI) {
             mainNB->set_tab_pos (Gtk::POS_LEFT);
             fpl->set_angle (90);
-            RTImage* folderIcon = Gtk::manage (new RTImage ("folder-closed.png"));
+            RTImage* folderIcon = Gtk::manage (new RTImage ("folder-closed.svg"));
             fpanelLabelGrid->attach_next_to (*folderIcon, Gtk::POS_TOP, 1, 1);
             fpanelLabelGrid->attach_next_to (*fpl, Gtk::POS_TOP, 1, 1);
         } else {
-            RTImage* folderIcon = Gtk::manage (new RTImage ("folder-closed.png"));
+            RTImage* folderIcon = Gtk::manage (new RTImage ("folder-closed.svg"));
             fpanelLabelGrid->attach_next_to (*folderIcon, Gtk::POS_RIGHT, 1, 1);
             fpanelLabelGrid->attach_next_to (*fpl, Gtk::POS_RIGHT, 1, 1);
         }
@@ -490,13 +490,13 @@ RTWindow::RTWindow():
         mainNB->set_current_page (mainNB->page_num (*fpanel));
 
         // filling bottom box
-        iFullscreen = new RTImage ("fullscreen-enter.png");
-        iFullscreen_exit = new RTImage ("fullscreen-leave.png");
+        iFullscreen = new RTImage ("fullscreen-enter.svg");
+        iFullscreen_exit = new RTImage ("fullscreen-leave.svg");
 
         Gtk::Button* preferences = Gtk::manage (new Gtk::Button ());
         setExpandAlignProperties (preferences, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER);
         preferences->set_relief(Gtk::RELIEF_NONE);
-        preferences->set_image (*Gtk::manage (new RTImage ("preferences.png")));
+        preferences->set_image (*Gtk::manage (new RTImage ("preferences.svg")));
         preferences->set_tooltip_markup (M ("MAIN_BUTTON_PREFERENCES"));
         preferences->signal_clicked().connect ( sigc::mem_fun (*this, &RTWindow::showPreferences) );
 
@@ -740,7 +740,7 @@ void RTWindow::addEditorPanel (EditorPanel* ep, const std::string &name)
         // construct closeable tab for the image
         Gtk::Grid* titleGrid = Gtk::manage (new Gtk::Grid ());
         titleGrid->set_tooltip_markup (name);
-        RTImage *closebimg = Gtk::manage (new RTImage ("cancel-small.png"));
+        RTImage *closebimg = Gtk::manage (new RTImage ("cancel-small.svg"));
         Gtk::Button* closeb = Gtk::manage (new Gtk::Button ());
         closeb->set_name ("CloseButton");
         closeb->add (*closebimg);
@@ -749,7 +749,7 @@ void RTWindow::addEditorPanel (EditorPanel* ep, const std::string &name)
         closeb->signal_clicked().connect ( sigc::bind (sigc::mem_fun (*this, &RTWindow::remEditorPanel), ep));
 
         if (!EditWindow::isMultiDisplayEnabled()) {
-            titleGrid->attach_next_to (*Gtk::manage (new RTImage ("aperture.png")), Gtk::POS_RIGHT, 1, 1);
+            titleGrid->attach_next_to (*Gtk::manage (new RTImage ("aperture.svg")), Gtk::POS_RIGHT, 1, 1);
         }
         titleGrid->attach_next_to (*Gtk::manage (new Gtk::Label (Glib::path_get_basename (name))), Gtk::POS_RIGHT, 1, 1);
         titleGrid->attach_next_to (*closeb, Gtk::POS_RIGHT, 1, 1);
@@ -1371,7 +1371,7 @@ void RTWindow::createSetmEditor()
         el->set_angle(90);
     }
 
-    editorLabelGrid->attach_next_to (*Gtk::manage (new RTImage ("aperture.png")), pos, 1, 1);
+    editorLabelGrid->attach_next_to (*Gtk::manage (new RTImage ("aperture.svg")), pos, 1, 1);
     editorLabelGrid->attach_next_to (*el, pos, 1, 1);
 
     editorLabelGrid->set_tooltip_markup (M ("MAIN_FRAME_EDITOR_TOOLTIP"));

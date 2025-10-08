@@ -1002,7 +1002,7 @@ Gtk::Widget* Preferences::getGeneralPanel ()
         Gtk::Button *reset = Gtk::manage(new Gtk::Button());
         theme_colors_reset = reset;
         reset->set_tooltip_markup(M("ADJUSTER_RESET_TO_DEFAULT"));
-        reset->add(*Gtk::manage(new RTImage("undo-small.png")));
+        reset->add(*Gtk::manage(new RTImage("undo-small.svg")));
         reset->signal_clicked().connect(
             sigc::slot<void>([&]() -> void
                              {
@@ -1248,7 +1248,7 @@ Gtk::Widget* Preferences::getFileBrowserPanel ()
     startupdir = Gtk::manage ( new Gtk::Entry () );
 
     Gtk::Button* sdselect = Gtk::manage ( new Gtk::Button () );
-    sdselect->set_image (*Gtk::manage (new RTImage ("folder-open-small.png")));
+    sdselect->set_image (*Gtk::manage (new RTImage ("folder-open-small.svg")));
 
     Gtk::RadioButton::Group opts = sdcurrent->get_group();
     sdlast->set_group (opts);
@@ -1364,10 +1364,10 @@ Gtk::Widget* Preferences::getFileBrowserPanel ()
     delExt->set_tooltip_text (M ("PREFERENCES_PARSEDEXTDELHINT"));
     moveExtUp->set_tooltip_text (M ("PREFERENCES_PARSEDEXTUPHINT"));
     moveExtDown->set_tooltip_text (M ("PREFERENCES_PARSEDEXTDOWNHINT"));
-    Gtk::Image* addExtImg = Gtk::manage ( new RTImage ("add-small.png") );
-    Gtk::Image* delExtImg = Gtk::manage ( new RTImage ("remove-small.png") );
-    Gtk::Image* moveExtUpImg = Gtk::manage ( new RTImage ("arrow-up-small.png") );
-    Gtk::Image* moveExtDownImg = Gtk::manage ( new RTImage ("arrow-down-small.png") );
+    Gtk::Image* addExtImg = Gtk::manage ( new RTImage ("add-small.svg") );
+    Gtk::Image* delExtImg = Gtk::manage ( new RTImage ("remove-small.svg") );
+    Gtk::Image* moveExtUpImg = Gtk::manage ( new RTImage ("arrow-up-small.svg") );
+    Gtk::Image* moveExtDownImg = Gtk::manage ( new RTImage ("arrow-down-small.svg") );
     addExt->add (*addExtImg);
     delExt->add (*delExtImg);
     moveExtUp->set_image (*moveExtUpImg);

@@ -35,9 +35,9 @@ BatchQueueButtonSet::BatchQueueButtonSet (BatchQueueEntry* myEntry)
 {
 
     if (!iconsLoaded) {
-        cancelIcon = Cairo::RefPtr<RTSurface>(new RTSurface("cancel-small.png"));
-        headIcon = Cairo::RefPtr<RTSurface>(new RTSurface("goto-start-small.png"));
-        tailIcon = Cairo::RefPtr<RTSurface>(new RTSurface("goto-end-small.png"));
+        cancelIcon = Cairo::RefPtr<RTSurface>(new RTSurface("cancel-small.svg"));
+        headIcon = Cairo::RefPtr<RTSurface>(new RTSurface("goto-start-small.svg"));
+        tailIcon = Cairo::RefPtr<RTSurface>(new RTSurface("goto-end-small.svg"));
         moveHeadToolTip = M("FILEBROWSER_POPUPMOVEHEAD");
         moveEndToolTip = M("FILEBROWSER_POPUPMOVEEND");
         cancelJobToolTip = M("FILEBROWSER_POPUPCANCELJOB");

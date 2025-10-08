@@ -116,16 +116,16 @@ PerspCorrection::PerspCorrection() : FoldableToolPanel(this, "perspective", M("T
     panel_listener = nullptr;
     metadata = nullptr;
 
-    Gtk::Image *ipersHL = Gtk::manage(new RTImage("perspective-horizontal-left-small.png"));
-    Gtk::Image *ipersHR = Gtk::manage(new RTImage("perspective-horizontal-right-small.png"));
-    Gtk::Image *ipersVL = Gtk::manage(new RTImage("perspective-vertical-bottom-small.png"));
-    Gtk::Image *ipersVR = Gtk::manage(new RTImage("perspective-vertical-top-small.png"));
-    Gtk::Image *ipersSL = Gtk::manage(new RTImage("perspective-shear-left-small.png"));
-    Gtk::Image *ipersSR = Gtk::manage(new RTImage("perspective-shear-right-small.png"));
-    Gtk::Image *irotateL = Gtk::manage(new RTImage("rotate-right-small.png"));
-    Gtk::Image *irotateR = Gtk::manage(new RTImage("rotate-left-small.png"));
-    Gtk::Image *iaspectL = Gtk::manage(new RTImage("perspective-aspect-vertical-small.png"));
-    Gtk::Image *iaspectR = Gtk::manage(new RTImage("perspective-aspect-horizontal-small.png"));
+    Gtk::Image *ipersHL = Gtk::manage(new RTImage("perspective-horizontal-left-small.svg"));
+    Gtk::Image *ipersHR = Gtk::manage(new RTImage("perspective-horizontal-right-small.svg"));
+    Gtk::Image *ipersVL = Gtk::manage(new RTImage("perspective-vertical-bottom-small.svg"));
+    Gtk::Image *ipersVR = Gtk::manage(new RTImage("perspective-vertical-top-small.svg"));
+    Gtk::Image *ipersSL = Gtk::manage(new RTImage("perspective-shear-left-small.svg"));
+    Gtk::Image *ipersSR = Gtk::manage(new RTImage("perspective-shear-right-small.svg"));
+    Gtk::Image *irotateL = Gtk::manage(new RTImage("rotate-right-small.svg"));
+    Gtk::Image *irotateR = Gtk::manage(new RTImage("rotate-left-small.svg"));
+    Gtk::Image *iaspectL = Gtk::manage(new RTImage("perspective-aspect-vertical-small.svg"));
+    Gtk::Image *iaspectR = Gtk::manage(new RTImage("perspective-aspect-horizontal-small.svg"));
 
     horiz = Gtk::manage(new Adjuster(M("TP_PERSPECTIVE_HORIZONTAL"), -200, 200, 0.1, 0, ipersHL, ipersHR));
     horiz->setAdjusterListener(this);
@@ -159,9 +159,9 @@ PerspCorrection::PerspCorrection() : FoldableToolPanel(this, "perspective", M("T
     aspect->setLogScale(100, 1, true);
 
     // Begin control lines interface.
-    Gtk::Image *ipers_draw = Gtk::manage(new RTImage("edit.png"));
-    Gtk::Image *ipers_trash = Gtk::manage(new RTImage("trash-empty.png"));
-    Gtk::Image *ipers_apply = Gtk::manage(new RTImage("tick.png"));
+    Gtk::Image *ipers_draw = Gtk::manage(new RTImage("edit.svg"));
+    Gtk::Image *ipers_trash = Gtk::manage(new RTImage("trash-empty.svg"));
+    Gtk::Image *ipers_apply = Gtk::manage(new RTImage("tick.svg"));
     
     lines_button_apply = Gtk::manage(new Gtk::Button());
     lines_button_apply->set_image(*ipers_apply);
@@ -193,17 +193,17 @@ PerspCorrection::PerspCorrection() : FoldableToolPanel(this, "perspective", M("T
     // End control lines interface.
 
     auto_horiz = Gtk::manage(new Gtk::Button());
-    auto_horiz->add(*Gtk::manage(new RTImage("perspective-horizontal-left.png")));
+    auto_horiz->add(*Gtk::manage(new RTImage("perspective-horizontal-left.svg")));
     auto_horiz->get_style_context()->add_class("independent");
     auto_horiz->set_tooltip_markup(M("TP_PERSPECTIVE_AUTO_HORIZONTAL_TOOLTIP"));
 
     auto_vert = Gtk::manage(new Gtk::Button());
-    auto_vert->add(*Gtk::manage(new RTImage("perspective-vertical-top.png")));
+    auto_vert->add(*Gtk::manage(new RTImage("perspective-vertical-top.svg")));
     auto_vert->get_style_context()->add_class("independent");
     auto_vert->set_tooltip_markup(M("TP_PERSPECTIVE_AUTO_VERTICAL_TOOLTIP"));
 
     auto_both = Gtk::manage(new Gtk::Button());
-    auto_both->add(*Gtk::manage(new RTImage("perspective-horizontal-vertical.png")));
+    auto_both->add(*Gtk::manage(new RTImage("perspective-horizontal-vertical.svg")));
     auto_both->get_style_context()->add_class("independent");
     auto_both->set_tooltip_markup(M("TP_PERSPECTIVE_AUTO_BOTH_TOOLTIP"));
 

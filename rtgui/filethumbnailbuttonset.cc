@@ -42,18 +42,18 @@ FileThumbnailButtonSet::FileThumbnailButtonSet (FileBrowserEntry* myEntry)
 {
 
     if (!iconsLoaded) {
-        unRankIcon  = Cairo::RefPtr<RTSurface>(new RTSurface("star-hollow-narrow.png"));
-        rankIcon    = Cairo::RefPtr<RTSurface>(new RTSurface("star-gold-narrow.png"));
-        gRankIcon   = Cairo::RefPtr<RTSurface>(new RTSurface("star-narrow.png"));
-        trashIcon   = Cairo::RefPtr<RTSurface>(new RTSurface("trash-small.png"));
-        unTrashIcon = Cairo::RefPtr<RTSurface>(new RTSurface("trash-remove-small.png"));
-        processIcon = Cairo::RefPtr<RTSurface>(new RTSurface("gears-small.png"));
-        colorLabelIcon[0] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-empty-gray-small.png"));
-        colorLabelIcon[1] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-red-small.png"));
-        colorLabelIcon[2] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-yellow-small.png"));
-        colorLabelIcon[3] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-green-small.png"));
-        colorLabelIcon[4] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-blue-small.png"));
-        colorLabelIcon[5] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-purple-small.png"));
+        unRankIcon  = Cairo::RefPtr<RTSurface>(new RTSurface("star-hollow-narrow.svg"));
+        rankIcon    = Cairo::RefPtr<RTSurface>(new RTSurface("star-gold-narrow.svg"));
+        gRankIcon   = Cairo::RefPtr<RTSurface>(new RTSurface("star-narrow.svg"));
+        trashIcon   = Cairo::RefPtr<RTSurface>(new RTSurface("trash-small.svg"));
+        unTrashIcon = Cairo::RefPtr<RTSurface>(new RTSurface("trash-remove-small.svg"));
+        processIcon = Cairo::RefPtr<RTSurface>(new RTSurface("gears-small.svg"));
+        colorLabelIcon[0] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-empty-gray-small.svg"));
+        colorLabelIcon[1] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-red-small.svg"));
+        colorLabelIcon[2] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-yellow-small.svg"));
+        colorLabelIcon[3] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-green-small.svg"));
+        colorLabelIcon[4] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-blue-small.svg"));
+        colorLabelIcon[5] = Cairo::RefPtr<RTSurface>(new RTSurface("circle-purple-small.svg"));
 
         processToolTip = M("FILEBROWSER_POPUPPROCESS");
         unrankToolTip = M("FILEBROWSER_UNRANK_TOOLTIP");

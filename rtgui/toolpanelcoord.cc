@@ -231,7 +231,7 @@ ToolPanelCoordinator::ToolPanelCoordinator (bool batch) : ipc (nullptr), favorit
     // load panel endings
     for (int i = 0; i < 8; i++) {
         vbPanelEnd[i] = Gtk::manage (new Gtk::VBox ());
-        imgPanelEnd[i] = Gtk::manage (new RTImage ("ornament1.png"));
+        imgPanelEnd[i] = Gtk::manage (new RTImage ("ornament1.svg"));
         imgPanelEnd[i]->show ();
         vbPanelEnd[i]->pack_start (*imgPanelEnd[i], Gtk::PACK_SHRINK);
         vbPanelEnd[i]->show_all();
@@ -276,16 +276,16 @@ ToolPanelCoordinator::ToolPanelCoordinator (bool batch) : ipc (nullptr), favorit
     rawPanel->pack_start (*Gtk::manage (new Gtk::HSeparator), Gtk::PACK_SHRINK, 0);
     rawPanel->pack_start (*vbPanelEnd[5], Gtk::PACK_SHRINK, 0);
 
-    toiF = Gtk::manage (new TextOrIcon ("star.png", M ("MAIN_TAB_FAVORITES"), M ("MAIN_TAB_FAVORITES_TOOLTIP")));
-    toiE = Gtk::manage (new TextOrIcon ("exposure.png", M ("MAIN_TAB_EXPOSURE"), M ("MAIN_TAB_EXPOSURE_TOOLTIP")));
-    toiD = Gtk::manage (new TextOrIcon ("detail.png", M ("MAIN_TAB_DETAIL"), M ("MAIN_TAB_DETAIL_TOOLTIP")));
-    toiC = Gtk::manage (new TextOrIcon ("color-circles.png", M ("MAIN_TAB_COLOR"), M ("MAIN_TAB_COLOR_TOOLTIP")));
-    toiW = Gtk::manage (new TextOrIcon ("atom.png", M ("MAIN_TAB_ADVANCED"), M ("MAIN_TAB_ADVANCED_TOOLTIP")));
-    toiT = Gtk::manage (new TextOrIcon ("transform.png", M ("MAIN_TAB_TRANSFORM"), M ("MAIN_TAB_TRANSFORM_TOOLTIP")));
-    toiR = Gtk::manage (new TextOrIcon ("bayer.png", M ("MAIN_TAB_RAW"), M ("MAIN_TAB_RAW_TOOLTIP")));
-    toiM = Gtk::manage (new TextOrIcon ("metadata.png", M ("MAIN_TAB_METADATA"), M ("MAIN_TAB_METADATA_TOOLTIP")));
-    toiL = Gtk::manage(new TextOrIcon("local-edit.png", M("MAIN_TAB_LOCAL"), M("MAIN_TAB_LOCAL_TOOLTIP")));
-    toiFx = Gtk::manage(new TextOrIcon("wand.png", M("MAIN_TAB_EFFECTS"), M("MAIN_TAB_EFFECTS_TOOLTIP")));
+    toiF = Gtk::manage (new TextOrIcon ("star.svg", M ("MAIN_TAB_FAVORITES"), M ("MAIN_TAB_FAVORITES_TOOLTIP")));
+    toiE = Gtk::manage (new TextOrIcon ("exposure.svg", M ("MAIN_TAB_EXPOSURE"), M ("MAIN_TAB_EXPOSURE_TOOLTIP")));
+    toiD = Gtk::manage (new TextOrIcon ("detail.svg", M ("MAIN_TAB_DETAIL"), M ("MAIN_TAB_DETAIL_TOOLTIP")));
+    toiC = Gtk::manage (new TextOrIcon ("color-circles.svg", M ("MAIN_TAB_COLOR"), M ("MAIN_TAB_COLOR_TOOLTIP")));
+    toiW = Gtk::manage (new TextOrIcon ("atom.svg", M ("MAIN_TAB_ADVANCED"), M ("MAIN_TAB_ADVANCED_TOOLTIP")));
+    toiT = Gtk::manage (new TextOrIcon ("transform.svg", M ("MAIN_TAB_TRANSFORM"), M ("MAIN_TAB_TRANSFORM_TOOLTIP")));
+    toiR = Gtk::manage (new TextOrIcon ("bayer.svg", M ("MAIN_TAB_RAW"), M ("MAIN_TAB_RAW_TOOLTIP")));
+    toiM = Gtk::manage (new TextOrIcon ("metadata.svg", M ("MAIN_TAB_METADATA"), M ("MAIN_TAB_METADATA_TOOLTIP")));
+    toiL = Gtk::manage(new TextOrIcon("local-edit.svg", M("MAIN_TAB_LOCAL"), M("MAIN_TAB_LOCAL_TOOLTIP")));
+    toiFx = Gtk::manage(new TextOrIcon("wand.svg", M("MAIN_TAB_EFFECTS"), M("MAIN_TAB_EFFECTS_TOOLTIP")));
     
 
     if (favoritePanelSW) {

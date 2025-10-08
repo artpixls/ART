@@ -26,8 +26,8 @@ ToolBar::ToolBar () : showColPickers(true), listener (nullptr), pickerListener(n
 
     editingMode = false;
 
-    handimg.reset(new RTImage("arrow-pointer.png"));
-    editinghandimg.reset(new RTImage("crosshair-adjust.png"));
+    handimg.reset(new RTImage("arrow-pointer.svg"));
+    editinghandimg.reset(new RTImage("crosshair-adjust.svg"));
 
     handTool = Gtk::manage (new Gtk::ToggleButton ());
     handTool->add (*handimg);
@@ -38,7 +38,7 @@ ToolBar::ToolBar () : showColPickers(true), listener (nullptr), pickerListener(n
     pack_start (*handTool);
 
     wbTool = Gtk::manage (new Gtk::ToggleButton ());
-    Gtk::Image* wbimg = Gtk::manage (new RTImage ("color-picker.png"));
+    Gtk::Image* wbimg = Gtk::manage (new RTImage ("color-picker.svg"));
     wbTool->add (*wbimg);
     wbimg->show ();
     wbTool->set_relief(Gtk::RELIEF_NONE);
@@ -46,8 +46,8 @@ ToolBar::ToolBar () : showColPickers(true), listener (nullptr), pickerListener(n
 
     pack_start (*wbTool);
 
-    showcolpickersimg.reset(new RTImage("color-picker-bars.png"));
-    hidecolpickersimg.reset(new RTImage("color-picker-hide.png"));
+    showcolpickersimg.reset(new RTImage("color-picker-bars.svg"));
+    hidecolpickersimg.reset(new RTImage("color-picker-hide.svg"));
 
     colPickerTool = Gtk::manage (new Gtk::ToggleButton ());
     colPickerTool->add (*showcolpickersimg);
@@ -58,7 +58,7 @@ ToolBar::ToolBar () : showColPickers(true), listener (nullptr), pickerListener(n
     pack_start (*colPickerTool);
 
     cropTool = Gtk::manage (new Gtk::ToggleButton ());
-    Gtk::Image* cropimg = Gtk::manage (new RTImage ("crop.png"));
+    Gtk::Image* cropimg = Gtk::manage (new RTImage ("crop.svg"));
     cropTool->add (*cropimg);
     cropimg->show ();
     cropTool->set_relief(Gtk::RELIEF_NONE);
@@ -67,7 +67,7 @@ ToolBar::ToolBar () : showColPickers(true), listener (nullptr), pickerListener(n
     pack_start (*cropTool);
 
     straTool = Gtk::manage (new Gtk::ToggleButton ());
-    Gtk::Image* straimg = Gtk::manage (new RTImage ("rotate-straighten.png"));
+    Gtk::Image* straimg = Gtk::manage (new RTImage ("rotate-straighten.svg"));
     straTool->add (*straimg);
     straimg->show ();
     straTool->set_relief(Gtk::RELIEF_NONE);
@@ -75,7 +75,7 @@ ToolBar::ToolBar () : showColPickers(true), listener (nullptr), pickerListener(n
     pack_start(*straTool);
 
     perspTool = Gtk::manage(new Gtk::ToggleButton());
-    Gtk::Image *perspimg = Gtk::manage(new RTImage("perspective-vertical-bottom.png"));
+    Gtk::Image *perspimg = Gtk::manage(new RTImage("perspective-vertical-bottom.svg"));
     perspTool->add(*perspimg);
     perspimg->show();
     perspTool->set_relief(Gtk::RELIEF_NONE);

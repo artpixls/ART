@@ -42,6 +42,8 @@ void LockableColorPicker::updateBackBuffer ()
     constexpr double opacity = 0.62;
     // ---------------------------------------------------------------------
 
+    int scale = RTScalable::getDeviceScale();
+
     if (validity == Validity::INSIDE) {
         Gtk::DrawingArea *iArea = cropWindow->getImageArea();
 
@@ -109,7 +111,8 @@ void LockableColorPicker::updateBackBuffer ()
         newW = rtengine::max<int>((int)size + 2 * circlePadding, textWidth + 2 * textPadding);
         newH = (int)size + 2 * circlePadding + textHeight + 2 * textPadding;
 
-        setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, newW, newH, true);
+        setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, newW * scale, newH * scale, true);
+        RTScalable::setDeviceScale(getSurface(), scale);
 
         Cairo::RefPtr<Cairo::Context> bbcr = BackBuffer::getContext();
 
@@ -211,7 +214,8 @@ void LockableColorPicker::updateBackBuffer ()
     } else if (validity == Validity::CROSSING) {
         newH = newW = (int)size + 2 * circlePadding;
 
-        setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, newW, newH, true);
+        setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, newW * scale, newH * scale, true);
+        RTScalable::setDeviceScale(getSurface(), scale);
 
         Cairo::RefPtr<Cairo::Context> bbcr = BackBuffer::getContext();
 

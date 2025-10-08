@@ -260,7 +260,7 @@ void FileBrowser::build_menu()
     
     pmenu->attach (*Gtk::manage(open = new Gtk::MenuItem (M("FILEBROWSER_POPUPOPEN"))), 0, 1, p, p + 1);
     p++;
-    pmenu->attach (*Gtk::manage(develop = new MyImageMenuItem (M("FILEBROWSER_POPUPPROCESS"), "gears.png")), 0, 1, p, p + 1);
+    pmenu->attach (*Gtk::manage(develop = new MyImageMenuItem (M("FILEBROWSER_POPUPPROCESS"), "gears.svg")), 0, 1, p, p + 1);
     p++;
     pmenu->attach (*Gtk::manage(developfast = new Gtk::MenuItem (M("FILEBROWSER_POPUPPROCESSFAST"))), 0, 1, p, p + 1);
     p++;
@@ -312,8 +312,8 @@ void FileBrowser::build_menu()
 
     // Thumbnail context menu
     // Similar image arrays in filecatalog.cc
-    std::array<std::string, 6> clabelActiveIcons = {"circle-empty-gray-small.png", "circle-red-small.png", "circle-yellow-small.png", "circle-green-small.png", "circle-blue-small.png", "circle-purple-small.png"};
-    std::array<std::string, 6> clabelInactiveIcons = {"circle-empty-darkgray-small.png", "circle-empty-red-small.png", "circle-empty-yellow-small.png", "circle-empty-green-small.png", "circle-empty-blue-small.png", "circle-empty-purple-small.png"};
+    std::array<std::string, 6> clabelActiveIcons = {"circle-empty-gray-small.svg", "circle-red-small.svg", "circle-yellow-small.svg", "circle-green-small.svg", "circle-blue-small.svg", "circle-purple-small.svg"};
+    std::array<std::string, 6> clabelInactiveIcons = {"circle-empty-darkgray-small.svg", "circle-empty-red-small.svg", "circle-empty-yellow-small.svg", "circle-empty-green-small.svg", "circle-empty-blue-small.svg", "circle-empty-purple-small.svg"};
 
     if (options.menuGroupLabel) {
         pmenu->attach (*Gtk::manage(menuLabel = new Gtk::MenuItem (M("FILEBROWSER_POPUPCOLORLABEL"))), 0, 1, p, p + 1);

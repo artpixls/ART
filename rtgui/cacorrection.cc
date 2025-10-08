@@ -29,10 +29,10 @@ CACorrection::CACorrection () : FoldableToolPanel(this, "cacorrection", M("TP_CA
     EvToolEnabled.set_action(rtengine::TRANSFORM);
     EvToolReset.set_action(rtengine::TRANSFORM);
 
-    Gtk::Image* icaredL =   Gtk::manage (new RTImage ("circle-red-cyan-small.png"));
-    Gtk::Image* icaredR =   Gtk::manage (new RTImage ("circle-cyan-red-small.png"));
-    Gtk::Image* icablueL =  Gtk::manage (new RTImage ("circle-blue-yellow-small.png"));
-    Gtk::Image* icablueR =  Gtk::manage (new RTImage ("circle-yellow-blue-small.png"));
+    Gtk::Image* icaredL =   Gtk::manage (new RTImage ("circle-red-cyan-small.svg"));
+    Gtk::Image* icaredR =   Gtk::manage (new RTImage ("circle-cyan-red-small.svg"));
+    Gtk::Image* icablueL =  Gtk::manage (new RTImage ("circle-blue-yellow-small.svg"));
+    Gtk::Image* icablueR =  Gtk::manage (new RTImage ("circle-yellow-blue-small.svg"));
 
     red = Gtk::manage (new Adjuster (M("TP_CACORRECTION_RED"), -0.005, 0.005, 0.0001, 0, icaredL, icaredR));
     red->setAdjusterListener (this);

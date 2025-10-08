@@ -24,23 +24,23 @@
 PreviewModePanel::PreviewModePanel (ImageArea* ia) : imageArea(ia)
 {
 
-    iR  = new RTImage ("square-toggle-red-on-narrow.png");
-    iG  = new RTImage ("square-toggle-green-on-narrow.png");
-    iB  = new RTImage ("square-toggle-blue-on-narrow.png");
-    iL  = new RTImage ("square-toggle-luminosity-on-narrow.png");
-    // iBC0 = new RTImage ("square-toggle-theme-on-narrow.png");
-    iBC1 = new RTImage ("square-toggle-black-on-narrow.png");
-    iBC2 = new RTImage ("square-toggle-white-on-narrow.png");
-    iBC3 = new RTImage ("square-toggle-gray-on-narrow.png");
+    iR  = new RTImage ("square-toggle-red-on-narrow.svg");
+    iG  = new RTImage ("square-toggle-green-on-narrow.svg");
+    iB  = new RTImage ("square-toggle-blue-on-narrow.svg");
+    iL  = new RTImage ("square-toggle-luminosity-on-narrow.svg");
+    // iBC0 = new RTImage ("square-toggle-theme-on-narrow.svg");
+    iBC1 = new RTImage ("square-toggle-black-on-narrow.svg");
+    iBC2 = new RTImage ("square-toggle-white-on-narrow.svg");
+    iBC3 = new RTImage ("square-toggle-gray-on-narrow.svg");
 
-    igR = new RTImage ("square-toggle-red-off-narrow.png");
-    igG = new RTImage ("square-toggle-green-off-narrow.png");
-    igB = new RTImage ("square-toggle-blue-off-narrow.png");
-    igL = new RTImage ("square-toggle-luminosity-off-narrow.png");
-    // igBC0 = new RTImage ("square-toggle-theme-off-narrow.png");
-    igBC1 = new RTImage ("square-toggle-black-off-narrow.png");
-    igBC2 = new RTImage ("square-toggle-white-off-narrow.png");
-    igBC3 = new RTImage ("square-toggle-gray-off-narrow.png");
+    igR = new RTImage ("square-toggle-red-off-narrow.svg");
+    igG = new RTImage ("square-toggle-green-off-narrow.svg");
+    igB = new RTImage ("square-toggle-blue-off-narrow.svg");
+    igL = new RTImage ("square-toggle-luminosity-off-narrow.svg");
+    // igBC0 = new RTImage ("square-toggle-theme-off-narrow.svg");
+    igBC1 = new RTImage ("square-toggle-black-off-narrow.svg");
+    igBC2 = new RTImage ("square-toggle-white-off-narrow.svg");
+    igBC3 = new RTImage ("square-toggle-gray-off-narrow.svg");
 
     // backColor0 = Gtk::manage (new Gtk::ToggleButton ());
     // backColor0->get_style_context()->add_class("narrowbutton");

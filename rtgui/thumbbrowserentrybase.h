@@ -78,6 +78,7 @@ protected:
     ThumbBrowserEntryBase* original;
 
     Glib::RefPtr<BackBuffer> backBuffer;
+    Glib::RefPtr<BackBuffer> preview_bb_;
     bool bbSelected, bbFramed;
     guint8* bbPreview;
     std::vector<Glib::RefPtr<Gdk::Pixbuf>> bbIcons;

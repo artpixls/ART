@@ -108,9 +108,9 @@ private:
     {
         if (rtengine::Settings::color_mgmt_mode == rtengine::Settings::ColorManagementMode::APPLICATION) {
             // same order as the enum
-            intentBox.addEntry ("intent-perceptual.png", M ("PREFERENCES_INTENT_PERCEPTUAL"));
-            intentBox.addEntry ("intent-relative.png", M ("PREFERENCES_INTENT_RELATIVE"));
-            intentBox.addEntry ("intent-absolute.png", M ("PREFERENCES_INTENT_ABSOLUTE"));
+            intentBox.addEntry ("intent-perceptual.svg", M ("PREFERENCES_INTENT_PERCEPTUAL"));
+            intentBox.addEntry ("intent-relative.svg", M ("PREFERENCES_INTENT_RELATIVE"));
+            intentBox.addEntry ("intent-absolute.svg", M ("PREFERENCES_INTENT_ABSOLUTE"));
             setExpandAlignProperties (intentBox.buttonGroup, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
 
             intentBox.setSelected (1);
@@ -120,7 +120,7 @@ private:
 
     void prepareSoftProofingBox ()
     {
-        Gtk::Image *softProofImage = Gtk::manage (new RTImage ("gamut-softproof.png"));
+        Gtk::Image *softProofImage = Gtk::manage (new RTImage ("gamut-softproof.svg"));
         softProofImage->set_padding (0, 0);
         softProof.add (*softProofImage);
         softProof.set_relief (Gtk::RELIEF_NONE);
@@ -129,7 +129,7 @@ private:
         softProof.set_active (false);
         softProof.show ();
 
-        Gtk::Image *spGamutCheckImage = Gtk::manage (new RTImage ("gamut-warning.png"));
+        Gtk::Image *spGamutCheckImage = Gtk::manage (new RTImage ("gamut-warning.svg"));
         spGamutCheckImage->set_padding (0, 0);
         spGamutCheck.add (*spGamutCheckImage);
         spGamutCheck.set_relief (Gtk::RELIEF_NONE);
@@ -139,7 +139,7 @@ private:
         spGamutCheck.set_sensitive (true);
         spGamutCheck.show ();
 
-        spGamutCheckImage = Gtk::manage(new RTImage("gamut-warning-monitor.png"));
+        spGamutCheckImage = Gtk::manage(new RTImage("gamut-warning-monitor.svg"));
         spGamutCheckImage->set_padding(0, 0);
         spGamutCheckMonitor.add(*spGamutCheckImage);
         spGamutCheckMonitor.set_relief(Gtk::RELIEF_NONE);
@@ -508,19 +508,19 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
     Gtk::Box* editbox = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_VERTICAL));
 
     info = Gtk::manage (new Gtk::ToggleButton ());
-    Gtk::Image* infoimg = Gtk::manage (new RTImage ("info.png"));
+    Gtk::Image* infoimg = Gtk::manage (new RTImage ("info.svg"));
     info->add (*infoimg);
     info->set_relief (Gtk::RELIEF_NONE);
     info->set_tooltip_markup (M ("MAIN_TOOLTIP_QINFO"));
 
     beforeAfter = Gtk::manage (new Gtk::ToggleButton ());
-    Gtk::Image* beforeAfterIcon = Gtk::manage (new RTImage ("beforeafter.png"));
+    Gtk::Image* beforeAfterIcon = Gtk::manage (new RTImage ("beforeafter.svg"));
     beforeAfter->add (*beforeAfterIcon);
     beforeAfter->set_relief (Gtk::RELIEF_NONE);
     beforeAfter->set_tooltip_markup (M ("MAIN_TOOLTIP_TOGGLE"));
 
-    iBeforeLockON = new RTImage ("padlock-locked-small.png");
-    iBeforeLockOFF = new RTImage ("padlock-unlocked-small.png");
+    iBeforeLockON = new RTImage ("padlock-locked-small.svg");
+    iBeforeLockOFF = new RTImage ("padlock-unlocked-small.svg");
 
     Gtk::VSeparator* vsept = Gtk::manage (new Gtk::VSeparator ());
     Gtk::VSeparator* vsepz = Gtk::manage (new Gtk::VSeparator ());
@@ -529,8 +529,8 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
 
     hidehp = Gtk::manage (new Gtk::ToggleButton ());
 
-    iHistoryShow = new RTImage ("panel-to-right.png");
-    iHistoryHide = new RTImage ("panel-to-left.png");
+    iHistoryShow = new RTImage ("panel-to-right.svg");
+    iHistoryHide = new RTImage ("panel-to-left.svg");
 
     hidehp->set_relief (Gtk::RELIEF_NONE);
     hidehp->set_active (options.showHistory);
@@ -546,8 +546,8 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
 
     if (!simpleEditor && filePanel) {
         tbTopPanel_1 = new Gtk::ToggleButton ();
-        iTopPanel_1_Show = new RTImage ("panel-to-bottom.png");
-        iTopPanel_1_Hide = new RTImage ("panel-to-top.png");
+        iTopPanel_1_Show = new RTImage ("panel-to-bottom.svg");
+        iTopPanel_1_Hide = new RTImage ("panel-to-top.svg");
         if (options.filmstripBottom) {
             std::swap(iTopPanel_1_Show, iTopPanel_1_Hide);
         }
@@ -567,7 +567,7 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
 
     // Histogram profile toggle controls
     toggleHistogramProfile = Gtk::manage (new Gtk::ToggleButton ());
-    Gtk::Image* histProfImg = Gtk::manage (new RTImage ("gamut-hist.png"));
+    Gtk::Image* histProfImg = Gtk::manage (new RTImage ("gamut-hist.svg"));
     toggleHistogramProfile->add (*histProfImg);
     toggleHistogramProfile->set_relief (Gtk::RELIEF_NONE);
     toggleHistogramProfile->set_active (options.rtSettings.HistogramWorking);
@@ -638,21 +638,21 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
     iops->set_row_spacing (2);
     iops->set_column_spacing (2);
 
-    Gtk::Image *saveButtonImage =  Gtk::manage (new RTImage ("save.png"));
+    Gtk::Image *saveButtonImage =  Gtk::manage (new RTImage ("save.svg"));
     saveimgas = Gtk::manage (new Gtk::Button ());
     saveimgas->set_relief(Gtk::RELIEF_NONE);
     saveimgas->add (*saveButtonImage);
     saveimgas->set_tooltip_markup (M ("MAIN_BUTTON_SAVE_TOOLTIP"));
     setExpandAlignProperties (saveimgas, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
 
-    Gtk::Image *queueButtonImage = Gtk::manage (new RTImage ("gears.png"));
+    Gtk::Image *queueButtonImage = Gtk::manage (new RTImage ("gears.svg"));
     queueimg = Gtk::manage (new Gtk::Button ());
     queueimg->set_relief(Gtk::RELIEF_NONE);
     queueimg->add (*queueButtonImage);
     queueimg->set_tooltip_markup (M ("MAIN_BUTTON_PUTTOQUEUE_TOOLTIP"));
     setExpandAlignProperties (queueimg, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
 
-    Gtk::Image *sendToEditorButtonImage = Gtk::manage (new RTImage ("palette-brush.png"));
+    Gtk::Image *sendToEditorButtonImage = Gtk::manage (new RTImage ("palette-brush.svg"));
     sendtogimp = Gtk::manage (new Gtk::Button ());
     sendtogimp->set_relief(Gtk::RELIEF_NONE);
     sendtogimp->add (*sendToEditorButtonImage);
@@ -667,8 +667,8 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
 
     // tbRightPanel_1
     tbRightPanel_1 = new Gtk::ToggleButton ();
-    iRightPanel_1_Show = new RTImage ("panel-to-left.png");
-    iRightPanel_1_Hide = new RTImage ("panel-to-right.png");
+    iRightPanel_1_Show = new RTImage ("panel-to-left.svg");
+    iRightPanel_1_Hide = new RTImage ("panel-to-right.svg");
     tbRightPanel_1->set_relief (Gtk::RELIEF_NONE);
     tbRightPanel_1->set_active (true);
     tbRightPanel_1->set_tooltip_markup (M ("MAIN_TOOLTIP_SHOWHIDERP1"));
@@ -677,8 +677,8 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
 
     // ShowHideSidePanels
     tbShowHideSidePanels = new Gtk::ToggleButton ();
-    iShowHideSidePanels = new RTImage ("crossed-arrows-out.png");
-    iShowHideSidePanels_exit = new RTImage ("crossed-arrows-in.png");
+    iShowHideSidePanels = new RTImage ("crossed-arrows-out.svg");
+    iShowHideSidePanels_exit = new RTImage ("crossed-arrows-in.svg");
     tbShowHideSidePanels->set_relief (Gtk::RELIEF_NONE);
     tbShowHideSidePanels->set_active (false);
     tbShowHideSidePanels->set_tooltip_markup (M ("MAIN_BUTTON_SHOWHIDESIDEPANELS_TOOLTIP"));
@@ -689,7 +689,7 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
 
     if (!simpleEditor && !options.tabbedUI) {
         // Navigation buttons
-        Gtk::Image *navPrevImage = Gtk::manage (new RTImage ("arrow2-left.png"));
+        Gtk::Image *navPrevImage = Gtk::manage (new RTImage ("arrow2-left.svg"));
         navPrevImage->set_padding (0, 0);
         navPrev = Gtk::manage (new Gtk::Button ());
         navPrev->add (*navPrevImage);
@@ -697,7 +697,7 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
         navPrev->set_tooltip_markup (M ("MAIN_BUTTON_NAVPREV_TOOLTIP"));
         setExpandAlignProperties (navPrev, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
 
-        Gtk::Image *navNextImage = Gtk::manage (new RTImage ("arrow2-right.png"));
+        Gtk::Image *navNextImage = Gtk::manage (new RTImage ("arrow2-right.svg"));
         navNextImage->set_padding (0, 0);
         navNext = Gtk::manage (new Gtk::Button ());
         navNext->add (*navNextImage);
@@ -705,7 +705,7 @@ EditorPanel::EditorPanel (FilePanel* filePanel)
         navNext->set_tooltip_markup (M ("MAIN_BUTTON_NAVNEXT_TOOLTIP"));
         setExpandAlignProperties (navNext, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
 
-        Gtk::Image *navSyncImage = Gtk::manage (new RTImage ("arrow-updown.png"));
+        Gtk::Image *navSyncImage = Gtk::manage (new RTImage ("arrow-updown.svg"));
         navSyncImage->set_padding (0, 0);
         navSync = Gtk::manage (new Gtk::Button ());
         navSync->add (*navSyncImage);
