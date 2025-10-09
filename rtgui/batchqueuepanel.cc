@@ -391,7 +391,7 @@ bool BatchQueuePanel::handleShortcutKey (GdkEventKey* event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
 
     if (ctrl) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_s:
             if (qStartStop->get_active()) {
                 stopBatchProc();

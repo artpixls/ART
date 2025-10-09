@@ -420,7 +420,7 @@ public:
                 bool alt = evt->state & GDK_MOD1_MASK;
 
                 if (ctrl && !alt) {
-                    switch (evt->keyval) {
+                    switch (getKeyval(evt)) {
                     case GDK_KEY_z:
                     case GDK_KEY_Z:
                         if (shift) {
@@ -1511,7 +1511,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
             bool alt = evt->state & GDK_MOD1_MASK;
 
             if (ctrl && !shift && !alt) {
-                switch (evt->keyval) {
+                switch (getKeyval(evt)) {
                 case GDK_KEY_m:
                 case GDK_KEY_M:
                     showMask->set_active(!showMask->get_active());

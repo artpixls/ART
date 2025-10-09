@@ -2165,7 +2165,7 @@ bool FileCatalog::Query_key_pressed (GdkEventKey *event)
 
     bool shift = event->state & GDK_SHIFT_MASK;
 
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
     case GDK_KEY_Escape:
 
         // Clear Query if the Escape character is pressed within it
@@ -2246,7 +2246,7 @@ bool FileCatalog::BrowsePath_key_pressed (GdkEventKey *event)
 
     bool shift = event->state & GDK_SHIFT_MASK;
 
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
     case GDK_KEY_Escape:
 
         // On Escape character Reset BrowsePath to selectedDirectory
@@ -2436,7 +2436,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     modifierKey = event->state;
 
     // GUI Layout
-    switch(event->keyval) {
+    switch(getKeyval(event)) {
     case GDK_KEY_l:
         if (!alt && !ctrl) {
             tbLeftPanel_1->set_active (!tbLeftPanel_1->get_active());    // toggle left panel
@@ -2462,7 +2462,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!shift) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_Escape:
             BrowsePath->set_text(selectedDirectory);
             fileBrowser->getFocus();
@@ -2471,43 +2471,43 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!alt && !shift && !altgr) { // shift is reserved for ranking
-        switch(event->hardware_keycode) {
-        case HWKeyCode::KEY_0:
+        switch (getKeyval(event)) {
+        case GDK_KEY_0:
             categoryButtonToggled(bUnRanked, false);
             return true;
 
-        case HWKeyCode::KEY_1:
+        case GDK_KEY_1:
             categoryButtonToggled(bRank[0], false);
             return true;
 
-        case HWKeyCode::KEY_2:
+        case GDK_KEY_2:
             categoryButtonToggled(bRank[1], false);
             return true;
 
-        case HWKeyCode::KEY_3:
+        case GDK_KEY_3:
             categoryButtonToggled(bRank[2], false);
             return true;
 
-        case HWKeyCode::KEY_4:
+        case GDK_KEY_4:
             categoryButtonToggled(bRank[3], false);
             return true;
 
-        case HWKeyCode::KEY_5:
+        case GDK_KEY_5:
             categoryButtonToggled(bRank[4], false);
             return true;
 
-        case HWKeyCode::KEY_6:
+        case GDK_KEY_6:
             categoryButtonToggled(bEdited[0], false);
             return true;
 
-        case HWKeyCode::KEY_7:
+        case GDK_KEY_7:
             categoryButtonToggled(bEdited[1], false);
             return true;
         }
     }
 
     if (!alt && !shift) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
 
         case GDK_KEY_Return:
         case GDK_KEY_KP_Enter:
@@ -2521,43 +2521,43 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (alt && !shift) { // shift is reserved for color labeling
-        switch(event->hardware_keycode) {
-        case HWKeyCode::KEY_0:
+        switch (getKeyval(event)) {
+        case GDK_KEY_0:
             categoryButtonToggled(bUnCLabeled, false);
             return true;
 
-        case HWKeyCode::KEY_1:
+        case GDK_KEY_1:
             categoryButtonToggled(bCLabel[0], false);
             return true;
 
-        case HWKeyCode::KEY_2:
+        case GDK_KEY_2:
             categoryButtonToggled(bCLabel[1], false);
             return true;
 
-        case HWKeyCode::KEY_3:
+        case GDK_KEY_3:
             categoryButtonToggled(bCLabel[2], false);
             return true;
 
-        case HWKeyCode::KEY_4:
+        case GDK_KEY_4:
             categoryButtonToggled(bCLabel[3], false);
             return true;
 
-        case HWKeyCode::KEY_5:
+        case GDK_KEY_5:
             categoryButtonToggled(bCLabel[4], false);
             return true;
 
-        case HWKeyCode::KEY_6:
+        case GDK_KEY_6:
             categoryButtonToggled(bRecentlySaved[0], false);
             return true;
 
-        case HWKeyCode::KEY_7:
+        case GDK_KEY_7:
             categoryButtonToggled(bRecentlySaved[1], false);
             return true;
         }
     }
 
     if (!ctrl && !alt) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_d:
         case GDK_KEY_D:
             categoryButtonToggled(bFilterClear, false);
@@ -2566,7 +2566,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!ctrl || (alt && !options.tabbedUI)) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_i:
         //case GDK_KEY_I:
             exifInfo->set_active (!exifInfo->get_active());
@@ -2585,7 +2585,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (ctrl && !alt) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_o:
             if (button_session_load_->is_visible()) {
                 sessionLoadPressed();
@@ -2646,7 +2646,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!ctrl && !alt && shift) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_t:
         case GDK_KEY_T:
             if (inTabMode) {
@@ -2664,7 +2664,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!ctrl && !alt && !shift) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_t:
         case GDK_KEY_T:
             if (inTabMode) {

@@ -482,7 +482,7 @@ bool ToolBar::handleShortcutKey (GdkEventKey* event)
     bool alt = event->state & GDK_MOD1_MASK;
 
     if (!ctrl && !alt) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         // case GDK_KEY_w:
         case GDK_KEY_W:
             if(wbTool) {
@@ -510,9 +510,6 @@ bool ToolBar::handleShortcutKey (GdkEventKey* event)
         case GDK_KEY_P:
             perspTool->set_active(!perspTool->get_active());
             return true;
-        }
-    } else {
-        switch (event->keyval) {
         }
     }
 

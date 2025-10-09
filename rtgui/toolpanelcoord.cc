@@ -1052,7 +1052,7 @@ bool ToolPanelCoordinator::handleShortcutKey (GdkEventKey* event)
     bool alt = event->state & GDK_MOD1_MASK;
 
     if (alt) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
             case GDK_KEY_u:
                 if (favoritePanelSW) {
                     toolPanelNotebook->set_current_page (toolPanelNotebook->page_num (*favoritePanelSW));

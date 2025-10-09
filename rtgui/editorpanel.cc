@@ -1546,7 +1546,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
     }
 
     // Editor Layout
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
         case GDK_KEY_L:
             if (tbTopPanel_1) {
                 tbTopPanel_1->set_active (!tbTopPanel_1->get_active());    // toggle top panel
@@ -1585,7 +1585,8 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
             break;
     }
 
-    if (!alt && !ctrl && !altgr && event->hardware_keycode == HWKeyCode::KEY_9) {
+
+    if (!alt && !ctrl && !altgr && getKeyval(event, false) == GDK_KEY_9) {
         iareapanel->imageArea->previewModePanel->togglebackColor();
         return true;
     }
@@ -1593,7 +1594,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
     if (!alt) {
         if (!ctrl) {
             // Normal
-            switch (event->keyval) {
+            switch (getKeyval(event)) {
                 case GDK_KEY_bracketright:
                     tpc->coarse->rotateRight();
                     return true;
@@ -1693,7 +1694,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
             }
         } else {
             // With control
-            switch (event->keyval) {
+            switch (getKeyval(event)) {
                 case GDK_KEY_S:
                     if (!gimpPlugin) {
                         do_save_image(true);
@@ -1716,7 +1717,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
                         // multiple selection all the selected thumbs get
                         // enqueued
                     } else if (!gimpPlugin && !simpleEditor) {
-                        do_queue_image(event->keyval == GDK_KEY_B);
+                        do_queue_image(getKeyval(event) == GDK_KEY_B);
                         return true;
                     }
                     break;
@@ -1724,7 +1725,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
                 case GDK_KEY_e:
                 case GDK_KEY_E:
                     if (!gimpPlugin) {
-                        do_send_to_gimp(event->keyval == GDK_KEY_E);
+                        do_send_to_gimp(getKeyval(event) == GDK_KEY_E);
                     }
 
                     return true;
@@ -1754,7 +1755,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
     } //if (!alt)
 
     if (alt) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
             case GDK_KEY_s:
                 history->addBookmarkPressed ();
                 setProgressStr (M ("PROGRESSBAR_SNAPSHOT_ADDED"));
@@ -1767,7 +1768,7 @@ bool EditorPanel::handleShortcutKey (GdkEventKey* event)
     }
 
     if (shift) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
             case GDK_KEY_F3: // open Previous image from Editor's perspective
                 if (!simpleEditor && fPanel && !fname.empty()) {
                     EditorPanel::openPreviousEditorImage();
@@ -1809,7 +1810,7 @@ bool EditorPanel::keyPressedBefore(GdkEventKey *event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
     int dx = 0, dy = 0;
     const int step = options.editor_keyboard_scroll_step;
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
     case GDK_KEY_KP_Up: case GDK_KEY_Up: dy = -step; break;
     case GDK_KEY_KP_Down: case GDK_KEY_Down: dy = step; break;
     case GDK_KEY_KP_Left: case GDK_KEY_Left: dx = -step; break;
@@ -1831,7 +1832,7 @@ bool EditorPanel::keyReleased(GdkEventKey *event)
         return true;
     }
 
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
     case GDK_KEY_KP_Up: case GDK_KEY_Up: 
     case GDK_KEY_KP_Down: case GDK_KEY_Down:
     case GDK_KEY_KP_Left: case GDK_KEY_Left:

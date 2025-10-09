@@ -849,17 +849,19 @@ bool RTWindow::keyPressed (GdkEventKey* event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
     //bool shift = event->state & GDK_SHIFT_MASK;
 
+    auto keyval = getKeyval(event);
+
     bool try_quit = false;
 #if defined(__APPLE__)
     bool apple_cmd = event->state & GDK_MOD2_MASK;
 
-    if (event->keyval == GDK_KEY_q && apple_cmd) {
+    if (keyval == GDK_KEY_q && apple_cmd) {
         try_quit = true;
     }
 
 #else
 
-    if (event->keyval == GDK_KEY_q && ctrl) {
+    if (keyval == GDK_KEY_q && ctrl) {
         try_quit = true;
     }
 
@@ -869,7 +871,7 @@ bool RTWindow::keyPressed (GdkEventKey* event)
         quit();
     }
 
-    if (event->keyval == GDK_KEY_F11) {
+    if (keyval == GDK_KEY_F11) {
         toggle_fullscreen();
     }
 
@@ -880,7 +882,7 @@ bool RTWindow::keyPressed (GdkEventKey* event)
     };
 
     if (ctrl) {
-        switch (event->keyval) {
+        switch (keyval) {
             case GDK_KEY_F2: // file browser panel
                 mainNB->set_current_page (mainNB->page_num (*fpanel));
                 return true;

@@ -179,27 +179,29 @@ bool BatchQueue::keyPressed (GdkEventKey* event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
     bool shift = event->state & GDK_SHIFT_MASK;
 
-    if ((event->keyval == GDK_KEY_A || event->keyval == GDK_KEY_a) && ctrl) {
+    auto keyval = getKeyval(event);
+
+    if ((keyval == GDK_KEY_A || keyval == GDK_KEY_a) && ctrl) {
         selectAll();
         return true;
-    } else if ((event->keyval == GDK_KEY_E || event->keyval == GDK_KEY_e) && ctrl) {
+    } else if ((keyval == GDK_KEY_E || keyval == GDK_KEY_e) && ctrl) {
         openLastSelectedItemInEditor();
         return true;
-    } else if (event->keyval == GDK_KEY_Home) {
+    } else if (keyval == GDK_KEY_Home) {
         if (!ctrl) {
             selectFirst(shift);
         } else {
             headItems(selected);
         }
         return true;
-    } else if (event->keyval == GDK_KEY_End) {
+    } else if (keyval == GDK_KEY_End) {
         if (!ctrl) {
             selectLast(shift);
         } else {
             tailItems(selected);
         }
         return true;
-    } else if (event->keyval == GDK_KEY_Delete) {
+    } else if (keyval == GDK_KEY_Delete) {
         ThumbBrowserEntryBase *tosel = nullptr;
         bool seen = false;
         for (auto t : fd) {
@@ -220,16 +222,16 @@ bool BatchQueue::keyPressed (GdkEventKey* event)
             selectEntry(tosel);
         }
         return true;
-    } else if (event->keyval == GDK_KEY_Left) {
+    } else if (keyval == GDK_KEY_Left) {
         selectPrev(1, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Right) {
+    } else if (keyval == GDK_KEY_Right) {
         selectNext(1, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Up) {
+    } else if (keyval == GDK_KEY_Up) {
         selectPrev(numOfCols, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Down) {
+    } else if (keyval == GDK_KEY_Down) {
         selectNext(numOfCols, shift);
         return true;
     }

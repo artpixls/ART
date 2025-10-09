@@ -1051,7 +1051,7 @@ bool Inspector::handleShortcutKey(GdkEventKey *event)
 #endif
 
     if (!ctrl && !shift && !alt && !altgr) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_h:
             toggleShowHistogram();
             return true;
@@ -1094,7 +1094,7 @@ bool Inspector::handleShortcutKey(GdkEventKey *event)
         }
     }
     if (!ctrl && shift && !alt && !altgr) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_F:
             focusmask_->set_active(!focusmask_->get_active());
             return true;

@@ -294,13 +294,14 @@ void EditWindow::toFront ()
 bool EditWindow::keyPressed (GdkEventKey* event)
 {
     bool ctrl = event->state & GDK_CONTROL_MASK;
+    auto keyval = getKeyval(event);
 
-    if(event->keyval == GDK_KEY_F11) {
+    if(keyval == GDK_KEY_F11) {
         toggleFullscreen();
         return true;
     } else {
         if(mainNB->get_n_pages () > 0) { //pass the handling for the editor panels, if there are any
-            if (event->keyval == GDK_KEY_w && ctrl) { //remove editor panel
+            if (keyval == GDK_KEY_w && ctrl) { //remove editor panel
                 EditorPanel* ep = static_cast<EditorPanel*>(mainNB->get_nth_page (mainNB->get_current_page()));
                 remEditorPanel (ep);
                 return true;

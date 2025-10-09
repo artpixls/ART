@@ -192,7 +192,7 @@ Adjuster::Adjuster (Glib::ustring vlabel, double vmin, double vmax, double vstep
             spin->get_increments(step, page);
 
             if (!ctrl && !shift && !alt) {
-                switch (evt->keyval) {
+                switch (getKeyval(evt)) {
                 case GDK_KEY_Up:
                     spin->set_value(spin->get_value() + step);
                     return true;
