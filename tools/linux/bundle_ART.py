@@ -331,7 +331,7 @@ export GTK_IM_MODULE_FILE="$t/gtk.immodules"
 export GIO_MODULE_DIR="$d/lib/gio/modules"
 export FONTCONFIG_FILE="$d/fonts.conf"
 export ART_EXIFTOOL_BASE_DIR="$d/lib/exiftool"
-export GDK_BACKEND=x11
+GDK_BACKEND="${GDK_BACKEND:-wayland,x11}"
 """)
         if not opts.debug:
             out.write('"$d/.ART.bin" "$@"\n')
