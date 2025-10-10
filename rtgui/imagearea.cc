@@ -156,7 +156,6 @@ void ImageArea::on_style_updated ()
 
 void ImageArea::setInfoText (Glib::ustring text)
 {
-
     infotext = text;
 
     Glib::RefPtr<Pango::Context> context = get_pango_context () ;
@@ -176,8 +175,10 @@ void ImageArea::setInfoText (Glib::ustring text)
     ilayout->get_pixel_size (iw, ih);
 
     // create BackBuffer
-    iBackBuffer.setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, iw + 16, ih + 16, true);
+    int scale = RTScalable::getDeviceScale();
+    iBackBuffer.setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, (iw + 16) * scale, (ih + 16) * scale, true);
     iBackBuffer.setDestPosition(8, 8);
+    RTScalable::setDeviceScale(iBackBuffer.getSurface(), scale);
 
     Cairo::RefPtr<Cairo::Context> cr = iBackBuffer.getContext();
 

@@ -60,16 +60,16 @@ BatchQueue::BatchQueue (FileCatalog* aFileCatalog):
     pmenu.attach (*Gtk::manage(new Gtk::SeparatorMenuItem ()), 0, 1, p, p + 1);
     p++;
 
-    pmenu.attach (*Gtk::manage(head = new MyImageMenuItem (M("FILEBROWSER_POPUPMOVEHEAD"), "goto-start-small.png")), 0, 1, p, p + 1);
+    pmenu.attach (*Gtk::manage(head = new MyImageMenuItem (M("FILEBROWSER_POPUPMOVEHEAD"), "goto-start-small.svg")), 0, 1, p, p + 1);
     p++;
 
-    pmenu.attach (*Gtk::manage(tail = new MyImageMenuItem (M("FILEBROWSER_POPUPMOVEEND"), "goto-end-small.png")), 0, 1, p, p + 1);
+    pmenu.attach (*Gtk::manage(tail = new MyImageMenuItem (M("FILEBROWSER_POPUPMOVEEND"), "goto-end-small.svg")), 0, 1, p, p + 1);
     p++;
 
     pmenu.attach (*Gtk::manage(new Gtk::SeparatorMenuItem ()), 0, 1, p, p + 1);
     p++;
 
-    pmenu.attach (*Gtk::manage(cancel = new MyImageMenuItem (M("FILEBROWSER_POPUPCANCELJOB"), "cancel-small.png")), 0, 1, p, p + 1);
+    pmenu.attach (*Gtk::manage(cancel = new MyImageMenuItem (M("FILEBROWSER_POPUPCANCELJOB"), "cancel-small.svg")), 0, 1, p, p + 1);
 
     pmenu.show_all ();
 
@@ -179,27 +179,29 @@ bool BatchQueue::keyPressed (GdkEventKey* event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
     bool shift = event->state & GDK_SHIFT_MASK;
 
-    if ((event->keyval == GDK_KEY_A || event->keyval == GDK_KEY_a) && ctrl) {
+    auto keyval = getKeyval(event);
+
+    if ((keyval == GDK_KEY_A || keyval == GDK_KEY_a) && ctrl) {
         selectAll();
         return true;
-    } else if ((event->keyval == GDK_KEY_E || event->keyval == GDK_KEY_e) && ctrl) {
+    } else if ((keyval == GDK_KEY_E || keyval == GDK_KEY_e) && ctrl) {
         openLastSelectedItemInEditor();
         return true;
-    } else if (event->keyval == GDK_KEY_Home) {
+    } else if (keyval == GDK_KEY_Home) {
         if (!ctrl) {
             selectFirst(shift);
         } else {
             headItems(selected);
         }
         return true;
-    } else if (event->keyval == GDK_KEY_End) {
+    } else if (keyval == GDK_KEY_End) {
         if (!ctrl) {
             selectLast(shift);
         } else {
             tailItems(selected);
         }
         return true;
-    } else if (event->keyval == GDK_KEY_Delete) {
+    } else if (keyval == GDK_KEY_Delete) {
         ThumbBrowserEntryBase *tosel = nullptr;
         bool seen = false;
         for (auto t : fd) {
@@ -220,16 +222,16 @@ bool BatchQueue::keyPressed (GdkEventKey* event)
             selectEntry(tosel);
         }
         return true;
-    } else if (event->keyval == GDK_KEY_Left) {
+    } else if (keyval == GDK_KEY_Left) {
         selectPrev(1, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Right) {
+    } else if (keyval == GDK_KEY_Right) {
         selectNext(1, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Up) {
+    } else if (keyval == GDK_KEY_Up) {
         selectPrev(numOfCols, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Down) {
+    } else if (keyval == GDK_KEY_Down) {
         selectNext(numOfCols, shift);
         return true;
     }

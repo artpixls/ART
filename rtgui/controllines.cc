@@ -43,13 +43,13 @@ ControlLineManager::ControlLineManager():
     mouseOverGeometry.push_back(canvas_area.get());
 
     line_icon_h = Cairo::RefPtr<RTSurface>(new RTSurface(
-            "bidirectional-arrow-horizontal-hicontrast.png"));
+            "bidirectional-arrow-horizontal-hicontrast.svg"));
     line_icon_v = Cairo::RefPtr<RTSurface>(new RTSurface(
-            "bidirectional-arrow-vertical-hicontrast.png"));
+            "bidirectional-arrow-vertical-hicontrast.svg"));
     line_icon_h_prelight = Cairo::RefPtr<RTSurface>(new RTSurface(
-                               "bidirectional-arrow-horizontal-prelight.png"));
+                               "bidirectional-arrow-horizontal-prelight.svg"));
     line_icon_v_prelight = Cairo::RefPtr<RTSurface>(new RTSurface(
-                               "bidirectional-arrow-vertical-prelight.png"));
+                               "bidirectional-arrow-vertical-prelight.svg"));
 }
 
 ControlLineManager::~ControlLineManager() = default;

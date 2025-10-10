@@ -35,7 +35,7 @@ DateEntry::DateEntry(): Gtk::HBox()
     entry_->add_events(Gdk::FOCUS_CHANGE_MASK);
     pack_start(*entry_, Gtk::PACK_EXPAND_WIDGET, 0);
     pack_start(*Gtk::manage(button_ = new Gtk::Button()), 0, 0);
-    button_->add(*Gtk::manage(new RTImage("expander-open-small.png")));
+    button_->add(*Gtk::manage(new RTImage("expander-open-small.svg")));
     button_->add_events(Gdk::BUTTON_PRESS_MASK);
     button_->signal_button_press_event().connect_notify(sigc::mem_fun(this, &DateEntry::on_button));
     entry_->signal_activate().connect(sigc::mem_fun(this, &DateEntry::on_enter));

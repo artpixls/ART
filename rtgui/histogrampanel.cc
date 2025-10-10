@@ -128,33 +128,33 @@ HistogramPanel::HistogramPanel () :
     histogramRGBAreaHori->set_no_show_all();
     histogramRGBAreaVert->set_no_show_all();
 
-    redImage   = new RTImage ("histogram-red-on-small.png");
-    greenImage = new RTImage ("histogram-green-on-small.png");
-    blueImage  = new RTImage ("histogram-blue-on-small.png");
-    valueImage = new RTImage ("histogram-silver-on-small.png");
-    chroImage  = new RTImage ("histogram-gold-on-small.png");
-    barImage   = new RTImage ("histogram-bar-on-small.png");
+    redImage   = new RTImage ("histogram-red-on-small.svg");
+    greenImage = new RTImage ("histogram-green-on-small.svg");
+    blueImage  = new RTImage ("histogram-blue-on-small.svg");
+    valueImage = new RTImage ("histogram-silver-on-small.svg");
+    chroImage  = new RTImage ("histogram-gold-on-small.svg");
+    barImage   = new RTImage ("histogram-bar-on-small.svg");
 
-    redImage_g   = new RTImage ("histogram-red-off-small.png");
-    greenImage_g = new RTImage ("histogram-green-off-small.png");
-    blueImage_g  = new RTImage ("histogram-blue-off-small.png");
-    valueImage_g = new RTImage ("histogram-silver-off-small.png");
-    chroImage_g  = new RTImage ("histogram-gold-off-small.png");
-    barImage_g   = new RTImage ("histogram-bar-off-small.png");
+    redImage_g   = new RTImage ("histogram-red-off-small.svg");
+    greenImage_g = new RTImage ("histogram-green-off-small.svg");
+    blueImage_g  = new RTImage ("histogram-blue-off-small.svg");
+    valueImage_g = new RTImage ("histogram-silver-off-small.svg");
+    chroImage_g  = new RTImage ("histogram-gold-off-small.svg");
+    barImage_g   = new RTImage ("histogram-bar-off-small.svg");
 
-    mode_images_[0] = new RTImage ("histogram-mode-linear-small.png");
-    mode_images_[1] = new RTImage ("histogram-mode-logx-small.png");
-    mode_images_[2] = new RTImage ("histogram-mode-logxy-small.png");
+    mode_images_[0] = new RTImage ("histogram-mode-linear-small.svg");
+    mode_images_[1] = new RTImage ("histogram-mode-logx-small.svg");
+    mode_images_[2] = new RTImage ("histogram-mode-logxy-small.svg");
     mode_tips_[0] = M("HISTOGRAM_TOOLTIP_MODE_LINEAR");
     mode_tips_[1] = M("HISTOGRAM_TOOLTIP_MODE_LOG_X");
     mode_tips_[2] = M("HISTOGRAM_TOOLTIP_MODE_LOG_XY");
 
-    Gtk::Image* histImage = Gtk::manage(new RTImage("histogram-type-histogram-small.png"));
-    Gtk::Image* histRawImage = Gtk::manage(new RTImage("histogram-type-histogram-raw-small.png"));
-    Gtk::Image* paradeImage = Gtk::manage(new RTImage("histogram-type-parade-small.png"));
-    Gtk::Image* waveImage = Gtk::manage(new RTImage("histogram-type-waveform-small.png"));
-    Gtk::Image* vectHcImage = Gtk::manage(new RTImage("histogram-type-vectorscope-hc-small.png"));
-    Gtk::Image* vectHsImage = Gtk::manage(new RTImage("histogram-type-vectorscope-hs-small.png"));
+    Gtk::Image* histImage = Gtk::manage(new RTImage("histogram-type-histogram-small.svg"));
+    Gtk::Image* histRawImage = Gtk::manage(new RTImage("histogram-type-histogram-raw-small.svg"));
+    Gtk::Image* paradeImage = Gtk::manage(new RTImage("histogram-type-parade-small.svg"));
+    Gtk::Image* waveImage = Gtk::manage(new RTImage("histogram-type-waveform-small.svg"));
+    Gtk::Image* vectHcImage = Gtk::manage(new RTImage("histogram-type-vectorscope-hc-small.svg"));
+    Gtk::Image* vectHsImage = Gtk::manage(new RTImage("histogram-type-vectorscope-hs-small.svg"));
 
     showRed   = Gtk::manage (new Gtk::ToggleButton ());
     showGreen = Gtk::manage (new Gtk::ToggleButton ());
@@ -287,7 +287,7 @@ HistogramPanel::HistogramPanel () :
         case ScopeType::NONE:
             break;
     }
-    scopeOptions->set_image(*Gtk::manage(new RTImage("histogram-ellipsis-small.png")));
+    scopeOptions->set_image(*Gtk::manage(new RTImage("histogram-ellipsis-small.svg")));
     showBAR->set_image   (showBAR->get_active()   ? *barImage   : *barImage_g);
 
     setExpandAlignProperties(showRed  , false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER);

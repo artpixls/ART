@@ -29,7 +29,7 @@ extern Glib::ustring versionString;
 
 SplashImage::SplashImage ()
 {
-    surface = RTImage::createImgSurfFromFile ("splash.png");
+    surface = RTImage::createImgSurfFromFile ("splash.svg");
 }
 
 bool SplashImage::on_draw(const ::Cairo::RefPtr< Cairo::Context> &cr)

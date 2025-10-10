@@ -440,7 +440,8 @@ bool FilePanel::handleShortcutKey (GdkEventKey* event)
         return true;
     }
 
-    if (event->state & GDK_CONTROL_MASK && (event->keyval == GDK_KEY_i || event->keyval == GDK_KEY_I)) {
+    auto keyval = getKeyval(event);
+    if (event->state & GDK_CONTROL_MASK && (keyval == GDK_KEY_i || keyval == GDK_KEY_I)) {
         rightNotebook->set_current_page((rightNotebook->get_current_page() + 1) % 2);
         return true;
     }

@@ -164,7 +164,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     trashButtonBox = Gtk::manage( new Gtk::VBox );
     Gtk::Button* emptyT = Gtk::manage( new Gtk::Button ());
     emptyT->set_tooltip_markup (M("FILEBROWSER_EMPTYTRASHHINT"));
-    emptyT->set_image (*Gtk::manage(new RTImage ("trash-delete.png")));
+    emptyT->set_image (*Gtk::manage(new RTImage ("trash-delete.svg")));
     emptyT->signal_pressed().connect (sigc::mem_fun(*this, &FileCatalog::emptyTrash));
     trashButtonBox->pack_start (*emptyT, Gtk::PACK_SHRINK, 4);
     emptyT->show ();
@@ -177,7 +177,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     Gtk::HBox* hbBrowsePath = Gtk::manage(new Gtk::HBox());
     
     button_session_load_ = Gtk::manage(new Gtk::Button());
-    button_session_load_->set_image(*Gtk::manage(new RTImage("folder-open-recent-small.png")));
+    button_session_load_->set_image(*Gtk::manage(new RTImage("folder-open-recent-small.svg")));
     button_session_load_->set_tooltip_markup(M("FILEBROWSER_SESSION_LOAD_LABEL"));
     button_session_load_->set_relief(Gtk::RELIEF_NONE);
     button_session_load_->signal_clicked().connect(sigc::mem_fun(*this, &FileCatalog::sessionLoadPressed));
@@ -185,7 +185,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     button_session_load_->hide();
 
     button_session_save_ = Gtk::manage(new Gtk::Button ());
-    button_session_save_->set_image(*Gtk::manage(new RTImage("save-small.png")));
+    button_session_save_->set_image(*Gtk::manage(new RTImage("save-small.svg")));
     button_session_save_->set_tooltip_markup(M("FILEBROWSER_SESSION_SAVE_LABEL"));
     button_session_save_->set_relief(Gtk::RELIEF_NONE);
     button_session_save_->signal_clicked().connect(sigc::mem_fun(*this, &FileCatalog::sessionSavePressed));
@@ -193,7 +193,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     button_session_save_->hide();
     
     button_session_add_ = Gtk::manage(new Gtk::Button ());
-    button_session_add_->set_image(*Gtk::manage(new RTImage("add-small.png")));
+    button_session_add_->set_image(*Gtk::manage(new RTImage("add-small.svg")));
     button_session_add_->set_tooltip_markup(M("FILEBROWSER_SESSION_ADD_LABEL"));
     button_session_add_->set_relief(Gtk::RELIEF_NONE);
     button_session_add_->signal_clicked().connect(sigc::mem_fun(*this, &FileCatalog::sessionAddPressed));
@@ -201,15 +201,15 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     button_session_add_->hide();
     
     button_session_remove_ = Gtk::manage(new Gtk::Button ());
-    button_session_remove_->set_image(*Gtk::manage(new RTImage("remove-small.png")));
+    button_session_remove_->set_image(*Gtk::manage(new RTImage("remove-small.svg")));
     button_session_remove_->set_tooltip_markup(M("FILEBROWSER_SESSION_REMOVE_LABEL"));
     button_session_remove_->set_relief(Gtk::RELIEF_NONE);
     button_session_remove_->signal_clicked().connect(sigc::mem_fun(*this, &FileCatalog::sessionRemovePressed));
     hbBrowsePath->pack_start(*button_session_remove_, Gtk::PACK_SHRINK, 0);
     button_session_remove_->hide();
     
-    iRefreshWhite = new RTImage("refresh-small.png");
-    iRefreshRed = new RTImage("refresh-red-small.png");
+    iRefreshWhite = new RTImage("refresh-small.svg");
+    iRefreshRed = new RTImage("refresh-red-small.svg");
 
     BrowsePath = Gtk::manage(new Gtk::Entry ());
     BrowsePath->set_width_chars (50);
@@ -221,7 +221,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     buttonBrowsePath->signal_clicked().connect( sigc::mem_fun(*this, &FileCatalog::browsePathRefresh) );
 
     button_recurse_ = Gtk::manage(new Gtk::ToggleButton());
-    button_recurse_->set_image(*Gtk::manage(new RTImage("folder-recurse-small.png")));
+    button_recurse_->set_image(*Gtk::manage(new RTImage("folder-recurse-small.svg")));
     button_recurse_->set_tooltip_markup(M("FILEBROWSER_BROWSEPATH_RECURSIVE_TOOLTIP"));
     button_recurse_->set_relief(Gtk::RELIEF_NONE);
     recurse_conn_ = button_recurse_->signal_toggled().connect(sigc::mem_fun(*this, &FileCatalog::browsePathRefresh));
@@ -242,7 +242,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     BrowsePath->signal_changed().connect(sigc::mem_fun(*this, &FileCatalog::onBrowsePathChanged));
 
     //setup Query
-    iQueryClear = new RTImage("cancel-small.png");
+    iQueryClear = new RTImage("cancel-small.svg");
     Gtk::Label* labelQuery = Gtk::manage(new Gtk::Label(M("FILEBROWSER_QUERYLABEL")));
     Query = Gtk::manage(new Gtk::Entry ()); // cannot use Gtk::manage here as FileCatalog::getFilter will fail on Query->get_text()
     Query->set_text("");
@@ -280,8 +280,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     pack_start (*stb, Gtk::PACK_SHRINK);
 
     tbLeftPanel_1 = new Gtk::ToggleButton ();
-    iLeftPanel_1_Show = new RTImage("panel-to-right.png");
-    iLeftPanel_1_Hide = new RTImage("panel-to-left.png");
+    iLeftPanel_1_Show = new RTImage("panel-to-right.svg");
+    iLeftPanel_1_Hide = new RTImage("panel-to-left.svg");
 
     tbLeftPanel_1->set_relief(Gtk::RELIEF_NONE);
     tbLeftPanel_1->set_active (true);
@@ -293,11 +293,11 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     vSepiLeftPanel = new Gtk::VSeparator ();
     buttonBar->pack_start (*vSepiLeftPanel, Gtk::PACK_SHRINK);
 
-    iFilterClear = new RTImage ("filter-clear.png");
-    igFilterClear = new RTImage ("filter.png");
+    iFilterClear = new RTImage ("filter-clear.svg");
+    igFilterClear = new RTImage ("filter.svg");
     bFilterClear = Gtk::manage(new Gtk::ToggleButton ());
     bFilterClear->set_active (true);
-    bFilterClear->set_image(*iFilterClear);// (*Gtk::manage(new RTImage ("filter-clear.png")));
+    bFilterClear->set_image(*iFilterClear);// (*Gtk::manage(new RTImage ("filter-clear.svg")));
     bFilterClear->set_relief (Gtk::RELIEF_NONE);
     bFilterClear->set_tooltip_markup (M("FILEBROWSER_SHOWDIRHINT"));
     bFilterClear->signal_button_press_event().connect (sigc::mem_fun(*this, &FileCatalog::capture_event), false);
@@ -311,8 +311,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     fltrLabelbox = Gtk::manage (new Gtk::HBox());
     fltrLabelbox->get_style_context()->add_class("smallbuttonbox");
 
-    iUnRanked = new RTImage ("star-gold-hollow-small.png");
-    igUnRanked = new RTImage ("star-hollow-small.png");
+    iUnRanked = new RTImage ("star-gold-hollow-small.svg");
+    igUnRanked = new RTImage ("star-hollow-small.svg");
     bUnRanked = Gtk::manage( new Gtk::ToggleButton () );
     bUnRanked->get_style_context()->add_class("smallbutton");
     bUnRanked->set_active (false);
@@ -324,8 +324,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     bUnRanked->signal_button_press_event().connect (sigc::mem_fun(*this, &FileCatalog::capture_event), false);
 
     for (int i = 0; i < 5; i++) {
-        iranked[i] = new RTImage ("star-gold-small.png");
-        igranked[i] = new RTImage ("star-small.png");
+        iranked[i] = new RTImage ("star-gold-small.svg");
+        igranked[i] = new RTImage ("star-small.svg");
         iranked[i]->show ();
         igranked[i]->show ();
         bRank[i] = Gtk::manage( new Gtk::ToggleButton () );
@@ -339,8 +339,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
 
     // Toolbar
     // Similar image arrays in filebrowser.cc
-    std::array<std::string, 6> clabelActiveIcons = {"circle-gray-small.png", "circle-red-small.png", "circle-yellow-small.png", "circle-green-small.png", "circle-blue-small.png", "circle-purple-small.png"};
-    std::array<std::string, 6> clabelInactiveIcons = {"circle-empty-gray-small.png", "circle-empty-red-small.png", "circle-empty-yellow-small.png", "circle-empty-green-small.png", "circle-empty-blue-small.png", "circle-empty-purple-small.png"};
+    std::array<std::string, 6> clabelActiveIcons = {"circle-gray-small.svg", "circle-red-small.svg", "circle-yellow-small.svg", "circle-green-small.svg", "circle-blue-small.svg", "circle-purple-small.svg"};
+    std::array<std::string, 6> clabelInactiveIcons = {"circle-empty-gray-small.svg", "circle-empty-red-small.svg", "circle-empty-yellow-small.svg", "circle-empty-green-small.svg", "circle-empty-blue-small.svg", "circle-empty-purple-small.svg"};
 
     iUnCLabeled = new RTImage(clabelActiveIcons[0]);
     igUnCLabeled = new RTImage(clabelInactiveIcons[0]);
@@ -396,10 +396,10 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     // TODO The "g" variant was the more transparent variant of the icon, used
     // when the button was not toggled. Simplify this, change to ordinary
     // togglebutton, use CSS for opacity change.
-    iEdited[0] = new RTImage ("tick-hollow-small.png");
-    igEdited[0] = new RTImage ("tick-hollow-small.png");
-    iEdited[1] = new RTImage ("tick-small.png");
-    igEdited[1] = new RTImage ("tick-small.png");
+    iEdited[0] = new RTImage ("tick-hollow-small.svg");
+    igEdited[0] = new RTImage ("tick-hollow-small.svg");
+    iEdited[1] = new RTImage ("tick-small.svg");
+    igEdited[1] = new RTImage ("tick-small.svg");
 
     for (int i = 0; i < 2; i++) {
         iEdited[i]->show ();
@@ -421,10 +421,10 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     // TODO The "g" variant was the more transparent variant of the icon, used
     // when the button was not toggled. Simplify this, change to ordinary
     // togglebutton, use CSS for opacity change.
-    iRecentlySaved[0] = new RTImage ("saved-no-small.png");
-    igRecentlySaved[0] = new RTImage ("saved-no-small.png");
-    iRecentlySaved[1] = new RTImage ("saved-yes-small.png");
-    igRecentlySaved[1] = new RTImage ("saved-yes-small.png");
+    iRecentlySaved[0] = new RTImage ("saved-no-small.svg");
+    igRecentlySaved[0] = new RTImage ("saved-no-small.svg");
+    iRecentlySaved[1] = new RTImage ("saved-yes-small.svg");
+    igRecentlySaved[1] = new RTImage ("saved-yes-small.svg");
 
     for (int i = 0; i < 2; i++) {
         iRecentlySaved[i]->show ();
@@ -449,8 +449,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     buttonBar->pack_start (*Gtk::manage(new Gtk::VSeparator), Gtk::PACK_SHRINK);
 
     // Trash
-    iTrashShowEmpty = new RTImage("trash-empty-show.png") ;
-    iTrashShowFull  = new RTImage("trash-full-show.png") ;
+    iTrashShowEmpty = new RTImage("trash-empty-show.svg") ;
+    iTrashShowFull  = new RTImage("trash-full-show.svg") ;
 
     bTrash = Gtk::manage( new Gtk::ToggleButton () );
     bTrash->set_image (*iTrashShowEmpty);
@@ -459,8 +459,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     bCateg[17] = bTrash->signal_toggled().connect (sigc::bind(sigc::mem_fun(*this, &FileCatalog::categoryButtonToggled), bTrash, true));
     bTrash->signal_button_press_event().connect (sigc::mem_fun(*this, &FileCatalog::capture_event), false);
 
-    iNotTrash = new RTImage("trash-hide-deleted.png") ;
-    iOriginal = new RTImage("filter-original.png");
+    iNotTrash = new RTImage("trash-hide-deleted.svg") ;
+    iOriginal = new RTImage("filter-original.svg");
 
     bNotTrash = Gtk::manage( new Gtk::ToggleButton () );
     bNotTrash->set_image (*iNotTrash);
@@ -529,7 +529,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     categoryButtons[19] = bOriginal;
 
     exifInfo = Gtk::manage(new Gtk::ToggleButton ());
-    exifInfo->set_image (*Gtk::manage(new RTImage ("info.png")));
+    exifInfo->set_image (*Gtk::manage(new RTImage ("info.svg")));
     exifInfo->set_relief (Gtk::RELIEF_NONE);
     exifInfo->set_tooltip_markup (M("FILEBROWSER_SHOWEXIFINFO"));
     exifInfo->set_active( options.showFileNames );
@@ -539,13 +539,13 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     // thumbnail zoom
     Gtk::HBox* zoomBox = Gtk::manage( new Gtk::HBox () );
     zoomInButton  = Gtk::manage(  new Gtk::Button () );
-    zoomInButton->set_image (*Gtk::manage(new RTImage ("magnifier-plus.png")));
+    zoomInButton->set_image (*Gtk::manage(new RTImage ("magnifier-plus.svg")));
     zoomInButton->signal_pressed().connect (sigc::mem_fun(*this, &FileCatalog::zoomIn));
     zoomInButton->set_relief (Gtk::RELIEF_NONE);
     zoomInButton->set_tooltip_markup (M("FILEBROWSER_ZOOMINHINT"));
     zoomBox->pack_end (*zoomInButton, Gtk::PACK_SHRINK);
     zoomOutButton  = Gtk::manage( new Gtk::Button () );
-    zoomOutButton->set_image (*Gtk::manage(new RTImage ("magnifier-minus.png")));
+    zoomOutButton->set_image (*Gtk::manage(new RTImage ("magnifier-minus.svg")));
     zoomOutButton->signal_pressed().connect (sigc::mem_fun(*this, &FileCatalog::zoomOut));
     zoomOutButton->set_relief (Gtk::RELIEF_NONE);
     zoomOutButton->set_tooltip_markup (M("FILEBROWSER_ZOOMOUTHINT"));
@@ -556,7 +556,7 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
 
     {
         thumbOrder = Gtk::manage(new Gtk::MenuButton());
-        thumbOrder->set_image(*Gtk::manage(new RTImage("az-sort.png")));
+        thumbOrder->set_image(*Gtk::manage(new RTImage("az-sort.svg")));
         Gtk::Menu *menu = Gtk::manage(new Gtk::Menu());
         thumbOrder->set_menu(*menu);
 
@@ -603,8 +603,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     }
         
     
-    //iRightArrow = new RTImage("right.png");
-    //iRightArrow_red = new RTImage("right_red.png");
+    //iRightArrow = new RTImage("right.svg");
+    //iRightArrow_red = new RTImage("right_red.svg");
 
     // if it IS a single row toolbar
     if (options.FileBrowserToolbarSingleRow) {
@@ -612,8 +612,8 @@ FileCatalog::FileCatalog(FilePanel* filepanel) :
     }
 
     tbRightPanel_1 = new Gtk::ToggleButton ();
-    iRightPanel_1_Show = new RTImage("panel-to-left.png");
-    iRightPanel_1_Hide = new RTImage("panel-to-right.png");
+    iRightPanel_1_Show = new RTImage("panel-to-left.svg");
+    iRightPanel_1_Hide = new RTImage("panel-to-right.svg");
 
     tbRightPanel_1->set_relief(Gtk::RELIEF_NONE);
     tbRightPanel_1->set_active (true);
@@ -2165,7 +2165,7 @@ bool FileCatalog::Query_key_pressed (GdkEventKey *event)
 
     bool shift = event->state & GDK_SHIFT_MASK;
 
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
     case GDK_KEY_Escape:
 
         // Clear Query if the Escape character is pressed within it
@@ -2246,7 +2246,7 @@ bool FileCatalog::BrowsePath_key_pressed (GdkEventKey *event)
 
     bool shift = event->state & GDK_SHIFT_MASK;
 
-    switch (event->keyval) {
+    switch (getKeyval(event)) {
     case GDK_KEY_Escape:
 
         // On Escape character Reset BrowsePath to selectedDirectory
@@ -2436,7 +2436,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     modifierKey = event->state;
 
     // GUI Layout
-    switch(event->keyval) {
+    switch(getKeyval(event)) {
     case GDK_KEY_l:
         if (!alt && !ctrl) {
             tbLeftPanel_1->set_active (!tbLeftPanel_1->get_active());    // toggle left panel
@@ -2462,7 +2462,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!shift) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_Escape:
             BrowsePath->set_text(selectedDirectory);
             fileBrowser->getFocus();
@@ -2471,43 +2471,43 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!alt && !shift && !altgr) { // shift is reserved for ranking
-        switch(event->hardware_keycode) {
-        case HWKeyCode::KEY_0:
+        switch (getKeyval(event)) {
+        case GDK_KEY_0:
             categoryButtonToggled(bUnRanked, false);
             return true;
 
-        case HWKeyCode::KEY_1:
+        case GDK_KEY_1:
             categoryButtonToggled(bRank[0], false);
             return true;
 
-        case HWKeyCode::KEY_2:
+        case GDK_KEY_2:
             categoryButtonToggled(bRank[1], false);
             return true;
 
-        case HWKeyCode::KEY_3:
+        case GDK_KEY_3:
             categoryButtonToggled(bRank[2], false);
             return true;
 
-        case HWKeyCode::KEY_4:
+        case GDK_KEY_4:
             categoryButtonToggled(bRank[3], false);
             return true;
 
-        case HWKeyCode::KEY_5:
+        case GDK_KEY_5:
             categoryButtonToggled(bRank[4], false);
             return true;
 
-        case HWKeyCode::KEY_6:
+        case GDK_KEY_6:
             categoryButtonToggled(bEdited[0], false);
             return true;
 
-        case HWKeyCode::KEY_7:
+        case GDK_KEY_7:
             categoryButtonToggled(bEdited[1], false);
             return true;
         }
     }
 
     if (!alt && !shift) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
 
         case GDK_KEY_Return:
         case GDK_KEY_KP_Enter:
@@ -2521,43 +2521,43 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (alt && !shift) { // shift is reserved for color labeling
-        switch(event->hardware_keycode) {
-        case HWKeyCode::KEY_0:
+        switch (getKeyval(event)) {
+        case GDK_KEY_0:
             categoryButtonToggled(bUnCLabeled, false);
             return true;
 
-        case HWKeyCode::KEY_1:
+        case GDK_KEY_1:
             categoryButtonToggled(bCLabel[0], false);
             return true;
 
-        case HWKeyCode::KEY_2:
+        case GDK_KEY_2:
             categoryButtonToggled(bCLabel[1], false);
             return true;
 
-        case HWKeyCode::KEY_3:
+        case GDK_KEY_3:
             categoryButtonToggled(bCLabel[2], false);
             return true;
 
-        case HWKeyCode::KEY_4:
+        case GDK_KEY_4:
             categoryButtonToggled(bCLabel[3], false);
             return true;
 
-        case HWKeyCode::KEY_5:
+        case GDK_KEY_5:
             categoryButtonToggled(bCLabel[4], false);
             return true;
 
-        case HWKeyCode::KEY_6:
+        case GDK_KEY_6:
             categoryButtonToggled(bRecentlySaved[0], false);
             return true;
 
-        case HWKeyCode::KEY_7:
+        case GDK_KEY_7:
             categoryButtonToggled(bRecentlySaved[1], false);
             return true;
         }
     }
 
     if (!ctrl && !alt) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_d:
         case GDK_KEY_D:
             categoryButtonToggled(bFilterClear, false);
@@ -2566,7 +2566,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!ctrl || (alt && !options.tabbedUI)) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_i:
         //case GDK_KEY_I:
             exifInfo->set_active (!exifInfo->get_active());
@@ -2585,7 +2585,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (ctrl && !alt) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_o:
             if (button_session_load_->is_visible()) {
                 sessionLoadPressed();
@@ -2646,7 +2646,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!ctrl && !alt && shift) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_t:
         case GDK_KEY_T:
             if (inTabMode) {
@@ -2664,7 +2664,7 @@ bool FileCatalog::handleShortcutKey (GdkEventKey* event)
     }
 
     if (!ctrl && !alt && !shift) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_t:
         case GDK_KEY_T:
             if (inTabMode) {

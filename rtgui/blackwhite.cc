@@ -128,18 +128,18 @@ BlackWhite::BlackWhite():
 
     //----------- RGB / ROYGCBPM Mixer ------------------------------
 
-    imgIcon[0] = Gtk::manage (new RTImage ("circle-red-small.png"));
-    imgIcon[1] = Gtk::manage (new RTImage ("circle-orange-small.png"));
-    imgIcon[2] = Gtk::manage (new RTImage ("circle-yellow-small.png"));
-    imgIcon[3] = Gtk::manage (new RTImage ("circle-green-small.png"));
-    imgIcon[4] = Gtk::manage (new RTImage ("circle-cyan-small.png"));
-    imgIcon[5] = Gtk::manage (new RTImage ("circle-blue-small.png"));
-    imgIcon[6] = Gtk::manage (new RTImage ("circle-purple-small.png"));
-    imgIcon[7] = Gtk::manage (new RTImage ("circle-magenta-small.png"));
+    imgIcon[0] = Gtk::manage (new RTImage ("circle-red-small.svg"));
+    imgIcon[1] = Gtk::manage (new RTImage ("circle-orange-small.svg"));
+    imgIcon[2] = Gtk::manage (new RTImage ("circle-yellow-small.svg"));
+    imgIcon[3] = Gtk::manage (new RTImage ("circle-green-small.svg"));
+    imgIcon[4] = Gtk::manage (new RTImage ("circle-cyan-small.svg"));
+    imgIcon[5] = Gtk::manage (new RTImage ("circle-blue-small.svg"));
+    imgIcon[6] = Gtk::manage (new RTImage ("circle-purple-small.svg"));
+    imgIcon[7] = Gtk::manage (new RTImage ("circle-magenta-small.svg"));
 
-    imgIcon[8]  = Gtk::manage (new RTImage ("circle-empty-red-small.png"));
-    imgIcon[9]  = Gtk::manage (new RTImage ("circle-empty-green-small.png"));
-    imgIcon[10] = Gtk::manage (new RTImage ("circle-empty-blue-small.png"));
+    imgIcon[8]  = Gtk::manage (new RTImage ("circle-empty-red-small.svg"));
+    imgIcon[9]  = Gtk::manage (new RTImage ("circle-empty-green-small.svg"));
+    imgIcon[10] = Gtk::manage (new RTImage ("circle-empty-blue-small.svg"));
 
     mixerVBox->pack_start (*Gtk::manage (new  Gtk::HSeparator()));
 

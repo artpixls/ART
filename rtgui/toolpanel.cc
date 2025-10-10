@@ -77,7 +77,7 @@ FoldableToolPanel::FoldableToolPanel(Gtk::Box *content, const Glib::ustring &too
         if (useReset) {
             EvToolReset = ProcEventMapper::getInstance()->newEvent(0, UILabel);
             
-            image = Gtk::manage(new RTImage("undo-small.png"));
+            image = Gtk::manage(new RTImage("undo-small.svg"));
             image->set_tooltip_markup(M("TP_GENERAL_TOOL_RESET_TOOLTIP") + "\n" + M("ADJUSTER_RESET_TO_DEFAULT"));
 
             imageEvBox = Gtk::manage(new Gtk::EventBox());
@@ -91,7 +91,7 @@ FoldableToolPanel::FoldableToolPanel(Gtk::Box *content, const Glib::ustring &too
         }
 
         if (need11) {
-            image = Gtk::manage (new RTImage("one-to-one-small.png"));
+            image = Gtk::manage (new RTImage("one-to-one-small.svg"));
             image->set_tooltip_text(M("TP_GENERAL_11SCALE_TOOLTIP"));
             titleHBox->pack_end(*image, Gtk::PACK_SHRINK, 0);
         }

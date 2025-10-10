@@ -541,11 +541,11 @@ void ExpanderBox::hideBox()
 void MyExpander::init()
 {
     if (!inconsistentImage) {  // if one is null, all are null
-        inconsistentImage = Glib::RefPtr<RTImage>(new RTImage("power-inconsistent-small.png"));
-        enabledImage = Glib::RefPtr<RTImage>(new RTImage("power-on-small.png"));
-        disabledImage = Glib::RefPtr<RTImage>(new RTImage("power-off-small.png"));
-        openedImage = Glib::RefPtr<RTImage>(new RTImage("expander-open-small.png"));
-        closedImage = Glib::RefPtr<RTImage>(new RTImage("expander-closed-small.png"));
+        inconsistentImage = Glib::RefPtr<RTImage>(new RTImage("power-inconsistent-small.svg"));
+        enabledImage = Glib::RefPtr<RTImage>(new RTImage("power-on-small.svg"));
+        disabledImage = Glib::RefPtr<RTImage>(new RTImage("power-off-small.svg"));
+        openedImage = Glib::RefPtr<RTImage>(new RTImage("expander-open-small.svg"));
+        closedImage = Glib::RefPtr<RTImage>(new RTImage("expander-closed-small.svg"));
     }
 }
 
@@ -2093,4 +2093,18 @@ void initGUIColorManagement()
         }
     }
     guiconv.init();
+}
+
+
+guint getKeyval(GdkEventKey *event, bool consider_shift)
+{
+    auto res = event->keyval;
+// #ifdef __APPLE__
+    if (event->state & GDK_MODIFIER_MASK) {
+        GdkKeymap *km = gdk_keymap_get_default();
+        GdkKeymapKey key{event->hardware_keycode, 0, consider_shift && (event->state & GDK_SHIFT_MASK) ? 1 : 0};
+        res = gdk_keymap_lookup_key(km, &key);
+    }
+// #endif
+    return res;
 }

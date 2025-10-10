@@ -297,14 +297,14 @@ public:
         Gtk::HBox *hb = Gtk::manage(new Gtk::HBox());
 
         Gtk::Button *btncopy = Gtk::manage(new Gtk::Button());
-        btncopy->add(*Gtk::manage(new RTImage("copy.png")));
+        btncopy->add(*Gtk::manage(new RTImage("copy.svg")));
         btncopy->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_COPY_TOOLTIP"));
         btncopy->signal_clicked().connect(sigc::mem_fun(*this, &DrawnMaskPanel::on_copy_pressed));
         set_btn_style(btncopy);
         hb->pack_start(*btncopy, Gtk::PACK_SHRINK);
 
         Gtk::Button *btnpaste = Gtk::manage(new Gtk::Button());
-        btnpaste->add(*Gtk::manage(new RTImage("paste.png")));
+        btnpaste->add(*Gtk::manage(new RTImage("paste.svg")));
         btnpaste->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_PASTE_TOOLTIP"));
         btnpaste->signal_clicked().connect(sigc::mem_fun(*this, &DrawnMaskPanel::on_paste_pressed));
         set_btn_style(btnpaste);
@@ -314,9 +314,9 @@ public:
         hb->pack_start(*info_, Gtk::PACK_EXPAND_WIDGET, 4);
         
         const char *img[3] = {
-            "area-shape-intersect.png",
-            "area-shape-add.png",
-            "drawn-mask-add-bounded.png"
+            "area-shape-intersect.svg",
+            "area-shape-add.svg",
+            "drawn-mask-add-bounded.svg"
         };
         const char *tips[3] = {
             "TP_LABMASKS_DRAWNMASK_INTERSECT_TOOLTIP",
@@ -332,19 +332,19 @@ public:
         }
 
         toggle_ = Gtk::manage(new Gtk::ToggleButton());
-        toggle_->add(*Gtk::manage(new RTImage("brush.png")));
+        toggle_->add(*Gtk::manage(new RTImage("brush.svg")));
         set_btn_style(toggle_);
         toggle_->set_tooltip_markup(M("TP_LABMASKS_DRAWNMASK_TOGGLE_TIP"));
         toggle_->signal_toggled().connect(sigc::mem_fun(this, &DrawnMaskPanel::on_toggled));
 
         reset_ = Gtk::manage(new Gtk::Button());
-        reset_->add(*Gtk::manage(new RTImage("undo-all.png")));
+        reset_->add(*Gtk::manage(new RTImage("undo-all.svg")));
         set_btn_style(reset_);
         reset_->set_tooltip_text(M("TP_LABMASKS_DRAWNMASK_RESET_TIP"));
         reset_->signal_clicked().connect(sigc::mem_fun(this, &DrawnMaskPanel::on_reset));
 
         undo_ = Gtk::manage(new Gtk::Button());
-        undo_->add(*Gtk::manage(new RTImage("undo.png")));
+        undo_->add(*Gtk::manage(new RTImage("undo.svg")));
         set_btn_style(undo_);
         undo_->set_tooltip_text(M("TP_LABMASKS_DRAWNMASK_UNDO_TIP"));
         undo_->signal_clicked().connect(sigc::mem_fun(this, &DrawnMaskPanel::on_undo));
@@ -356,11 +356,11 @@ public:
         Gtk::VBox *vb = Gtk::manage(new Gtk::VBox());
         f->add(*vb);
 
-        radius_ = Gtk::manage(new Adjuster(M("TP_LABMASKS_DRAWNMASK_RADIUS"), 0.1, 100, 0.1, 10, Gtk::manage(new RTImage("pen-ocra-small.png"))));
+        radius_ = Gtk::manage(new Adjuster(M("TP_LABMASKS_DRAWNMASK_RADIUS"), 0.1, 100, 0.1, 10, Gtk::manage(new RTImage("pen-ocra-small.svg"))));
         radius_->setLogScale(2, 0);
         vb->pack_start(*radius_);
 
-        hardness_ = Gtk::manage(new Adjuster(M("TP_LABMASKS_DRAWNMASK_OPACITY"), 0, 100, 1, 100, Gtk::manage(new RTImage("pen-ocra-small.png"))));
+        hardness_ = Gtk::manage(new Adjuster(M("TP_LABMASKS_DRAWNMASK_OPACITY"), 0, 100, 1, 100, Gtk::manage(new RTImage("pen-ocra-small.svg"))));
         vb->pack_start(*hardness_);
 
         erase_ = Gtk::manage(new Gtk::CheckButton(M("TP_LABMASKS_DRAWNMASK_ERASE")));
@@ -420,7 +420,7 @@ public:
                 bool alt = evt->state & GDK_MOD1_MASK;
 
                 if (ctrl && !alt) {
-                    switch (evt->keyval) {
+                    switch (getKeyval(evt)) {
                     case GDK_KEY_z:
                     case GDK_KEY_Z:
                         if (shift) {
@@ -1001,7 +1001,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     list_enabled_column_.pack_start(list_enabled_renderer_);
     list_enabled_column_.set_cell_data_func(list_enabled_renderer_, sigc::mem_fun(this, &MasksPanel::setListEnabled));
     {
-        auto img = Gtk::manage(new RTImage("power-on-small-faded.png"));
+        auto img = Gtk::manage(new RTImage("power-on-small-faded.svg"));
         img->show();
         list_enabled_column_.set_widget(*img);
     }
@@ -1027,27 +1027,27 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     hb->pack_start(*scroll, Gtk::PACK_EXPAND_WIDGET);
     Gtk::VBox *vb = Gtk::manage(new Gtk::VBox());
     reset = Gtk::manage(new Gtk::Button());
-    reset->add(*Gtk::manage(new RTImage("undo-small.png")));
+    reset->add(*Gtk::manage(new RTImage("undo-small.svg")));
     reset->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onResetPressed));
     add_button(reset, vb);
     add = Gtk::manage(new Gtk::Button());
-    add->add(*Gtk::manage(new RTImage("add-small.png")));
+    add->add(*Gtk::manage(new RTImage("add-small.svg")));
     add->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAddPressed));
     add_button(add, vb);
     remove = Gtk::manage(new Gtk::Button());
-    remove->add(*Gtk::manage(new RTImage("remove-small.png")));
+    remove->add(*Gtk::manage(new RTImage("remove-small.svg")));
     remove->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onRemovePressed));
     add_button(remove, vb);
     up = Gtk::manage(new Gtk::Button());
-    up->add(*Gtk::manage(new RTImage("arrow-up-small.png")));
+    up->add(*Gtk::manage(new RTImage("arrow-up-small.svg")));
     up->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onUpPressed));
     add_button(up, vb);
     down = Gtk::manage(new Gtk::Button());
-    down->add(*Gtk::manage(new RTImage("arrow-down-small.png")));
+    down->add(*Gtk::manage(new RTImage("arrow-down-small.svg")));
     down->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onDownPressed));
     add_button(down, vb);
     copy = Gtk::manage(new Gtk::Button());
-    copy->add(*Gtk::manage(new RTImage("copy-small.png")));
+    copy->add(*Gtk::manage(new RTImage("copy-small.svg")));
     copy->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onCopyPressed));
     add_button(copy, vb);
     hb->pack_start(*vb, Gtk::PACK_SHRINK);
@@ -1062,13 +1062,13 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     hb = Gtk::manage(new Gtk::HBox());
 
     maskCopy = Gtk::manage(new Gtk::Button());
-    maskCopy->add(*Gtk::manage(new RTImage("copy.png")));
+    maskCopy->add(*Gtk::manage(new RTImage("copy.svg")));
     maskCopy->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_COPY_TOOLTIP"));
     maskCopy->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onMaskCopyPressed));
     add_button(maskCopy, hb, 24, Gtk::PackType::PACK_START, 2);
     
     maskPaste = Gtk::manage(new Gtk::Button());
-    maskPaste->add(*Gtk::manage(new RTImage("paste.png")));
+    maskPaste->add(*Gtk::manage(new RTImage("paste.svg")));
     maskPaste->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_PASTE_TOOLTIP"));
     maskPaste->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onMaskPastePressed));
     add_button(maskPaste, hb, 24, Gtk::PackType::PACK_START, 2);
@@ -1131,7 +1131,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     lightnessMaskDetail->setAdjusterListener(this);
     tb->pack_start(*lightnessMaskDetail);
 
-    Gtk::Image *cicon = Gtk::manage(new RTImage("one-to-one-small.png"));
+    Gtk::Image *cicon = Gtk::manage(new RTImage("one-to-one-small.svg"));
     contrastThreshold = Gtk::manage(new Adjuster(M("TP_LABMASKS_CONTRASTTHRESHOLDMASK"), -150, 150, 1, 0, cicon));
     contrastThreshold->setAdjusterListener(this);
     //mask_box->pack_start(*contrastThreshold);
@@ -1215,13 +1215,13 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     areaMaskButtonsHb = hb;
 
     areaMaskCopy = Gtk::manage(new Gtk::Button());
-    areaMaskCopy->add(*Gtk::manage(new RTImage("copy.png")));
+    areaMaskCopy->add(*Gtk::manage(new RTImage("copy.svg")));
     areaMaskCopy->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_COPY_TOOLTIP"));
     areaMaskCopy->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskCopyPressed));
     add_button(areaMaskCopy, hb, 24);
     
     areaMaskPaste = Gtk::manage(new Gtk::Button());
-    areaMaskPaste->add(*Gtk::manage(new RTImage("paste.png")));
+    areaMaskPaste->add(*Gtk::manage(new RTImage("paste.svg")));
     areaMaskPaste->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_PASTE_TOOLTIP"));
     areaMaskPaste->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskPastePressed));
     add_button(areaMaskPaste, hb, 24);
@@ -1229,31 +1229,31 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     hb->pack_start(*Gtk::manage(new Gtk::Label("")), Gtk::PACK_EXPAND_WIDGET);
 
     areaMaskDrawGradientAdd= new Gtk::Button();
-    areaMaskDrawGradientAdd->add(*Gtk::manage(new RTImage("area-shape-gradient-add.png")));
+    areaMaskDrawGradientAdd->add(*Gtk::manage(new RTImage("area-shape-gradient-add.svg")));
     areaMaskDrawGradientAdd->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_GRADIENT_ADD_TOOLTIP"));
     areaMaskDrawGradientAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskDrawGradientAddPressed));
     add_button(areaMaskDrawGradientAdd, hb, 24);
 
     areaMaskDrawPolygonAdd= new Gtk::Button();
-    areaMaskDrawPolygonAdd->add(*Gtk::manage(new RTImage("area-shape-polygon-add.png")));
+    areaMaskDrawPolygonAdd->add(*Gtk::manage(new RTImage("area-shape-polygon-add.svg")));
     areaMaskDrawPolygonAdd->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_POLYGON_ADD_TOOLTIP"));
     areaMaskDrawPolygonAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskDrawPolygonAddPressed));
     add_button(areaMaskDrawPolygonAdd, hb, 24);
 
     areaMaskDrawRectangleAdd = new Gtk::Button();
-    areaMaskDrawRectangleAdd->add(*Gtk::manage(new RTImage("area-shape-draw-add.png")));
+    areaMaskDrawRectangleAdd->add(*Gtk::manage(new RTImage("area-shape-draw-add.svg")));
     areaMaskDrawRectangleAdd->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_ADD_TOOLTIP"));
     areaMaskDrawRectangleAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskDrawRectangleAddPressed));
     add_button(areaMaskDrawRectangleAdd, hb, 24);
 
     // areaMaskDrawRectangle = new Gtk::ToggleButton();
-    // areaMaskDrawRectangle->add(*Gtk::manage(new RTImage("area-shape-draw.png")));
+    // areaMaskDrawRectangle->add(*Gtk::manage(new RTImage("area-shape-draw.svg")));
     // areaMaskDrawRectangle->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_DRAW_TOOLTIP"));
     // areaMaskDrawConn = areaMaskDrawRectangle->signal_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onRectangleAreaMaskDrawChanged));
     // add_button(areaMaskDrawRectangle, hb, 24);
     
     areaMaskToggle = new Gtk::ToggleButton();
-    areaMaskToggle->add(*Gtk::manage(new RTImage("crosshair-adjust.png")));
+    areaMaskToggle->add(*Gtk::manage(new RTImage("crosshair-adjust.svg")));
     areaMaskToggle->set_tooltip_text(M("TP_LABMASKS_AREA_MASK_TOGGLE_TOOLTIP"));
     areaMaskToggle->signal_toggled().connect(sigc::mem_fun(*this, &MasksPanel::onAreaMaskToggleChanged));
     add_button(areaMaskToggle, hb, 24);
@@ -1304,23 +1304,23 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     hb->pack_start(*scroll, Gtk::PACK_EXPAND_WIDGET);
     vb = Gtk::manage(new Gtk::VBox());
     areaMaskReset = Gtk::manage(new Gtk::Button());
-    areaMaskReset->add(*Gtk::manage(new RTImage("undo-small.png")));
+    areaMaskReset->add(*Gtk::manage(new RTImage("undo-small.svg")));
     areaMaskReset->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaShapeResetPressed));
     add_button(areaMaskReset, vb);
     areaMaskAdd = Gtk::manage(new Gtk::Button());
-    areaMaskAdd->add(*Gtk::manage(new RTImage("add-small.png")));
+    areaMaskAdd->add(*Gtk::manage(new RTImage("add-small.svg")));
     areaMaskAdd->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaShapeAddPressed));
     add_button(areaMaskAdd, vb);
     areaMaskRemove = Gtk::manage(new Gtk::Button());
-    areaMaskRemove->add(*Gtk::manage(new RTImage("remove-small.png")));
+    areaMaskRemove->add(*Gtk::manage(new RTImage("remove-small.svg")));
     areaMaskRemove->signal_clicked().connect(sigc::mem_fun(*this, &MasksPanel::onAreaShapeRemovePressed));
     add_button(areaMaskRemove, vb);
     areaMaskUp = Gtk::manage(new Gtk::Button());
-    areaMaskUp->add(*Gtk::manage(new RTImage("arrow-up-small.png")));
+    areaMaskUp->add(*Gtk::manage(new RTImage("arrow-up-small.svg")));
     areaMaskUp->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MasksPanel::onAreaShapeUpDownPressed), true));
     add_button(areaMaskUp, vb);
     areaMaskDown = Gtk::manage(new Gtk::Button());
-    areaMaskDown->add(*Gtk::manage(new RTImage("arrow-down-small.png")));
+    areaMaskDown->add(*Gtk::manage(new RTImage("arrow-down-small.svg")));
     areaMaskDown->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MasksPanel::onAreaShapeUpDownPressed), false));
     add_button(areaMaskDown, vb);
     hb->pack_start(*vb, Gtk::PACK_SHRINK);
@@ -1333,9 +1333,9 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     hb->pack_start(*Gtk::manage(new Gtk::Label(M("TP_LABMASKS_AREA_SHAPE_MODE") + ":")), Gtk::PACK_SHRINK, 4);
 
     const char *img[3] = {
-        "area-shape-add.png",
-        "area-shape-subtract.png",
-        "area-shape-intersect.png"
+        "area-shape-add.svg",
+        "area-shape-subtract.svg",
+        "area-shape-intersect.svg"
     };
     const char *tips[3] = {
         "TP_LABMASKS_AREA_SHAPE_MODE_ADD",
@@ -1511,7 +1511,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
             bool alt = evt->state & GDK_MOD1_MASK;
 
             if (ctrl && !shift && !alt) {
-                switch (evt->keyval) {
+                switch (getKeyval(evt)) {
                 case GDK_KEY_m:
                 case GDK_KEY_M:
                     showMask->set_active(!showMask->get_active());

@@ -91,7 +91,7 @@ FilmSimulation::FilmSimulation():
     after_tone_curve_ = Gtk::manage(new Gtk::CheckButton(M("TP_FILMSIMULATION_AFTER_TONE_CURVE")));
     Gtk::HBox *hb = Gtk::manage(new Gtk::HBox());
     after_tone_curve_box_ = hb;
-    Gtk::Image *w = Gtk::manage(new RTImage("warning-small.png"));
+    Gtk::Image *w = Gtk::manage(new RTImage("warning-small.svg"));
     w->set_tooltip_markup(M("GENERAL_DEPRECATED_TOOLTIP"));
     hb->pack_start(*after_tone_curve_, Gtk::PACK_EXPAND_WIDGET, 4);
     hb->pack_start(*w, Gtk::PACK_SHRINK);

@@ -80,17 +80,17 @@ FlatCurveEditorSubGroup::FlatCurveEditorSubGroup (CurveEditorGroup* prt, Glib::u
     }
 
     editCPoints = Gtk::manage (new Gtk::ToggleButton());
-    initButton(*editCPoints, Glib::ustring("crosshair-node-curve.png"), Gtk::ALIGN_START, false, "EDIT_PIPETTE_TOOLTIP");
+    initButton(*editCPoints, Glib::ustring("crosshair-node-curve.svg"), Gtk::ALIGN_START, false, "EDIT_PIPETTE_TOOLTIP");
     editPointCPoints = Gtk::manage (new Gtk::ToggleButton ());
-    initButton(*editPointCPoints,  Glib::ustring("edit-point.png"), Gtk::ALIGN_START, false, "CURVEEDITOR_EDITPOINT_HINT");
+    initButton(*editPointCPoints,  Glib::ustring("edit-point.svg"), Gtk::ALIGN_START, false, "CURVEEDITOR_EDITPOINT_HINT");
     copyCPoints = Gtk::manage (new Gtk::Button ());
-    initButton(*copyCPoints, Glib::ustring("copy.png"), Gtk::ALIGN_END, true);
+    initButton(*copyCPoints, Glib::ustring("copy.svg"), Gtk::ALIGN_END, true);
     pasteCPoints = Gtk::manage (new Gtk::Button ());
-    initButton(*pasteCPoints,  Glib::ustring("paste.png"), Gtk::ALIGN_END, false);
+    initButton(*pasteCPoints,  Glib::ustring("paste.svg"), Gtk::ALIGN_END, false);
     loadCPoints = Gtk::manage (new Gtk::Button ());
-    initButton(*loadCPoints,  Glib::ustring("folder-open.png"), Gtk::ALIGN_END, false);
+    initButton(*loadCPoints,  Glib::ustring("folder-open.svg"), Gtk::ALIGN_END, false);
     saveCPoints = Gtk::manage (new Gtk::Button ());
-    initButton(*saveCPoints,  Glib::ustring("save.png"), Gtk::ALIGN_END, false);
+    initButton(*saveCPoints,  Glib::ustring("save.svg"), Gtk::ALIGN_END, false);
 
     CPointsbbox->attach_next_to(*editPointCPoints, sideStart, 1, 1);
     CPointsbbox->attach_next_to(*editCPoints,      sideStart, 1, 1);

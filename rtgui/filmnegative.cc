@@ -234,15 +234,15 @@ FilmNegative::FilmNegative() :
     refInputLabel(Gtk::manage(new Gtk::Label(Glib::ustring::compose(M("TP_FILMNEGATIVE_REF_LABEL"), "- - -")))),
     refSpotButton(Gtk::manage(new Gtk::ToggleButton(M("TP_FILMNEGATIVE_REF_PICK")))),
     outputLevel(createLevelAdjuster(this, M("TP_FILMNEGATIVE_OUT_LEVEL"))),  // ref level
-    greenBalance(createBalanceAdjuster(this, M("TP_FILMNEGATIVE_GREENBALANCE"), -3.0, 3.0, 0.0, "circle-magenta-small.png", "circle-green-small.png")),  // green balance
-    blueBalance(createBalanceAdjuster(this, M("TP_FILMNEGATIVE_BLUEBALANCE"), -3.0, 3.0, 0.0, "circle-blue-small.png", "circle-yellow-small.png"))  // blue balance
+    greenBalance(createBalanceAdjuster(this, M("TP_FILMNEGATIVE_GREENBALANCE"), -3.0, 3.0, 0.0, "circle-magenta-small.svg", "circle-green-small.svg")),  // green balance
+    blueBalance(createBalanceAdjuster(this, M("TP_FILMNEGATIVE_BLUEBALANCE"), -3.0, 3.0, 0.0, "circle-blue-small.svg", "circle-yellow-small.svg"))  // blue balance
 {
     EvToolReset.set_action(rtengine::ALLNORAW);
         
     setExpandAlignProperties(spotButton, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
     spotButton->get_style_context()->add_class("independent");
     spotButton->set_tooltip_text(M("TP_FILMNEGATIVE_GUESS_TOOLTIP"));
-    spotButton->set_image(*Gtk::manage(new RTImage("color-picker-small.png")));
+    spotButton->set_image(*Gtk::manage(new RTImage("color-picker-small.svg")));
 
     refSpotButton->set_tooltip_text(M("TP_FILMNEGATIVE_REF_TOOLTIP"));
     setExpandAlignProperties(refSpotButton, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
@@ -258,7 +258,7 @@ FilmNegative::FilmNegative() :
     Gtk::Label* csLabel = Gtk::manage(new Gtk::Label(M("TP_FILMNEGATIVE_COLORSPACE")));
     csGrid->attach(*csLabel, 0, 0, 1, 1);
     csGrid->attach(*colorSpace, 1, 0, 1, 1);
-    Gtk::Image *w = Gtk::manage(new RTImage("warning-small.png"));
+    Gtk::Image *w = Gtk::manage(new RTImage("warning-small.svg"));
     w->set_tooltip_markup(M("GENERAL_DEPRECATED_TOOLTIP"));
     csGrid->attach(*w, 2, 0, 1, 1);
 

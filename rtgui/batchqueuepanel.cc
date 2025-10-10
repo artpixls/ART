@@ -98,7 +98,7 @@ BatchQueuePanel::BatchQueuePanel (FileCatalog* aFileCatalog) : parent(nullptr)
     hb3->pack_start (*outdirFolderButton);
     outdirFolderButton->signal_pressed().connect( sigc::mem_fun(*this, &BatchQueuePanel::pathFolderButtonPressed) );
     outdirFolderButton->set_label(makeFolderLabel(options.savePathFolder));
-    Gtk::Image* folderImg = Gtk::manage (new RTImage ("folder-closed.png"));
+    Gtk::Image* folderImg = Gtk::manage (new RTImage ("folder-closed.svg"));
     folderImg->show ();
     outdirFolderButton->set_image (*folderImg);
     outdirFolder = nullptr;
@@ -183,13 +183,13 @@ BatchQueuePanel::BatchQueuePanel (FileCatalog* aFileCatalog) : parent(nullptr)
     zoomLabel->set_use_markup (true);
     zoomBox->pack_start (*zoomLabel, Gtk::PACK_SHRINK, 4);
     zoomInButton  = Gtk::manage (new Gtk::Button ());
-    zoomInButton->set_image (*Gtk::manage (new RTImage ("magnifier-plus.png")));
+    zoomInButton->set_image (*Gtk::manage (new RTImage ("magnifier-plus.svg")));
     zoomInButton->signal_pressed().connect (sigc::mem_fun(*batchQueue, &BatchQueue::zoomIn));
     zoomInButton->set_relief (Gtk::RELIEF_NONE);
     zoomInButton->set_tooltip_markup (M("FILEBROWSER_ZOOMINHINT"));
     zoomBox->pack_end (*zoomInButton, Gtk::PACK_SHRINK);
     zoomOutButton  = Gtk::manage (new Gtk::Button ());
-    zoomOutButton->set_image (*Gtk::manage (new RTImage ("magnifier-minus.png")));
+    zoomOutButton->set_image (*Gtk::manage (new RTImage ("magnifier-minus.svg")));
     zoomOutButton->signal_pressed().connect (sigc::mem_fun(*batchQueue, &BatchQueue::zoomOut));
     zoomOutButton->set_relief (Gtk::RELIEF_NONE);
     zoomOutButton->set_tooltip_markup (M("FILEBROWSER_ZOOMOUTHINT"));
@@ -239,13 +239,13 @@ void BatchQueuePanel::updateTab (int qsize, int forceOrientation)
         Gtk::Label* l;
 
         if(!qsize ) {
-            grid->attach_next_to(*Gtk::manage (new RTImage ("gears.png")), Gtk::POS_TOP, 1, 1);
+            grid->attach_next_to(*Gtk::manage (new RTImage ("gears.svg")), Gtk::POS_TOP, 1, 1);
             l = Gtk::manage (new Gtk::Label (Glib::ustring(" ") + M("MAIN_FRAME_QUEUE")) );
         } else if (qStartStop->get_active()) {
-            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-play.png")), Gtk::POS_TOP, 1, 1);
+            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-play.svg")), Gtk::POS_TOP, 1, 1);
             l = Gtk::manage (new Gtk::Label (Glib::ustring(" ") + M("MAIN_FRAME_QUEUE") + " [" + Glib::ustring::format( qsize ) + "]"));
         } else {
-            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-pause.png")), Gtk::POS_TOP, 1, 1);
+            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-pause.svg")), Gtk::POS_TOP, 1, 1);
             l = Gtk::manage (new Gtk::Label (Glib::ustring(" ") + M("MAIN_FRAME_QUEUE") + " [" + Glib::ustring::format( qsize ) + "]" ));
         }
 
@@ -259,13 +259,13 @@ void BatchQueuePanel::updateTab (int qsize, int forceOrientation)
         }
     } else {
         if (!qsize ) {
-            grid->attach_next_to(*Gtk::manage (new RTImage ("gears.png")), Gtk::POS_RIGHT, 1, 1);
+            grid->attach_next_to(*Gtk::manage (new RTImage ("gears.svg")), Gtk::POS_RIGHT, 1, 1);
             grid->attach_next_to(*Gtk::manage (new Gtk::Label (M("MAIN_FRAME_QUEUE") )), Gtk::POS_RIGHT, 1, 1);
         } else if (qStartStop->get_active()) {
-            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-play.png")), Gtk::POS_RIGHT, 1, 1);
+            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-play.svg")), Gtk::POS_RIGHT, 1, 1);
             grid->attach_next_to(*Gtk::manage (new Gtk::Label (M("MAIN_FRAME_QUEUE") + " [" + Glib::ustring::format( qsize ) + "]" )), Gtk::POS_RIGHT, 1, 1);
         } else {
-            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-pause.png")), Gtk::POS_RIGHT, 1, 1);
+            grid->attach_next_to(*Gtk::manage (new RTImage ("gears-pause.svg")), Gtk::POS_RIGHT, 1, 1);
             grid->attach_next_to(*Gtk::manage (new Gtk::Label (M("MAIN_FRAME_QUEUE") + " [" + Glib::ustring::format( qsize ) + "]" )), Gtk::POS_RIGHT, 1, 1);
         }
 
@@ -391,7 +391,7 @@ bool BatchQueuePanel::handleShortcutKey (GdkEventKey* event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
 
     if (ctrl) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_s:
             if (qStartStop->get_active()) {
                 stopBatchProc();

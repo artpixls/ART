@@ -160,9 +160,9 @@ IPTCPanel::IPTCPanel()
     setExpandAlignProperties(addKW, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
     delKW = Gtk::manage(new Gtk::Button());
     setExpandAlignProperties(delKW, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
-    Gtk::Image* addKWImg = Gtk::manage(new RTImage("add-small.png"));
+    Gtk::Image* addKWImg = Gtk::manage(new RTImage("add-small.svg"));
     setExpandAlignProperties(addKWImg, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER);
-    Gtk::Image* delKWImg = Gtk::manage(new RTImage("remove-small.png"));
+    Gtk::Image* delKWImg = Gtk::manage(new RTImage("remove-small.svg"));
     setExpandAlignProperties(delKWImg, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER);
     addKW->add(*addKWImg);
     delKW->add(*delKWImg);
@@ -210,9 +210,9 @@ IPTCPanel::IPTCPanel()
     setExpandAlignProperties(addSC, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
     delSC = Gtk::manage(new Gtk::Button());
     setExpandAlignProperties(delSC, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
-    Gtk::Image* addSCImg = Gtk::manage(new RTImage("add-small.png"));
+    Gtk::Image* addSCImg = Gtk::manage(new RTImage("add-small.svg"));
     setExpandAlignProperties(addSCImg, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER);
-    Gtk::Image* delSCImg = Gtk::manage(new RTImage("remove-small.png"));
+    Gtk::Image* delSCImg = Gtk::manage(new RTImage("remove-small.svg"));
     setExpandAlignProperties(delSCImg, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_CENTER);
     addSC->add(*addSCImg);
     delSC->add(*delSCImg);
@@ -379,25 +379,25 @@ IPTCPanel::IPTCPanel()
 
     reset = Gtk::manage(new Gtk::Button());  // M("IPTCPANEL_RESET")
     reset->get_style_context()->add_class("Left");
-    reset->set_image(*Gtk::manage(new RTImage("undo.png", "redo.png")));
+    reset->set_image(*Gtk::manage(new RTImage("undo.svg", "redo.svg")));
     setExpandAlignProperties(reset, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_FILL);
     bbox->attach_next_to(*reset, Gtk::POS_LEFT, 1, 1);
 
     file = Gtk::manage(new Gtk::Button());  // M("IPTCPANEL_EMBEDDED")
     file->get_style_context()->add_class("MiddleH");
-    file->set_image(*Gtk::manage(new RTImage("folder-open.png")));
+    file->set_image(*Gtk::manage(new RTImage("folder-open.svg")));
     setExpandAlignProperties(file, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_FILL);
     bbox->attach_next_to(*file, Gtk::POS_RIGHT, 1, 1);
 
     copy = Gtk::manage(new Gtk::Button());
     copy->get_style_context()->add_class("MiddleH");
-    copy->set_image(*Gtk::manage(new RTImage("copy.png")));
+    copy->set_image(*Gtk::manage(new RTImage("copy.svg")));
     setExpandAlignProperties(copy, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_FILL);
     bbox->attach_next_to(*copy, Gtk::POS_RIGHT, 1, 1);
 
     paste = Gtk::manage(new Gtk::Button());
     paste->get_style_context()->add_class("Right");
-    paste->set_image(*Gtk::manage(new RTImage("paste.png")));
+    paste->set_image(*Gtk::manage(new RTImage("paste.svg")));
     setExpandAlignProperties(paste, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_FILL);
     bbox->attach_next_to(*paste, Gtk::POS_RIGHT, 1, 1);
 

@@ -220,11 +220,11 @@ void EditWindow::addEditorPanel (EditorPanel* ep, const std::string &name)
 
     // construct closeable tab for the image
     Gtk::HBox* hb = Gtk::manage (new Gtk::HBox ());
-    hb->pack_start (*Gtk::manage (new RTImage ("aperture.png")));
+    hb->pack_start (*Gtk::manage (new RTImage ("aperture.svg")));
     hb->pack_start (*Gtk::manage (new Gtk::Label (Glib::path_get_basename (name))));
     hb->set_tooltip_markup (name);
     Gtk::Button* closeb = Gtk::manage (new Gtk::Button ());
-    closeb->set_image (*Gtk::manage(new RTImage ("cancel-small.png")));
+    closeb->set_image (*Gtk::manage(new RTImage ("cancel-small.svg")));
     closeb->set_relief (Gtk::RELIEF_NONE);
     closeb->set_focus_on_click (false);
 
@@ -294,13 +294,14 @@ void EditWindow::toFront ()
 bool EditWindow::keyPressed (GdkEventKey* event)
 {
     bool ctrl = event->state & GDK_CONTROL_MASK;
+    auto keyval = getKeyval(event);
 
-    if(event->keyval == GDK_KEY_F11) {
+    if(keyval == GDK_KEY_F11) {
         toggleFullscreen();
         return true;
     } else {
         if(mainNB->get_n_pages () > 0) { //pass the handling for the editor panels, if there are any
-            if (event->keyval == GDK_KEY_w && ctrl) { //remove editor panel
+            if (keyval == GDK_KEY_w && ctrl) { //remove editor panel
                 EditorPanel* ep = static_cast<EditorPanel*>(mainNB->get_nth_page (mainNB->get_current_page()));
                 remEditorPanel (ep);
                 return true;

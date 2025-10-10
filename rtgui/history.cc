@@ -98,7 +98,7 @@ History::History (bool bookmarkSupport) :
     //addBookmark->get_style_context()->set_junction_sides(Gtk::JUNCTION_RIGHT);
     addBookmark->get_style_context()->add_class("Left");
     addBookmark->set_tooltip_markup (M("HISTORY_NEWSNAPSHOT_TOOLTIP"));
-    Gtk::Image* addimg = Gtk::manage (new RTImage ("add-small.png"));
+    Gtk::Image* addimg = Gtk::manage (new RTImage ("add-small.svg"));
     addBookmark->set_image (*addimg);
     ahbox->pack_start (*addBookmark);
 
@@ -106,7 +106,7 @@ History::History (bool bookmarkSupport) :
     setExpandAlignProperties(delBookmark, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_START);
     //delBookmark->get_style_context()->set_junction_sides(Gtk::JUNCTION_LEFT);
     delBookmark->get_style_context()->add_class("Right");
-    Gtk::Image* delimg = Gtk::manage (new RTImage ("remove-small.png"));
+    Gtk::Image* delimg = Gtk::manage (new RTImage ("remove-small.svg"));
     delBookmark->set_image (*delimg);
     ahbox->pack_start (*delBookmark);
 

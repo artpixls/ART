@@ -32,15 +32,15 @@ ChMixer::ChMixer (): FoldableToolPanel(this, "chmixer", M("TP_CHMIXER_LABEL"), f
     EvBluePrimary = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_CHMIXER_BLUE_PRIMARY");
     EvToolReset.set_action(rtengine::RGBCURVE);
 
-    imgIcon[0] = Gtk::manage (new RTImage ("circle-red-small.png"));
-    imgIcon[1] = Gtk::manage (new RTImage ("circle-green-red-small.png"));
-    imgIcon[2] = Gtk::manage (new RTImage ("circle-blue-red-small.png"));
-    imgIcon[3] = Gtk::manage (new RTImage ("circle-red-green-small.png"));
-    imgIcon[4] = Gtk::manage (new RTImage ("circle-green-small.png"));
-    imgIcon[5] = Gtk::manage (new RTImage ("circle-blue-green-small.png"));
-    imgIcon[6] = Gtk::manage (new RTImage ("circle-red-blue-small.png"));
-    imgIcon[7] = Gtk::manage (new RTImage ("circle-green-blue-small.png"));
-    imgIcon[8] = Gtk::manage (new RTImage ("circle-blue-small.png"));
+    imgIcon[0] = Gtk::manage (new RTImage ("circle-red-small.svg"));
+    imgIcon[1] = Gtk::manage (new RTImage ("circle-green-red-small.svg"));
+    imgIcon[2] = Gtk::manage (new RTImage ("circle-blue-red-small.svg"));
+    imgIcon[3] = Gtk::manage (new RTImage ("circle-red-green-small.svg"));
+    imgIcon[4] = Gtk::manage (new RTImage ("circle-green-small.svg"));
+    imgIcon[5] = Gtk::manage (new RTImage ("circle-blue-green-small.svg"));
+    imgIcon[6] = Gtk::manage (new RTImage ("circle-red-blue-small.svg"));
+    imgIcon[7] = Gtk::manage (new RTImage ("circle-green-blue-small.svg"));
+    imgIcon[8] = Gtk::manage (new RTImage ("circle-blue-small.svg"));
 
     Gtk::HBox *hb = Gtk::manage(new Gtk::HBox());
     mode = Gtk::manage(new MyComboBoxText());
@@ -126,7 +126,7 @@ ChMixer::ChMixer (): FoldableToolPanel(this, "chmixer", M("TP_CHMIXER_LABEL"), f
         const char *img = (c == 0 ? "red" : (c == 1 ? "green" : "blue"));
         Gtk::Frame *f = Gtk::manage(new Gtk::Frame(""));
         Gtk::HBox *lbl = Gtk::manage(new Gtk::HBox());
-        lbl->pack_start(*Gtk::manage(new RTImage(std::string("circle-") + img + "-small.png")), Gtk::PACK_SHRINK, 2);
+        lbl->pack_start(*Gtk::manage(new RTImage(std::string("circle-") + img + "-small.svg")), Gtk::PACK_SHRINK, 2);
         lbl->pack_start(*Gtk::manage(new Gtk::Label(M(std::string("TP_CHMIXER_PRIMARY_") + chan))));
         f->set_label_align(0.025, 0.5);
         f->set_label_widget(*lbl);
@@ -134,7 +134,7 @@ ChMixer::ChMixer (): FoldableToolPanel(this, "chmixer", M("TP_CHMIXER_LABEL"), f
         vb->set_spacing(2);
         vb->set_border_width(2);
     
-        hue_tweak[c] = Gtk::manage(new Adjuster(M("TP_CHMIXER_HUE"), -100, 100, 1, 0, Gtk::manage(new RTImage(std::string("circle-") + hue_imgs[c].first + "-small.png")), Gtk::manage(new RTImage(std::string("circle-") + hue_imgs[c].second + "-small.png"))));
+        hue_tweak[c] = Gtk::manage(new Adjuster(M("TP_CHMIXER_HUE"), -100, 100, 1, 0, Gtk::manage(new RTImage(std::string("circle-") + hue_imgs[c].first + "-small.svg")), Gtk::manage(new RTImage(std::string("circle-") + hue_imgs[c].second + "-small.svg"))));
         hue_tweak[c]->setAdjusterListener(this);
         vb->pack_start(*hue_tweak[c]);
         

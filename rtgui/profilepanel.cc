@@ -51,8 +51,8 @@ ProfilePanel::ProfilePanel ():
 
     tpc = nullptr;
 
-    append_mode_on_image_  = new RTImage("profile-append.png");
-    append_mode_off_image_ = new RTImage("profile-partial.png");
+    append_mode_on_image_  = new RTImage("profile-append.svg");
+    append_mode_off_image_ = new RTImage("profile-partial.svg");
     append_mode_ = Gtk::manage (new Gtk::ToggleButton());
     append_mode_->set_active(options.profile_append_mode);
     append_mode_->add( options.profile_append_mode ? *append_mode_on_image_ : *append_mode_off_image_ );
@@ -70,20 +70,20 @@ ProfilePanel::ProfilePanel ():
     setExpandAlignProperties(profiles, true, true, Gtk::ALIGN_FILL, Gtk::ALIGN_FILL);
 
     load = Gtk::manage (new Gtk::Button ());
-    load->add (*Gtk::manage (new RTImage ("folder-open.png")));
+    load->add (*Gtk::manage (new RTImage ("folder-open.svg")));
     load->get_style_context()->add_class("Left");
     load->set_margin_left(2);
     setExpandAlignProperties(load, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
     save = Gtk::manage (new Gtk::Button ());
-    save->add (*Gtk::manage (new RTImage ("save.png")));
+    save->add (*Gtk::manage (new RTImage ("save.svg")));
     save->get_style_context()->add_class("MiddleH");
     setExpandAlignProperties(save, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
     copy = Gtk::manage (new Gtk::Button ());
-    copy->add (*Gtk::manage (new RTImage ("copy.png")));
+    copy->add (*Gtk::manage (new RTImage ("copy.svg")));
     copy->get_style_context()->add_class("MiddleH");
     setExpandAlignProperties(copy, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
     paste = Gtk::manage (new Gtk::Button ());
-    paste->add (*Gtk::manage (new RTImage ("paste.png")));
+    paste->add (*Gtk::manage (new RTImage ("paste.svg")));
     paste->get_style_context()->add_class("Right");
     setExpandAlignProperties(paste, false, true, Gtk::ALIGN_CENTER, Gtk::ALIGN_FILL);
 

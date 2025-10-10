@@ -197,7 +197,12 @@ void RTImage::updateImages()
 Glib::RefPtr<Gdk::Pixbuf> RTImage::createPixbufFromFile (const Glib::ustring& fileName)
 {
     Cairo::RefPtr<Cairo::ImageSurface> imgSurf = createImgSurfFromFile(fileName);
-    return Gdk::Pixbuf::create(imgSurf, 0, 0, imgSurf->get_width(), imgSurf->get_height());
+    int s = RTScalable::getDeviceScale();
+    auto res = Gdk::Pixbuf::create(imgSurf, 0, 0, imgSurf->get_width(), imgSurf->get_height());
+    if (s > 1) {
+        res = res->scale_simple(imgSurf->get_width()/s, imgSurf->get_height()/s, Gdk::INTERP_TILES);
+    }
+    return res;
 }
 
 Cairo::RefPtr<Cairo::ImageSurface> RTImage::createImgSurfFromFile (const Glib::ustring& fileName)

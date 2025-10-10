@@ -442,7 +442,7 @@ ColorWheel::ColorWheel(bool use_scale):
 {
     Gtk::Button *reset = Gtk::manage(new Gtk::Button());
     reset->set_tooltip_markup(M("ADJUSTER_RESET_TO_DEFAULT"));
-    reset->add(*Gtk::manage(new RTImage("undo-small.png", "redo-small.png")));
+    reset->add(*Gtk::manage(new RTImage("undo-small.svg", "redo-small.svg")));
     reset->signal_button_release_event().connect(sigc::mem_fun(*this, &ColorWheel::resetPressed));
 
     setExpandAlignProperties(reset, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
@@ -452,7 +452,7 @@ ColorWheel::ColorWheel(bool use_scale):
     reset->set_size_request(-1, 20);
 
     edit_ = Gtk::manage(new Gtk::ToggleButton());
-    edit_->add(*Gtk::manage(new RTImage("color-picker-small.png")));
+    edit_->add(*Gtk::manage(new RTImage("color-picker-small.svg")));
     setExpandAlignProperties(edit_, false, false, Gtk::ALIGN_CENTER, Gtk::ALIGN_START);
     edit_->set_relief(Gtk::RELIEF_NONE);
     edit_->get_style_context()->add_class(GTK_STYLE_CLASS_FLAT);
@@ -468,7 +468,7 @@ ColorWheel::ColorWheel(bool use_scale):
         scale->set_value(1.0);
         scale->set_draw_value(false);
         scale->set_has_origin(false);
-        RTImage *icon = Gtk::manage(new RTImage("volume-small.png"));
+        RTImage *icon = Gtk::manage(new RTImage("volume-small.svg"));
         vb->pack_start(*icon, false, false);
         vb->pack_start(*scale, true, true);
     } else {

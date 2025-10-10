@@ -163,7 +163,7 @@ ICMPanel::ICMPanel():
             }));
 
     saveRef = Gtk::manage(new Gtk::Button(M("TP_ICM_SAVEREFERENCE")));
-    saveRef->set_image(*Gtk::manage(new RTImage("save-small.png")));
+    saveRef->set_image(*Gtk::manage(new RTImage("save-small.svg")));
     saveRef->set_alignment(0.5f, 0.5f);
     saveRef->set_tooltip_markup(M("TP_ICM_SAVEREFERENCE_TOOLTIP"));
     iVBox->pack_start(*saveRef, Gtk::PACK_SHRINK);
@@ -253,10 +253,10 @@ ICMPanel::ICMPanel():
     Gtk::Label* outputIntentLbl = Gtk::manage(new Gtk::Label(M("TP_ICM_PROFILEINTENT")));
     riHBox->pack_start(*outputIntentLbl, Gtk::PACK_SHRINK);
     oRendIntent.reset(new PopUpButton());
-    oRendIntent->addEntry("intent-perceptual.png", M("PREFERENCES_INTENT_PERCEPTUAL"));
-    oRendIntent->addEntry("intent-relative.png", M("PREFERENCES_INTENT_RELATIVE"));
-    oRendIntent->addEntry("intent-saturation.png", M("PREFERENCES_INTENT_SATURATION"));
-    oRendIntent->addEntry("intent-absolute.png", M("PREFERENCES_INTENT_ABSOLUTE"));
+    oRendIntent->addEntry("intent-perceptual.svg", M("PREFERENCES_INTENT_PERCEPTUAL"));
+    oRendIntent->addEntry("intent-relative.svg", M("PREFERENCES_INTENT_RELATIVE"));
+    oRendIntent->addEntry("intent-saturation.svg", M("PREFERENCES_INTENT_SATURATION"));
+    oRendIntent->addEntry("intent-absolute.svg", M("PREFERENCES_INTENT_ABSOLUTE"));
     oRendIntent->setSelected(1);
     oRendIntent->show();
     riHBox->pack_start(*oRendIntent->buttonGroup, Gtk::PACK_EXPAND_PADDING);

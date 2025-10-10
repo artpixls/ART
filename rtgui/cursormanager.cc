@@ -36,25 +36,25 @@ void CursorManager::init (Glib::RefPtr<Gdk::Window> mainWindow)
 
 #endif
 
-    Glib::RefPtr<Gdk::Pixbuf> add           = RTImage::createPixbufFromFile("crosshair-small.png");
-    Glib::RefPtr<Gdk::Pixbuf> colPick       = RTImage::createPixbufFromFile("color-picker-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> colPickAdd    = RTImage::createPixbufFromFile("color-picker-add-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> cropDraw      = RTImage::createPixbufFromFile("crop-point-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> crosshair     = RTImage::createPixbufFromFile("crosshair-hicontrast.png");
+    Glib::RefPtr<Gdk::Pixbuf> add           = RTImage::createPixbufFromFile("crosshair-small.svg");
+    Glib::RefPtr<Gdk::Pixbuf> colPick       = RTImage::createPixbufFromFile("color-picker-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> colPickAdd    = RTImage::createPixbufFromFile("color-picker-add-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> cropDraw      = RTImage::createPixbufFromFile("crop-point-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> crosshair     = RTImage::createPixbufFromFile("crosshair-hicontrast.svg");
     Glib::RefPtr<Gdk::Pixbuf> empty         = RTImage::createPixbufFromFile("empty.png");
-    Glib::RefPtr<Gdk::Pixbuf> handClosed    = RTImage::createPixbufFromFile("hand-closed-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> handOpen      = RTImage::createPixbufFromFile("hand-open-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveBL        = RTImage::createPixbufFromFile("node-move-sw-ne-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveBR        = RTImage::createPixbufFromFile("node-move-nw-se-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveL         = RTImage::createPixbufFromFile("node-move-x-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveR         = RTImage::createPixbufFromFile("node-move-x-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveTL        = RTImage::createPixbufFromFile("node-move-nw-se-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveTR        = RTImage::createPixbufFromFile("node-move-sw-ne-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveX         = RTImage::createPixbufFromFile("node-move-x-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveXY        = RTImage::createPixbufFromFile("node-move-xy-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> moveY         = RTImage::createPixbufFromFile("node-move-y-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> rotate        = RTImage::createPixbufFromFile("rotate-aroundnode-hicontrast.png");
-    Glib::RefPtr<Gdk::Pixbuf> wait          = RTImage::createPixbufFromFile("gears.png"); // Currently unused, create *-hicontrast once used.
+    Glib::RefPtr<Gdk::Pixbuf> handClosed    = RTImage::createPixbufFromFile("hand-closed-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> handOpen      = RTImage::createPixbufFromFile("hand-open-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveBL        = RTImage::createPixbufFromFile("node-move-sw-ne-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveBR        = RTImage::createPixbufFromFile("node-move-nw-se-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveL         = RTImage::createPixbufFromFile("node-move-x-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveR         = RTImage::createPixbufFromFile("node-move-x-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveTL        = RTImage::createPixbufFromFile("node-move-nw-se-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveTR        = RTImage::createPixbufFromFile("node-move-sw-ne-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveX         = RTImage::createPixbufFromFile("node-move-x-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveXY        = RTImage::createPixbufFromFile("node-move-xy-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> moveY         = RTImage::createPixbufFromFile("node-move-y-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> rotate        = RTImage::createPixbufFromFile("rotate-aroundnode-hicontrast.svg");
+    Glib::RefPtr<Gdk::Pixbuf> wait          = RTImage::createPixbufFromFile("gears.svg"); // Currently unused, create *-hicontrast once used.
 
     double s = RTScalable::getTweakedDPI() / RTScalable::baseDPI;  // RTScalable::getDPI() might be preferable, however it imply a lot of work to support this option
 

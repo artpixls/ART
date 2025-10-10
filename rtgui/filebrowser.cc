@@ -260,7 +260,7 @@ void FileBrowser::build_menu()
     
     pmenu->attach (*Gtk::manage(open = new Gtk::MenuItem (M("FILEBROWSER_POPUPOPEN"))), 0, 1, p, p + 1);
     p++;
-    pmenu->attach (*Gtk::manage(develop = new MyImageMenuItem (M("FILEBROWSER_POPUPPROCESS"), "gears.png")), 0, 1, p, p + 1);
+    pmenu->attach (*Gtk::manage(develop = new MyImageMenuItem (M("FILEBROWSER_POPUPPROCESS"), "gears.svg")), 0, 1, p, p + 1);
     p++;
     pmenu->attach (*Gtk::manage(developfast = new Gtk::MenuItem (M("FILEBROWSER_POPUPPROCESSFAST"))), 0, 1, p, p + 1);
     p++;
@@ -312,8 +312,8 @@ void FileBrowser::build_menu()
 
     // Thumbnail context menu
     // Similar image arrays in filecatalog.cc
-    std::array<std::string, 6> clabelActiveIcons = {"circle-empty-gray-small.png", "circle-red-small.png", "circle-yellow-small.png", "circle-green-small.png", "circle-blue-small.png", "circle-purple-small.png"};
-    std::array<std::string, 6> clabelInactiveIcons = {"circle-empty-darkgray-small.png", "circle-empty-red-small.png", "circle-empty-yellow-small.png", "circle-empty-green-small.png", "circle-empty-blue-small.png", "circle-empty-purple-small.png"};
+    std::array<std::string, 6> clabelActiveIcons = {"circle-empty-gray-small.svg", "circle-red-small.svg", "circle-yellow-small.svg", "circle-green-small.svg", "circle-blue-small.svg", "circle-purple-small.svg"};
+    std::array<std::string, 6> clabelInactiveIcons = {"circle-empty-darkgray-small.svg", "circle-empty-red-small.svg", "circle-empty-yellow-small.svg", "circle-empty-green-small.svg", "circle-empty-blue-small.svg", "circle-empty-purple-small.svg"};
 
     if (options.menuGroupLabel) {
         pmenu->attach (*Gtk::manage(menuLabel = new Gtk::MenuItem (M("FILEBROWSER_POPUPCOLORLABEL"))), 0, 1, p, p + 1);
@@ -1140,73 +1140,75 @@ bool FileBrowser::keyPressed (GdkEventKey* event)
         return true;
     }
 
-    if ((event->keyval == GDK_KEY_C || event->keyval == GDK_KEY_c) && ctrl && shift) {
+    auto keyval = getKeyval(event);
+
+    if ((keyval == GDK_KEY_C || keyval == GDK_KEY_c) && ctrl && shift) {
         menuItemActivated (copyTo);
         return true;
-    } else if ((event->keyval == GDK_KEY_M || event->keyval == GDK_KEY_m) && ctrl && shift) {
+    } else if ((keyval == GDK_KEY_M || keyval == GDK_KEY_m) && ctrl && shift) {
         menuItemActivated (moveTo);
         return true;
-    } else if ((event->keyval == GDK_KEY_C || event->keyval == GDK_KEY_c || event->keyval == GDK_KEY_Insert) && ctrl) {
+    } else if ((keyval == GDK_KEY_C || keyval == GDK_KEY_c || keyval == GDK_KEY_Insert) && ctrl) {
         copyProfile ();
         return true;
-    } else if ((event->keyval == GDK_KEY_V || event->keyval == GDK_KEY_v) && ctrl && !shift) {
+    } else if ((keyval == GDK_KEY_V || keyval == GDK_KEY_v) && ctrl && !shift) {
         pasteProfile ();
         return true;
-    } else if (event->keyval == GDK_KEY_Insert && shift) {
+    } else if (keyval == GDK_KEY_Insert && shift) {
         pasteProfile ();
         return true;
-    } else if ((event->keyval == GDK_KEY_V || event->keyval == GDK_KEY_v) && ctrl && shift) {
+    } else if ((keyval == GDK_KEY_V || keyval == GDK_KEY_v) && ctrl && shift) {
         partPasteProfile ();
         return true;
-    } else if (event->keyval == GDK_KEY_Delete && !shift && !ctrl) {
+    } else if (keyval == GDK_KEY_Delete && !shift && !ctrl) {
         menuItemActivated (trash);
         return true;
-    } else if (event->keyval == GDK_KEY_Delete && shift && !ctrl) {
+    } else if (keyval == GDK_KEY_Delete && shift && !ctrl) {
         menuItemActivated (untrash);
         return true;
-    } else if (event->keyval == GDK_KEY_Delete && shift && ctrl) {
+    } else if (keyval == GDK_KEY_Delete && shift && ctrl) {
         menuItemActivated(remove);
         return true;
-    } else if ((event->keyval == GDK_KEY_B || event->keyval == GDK_KEY_b) && ctrl && !shift) {
+    } else if ((keyval == GDK_KEY_B || keyval == GDK_KEY_b) && ctrl && !shift) {
         menuItemActivated (develop);
         return true;
-    } else if ((event->keyval == GDK_KEY_B || event->keyval == GDK_KEY_b) && ctrl && shift) {
+    } else if ((keyval == GDK_KEY_B || keyval == GDK_KEY_b) && ctrl && shift) {
         menuItemActivated (developfast);
         return true;
-    } else if ((event->keyval == GDK_KEY_A || event->keyval == GDK_KEY_a) && ctrl) {
+    } else if ((keyval == GDK_KEY_A || keyval == GDK_KEY_a) && ctrl) {
         menuItemActivated (selall);
         return true;
-    } else if (event->keyval == GDK_KEY_F2 && !ctrl) {
+    } else if (keyval == GDK_KEY_F2 && !ctrl && !alt) {
         menuItemActivated (rename);
         return true;
-    } else if ((event->keyval == GDK_KEY_S || event->keyval == GDK_KEY_s) && ctrl && shift) {
+    } else if ((keyval == GDK_KEY_S || keyval == GDK_KEY_s) && ctrl && shift) {
         menuItemActivated(add_to_session_);
         return true;
-    } else if (event->keyval == GDK_KEY_F3 && !(ctrl || shift || alt)) { // open Previous image from FileBrowser perspective
+    } else if (keyval == GDK_KEY_F3 && !(ctrl || shift || alt)) { // open Previous image from FileBrowser perspective
         FileBrowser::openPrevImage ();
         return true;
-    } else if (event->keyval == GDK_KEY_F4 && !(ctrl || shift || alt)) { // open Next image from FileBrowser perspective
+    } else if (keyval == GDK_KEY_F4 && !(ctrl || shift || alt)) { // open Next image from FileBrowser perspective
         FileBrowser::openNextImage ();
         return true;
-    } else if (event->keyval == GDK_KEY_Left || event->keyval == GDK_KEY_BackSpace) {
+    } else if (keyval == GDK_KEY_Left || keyval == GDK_KEY_BackSpace) {
         selectPrev (1, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Right || event->keyval == GDK_KEY_space) {
+    } else if (keyval == GDK_KEY_Right || keyval == GDK_KEY_space) {
         selectNext (1, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Up) {
+    } else if (keyval == GDK_KEY_Up) {
         selectPrev (numOfCols, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Down) {
+    } else if (keyval == GDK_KEY_Down) {
         selectNext (numOfCols, shift);
         return true;
-    } else if (event->keyval == GDK_KEY_Home) {
+    } else if (keyval == GDK_KEY_Home) {
         selectFirst (shift);
         return true;
-    } else if (event->keyval == GDK_KEY_End) {
+    } else if (keyval == GDK_KEY_End) {
         selectLast (shift);
         return true;
-    } else if(event->keyval == GDK_KEY_Return || event->keyval == GDK_KEY_KP_Enter) {
+    } else if(keyval == GDK_KEY_Return || keyval == GDK_KEY_KP_Enter) {
         std::vector<FileBrowserEntry*> mselected;
 
         for (size_t i = 0; i < selected.size(); i++) {
@@ -1214,61 +1216,61 @@ bool FileBrowser::keyPressed (GdkEventKey* event)
         }
 
         openRequested(mselected);
-    } else if (event->keyval == GDK_KEY_Page_Up) {
+    } else if (keyval == GDK_KEY_Page_Up) {
         scrollPage(GDK_SCROLL_UP);
         return true;
-    } else if (event->keyval == GDK_KEY_Page_Down) {
+    } else if (keyval == GDK_KEY_Page_Down) {
         scrollPage(GDK_SCROLL_DOWN);
         return true;
     } else if ((shift || in_inspector) && !ctrl && !alt && !altgr) { // rank
-        switch(event->hardware_keycode) {
-        case HWKeyCode::KEY_0:
+        switch (getKeyval(event, false)) {
+        case GDK_KEY_0:
             requestRanking(0);
             return true;
 
-        case HWKeyCode::KEY_1:
+        case GDK_KEY_1:
             requestRanking(1);
             return true;
 
-        case HWKeyCode::KEY_2:
+        case GDK_KEY_2:
             requestRanking(2);
             return true;
 
-        case HWKeyCode::KEY_3:
+        case GDK_KEY_3:
             requestRanking(3);
             return true;
 
-        case HWKeyCode::KEY_4:
+        case GDK_KEY_4:
             requestRanking(4);
             return true;
 
-        case HWKeyCode::KEY_5:
+        case GDK_KEY_5:
             requestRanking(5);
             return true;
         }
     } else if ((shift || in_inspector) && ctrl && !alt && !altgr) { // color labels
-        switch(event->hardware_keycode) {
-        case HWKeyCode::KEY_0:
+        switch (getKeyval(event, false)) {
+        case GDK_KEY_0:
             requestColorLabel(0);
             return true;
 
-        case HWKeyCode::KEY_1:
+        case GDK_KEY_1:
             requestColorLabel(1);
             return true;
 
-        case HWKeyCode::KEY_2:
+        case GDK_KEY_2:
             requestColorLabel(2);
             return true;
 
-        case HWKeyCode::KEY_3:
+        case GDK_KEY_3:
             requestColorLabel(3);
             return true;
 
-        case HWKeyCode::KEY_4:
+        case GDK_KEY_4:
             requestColorLabel(4);
             return true;
 
-        case HWKeyCode::KEY_5:
+        case GDK_KEY_5:
             requestColorLabel(5);
             return true;
         }

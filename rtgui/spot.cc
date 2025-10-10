@@ -46,16 +46,16 @@ Spot::Spot() :
     draggedSide(DraggedSide::NONE),
     lastObject(-1),
     activeSpot(-1),
-    sourceIcon("spot-normal.png", "spot-active.png", "spot-prelight.png", "", "", Geometry::DP_CENTERCENTER),
-    targetIcon("spot-normal-target.png", "spot-active-target.png", "spot-prelight-target.png", "", "", Geometry::DP_CENTERCENTER),
-	lightPipelineOnImage("light_pipeline_on.png"),
-	lightPipelineOffImage("light_pipeline_off.png"),
+    sourceIcon("spot-normal.svg", "spot-active.svg", "spot-prelight.svg", "", "", Geometry::DP_CENTERCENTER),
+    targetIcon("spot-normal-target.svg", "spot-active-target.svg", "spot-prelight-target.svg", "", "", Geometry::DP_CENTERCENTER),
+    lightPipelineOnImage("light_pipeline_on.svg"),
+    lightPipelineOffImage("light_pipeline_off.svg"),
     editedCheckBox(nullptr)
 {
     countLabel = Gtk::manage (new Gtk::Label (Glib::ustring::compose (M ("TP_SPOT_COUNTLABEL"), 0)));
 
     edit = Gtk::manage (new Gtk::ToggleButton());
-    edit->add (*Gtk::manage (new RTImage ("edit-point.png")));
+    edit->add (*Gtk::manage (new RTImage ("edit-point.svg")));
     editConn = edit->signal_toggled().connect ( sigc::mem_fun (*this, &Spot::editToggled) );
     edit->set_tooltip_text(M("TP_SPOT_HINT"));
 
@@ -65,7 +65,7 @@ Spot::Spot() :
     lightPipeline->set_tooltip_text(M("TP_SPOT_LIGHTPIPELINE_HINT"));
 
     reset = Gtk::manage (new Gtk::Button ());
-    reset->add (*Gtk::manage (new RTImage ("undo-small.png")));
+    reset->add (*Gtk::manage (new RTImage ("undo-small.svg")));
     reset->set_relief (Gtk::RELIEF_NONE);
     reset->set_border_width (0);
     reset->signal_clicked().connect ( sigc::mem_fun (*this, &Spot::resetPressed) );

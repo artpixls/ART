@@ -82,13 +82,14 @@ enum {
 
 bool ToolShortcutManager::keyPressed(GdkEventKey *event)
 {
-    if (event->keyval == GDK_KEY_F1 && !has_modifiers(event)) {
+    auto keyval = getKeyval(event);
+    if (keyval == GDK_KEY_F1 && !has_modifiers(event)) {
         showHelp();
         return true;
     }
 
     if (shouldHandleScroll()) {
-        switch (event->keyval) {
+        switch (keyval) {
         case GDK_KEY_plus:
         case GDK_KEY_equal:
         case GDK_KEY_KP_Add:
@@ -116,13 +117,13 @@ bool ToolShortcutManager::keyPressed(GdkEventKey *event)
         return false;
     }
 
-    if (cur_key_ == event->keyval) {
+    if (cur_key_ == keyval) {
         return true;
     }
 
-    auto it = action_map_.find(event->keyval);
+    auto it = action_map_.find(keyval);
     if (it != action_map_.end()) {
-        cur_key_ = event->keyval;
+        cur_key_ = keyval;
         cur_tool_ = it->second.first;
         cur_adjuster_ = it->second.second;
         return true;
@@ -135,7 +136,7 @@ bool ToolShortcutManager::keyPressed(GdkEventKey *event)
 bool ToolShortcutManager::keyReleased(GdkEventKey *event)
 {
     if (shouldHandleScroll()) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_plus:
         case GDK_KEY_equal:
         case GDK_KEY_KP_Add:

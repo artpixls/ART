@@ -24,15 +24,15 @@
 
 IndicateClippedPanel::IndicateClippedPanel (ImageArea* ia) : imageArea(ia)
 {
-    iFon  = new RTImage ("focusscreen-on.png");
-    iFoff = new RTImage ("focusscreen-off.png");
+    iFon  = new RTImage ("focusscreen-on.svg");
+    iFoff = new RTImage ("focusscreen-off.svg");
 
     // for previewSharpMask, needs to be replaced with different icons
-    iSon  = new RTImage ("contrastmask-on.png");
-    iSoff = new RTImage ("contrastmask-off.png");
+    iSon  = new RTImage ("contrastmask-on.svg");
+    iSoff = new RTImage ("contrastmask-off.svg");
 
-    falseColorsOff = new RTImage("false-colors-off.png");
-    falseColorsOn = new RTImage("false-colors.png");
+    falseColorsOff = new RTImage("false-colors-off.svg");
+    falseColorsOn = new RTImage("false-colors.svg");
 
     previewFocusMask = Gtk::manage (new Gtk::ToggleButton ());
     previewFocusMask->set_relief(Gtk::RELIEF_NONE);
@@ -78,7 +78,7 @@ IndicateClippedPanel::IndicateClippedPanel (ImageArea* ia) : imageArea(ia)
 
     indClippedH = Gtk::manage (new Gtk::ToggleButton ());
     indClippedH->set_relief(Gtk::RELIEF_NONE);
-    indClippedH->add (*Gtk::manage (new RTImage ("warning-highlights.png")));
+    indClippedH->add (*Gtk::manage (new RTImage ("warning-highlights.svg")));
     tt = Glib::ustring::compose("%1\n%2 = %3", M("MAIN_TOOLTIP_INDCLIPPEDH"), M("MAIN_TOOLTIP_THRESHOLD"), options.highlightThreshold);
 
     if (tt.find("&lt;") == Glib::ustring::npos && tt.find("&gt;") == Glib::ustring::npos) {
@@ -89,7 +89,7 @@ IndicateClippedPanel::IndicateClippedPanel (ImageArea* ia) : imageArea(ia)
 
     indClippedS = Gtk::manage (new Gtk::ToggleButton ());
     indClippedS->set_relief(Gtk::RELIEF_NONE);
-    indClippedS->add (*Gtk::manage (new RTImage ("warning-shadows.png")));
+    indClippedS->add (*Gtk::manage (new RTImage ("warning-shadows.svg")));
     tt = Glib::ustring::compose("%1\n%2 = %3", M("MAIN_TOOLTIP_INDCLIPPEDS"), M("MAIN_TOOLTIP_THRESHOLD"), options.shadowThreshold);
 
     if (tt.find("&lt;") == Glib::ustring::npos && tt.find("&gt;") == Glib::ustring::npos) {
@@ -100,7 +100,7 @@ IndicateClippedPanel::IndicateClippedPanel (ImageArea* ia) : imageArea(ia)
 
     grid = Gtk::manage(new Gtk::ToggleButton());
     grid->set_relief(Gtk::RELIEF_NONE);
-    grid->add(*Gtk::manage(new RTImage("grid.png")));
+    grid->add(*Gtk::manage(new RTImage("grid.svg")));
     grid->set_tooltip_markup(M("MAIN_TOOLTIP_GRIDOVERLAY"));
 
     falseColors->set_active(false);

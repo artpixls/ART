@@ -452,8 +452,10 @@ void InspectorArea::setInfoText(const Glib::ustring &text)
     ilayout->get_pixel_size(iw, ih);
 
     // create BackBuffer
-    info_bb_.setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, iw + 16, ih + 16, true);
+    int scale = RTScalable::getDeviceScale();
+    info_bb_.setDrawRectangle(Cairo::FORMAT_ARGB32, 0, 0, (iw + 16) * scale, (ih + 16) * scale, true);
     info_bb_.setDestPosition(8, 8);
+    RTScalable::setDeviceScale(info_bb_.getSurface(), scale);
 
     Cairo::RefPtr<Cairo::Context> cr = info_bb_.getContext();
 
@@ -576,8 +578,8 @@ bool InspectorArea::onMouseRelease(GdkEventButton *evt)
 
 Inspector::Inspector(FileCatalog *filecatalog):
     filecatalog_(filecatalog),
-    focusmask_on_("focusscreen-on.png"),
-    focusmask_off_("focusscreen-off.png")
+    focusmask_on_("focusscreen-on.svg"),
+    focusmask_off_("focusscreen-off.svg")
 {
     ibox_.pack_start(ins_[0], Gtk::PACK_EXPAND_WIDGET, 3);
     ibox_.pack_start(ins_[1], Gtk::PACK_EXPAND_WIDGET, 3);
@@ -716,28 +718,28 @@ Gtk::HBox *Inspector::get_toolbar()
             return ret;
         };
 
-    split_ = add_tool("beforeafter.png", "INSPECTOR_SPLIT");
+    split_ = add_tool("beforeafter.svg", "INSPECTOR_SPLIT");
     tb->pack_start(*Gtk::manage(new Gtk::VSeparator()), Gtk::PACK_SHRINK, 4);
        
-    info_ = add_tool("info.png", "INSPECTOR_INFO");
-    histogram_ = add_tool("histogram.png", "INSPECTOR_HISTOGRAM");
-    focusmask_ = add_tool("focusscreen-off.png", "INSPECTOR_FOCUS_MASK");
+    info_ = add_tool("info.svg", "INSPECTOR_INFO");
+    histogram_ = add_tool("histogram.svg", "INSPECTOR_HISTOGRAM");
+    focusmask_ = add_tool("focusscreen-off.svg", "INSPECTOR_FOCUS_MASK");
     tb->pack_start(*Gtk::manage(new Gtk::VSeparator()), Gtk::PACK_SHRINK, 4);
 
-    jpg_ = add_tool("wb-camera.png", "INSPECTOR_PREVIEW");
-    rawlinear_ = add_tool("raw-linear-curve.png", "INSPECTOR_RAW_LINEAR");
-    rawfilm_ = add_tool("raw-film-curve.png", "INSPECTOR_RAW_FILM");
-    rawshadow_ = add_tool("raw-shadow-curve.png", "INSPECTOR_RAW_SHADOW");
-    rawclip_ = add_tool("raw-clip-curve.png", "INSPECTOR_RAW_CLIP");
-
-    tb->pack_start(*Gtk::manage(new Gtk::VSeparator()), Gtk::PACK_SHRINK, 4);
-
-    zoomfit_ = add_tool("magnifier-fit.png", "INSPECTOR_ZOOM_FIT");
-    zoom11_ = add_tool("magnifier-1to1.png", "INSPECTOR_ZOOM_11");
+    jpg_ = add_tool("wb-camera.svg", "INSPECTOR_PREVIEW");
+    rawlinear_ = add_tool("raw-linear-curve.svg", "INSPECTOR_RAW_LINEAR");
+    rawfilm_ = add_tool("raw-film-curve.svg", "INSPECTOR_RAW_FILM");
+    rawshadow_ = add_tool("raw-shadow-curve.svg", "INSPECTOR_RAW_SHADOW");
+    rawclip_ = add_tool("raw-clip-curve.svg", "INSPECTOR_RAW_CLIP");
 
     tb->pack_start(*Gtk::manage(new Gtk::VSeparator()), Gtk::PACK_SHRINK, 4);
 
-    cms_ = add_tool("gamut-softproof.png", "INSPECTOR_ENABLE_CMS");
+    zoomfit_ = add_tool("magnifier-fit.svg", "INSPECTOR_ZOOM_FIT");
+    zoom11_ = add_tool("magnifier-1to1.svg", "INSPECTOR_ZOOM_11");
+
+    tb->pack_start(*Gtk::manage(new Gtk::VSeparator()), Gtk::PACK_SHRINK, 4);
+
+    cms_ = add_tool("gamut-softproof.svg", "INSPECTOR_ENABLE_CMS");
 
     //------------------------------------------------------------------------
 
@@ -1049,7 +1051,7 @@ bool Inspector::handleShortcutKey(GdkEventKey *event)
 #endif
 
     if (!ctrl && !shift && !alt && !altgr) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_h:
             toggleShowHistogram();
             return true;
@@ -1092,7 +1094,7 @@ bool Inspector::handleShortcutKey(GdkEventKey *event)
         }
     }
     if (!ctrl && shift && !alt && !altgr) {
-        switch (event->keyval) {
+        switch (getKeyval(event)) {
         case GDK_KEY_F:
             focusmask_->set_active(!focusmask_->get_active());
             return true;

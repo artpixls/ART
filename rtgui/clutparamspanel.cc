@@ -97,7 +97,7 @@ void CLUTParamsPanel::setParams(const rtengine::CLUTParamDescriptorList &params)
         };
     Gtk::Button *r = Gtk::manage(new Gtk::Button());
     r->set_tooltip_markup(M("ADJUSTER_RESET_TO_DEFAULT"));
-    r->add(*Gtk::manage(new RTImage("undo-small.png", "redo-small.png")));
+    r->add(*Gtk::manage(new RTImage("undo-small.svg", "redo-small.svg")));
     r->signal_clicked().connect(sigc::slot<void>(reset));
     setExpandAlignProperties(r, false, false, Gtk::ALIGN_END, Gtk::ALIGN_CENTER);
     r->set_relief(Gtk::RELIEF_NONE);

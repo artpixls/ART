@@ -83,11 +83,11 @@ FileBrowserEntry::~FileBrowserEntry ()
 
 void FileBrowserEntry::init ()
 {
-    editedIcon = RTImage::createPixbufFromFile ("tick-small.png");
-    recentlySavedIcon = RTImage::createPixbufFromFile ("save-small.png");
-    enqueuedIcon = RTImage::createPixbufFromFile ("gears-small.png");
-    hdr = RTImage::createPixbufFromFile ("filetype-hdr.png");
-    ps = RTImage::createPixbufFromFile ("filetype-ps.png");
+    editedIcon = RTImage::createPixbufFromFile ("tick-small.svg");
+    recentlySavedIcon = RTImage::createPixbufFromFile ("save-small.svg");
+    enqueuedIcon = RTImage::createPixbufFromFile ("gears-small.svg");
+    hdr = RTImage::createPixbufFromFile ("filetype-hdr.svg");
+    ps = RTImage::createPixbufFromFile ("filetype-ps.svg");
 }
 
 void FileBrowserEntry::refreshThumbnailImage ()

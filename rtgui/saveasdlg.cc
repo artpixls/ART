@@ -441,7 +441,7 @@ bool SaveAsDialog::keyPressed (GdkEventKey* event)
     bool ctrl = event->state & GDK_CONTROL_MASK;
 
     if (ctrl) {
-        switch(event->keyval) {
+        switch(getKeyval(event)) {
         case GDK_KEY_Return:  // Ctrl-Enter equivalent to pressing OK button
         case GDK_KEY_KP_Enter:
             SaveAsDialog::okPressed();
