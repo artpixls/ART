@@ -689,7 +689,7 @@ int RawImage::do_loadRaw(const Glib::ustring &fname, bool loadData, unsigned int
                 RT_blacklevel_from_constant = ThreeValBool::F;
             }
 
-            static char xtrans_zero[6][6] = { 0 };
+            static char xtrans_zero[6][6] = { { 0 } };
             if (isXtrans() && dng_version && memcmp(xtrans, xtrans_zero, sizeof(xtrans_zero)) == 0) {
                 // workaround to libraw issues with some DNG files produced by dnglab
                 use_internal_decoder_ = true;

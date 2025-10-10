@@ -6256,9 +6256,9 @@ void CLASS parse_exif (int base)
       case 34866:  if((!iso_speed) || iso_speed == 65535) iso_speed = get4();break;
       case 36867:
       case 36868:  get_timestamp(0);			break;
-      case 37377:  if ((expo = -getreal(type)) < 128)
+      case 37377:  if ((expo = -getreal(type)) < 128) {
              tiff_ifd[tiff_nifds-1].shutter =
-		     shutter = pow (2, expo);		break;
+                 shutter = pow (2, expo); }     	break;
       case 37378:  aperture = pow (2, getreal(type)/2);	break;
       case 37386:  focal_len = getreal(type);		break;
       case 37500:  parse_makernote (base, 0);		break;
@@ -7161,7 +7161,8 @@ void CLASS apply_tiff()
 	  load_flags = 24;
 	if (!strcmp(make,"SONY") && tiff_bps < 14 &&
 		tiff_ifd[raw].bytes == raw_width*raw_height*2)
-	    tiff_bps = 14;	if (tiff_ifd[raw].bytes*5 == raw_width*raw_height*8) {
+	    tiff_bps = 14;
+        if (tiff_ifd[raw].bytes*5 == raw_width*raw_height*8) {
 	  load_flags = 81;
 	  tiff_bps = 12;
 	} slr:
@@ -7242,8 +7243,8 @@ void CLASS apply_tiff()
 	    // row_padding = 12;
 	    // load_raw = &CLASS packed_load_raw;
             load_raw = &CLASS nikon_14bit_load_raw;
-	} else
-	  load_raw = &CLASS nikon_load_raw;			break;
+	} else {
+            load_raw = &CLASS nikon_load_raw; }			break;
       case 65535:
 	load_raw = &CLASS pentax_load_raw;			break;
       case 65000:

@@ -46,7 +46,7 @@ LensProfilePanel::LensProfilePanel() :
     lensfunAutoChanged(false),
     lensfunCameraChanged(false),
     lensfunLensChanged(false),
-    allowFocusDep(true),
+    //allowFocusDep(true),
     isRaw(true),
     metadata(nullptr),
     modesGrid(Gtk::manage(new Gtk::Grid())),

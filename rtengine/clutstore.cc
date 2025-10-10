@@ -130,8 +130,6 @@ vfloat2 getClutValues(const AlignedBuffer<std::uint16_t>& clut_image, size_t ind
 }
 #endif
 
-constexpr int TS = 112;
-
 } // namespace
 
 rtengine::HaldCLUT::HaldCLUT() :

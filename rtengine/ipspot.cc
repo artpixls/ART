@@ -795,9 +795,8 @@ void ImProcFunctions::removeSpots(rtengine::Imagefloat* img, ImageSource* imgsrc
     cropBox.tuneImageSize();
     cropBox.intersectionArea = cropBox.imgArea;
 
-    int f = 0;
     for (auto i : visibleSpots) {
-        f += dstSpotBoxs.at(i)->copyImgTo(cropBox) ? 1 : 0;
+        dstSpotBoxs.at(i)->copyImgTo(cropBox);
     }
 }
 

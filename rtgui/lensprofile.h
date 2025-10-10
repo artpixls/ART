@@ -102,7 +102,7 @@ private:
     sigc::connection conUseDist;
     sigc::connection conUseVign;
     sigc::connection conUseCA;
-    bool allowFocusDep;
+    //bool allowFocusDep;
     bool isRaw;
     const rtengine::FramesMetaData* metadata;
 

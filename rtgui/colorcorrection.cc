@@ -319,13 +319,13 @@ public:
         return false;
     }
 
-    Gtk::SizeRequestMode get_request_mode_vfunc() const
+    Gtk::SizeRequestMode get_request_mode_vfunc() const override
     {
         return Gtk::SIZE_REQUEST_HEIGHT_FOR_WIDTH;
     }
 
 
-    void get_preferred_width_vfunc(int &minimum_width, int &natural_width) const
+    void get_preferred_width_vfunc(int &minimum_width, int &natural_width) const override
     {
         Glib::RefPtr<Gtk::StyleContext> style = get_style_context();
         Gtk::Border padding = getPadding(style);  // already scaled
@@ -337,7 +337,7 @@ public:
     }
 
 
-    void get_preferred_height_for_width_vfunc(int width, int &minimum_height, int &natural_height) const
+    void get_preferred_height_for_width_vfunc(int width, int &minimum_height, int &natural_height) const override
     {
         Glib::RefPtr<Gtk::StyleContext> style = get_style_context();
         Gtk::Border padding = getPadding(style);  // already scaled

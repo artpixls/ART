@@ -1498,7 +1498,6 @@ void inpaint(Imagefloat *img, const array2D<float> &mask, float threshold, int r
         array2D<float> b(dW, dH, tmp.b.ptrs, ARRAY2D_BYREFERENCE);
         float t = std::abs(threshold);
         float cs = float(dW) / float(W);
-        float rs = float(dH) / float(H);
         bool inv = threshold < 0;
         for (int y = 0; y < H; ++y) {
             for (int x = 0; x < W; ++x) {

@@ -261,7 +261,6 @@ bool PCVignette::button1Pressed(int modifierKey)
 
     if (!(modifierKey & GDK_CONTROL_MASK)) {
         // button press is valid (no modifier key)
-        PolarCoord pCoord;
         int im_x, im_y;
         int imW, imH;
         getDimensions(im_x, im_y, imW, imH);

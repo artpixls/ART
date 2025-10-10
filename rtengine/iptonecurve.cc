@@ -103,8 +103,8 @@ void apply_tc(Imagefloat *rgb, const ToneCurve &tc, ToneCurveParams::TcMode curv
 class ContrastCurve: public Curve {
 public:
     ContrastCurve(double a, double b, double w): a_(a), b_(b), w_(w) {}
-    void getVal(const std::vector<double>& t, std::vector<double>& res) const {}
-    bool isIdentity () const { return false; }
+    void getVal(const std::vector<double>& t, std::vector<double>& res) const override {}
+    bool isIdentity () const override { return false; }
     
     double getVal(double x) const override
     {
@@ -168,8 +168,8 @@ public:
         }
     }
 
-    void getVal(const std::vector<double>& t, std::vector<double>& res) const {}
-    bool isIdentity () const { return false; }
+    void getVal(const std::vector<double>& t, std::vector<double>& res) const override {}
+    bool isIdentity () const override { return false; }
     
     double getVal(double dx) const override
     {
@@ -605,7 +605,7 @@ void ImProcFunctions::toneCurve(Imagefloat *img)
             [whitept](double x) -> double { return expand_range(whitept, x); };
         
         const auto adjust =
-            [whitept,&expand](std::vector<double> c) -> std::vector<double>
+            [&expand](std::vector<double> c) -> std::vector<double>
             {
                 std::map<double, double> m;
                 DiagonalCurveType tp = DiagonalCurveType(c[0]);
@@ -643,13 +643,6 @@ void ImProcFunctions::toneCurve(Imagefloat *img)
                     c.push_back(p.first);
                     c.push_back(p.second);
                 }
-#if 0
-                auto name = "/tmp/curve" + std::to_string(int(whitept)) + ".txt";
-                std::ofstream out(name.c_str());
-                for (size_t i = 1; i < c.size(); i += 2) {
-                    out << c[i] << " " << c[i+1] << "\n";
-                }
-#endif // if 0
                 return c;
             };
 

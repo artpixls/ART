@@ -27,12 +27,12 @@ using rtengine::PolarCoord;
 namespace {
 
 // z level of the MouseOver geometry for polygons
-constexpr int CURVE_POLY  = 0;
-constexpr int CAGE_POLY   = 1;
-constexpr int INSERT_LINE = 2;
+// constexpr int CURVE_POLY  = 0;
+// constexpr int CAGE_POLY   = 1;
+// constexpr int INSERT_LINE = 2;
 constexpr int SEL_DISC    = 1;
 constexpr int PREV_DISC   = 2;
-constexpr int NEXT_DISC   = 3;
+//constexpr int NEXT_DISC   = 3;
 
 } // namespace
 
