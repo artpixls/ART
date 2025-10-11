@@ -69,20 +69,41 @@ jobs:
               echo "BUILD_SUFFIX=$BUILD_SUFFIX" >> $GITHUB_ENV
           fi
           
-      - if: ${{ matrix.os == 'macos-13' }}
-        name: Install MacPorts x64
+      - name: Install MacPorts x64
+        if: ${{ matrix.os == 'macos-13' }}
+        id: cache-macports-x64
+        uses: actions/cache@v4
+        with:
+          path: /opt/local
+          key: macports-x64-${{ matrix.os }}-${{ runner.os }}-${{ runner.arch }}
+      - name: Install MacPorts x64 (run)
+        if: ${{ matrix.os == 'macos-13' && steps.cache-macports-x64.outputs.cache-hit != 'true' }}
         run: |          
           wget https://github.com/macports/macports-base/releases/download/v2.10.5/MacPorts-2.10.5-13-Ventura.pkg
           sudo installer -pkg MacPorts-2.10.5-13-Ventura.pkg -target /
 
-      - if: ${{ matrix.os == 'macos-14' }}
-        name: Install MacPorts arm64
+      - name: Install MacPorts arm64
+        if: ${{ matrix.os == 'macos-14' }}
+        id: cache-macports-arm64
+        uses: actions/cache@v4
+        with:
+          path: /opt/local
+          key: macports-arm64-${{ matrix.os }}-${{ runner.os }}-${{ runner.arch }}
+      - name: Install MacPorts arm64 (run)
+        if: ${{ matrix.os == 'macos-14' && steps.cache-macports-arm64.outputs.cache-hit != 'true' }}
         run: |          
           wget https://github.com/macports/macports-base/releases/download/v2.10.4/MacPorts-2.10.4-14-Sonoma.pkg
           sudo installer -pkg MacPorts-2.10.4-14-Sonoma.pkg -target /
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
-          
+
       - name: Install base ports
+        id: cache-base-ports
+        uses: actions/cache@v4
+        with:
+          path: /opt/local
+          key: base-ports-${{ matrix.os }}-${{ runner.os }}-${{ runner.arch }}
+      - name: Install base ports (run)
+        if: steps.cache-base-ports.outputs.cache-hit != 'true'
         run: |          
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
           sudo port install pkgconfig
@@ -105,28 +126,14 @@ jobs:
           sudo port install meson
           sudo port install dbus
 
-      - name: Install LibRaw
-        run: |
-          export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
-          INSTDIR=/opt/art-deps
-          git clone --depth 1 https://github.com/LibRaw/LibRaw.git
-          git clone --depth 1 https://github.com/LibRaw/LibRaw-cmake.git
-          cd LibRaw
-          ln -s ../LibRaw-cmake/CMakeLists.txt
-          ln -s ../LibRaw-cmake/cmake
-          mkdir build
-          cd build
-          /opt/local/bin/cmake \
-            -DCMAKE_C_COMPILER=/opt/local/bin/clang-mp-17 \
-            -DCMAKE_CXX_COMPILER=/opt/local/bin/clang++-mp-17 \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX=$INSTDIR \
-            -DENABLE_X3FTOOLS=1 \
-            ..
-          make -j$(nproc)
-          sudo make install
-
       - name: Install CTL
+        id: cache-ctl
+        uses: actions/cache@v4
+        with:
+          path: /opt/art-deps
+          key: ctl-${{ matrix.os }}-${{ runner.os }}-${{ runner.arch }}
+      - name: Install CTL (run)
+        if: steps.cache-ctl.outputs.cache-hit != 'true'
         run: |
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
           INSTDIR=/opt/art-deps
@@ -143,6 +150,13 @@ jobs:
           sudo make install
 
       - name: Install OpenColorIO
+        id: cache-ocio
+        uses: actions/cache@v4
+        with:
+          path: /opt/art-deps
+          key: ocio-${{ matrix.os }}-${{ runner.os }}-${{ runner.arch }}
+      - name: Install OpenColorIO (run)
+        if: steps.cache-ocio.outputs.cache-hit != 'true'
         run: |
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
           INSTDIR=/opt/art-deps
@@ -167,6 +181,13 @@ jobs:
           sudo make install
 
       - name: Install custom GTK+ with colorspaces support
+        id: cache-gtk
+        uses: actions/cache@v4
+        with:
+          path: /opt/art-deps/gtk
+          key: gtk-colorspace-${{ matrix.os }}-${{ runner.os }}-${{ runner.arch }}
+      - name: Install custom GTK+ with colorspaces support (run)
+        if: steps.cache-gtk.outputs.cache-hit != 'true'
         run: |
           export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
           wget https://download.gnome.org/sources/gtk+/3.24/gtk%2B-3.24.43.tar.xz
@@ -187,6 +208,27 @@ jobs:
           sudo meson install -C build
           sudo cp -a $INSTDIR/include/gtk-3.0/gdk/quartz/gdkquartzwindow.h /opt/local/include/gtk-3.0/gdk/quartz
           sudo cp -a $INSTDIR/lib/libgdk-3.0.dylib /opt/local/lib/libgdk-3.0.dylib
+
+      - name: Install LibRaw
+        run: |
+          export PATH=/opt/local/libexec/gnubin:/opt/local/bin:/opt/local/sbin:$PATH
+          INSTDIR=/opt/art-deps
+          git clone --depth 1 https://github.com/LibRaw/LibRaw.git
+          git clone --depth 1 https://github.com/LibRaw/LibRaw-cmake.git
+          cd LibRaw
+          ln -s ../LibRaw-cmake/CMakeLists.txt
+          ln -s ../LibRaw-cmake/cmake
+          mkdir build
+          cd build
+          /opt/local/bin/cmake \
+            -DCMAKE_C_COMPILER=/opt/local/bin/clang-mp-17 \
+            -DCMAKE_CXX_COMPILER=/opt/local/bin/clang++-mp-17 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$INSTDIR \
+            -DENABLE_X3FTOOLS=1 \
+            ..
+          make -j$(nproc)
+          sudo make install
 
       - name: Configure build
         run: |

@@ -33,8 +33,16 @@ jobs:
           else
               echo "ART_VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           fi
-        
+
+      - name: Cache base dependencies
+        id: cache-base-deps
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives
+          key: base-deps-${{ runner.os }}-${{ runner.arch }}
+
       - name: Install base dependencies
+        if: steps.cache-base-deps.outputs.cache-hit != 'true'
         run: |
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -y \
@@ -60,7 +68,15 @@ jobs:
           unzip ninja-linux.zip
           sudo mv ninja /usr/local/bin
 
+      - name: Cache LCMS2
+        id: cache-lcms2
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/liblcms2.so*
+          key: lcms2-${{ runner.os }}-${{ runner.arch }}
+
       - name: Install LCMS2
+        if: steps.cache-lcms2.outputs.cache-hit != 'true'
         run: |
           LCMS2_VERSION='2.16'
           wget https://downloads.sourceforge.net/project/lcms/lcms/${LCMS2_VERSION}/lcms2-${LCMS2_VERSION}.tar.gz
@@ -72,7 +88,15 @@ jobs:
           sudo make install
           cd ..
 
+      - name: Cache Exiv2
+        id: cache-exiv2
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/libexiv2.so*
+          key: exiv2-${{ runner.os }}-${{ runner.arch }}
+
       - name: Install Exiv2
+        if: steps.cache-exiv2.outputs.cache-hit != 'true'
         run: |
           EXIV2_VERSION='0.28.3'
           mkdir exiv2
@@ -86,7 +110,15 @@ jobs:
           sudo make install
           cd ../..
 
+      - name: Cache Lensfun
+        id: cache-lensfun
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/liblensfun.so*
+          key: lensfun-${{ runner.os }}-${{ runner.arch }}
+
       - name: Install Lensfun
+        if: steps.cache-lensfun.outputs.cache-hit != 'true'
         run: |
           LENSFUN_VERSION='0.3.4'
           git clone --depth 1 --branch "v$LENSFUN_VERSION" https://github.com/lensfun/lensfun.git
@@ -97,17 +129,15 @@ jobs:
           sudo make install
           cd ..
 
-      - name: Install LibRaw
-        run: |
-          git clone --depth 1 https://github.com/LibRaw/LibRaw.git
-          cd LibRaw
-          autoreconf -i
-          CPPFLAGS=-DUSE_X3FTOOLS ./configure
-          make -j$(nproc)
-          sudo make install
-          cd ..
+      - name: Cache CTL
+        id: cache-ctl
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/libIlmCtl.so*
+          key: ctl-${{ runner.os }}-${{ runner.arch }}
 
       - name: Install CTL
+        if: steps.cache-ctl.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 https://github.com/ampas/CTL.git
           mkdir build-CTL
@@ -120,7 +150,15 @@ jobs:
           sudo make install
           cd ..
 
+      - name: Cache OpenColorIO
+        id: cache-ocio
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/libOpenColorIO.so*
+          key: ocio-${{ runner.os }}-${{ runner.arch }}
+
       - name: Install OpenColorIO
+        if: steps.cache-ocio.outputs.cache-hit != 'true'
         run: |
           OCIO_VERSION='2.4.1'
           mkdir ocio
@@ -140,7 +178,15 @@ jobs:
           sudo make install
           cd ../..
 
+      - name: Cache mi-malloc
+        id: cache-mimalloc
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/libmimalloc.so*
+          key: mimalloc-${{ runner.os }}-${{ runner.arch }}
+
       - name: Install mi-malloc
+        if: steps.cache-mimalloc.outputs.cache-hit != 'true'
         run: |
           MIMALLOC_VERSION='2.1.7'
           mkdir mimalloc
@@ -155,6 +201,16 @@ jobs:
           make -j$(nproc)
           sudo make install
           cd ../..
+
+      - name: Install LibRaw
+        run: |
+          git clone --depth 1 https://github.com/LibRaw/LibRaw.git
+          cd LibRaw
+          autoreconf -i
+          CPPFLAGS=-DUSE_X3FTOOLS ./configure
+          make -j$(nproc)
+          sudo make install
+          cd ..
 
       - name: Configure build
         run: |

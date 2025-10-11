@@ -36,7 +36,15 @@ jobs:
         with:
           path: repo
         
+      - name: Cache msys2 install
+        id: cache-msys2-install
+        uses: actions/cache@v4
+        with:
+          path: C:\msys2
+          key: msys2-install-${{ matrix.os }}-${{ matrix.arch }}
+
       - name: Install msys2
+        if: steps.cache-msys2-install.outputs.cache-hit != 'true'
         uses: msys2/setup-msys2@v2
         with:
           location: C:\msys2
@@ -59,13 +67,29 @@ jobs:
             mimalloc:p
             opencolorio:p
 
-      - if: ${{ matrix.arch == 'x64' }}
+      - name: Cache downgrade-packages-x64
+        if: ${{ matrix.arch == 'x64' }}
+        id: cache-downgrade-x64
+        uses: actions/cache@v4
+        with:
+          path: C:\msys2\msys64\var\cache\pacman\pkg
+          key: downgrade-x64-${{ matrix.os }}-${{ matrix.arch }}
+
+      - if: ${{ matrix.arch == 'x64' && steps.cache-downgrade-x64.outputs.cache-hit != 'true' }}
         name: Downgrade MSYS2 packages
         run: |
           pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-pango-1.56.3-2-any.pkg.tar.zst
           pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-glib2-2.84.3-2-any.pkg.tar.zst
 
-      - if: ${{ matrix.arch == 'arm64' }}
+      - name: Cache downgrade-packages-arm64
+        if: ${{ matrix.arch == 'arm64' }}
+        id: cache-downgrade-arm64
+        uses: actions/cache@v4
+        with:
+          path: C:\msys2\msys64\var\cache\pacman\pkg
+          key: downgrade-arm64-${{ matrix.os }}-${{ matrix.arch }}
+
+      - if: ${{ matrix.arch == 'arm64' && steps.cache-downgrade-arm64.outputs.cache-hit != 'true' }}
         name: Downgrade MSYS2 packages
         run: |
           pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-pango-1.56.3-2-any.pkg.tar.zst
@@ -80,7 +104,15 @@ jobs:
               echo "ART_VERSION=$(git rev-parse --short HEAD)" >> "$(cygpath -u $GITHUB_ENV)"
           fi
         
+      - name: Cache exiv2
+        id: cache-exiv2
+        uses: actions/cache@v4
+        with:
+          path: C:\msys2\msys64\usr\local\bin\exiv2.exe
+          key: exiv2-${{ matrix.os }}-${{ matrix.arch }}
+
       - name: Install exiv2
+        if: steps.cache-exiv2.outputs.cache-hit != 'true'
         run: |
           wget https://github.com/Exiv2/exiv2/releases/download/v0.27.7/exiv2-0.27.7-Source.tar.gz
           tar xzf exiv2-0.27.7-Source.tar.gz
@@ -93,6 +125,30 @@ jobs:
             -DEXIV2_ENABLE_WIN_UNICODE=1 \
             -DEXIV2_ENABLE_BMFF=1 \
             ../exiv2-0.27.7-Source
+          ninja install
+          cd ..
+
+      - name: Cache CTL
+        id: cache-ctl
+        uses: actions/cache@v4
+        with:
+          path: C:\msys2\msys64\usr\local\bin\IlmCtlMath.dll
+          key: ctl-${{ matrix.os }}-${{ matrix.arch }}
+
+      - name: Install CTL
+        if: steps.cache-ctl.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 https://github.com/ampas/CTL.git
+          mkdir build-CTL
+          cd build-CTL
+          cmake \
+            -GNinja \
+            -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=c:/msys2/msys64/usr/local \
+            -DCMAKE_CXX_FLAGS="-fpermissive -fms-extensions" \
+            -DCTL_BUILD_TESTS=0 -DCTL_BUILD_TOOLS=0 \
+            ../CTL
           ninja install
           cd ..
 
@@ -111,22 +167,6 @@ jobs:
           CPPFLAGS=-DUSE_X3FTOOLS ./configure --prefix=c:/msys2/msys64/usr/local
           make -j
           make install
-          cd ..
-
-      - name: Install CTL
-        run: |
-          git clone --depth 1 https://github.com/ampas/CTL.git
-          mkdir build-CTL
-          cd build-CTL
-          cmake \
-            -GNinja \
-            -GNinja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX=c:/msys2/msys64/usr/local \
-            -DCMAKE_CXX_FLAGS="-fpermissive -fms-extensions" \
-            -DCTL_BUILD_TESTS=0 -DCTL_BUILD_TOOLS=0 \
-            ../CTL
-          ninja install
           cd ..
 
       - name: Configure build
