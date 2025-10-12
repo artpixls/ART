@@ -87,7 +87,7 @@ def getdlls(opts):
             if ' => ' in line:
                 bits = line.split()
                 lib = bits[2]
-                if not lib.lower().startswith('/c/windows/'):
+                if not lib.lower().startswith('/c/windows/') and lib != 'not':
                     res.add(opts.msys + lib)
                     to_process.append(lib)
                     if opts.verbose:
