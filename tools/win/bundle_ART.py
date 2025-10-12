@@ -67,18 +67,34 @@ def get_imageio_releases():
 
 
 def getdlls(opts):
-    res = []
+    res = set()
     d = os.getcwd()
-    p = subprocess.Popen(['ldd', os.path.join(d, 'ART.exe')],
-                         stdout=subprocess.PIPE)
-    out, _ = p.communicate()
-    for line in out.decode('utf-8').splitlines():
-        if ' => ' in line:
-            bits = line.split()
-            lib = bits[2]
-            if not lib.lower().startswith('/c/windows/'):
-                res.append(opts.msys + lib)
-    return res
+    to_process = [os.path.join(d, 'ART.exe')]
+    seen = set()
+    if opts.verbose:
+        print('========== getdlls ==========')
+    while to_process:
+        name = to_process[-1]
+        to_process.pop()
+        if name in seen:
+            continue
+        seen.add(name)
+        if opts.verbose:
+            print(f'computing dependencies for: {name}')
+        p = subprocess.Popen(['ldd', name], stdout=subprocess.PIPE)
+        out, _ = p.communicate()
+        for line in out.decode('utf-8').splitlines():
+            if ' => ' in line:
+                bits = line.split()
+                lib = bits[2]
+                if not lib.lower().startswith('/c/windows/'):
+                    res.add(opts.msys + lib)
+                    to_process.append(lib)
+                    if opts.verbose:
+                        print(f'   {lib}')
+    if opts.verbose:
+        print('=============================')
+    return sorted(res)
 
 
 def extra_files(opts, msys_env, tempdir):
