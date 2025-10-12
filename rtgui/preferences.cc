@@ -982,13 +982,11 @@ Gtk::Widget* Preferences::getGeneralPanel ()
         appearanceGrid->attach(*vSep,               2, 0, 1, 3);
         appearanceGrid->attach(*mainFontLbl,        0, 1, 1, 1);
         appearanceGrid->attach(*mainFontFB,         1, 1, 1, 1);
-        // appearanceGrid->attach(*cropMaskColorLbl,   3, 1, 1, 1);
-        // appearanceGrid->attach(*cropMaskColorCB,    4, 1, 1, 1);
         appearanceGrid->attach(*colorPickerFontLbl, 0, 2, 1, 1);
         appearanceGrid->attach(*colorPickerFontFB,  1, 2, 1, 1);
-        // appearanceGrid->attach(*navGuideColorLbl,   3, 2, 1, 1);
-        // appearanceGrid->attach(*navGuideColorCB,    4, 2, 1, 1);
-        appearanceGrid->attach(*pseudoHiDPI,        0, 3, 2, 1);
+#ifndef __APPLE__
+        appearanceGrid->attach(*pseudoHiDPI, 0, 3, 2, 1);
+#endif
 
         appearanceGrid->attach(*theme_bg_lbl, 3, 0, 1, 1);
         appearanceGrid->attach(*theme_bg_color, 4, 0, 1, 1);
@@ -996,8 +994,6 @@ Gtk::Widget* Preferences::getGeneralPanel ()
         appearanceGrid->attach(*theme_fg_color, 4, 1, 1, 1);
         appearanceGrid->attach(*theme_hl_lbl, 3, 2, 1, 1);
         appearanceGrid->attach(*theme_hl_color, 4, 2, 1, 1);
-
-        // appearanceGrid->attach(*theme_color_grid, 2, 0, 2, 3);
 
         Gtk::Button *reset = Gtk::manage(new Gtk::Button());
         theme_colors_reset = reset;
@@ -1720,7 +1716,9 @@ void Preferences::storePreferences ()
         moptions.CPFontSize = cpfd.get_size() / Pango::SCALE;
     }
 
+#ifndef __APPLE__
     moptions.pseudoHiDPISupport = pseudoHiDPI->get_active();
+#endif
 
 #ifdef WIN32
     moptions.gimpDir = gimpDir->get_filename ();

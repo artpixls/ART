@@ -37,7 +37,7 @@ extern float fontScale;
 Gtk::TextDirection RTScalable::direction = Gtk::TextDirection::TEXT_DIR_NONE;
 
 
-void RTScalable::setDPInScale (const double newDPI, const int newScale)
+void RTScalable::setDPInScale(const double newDPI, const int newScale)
 {
     if (!options.pseudoHiDPISupport) {
     	scale = 1;
@@ -98,7 +98,6 @@ void RTScalable::init(Gtk::Window *window)
     direction = window->get_direction();
 #ifdef __APPLE__
     device_scale = window->get_scale_factor();
-    std::cout << "GOT DEVICE SCALE: " << device_scale << std::endl;
 #endif
 }
 
