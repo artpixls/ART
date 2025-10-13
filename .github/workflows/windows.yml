@@ -62,12 +62,16 @@ jobs:
       - if: ${{ matrix.arch == 'x64' }}
         name: Downgrade MSYS2 packages
         run: |
+          pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gtk3-3.24.50-1-any.pkg.tar.zst
+          pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gtk-update-icon-cache-3.24.50-1-any.pkg.tar.zst
           pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-pango-1.56.3-2-any.pkg.tar.zst
           pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-glib2-2.84.3-2-any.pkg.tar.zst
 
       - if: ${{ matrix.arch == 'arm64' }}
         name: Downgrade MSYS2 packages
         run: |
+          pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-gtk3-3.24.50-1-any.pkg.tar.zst
+          pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-gtk-update-icon-cache-3.24.50-1-any.pkg.tar.zst
           pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-pango-1.56.3-2-any.pkg.tar.zst
           pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-glib2-2.84.2-1-any.pkg.tar.zst
           
