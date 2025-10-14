@@ -52,24 +52,34 @@ jobs:
             cmake:p
             autotools:p
             ninja:p
-            gtkmm3:p
             lcms2:p
             fftw:p
-            lensfun:p
             mimalloc:p
             opencolorio:p
 
-      # - if: ${{ matrix.arch == 'x64' }}
-      #   name: Downgrade MSYS2 packages
-      #   run: |
-      #     pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-pango-1.56.3-2-any.pkg.tar.zst
-      #     pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-glib2-2.84.3-2-any.pkg.tar.zst
+      - name: Set MSYS2 GTK packages
+        run: |
+          echo "ART_GTK_PKGS=glib2-2.84.2-1 shared-mime-info-2.4-1 lensfun-0.3.4-3 json-glib-1.10.6-1 harfbuzz-11.2.1-1 freetype-2.13.3-1 fontconfig-2.16.2-1 glibmm-2.66.8-1 gdk-pixbuf2-2.42.12-4 cairo-1.18.4-2 cairomm-1.14.5-2 pango-1.56.3-2 pangomm-2.46.4-1 librsvg-2.60.0-1 gtk-update-icon-cache-3.24.49-1 adwaita-icon-theme-legacy-46.2-1 adwaita-icon-theme-48.0-1 adwaita-icon-theme-legacy-46.2-1 cairomm-1.14.5-2 pangomm-2.46.4-1 atk-2.56.2-1 atkmm-2.28.4-1 gtk3-3.24.49-1 atkmm-2.28.4-1 gtkmm3-3.24.10-2" >> "$(cygpath -u $GITHUB_ENV)"
 
-      # - if: ${{ matrix.arch == 'arm64' }}
-      #   name: Downgrade MSYS2 packages
-      #   run: |
-      #     pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-pango-1.56.3-2-any.pkg.tar.zst
-      #     pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-glib2-2.84.2-1-any.pkg.tar.zst
+      - if: ${{ matrix.arch == 'x64' }}
+        name: Install MSYS2 GTK packages
+        run: |
+          inst=
+          for p in $ART_GTK_PKGS; do
+              inst="${inst} https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-${p}-any.pkg.tar.zst"
+          done
+          pacman --noconfirm -U ${inst}
+          glib-compile-schemas /mingw64/share/glib-2.0/schemas/
+
+      - if: ${{ matrix.arch == 'arm64' }}
+        name: Install MSYS2 GTK packages
+        run: |
+          inst=
+          for p in $ART_GTK_PKGS; do
+              inst="${inst} https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-${p}-any.pkg.tar.zst"
+          done
+          pacman --noconfirm -U ${inst}
+          glib-compile-schemas /clangarm64/share/glib-2.0/schemas/
           
       - name: Get version
         run: |
