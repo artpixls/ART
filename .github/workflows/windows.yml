@@ -52,24 +52,26 @@ jobs:
             cmake:p
             autotools:p
             ninja:p
+            gtkmm3:p
             lcms2:p
             fftw:p
+            lensfun:p
             mimalloc:p
             opencolorio:p
 
-      - name: Set MSYS2 GTK packages
+      - name: Set MSYS2 packages to downgrade
         run: |
-          echo "ART_GTK_PKGS=glib2-2.84.2-1 lensfun-0.3.4-3 glibmm-2.66.8-1 pango-1.56.3-2 pangomm-2.46.4-1 gtk3-3.24.49-1 gtkmm3-3.24.10-2" >> "$(cygpath -u $GITHUB_ENV)"
+          echo "ART_GTK_PKGS=glib2-2.84.4-1 glibmm-2.66.8-2 pango-1.56.3-2 pangomm-2.46.4-2" >> "$(cygpath -u $GITHUB_ENV)"
 
       - if: ${{ matrix.arch == 'x64' }}
-        name: Install MSYS2 GTK packages
+        name: Downgrade MSYS2 packages
         run: |
           for p in $ART_GTK_PKGS; do
               pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-${p}-any.pkg.tar.zst
           done
 
       - if: ${{ matrix.arch == 'arm64' }}
-        name: Install MSYS2 GTK packages
+        name: Downgrade MSYS2 packages
         run: |
           for p in $ART_GTK_PKGS; do
               pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-${p}-any.pkg.tar.zst
