@@ -64,21 +64,17 @@ jobs:
       - if: ${{ matrix.arch == 'x64' }}
         name: Install MSYS2 GTK packages
         run: |
-          inst=
           for p in $ART_GTK_PKGS; do
-              inst="${inst} https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-${p}-any.pkg.tar.zst"
+              pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-${p}-any.pkg.tar.zst
           done
-          pacman --noconfirm -U ${inst}
           glib-compile-schemas /mingw64/share/glib-2.0/schemas/
 
       - if: ${{ matrix.arch == 'arm64' }}
         name: Install MSYS2 GTK packages
         run: |
-          inst=
           for p in $ART_GTK_PKGS; do
-              inst="${inst} https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-${p}-any.pkg.tar.zst"
+              pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-${p}-any.pkg.tar.zst
           done
-          pacman --noconfirm -U ${inst}
           glib-compile-schemas /clangarm64/share/glib-2.0/schemas/
           
       - name: Get version
