@@ -61,7 +61,7 @@ jobs:
 
       - name: Set MSYS2 packages to downgrade
         run: |
-          echo "ART_GTK_PKGS=glib2-2.84.4-1 glibmm-2.66.8-2 pango-1.56.3-2 pangomm-2.46.4-2" >> "$(cygpath -u $GITHUB_ENV)"
+          echo "ART_GTK_PKGS=pango-1.56.3-2" >> "$(cygpath -u $GITHUB_ENV)"
 
       - if: ${{ matrix.arch == 'x64' }}
         name: Downgrade MSYS2 packages
