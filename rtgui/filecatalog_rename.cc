@@ -786,7 +786,10 @@ bool get_params(Gtk::Window &parent, const std::vector<FileBrowserEntry *> &args
             on_pattern_change();
         };
 
-    basedir.set_filename(options.lastCopyMovePath);//".");
+    if (!Glib::file_test(options.lastCopyMovePath, Glib::FILE_TEST_IS_DIR)) {
+        options.lastCopyMovePath = ".";
+    }
+    basedir.set_filename(options.lastCopyMovePath);
     pattern.set_text(options.renaming.pattern);
     sidecars.set_text(options.renaming.sidecars);
     name_norm.set_active(options.renaming.name_norm);
