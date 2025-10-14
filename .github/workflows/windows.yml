@@ -15,7 +15,7 @@ jobs:
         include:
           - os: windows-latest
             arch: x64
-            msystem: MINGW64
+            msystem: UCRT64
           - os: windows-11-arm
             arch: arm64
             msystem: CLANGARM64
@@ -36,7 +36,7 @@ jobs:
         with:
           path: repo
         
-      - name: Install msys2
+      - name: Install base msys2
         uses: msys2/setup-msys2@v2
         with:
           location: C:\msys2
@@ -47,34 +47,45 @@ jobs:
             wget
             xz
             p7zip
-          pacboy: |
-            gcc:p
-            cmake:p
-            autotools:p
-            ninja:p
-            gtkmm3:p
-            lcms2:p
-            fftw:p
-            lensfun:p
-            mimalloc:p
-            opencolorio:p
-
-      - name: Set MSYS2 packages to downgrade
-        run: |
-          echo "ART_GTK_PKGS=pango-1.56.3-2" >> "$(cygpath -u $GITHUB_ENV)"
 
       - if: ${{ matrix.arch == 'x64' }}
-        name: Downgrade MSYS2 packages
+        name: Install MSYS2 packages (x64)
         run: |
-          for p in $ART_GTK_PKGS; do
-              pacman --noconfirm -U https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-${p}-any.pkg.tar.zst
-          done
+          wget https://github.com/agriggio/playground/releases/download/ucrt64/repo-ucrt64.tar
+          tar xf repo-ucrt64.tar
+          echo "[options]" > /etc/pacman.conf
+          echo "HoldPkg     = pacman" >> /etc/pacman.conf
+          echo "Architecture = auto" >> /etc/pacman.conf
+          echo "SigLevel    = Required" >> /etc/pacman.conf
+          echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf
+          echo "[msys]" >> /etc/pacman.conf
+          echo "Include = /etc/pacman.d/mirrorlist.msys" >> /etc/pacman.conf
+          echo "[custom-ucrt64]" >> /etc/pacman.conf
+          echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
+          echo "Server = file://${PWD}/repo-ucrt64" >> /etc/pacman.conf
+          pacman -Sy
+          for p in gcc cmake autotools ninja gtkmm3 lcms2 fftw lensfun mimalloc opencolorio; do
+              pacman --noconfirm -S custom-ucrt64/mingw-w64-ucrt-x86_64-${p}
+          done          
 
       - if: ${{ matrix.arch == 'arm64' }}
-        name: Downgrade MSYS2 packages
+        name: Install MSYS2 packages (arm64)
         run: |
-          for p in $ART_GTK_PKGS; do
-              pacman --noconfirm -U https://repo.msys2.org/mingw/clangarm64/mingw-w64-clang-aarch64-${p}-any.pkg.tar.zst
+          wget https://github.com/agriggio/playground/releases/download/clangarm64/repo-clangarm64.tar
+          tar xf repo-clangarm64.tar
+          echo "[options]" > /etc/pacman.conf
+          echo "HoldPkg     = pacman" >> /etc/pacman.conf
+          echo "Architecture = auto" >> /etc/pacman.conf
+          echo "SigLevel    = Required" >> /etc/pacman.conf
+          echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf
+          echo "[msys]" >> /etc/pacman.conf
+          echo "Include = /etc/pacman.d/mirrorlist.msys" >> /etc/pacman.conf
+          echo "[custom-clangarm64]" >> /etc/pacman.conf
+          echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
+          echo "Server = file://${PWD}/repo-clangarm64" >> /etc/pacman.conf
+          pacman -Sy
+          for p in clang cmake autotools ninja gtkmm3 lcms2 fftw lensfun mimalloc opencolorio; do
+              pacman --noconfirm -S custom-clangarm64/mingw-w64-clang-aarch64-${p}
           done
           
       - name: Get version
@@ -107,7 +118,7 @@ jobs:
           git clone --depth 1 https://github.com/LibRaw/LibRaw.git
           cd LibRaw
           autoreconf -i
-          if [ "${{ matrix.msystem }}" = "MINGW64" ]; then
+          if [ "${{ matrix.msystem }}" = "UCRT64" ]; then
              export CC=gcc
              export CXX=g++
           else
@@ -140,7 +151,7 @@ jobs:
           mkdir build
           cd build
           export PKG_CONFIG_PATH=c:/msys2/msys64/usr/local/lib/pkgconfig
-          if [ "${{ matrix.msystem }}" = "MINGW64" ]; then
+          if [ "${{ matrix.msystem }}" = "UCRT64" ]; then
              ART_CXX_FLAGS=
           else
              ART_CXX_FLAGS="-Wno-ignored-attributes -Wno-unused-command-line-argument"
