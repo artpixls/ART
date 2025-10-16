@@ -48,11 +48,19 @@ jobs:
             xz
             p7zip
 
-      - if: ${{ matrix.arch == 'x64' }}
-        name: Install MSYS2 packages (x64)
+      - name: Install MSYS2 packages
         run: |
-          wget https://github.com/agriggio/playground/releases/download/ucrt64/repo-ucrt64.tar
-          tar xf repo-ucrt64.tar
+          if [ "${{ matrix.msystem }}" = "UCRT64" ]; then
+            export ART_COMPILER=gcc
+            export ART_MSYS2_REPO=ucrt64
+            export ART_PKG_PREFIX=mingw-w64-ucrt-x86_64
+          else
+            export ART_COMPILER=clang
+            export ART_MSYS2_REPO=clangarm64
+            export ART_PKG_PREFIX=mingw-w64-clang-aarch64
+          fi
+          wget https://github.com/artpixls/msys2-repo/releases/download/1.0/repo-${ART_MSYS2_REPO}.tar
+          tar xf repo-${ART_MSYS2_REPO}.tar
           echo "[options]" > /etc/pacman.conf
           echo "HoldPkg     = pacman" >> /etc/pacman.conf
           echo "Architecture = auto" >> /etc/pacman.conf
@@ -60,32 +68,12 @@ jobs:
           echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf
           echo "[msys]" >> /etc/pacman.conf
           echo "Include = /etc/pacman.d/mirrorlist.msys" >> /etc/pacman.conf
-          echo "[custom-ucrt64]" >> /etc/pacman.conf
+          echo "[custom-${ART_MSYS2_REPO}]" >> /etc/pacman.conf
           echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-          echo "Server = file://${PWD}/repo-ucrt64" >> /etc/pacman.conf
+          echo "Server = file://${PWD}/repo-${ART_MSYS2_REPO}" >> /etc/pacman.conf
           pacman -Sy
-          for p in gcc cmake autotools ninja gtkmm3 lcms2 fftw lensfun mimalloc opencolorio; do
-              pacman --noconfirm -S custom-ucrt64/mingw-w64-ucrt-x86_64-${p}
-          done          
-
-      - if: ${{ matrix.arch == 'arm64' }}
-        name: Install MSYS2 packages (arm64)
-        run: |
-          wget https://github.com/agriggio/playground/releases/download/clangarm64/repo-clangarm64.tar
-          tar xf repo-clangarm64.tar
-          echo "[options]" > /etc/pacman.conf
-          echo "HoldPkg     = pacman" >> /etc/pacman.conf
-          echo "Architecture = auto" >> /etc/pacman.conf
-          echo "SigLevel    = Required" >> /etc/pacman.conf
-          echo "LocalFileSigLevel = Optional" >> /etc/pacman.conf
-          echo "[msys]" >> /etc/pacman.conf
-          echo "Include = /etc/pacman.d/mirrorlist.msys" >> /etc/pacman.conf
-          echo "[custom-clangarm64]" >> /etc/pacman.conf
-          echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf
-          echo "Server = file://${PWD}/repo-clangarm64" >> /etc/pacman.conf
-          pacman -Sy
-          for p in clang cmake autotools ninja gtkmm3 lcms2 fftw lensfun mimalloc opencolorio; do
-              pacman --noconfirm -S custom-clangarm64/mingw-w64-clang-aarch64-${p}
+          for p in ${ART_COMPILER} cmake autotools ninja gtkmm3 lcms2 fftw lensfun mimalloc opencolorio; do
+              pacman --noconfirm -S custom-${ART_MSYS2_REPO}/${ART_PKG_PREFIX}-${p}
           done
           
       - name: Get version
