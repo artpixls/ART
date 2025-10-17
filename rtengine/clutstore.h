@@ -158,9 +158,11 @@ public:
     CLUTParamDescriptorList get_param_descriptors() const;
     bool set_param_values(const CLUTParamValueMap &values, Quality q=Quality::HIGH);
 
+    bool set_num_threads(int num_threads);
+
     static CLUTParamDescriptorList get_param_descriptors(const Glib::ustring &filename);
 
-private:
+protected:
     void init(int num_threads);
     void do_apply(int W, float *r, float *g, float *b);
     Glib::ustring clut_filename_;
@@ -210,5 +212,15 @@ private:
     float iconv_[3][3];
 #endif
 };
+
+
+#ifdef ART_USE_OCIO
+
+class OCIOInputProfile: public CLUTApplication {
+public:
+    OCIOInputProfile(const Glib::ustring &clut_filename, const Glib::ustring &working_profile="", int num_threads=1);
+};
+
+#endif // ART_USE_OCIO
 
 } // namespace rtengine

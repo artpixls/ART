@@ -17,8 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with RawTherapee.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _RAWIMAGESOURCE_
-#define _RAWIMAGESOURCE_
+#pragma once
 
 #include "imagesource.h"
 #include "dcp.h"
@@ -30,18 +29,17 @@
 #include "pixelsmap.h"
 #define HR_SCALE 2
 
-namespace rtengine
-{
+namespace rtengine {
 
-class RawImageSource : public ImageSource
-{
+class CLUTApplication;
 
+class RawImageSource: public ImageSource {
 private:
     static DiagonalCurve *phaseOneIccCurve;
     static DiagonalCurve *phaseOneIccCurveInv;
     static LUTf invGrad;  // for fast_demosaic
     static LUTf initInvGrad ();
-    static void colorSpaceConversion_(Imagefloat* im, const ColorManagementParams& cmp, const ColorTemp &wb, double pre_mul[3], cmsHPROFILE camprofile, double cam[3][3], cmsHPROFILE in, DCPProfile *dcpProf, ProgressListener *plistener, bool multithread);
+    static void colorSpaceConversion_(Imagefloat* im, const ColorManagementParams& cmp, const ColorTemp &wb, double pre_mul[3], cmsHPROFILE camprofile, double cam[3][3], cmsHPROFILE in, DCPProfile *dcpProf, CLUTApplication *lut_profile, ProgressListener *plistener, bool multithread);
 
 protected:
     static int defTransform(const RawImage *ri, int tran);
@@ -185,7 +183,7 @@ public:
     DCPProfile *getDCP(const ColorManagementParams &cmp, DCPProfile::ApplyState &as) override;
 
     void convertColorSpace(Imagefloat* image, const ColorManagementParams &cmp, const ColorTemp &wb) override;
-    static bool findInputProfile(Glib::ustring inProfile, cmsHPROFILE embedded, std::string camName, const Glib::ustring &filename, DCPProfile **dcpProf, cmsHPROFILE& in, ProgressListener *plistener=nullptr);
+    static bool findInputProfile(const ColorManagementParams &cmp, cmsHPROFILE embedded, std::string camName, const Glib::ustring &filename, DCPProfile **dcpProf, cmsHPROFILE& in, std::unique_ptr<CLUTApplication> &lut_profile, ProgressListener *plistener=nullptr);
     static void colorSpaceConversion(Imagefloat* im, const ColorManagementParams& cmp, const ColorTemp &wb, double pre_mul[3], cmsHPROFILE embedded, cmsHPROFILE camprofile, double cam[3][3], const std::string &camName, const Glib::ustring &fileName, ProgressListener *plistener=nullptr);
     static void inverse33 (const double (*coeff)[3], double (*icoeff)[3]);
 
@@ -312,4 +310,3 @@ public:
 };
 
 } // namespace rtengine
-#endif

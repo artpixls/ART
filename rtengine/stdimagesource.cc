@@ -24,6 +24,10 @@
 #include "color.h"
 #include "imgiomanager.h"
 #include "../rtgui/multilangmgr.h"
+#ifdef _OPENMP
+# include <omp.h>
+#endif
+#include "clutstore.h"
 
 #undef THREAD_PRIORITY_NORMAL
 
@@ -388,6 +392,19 @@ void StdImageSource::colorSpaceConversion (Imagefloat* im, const ColorManagement
     } else {
         if (cmp.inputProfile != "(none)") {
             in = ICCStore::getInstance()->getProfile (cmp.inputProfile);
+#ifdef ART_USE_OCIO
+            if (!in) {
+                int num_threads = 1;
+#ifdef _OPENMP
+                num_threads = multithread ? omp_get_num_procs() : 1;
+#endif // _OPENMP
+                OCIOInputProfile lut(cmp.inputProfile, cmp.workingProfile, num_threads);
+                if (lut) {
+                    lut(im);
+                    return;
+                }
+            }
+#endif // ART_USE_OCIO
             if (!in && plistener) {
                 plistener->error(Glib::ustring::compose(M("ERROR_MSG_FILE_READ"), cmp.inputProfile));
             }

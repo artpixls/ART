@@ -291,12 +291,23 @@ ICMPanel::ICMPanel():
     filter_iccdng->add_pattern("*.icm");
     filter_iccdng->add_pattern("*.ICC");
     filter_iccdng->add_pattern("*.ICM");
+#ifdef ART_USE_OCIO
+    Glib::RefPtr<Gtk::FileFilter> filter_lut = Gtk::FileFilter::create();
+    filter_lut->set_name(M("FILECHOOSER_FILTER_LUT"));
+    filter_lut->add_pattern("*.clf");
+    filter_lut->add_pattern("*.CLF");
+    filter_lut->add_pattern("*.clfz");
+    filter_lut->add_pattern("*.CLFZ");
+#endif // ART_USE_OCIO
     Glib::RefPtr<Gtk::FileFilter> filter_any = Gtk::FileFilter::create();
     filter_any->set_name(M("FILECHOOSER_FILTER_ANY"));
     filter_any->add_pattern("*");
 
     ipDialog->add_filter(filter_icc);
     ipDialog->add_filter(filter_iccdng);
+#ifdef ART_USE_OCIO
+    ipDialog->add_filter(filter_lut);
+#endif // ART_USE_OCIO
     ipDialog->add_filter(filter_any);
 #ifdef WIN32
     ipDialog->set_show_hidden(true);  // ProgramData is hidden on Windows

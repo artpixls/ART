@@ -41,6 +41,7 @@
 #include "median.h"
 #define BENCHMARK
 #include "StopWatch.h"
+#include "clutstore.h"
 
 namespace {
 
@@ -1056,7 +1057,8 @@ IImage8* Thumbnail::processImage (const procparams::ProcParams& params, eSensorT
 
     if (isRaw) {
         cmsHPROFILE dummy;
-        RawImageSource::findInputProfile (params.icm.inputProfile, nullptr, camName, metadata->getFileName(), &dcpProf, dummy);
+        std::unique_ptr<CLUTApplication> dummy_lut_prof;
+        RawImageSource::findInputProfile(params.icm, nullptr, camName, metadata->getFileName(), &dcpProf, dummy, dummy_lut_prof);
 
         if (dcpProf) {
             dcpProf->setStep2ApplyState (params.icm.workingProfile, params.icm.toneCurve, params.icm.applyLookTable, params.icm.applyBaselineExposureOffset, as);

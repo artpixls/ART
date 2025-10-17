@@ -1484,6 +1484,21 @@ void CLUTApplication::operator()(Imagefloat *img)
 }
 
 
+bool CLUTApplication::set_num_threads(int num_threads)
+{
+    if (!ok_) {
+        return false;
+    }
+#ifdef ART_USE_CTL
+    if (!ctl_func_.empty()) {
+        return false;
+    }
+#endif
+    num_threads_ = num_threads;
+    return true;
+}
+
+
 inline void CLUTApplication::do_apply(int W, float *r, float *g, float *b)
 {
     AlignedBuffer<float> buf_out_rgbx(4 * W); // Line buffer for CLUT
@@ -1739,5 +1754,25 @@ void CLUTApplication::apply(int thread_id, int W, float *r, float *g, float *b)
 
     do_apply(W, r, g, b);
 }
+
+
+#ifdef ART_USE_OCIO
+
+OCIOInputProfile::OCIOInputProfile(const Glib::ustring &clut_filename, const Glib::ustring &working_profile, int num_threads):
+    CLUTApplication(!clut_filename.compare(0, 5, "file:") ? clut_filename.substr(5) : clut_filename, working_profile, 1.f, num_threads)
+{
+    if (!ok_ || !ocio_processor_) {
+        ok_ = false;
+    } else {
+        init_matrices("");
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                iconv_[i][j] = wiprof_[i][j] * 65535.f;
+            }
+        }
+    }
+}
+
+#endif // ART_USE_OCIO
 
 } // namespace rtengine

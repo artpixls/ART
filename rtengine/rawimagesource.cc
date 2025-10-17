@@ -45,6 +45,7 @@
 #endif
 #include "opthelper.h"
 #include "linalgebra.h"
+#include "clutstore.h"
 
 #undef CLIPD
 #define CLIPD(a) ((a)>0.0f?((a)<1.0f?(a):1.0f):0.0f)
@@ -1110,7 +1111,8 @@ DCPProfile *RawImageSource::getDCP(const ColorManagementParams &cmp, DCPProfile:
 
     DCPProfile *dcpProf = nullptr;
     cmsHPROFILE dummy;
-    findInputProfile(cmp.inputProfile, nullptr, (static_cast<const FramesData*>(getMetaData()))->getCamera(), fileName, &dcpProf, dummy, nullptr);
+    std::unique_ptr<CLUTApplication> dummy_lut_prof;
+    findInputProfile(cmp, nullptr, (static_cast<const FramesData*>(getMetaData()))->getCamera(), fileName, &dcpProf, dummy, dummy_lut_prof, nullptr);
 
     if (dcpProf == nullptr) {
         if (settings->verbose) {
@@ -1127,13 +1129,14 @@ void RawImageSource::convertColorSpace(Imagefloat* image, const ColorManagementP
 {
     cmsHPROFILE in;
     DCPProfile *dcpProf;
+    std::unique_ptr<CLUTApplication> lut_prof;
 
-    if (findInputProfile(cmp.inputProfile, embProfile, (static_cast<const FramesData*>(getMetaData()))->getCamera(), fileName, &dcpProf, in, plistener)) {
+    if (findInputProfile(cmp, embProfile, (static_cast<const FramesData*>(getMetaData()))->getCamera(), fileName, &dcpProf, in, lut_prof, plistener)) {
         
         double pre_mul[3] = { ri->get_pre_mul(0), ri->get_pre_mul(1), ri->get_pre_mul(2) };
-        colorSpaceConversion_(image, cmp, wb, pre_mul, camProfile, imatrices.xyz_cam, in, dcpProf, plistener, true);
+        colorSpaceConversion_(image, cmp, wb, pre_mul, camProfile, imatrices.xyz_cam, in, dcpProf, lut_prof.get(), plistener, true);
 
-        if (dcpProf == nullptr && in == nullptr && cmp.inputProfileCAT && wb.getTemp() > 0) {
+        if (dcpProf == nullptr && in == nullptr && !lut_prof && cmp.inputProfileCAT && wb.getTemp() > 0) {
             apply_cat(this, image, wb);
         }        
     }
@@ -1144,8 +1147,9 @@ void RawImageSource::colorSpaceConversion(Imagefloat* im, const ColorManagementP
 {
     cmsHPROFILE in;
     DCPProfile *dcpProf;
-    if (findInputProfile(cmp.inputProfile, embedded, camName, fileName, &dcpProf, in, plistener)) {
-        colorSpaceConversion_(im, cmp, wb, pre_mul, camprofile, cam, in, dcpProf, plistener, false);
+    std::unique_ptr<CLUTApplication> lut_prof;
+    if (findInputProfile(cmp, embedded, camName, fileName, &dcpProf, in, lut_prof, plistener)) {
+        colorSpaceConversion_(im, cmp, wb, pre_mul, camprofile, cam, in, dcpProf, lut_prof.get(), plistener, false);
     }
 }
 
@@ -3149,7 +3153,7 @@ lab2ProphotoRgbD50(float L, float A, float B, float& r, float& g, float& b)
 }
 
 // Converts raw image including ICC input profile to working space - floating point version
-void RawImageSource::colorSpaceConversion_ (Imagefloat* im, const ColorManagementParams& cmp, const ColorTemp &wb, double pre_mul[3], cmsHPROFILE camprofile, double camMatrix[3][3], cmsHPROFILE in, DCPProfile *dcpProf, ProgressListener *plistener, bool multithread)
+void RawImageSource::colorSpaceConversion_ (Imagefloat* im, const ColorManagementParams& cmp, const ColorTemp &wb, double pre_mul[3], cmsHPROFILE camprofile, double camMatrix[3][3], cmsHPROFILE in, DCPProfile *dcpProf, CLUTApplication *lut_prof, ProgressListener *plistener, bool multithread)
 {
     if (dcpProf != nullptr && wb.getTemp() > 0) {
         // DCP processing
@@ -3168,7 +3172,16 @@ void RawImageSource::colorSpaceConversion_ (Imagefloat* im, const ColorManagemen
         return;
     }
 
-    if (in == nullptr) {
+    if (lut_prof) {
+        int num_threads = 1;
+#ifdef _OPENMP
+        if (multithread) {
+            num_threads = omp_get_num_procs();
+        }
+#endif // _OPENMP
+        lut_prof->set_num_threads(num_threads);
+        (*lut_prof)(im);
+    } else if (in == nullptr) {
         // use default camprofile, supplied by dcraw
         // in this case we avoid using the slllllooooooowwww lcms
 
@@ -3536,10 +3549,12 @@ void RawImageSource::colorSpaceConversion_ (Imagefloat* im, const ColorManagemen
 
 
 // Determine RAW input and output profiles. Returns TRUE on success
-bool RawImageSource::findInputProfile(Glib::ustring inProfile, cmsHPROFILE embedded, std::string camName, const Glib::ustring &fileName, DCPProfile **dcpProf, cmsHPROFILE& in, ProgressListener *plistener)
+bool RawImageSource::findInputProfile(const ColorManagementParams &cmp, cmsHPROFILE embedded, std::string camName, const Glib::ustring &fileName, DCPProfile **dcpProf, cmsHPROFILE& in, std::unique_ptr<CLUTApplication> &lut_prof, ProgressListener *plistener)
 {
     in = nullptr; // cam will be taken on NULL
     *dcpProf = nullptr;
+
+    auto inProfile = cmp.inputProfile;
 
     if (inProfile == "(none)") {
         return false;
@@ -3573,7 +3588,16 @@ bool RawImageSource::findInputProfile(Glib::ustring inProfile, cmsHPROFILE embed
             in = ICCStore::getInstance()->getProfile (inProfile);
         }
 
-        if (!in && !*dcpProf && plistener) {
+#ifdef ART_USE_OCIO
+        if (!in && !*dcpProf) {
+            lut_prof.reset(new OCIOInputProfile(inProfile, cmp.workingProfile));
+            if (!*lut_prof) {
+                lut_prof.reset(nullptr);
+            }
+        }
+#endif // ART_USE_OCIO
+        
+        if (!in && !*dcpProf && !lut_prof && plistener) {
             plistener->error(Glib::ustring::compose(M("ERROR_MSG_FILE_READ"), normalName));
         }
     }
