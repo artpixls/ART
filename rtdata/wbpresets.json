@@ -113,6 +113,13 @@
 //
 // updated on Fri Jun 20 08:12:55 2025:
 // PANASONIC DC-S9
+//
+// updated on Fri Oct 17 11:54:40 2025:
+// CANON EOS R8
+// FUJIFILM GFX 100
+// NIKON D2H
+// NIKON Z50_2
+// NIKON Z5_2
 
 [
   {
@@ -6480,6 +6487,70 @@
       { "name" : "cloudy", "multipliers" : [ 2.203125, 1, 1.6171875 ] },
       { "name" : "cloudy", "multipliers" : [ 2.21484375, 1, 1.61328125 ] },
       { "name" : "incandescent", "multipliers" : [ 1.41796875, 1, 2.64453125 ] }
+    ]
+  },
+  {
+    "make_model" : "CANON EOS R8",
+    "presets" : [
+      { "name" : "daylight", "multipliers" : [ 1.91796875, 1, 1.4736328125 ] },
+      { "name" : "shade", "multipliers" : [ 2.2265625, 1, 1.265625 ] },
+      { "name" : "cloudy", "multipliers" : [ 2.068359375, 1, 1.3671875 ] },
+      { "name" : "tungsten", "multipliers" : [ 1.3388671875, 1, 2.18359375 ] },
+      { "name" : "cool white fluorescent", "multipliers" : [ 1.638671875, 1, 2.0986328125 ] },
+      { "name" : "flash", "multipliers" : [ 2.111328125, 1, 1.341796875 ] }
+    ]
+  },
+  {
+    "make_model" : "FUJIFILM GFX 100",
+    "presets" : [
+      { "name" : "daylight", "multipliers" : [ 1.6986754966887416, 1, 1.7582781456953642 ] },
+      { "name" : "cloudy", "multipliers" : [ 1.8410596026490067, 1, 1.5 ] },
+      { "name" : "incandescent", "multipliers" : [ 1.1125827814569536, 1, 2.705298013245033 ] },
+      { "name" : "day white fluorescent", "multipliers" : [ 1.8443708609271523, 1, 1.8211920529801324 ] },
+      { "name" : "daylight fluorescent", "multipliers" : [ 2.1821192052980134, 1, 1.490066225165563 ] },
+      { "name" : "white fluorescent", "multipliers" : [ 1.7615894039735098, 1, 2.3940397350993377 ] },
+      { "name" : "underwater", "multipliers" : [ 1.695364238410596, 1, 1.7682119205298013 ] }
+    ]
+  },
+  {
+    "make_model" : "NIKON D2H",
+    "presets" : [
+      { "name" : "direct sunlight", "multipliers" : [ 2.26953125, 1, 1.38671875 ] },
+      { "name" : "shade", "multipliers" : [ 2.65625, 1, 1.0234375 ] },
+      { "name" : "cloudy", "multipliers" : [ 2.421875, 1, 1.24609375 ] },
+      { "name" : "incandescent", "multipliers" : [ 1.4453125, 1, 2.1640625 ] },
+      { "name" : "cool white fluorescent", "multipliers" : [ 2.29296875, 1, 2.28125 ] },
+      { "name" : "flash", "multipliers" : [ 2.59765625, 1, 1.31640625 ] },
+      { "name" : "2700k", "multipliers" : [ 1.234375, 1, 2.3671875 ] },
+      { "name" : "3000k", "multipliers" : [ 1.46484375, 1, 2.1484375 ] },
+      { "name" : "3300k", "multipliers" : [ 1.640625, 1, 1.98046875 ] },
+      { "name" : "5000k", "multipliers" : [ 2.2265625, 1, 1.43359375 ] }
+    ]
+  },
+  {
+    "make_model" : "NIKON Z5_2",
+    "presets" : [
+      { "name" : "direct sunlight", "multipliers" : [ 1.7265625, 1, 1.3359375 ] },
+      { "name" : "shade", "multipliers" : [ 2.09765625, 1, 1.08984375 ] },
+      { "name" : "cloudy", "multipliers" : [ 1.83984375, 1, 1.212890625 ] },
+      { "name" : "incandescent", "multipliers" : [ 1.138671875, 1, 2.083984375 ] },
+      { "name" : "cool white fluorescent", "multipliers" : [ 1.623046875, 1, 1.953125 ] },
+      { "name" : "day white fluorescent", "multipliers" : [ 1.62109375, 1, 1.341796875 ] },
+      { "name" : "daylight fluorescent", "multipliers" : [ 1.837890625, 1, 1.087890625 ] },
+      { "name" : "flash", "multipliers" : [ 1.916015625, 1, 1.1640625 ] }
+    ]
+  },
+  {
+    "make_model" : "NIKON Z50_2",
+    "presets" : [
+      { "name" : "direct sunlight", "multipliers" : [ 1.8828125, 1, 1.435546875 ] },
+      { "name" : "shade", "multipliers" : [ 2.318359375, 1, 1.171875 ] },
+      { "name" : "cloudy", "multipliers" : [ 2.015625, 1, 1.3046875 ] },
+      { "name" : "incandescent", "multipliers" : [ 1.2265625, 1, 2.2578125 ] },
+      { "name" : "cool white fluorescent", "multipliers" : [ 1.7421875, 1, 2.1171875 ] },
+      { "name" : "day white fluorescent", "multipliers" : [ 1.755859375, 1, 1.443359375 ] },
+      { "name" : "daylight fluorescent", "multipliers" : [ 2.0, 1, 1.171875 ] },
+      { "name" : "flash", "multipliers" : [ 2.111328125, 1, 1.255859375 ] }
     ]
   }
 ]
