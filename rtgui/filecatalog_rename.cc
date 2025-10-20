@@ -741,14 +741,16 @@ bool get_params(Gtk::Window &parent, const std::vector<FileBrowserEntry *> &args
             out.on_existing = Params::OnExistingAction(on_existing.get_active_row_number());
             out.progressive_number = progressive_number.get_value_as_int();
 
-            options.renaming.pattern = patternstr;
-            options.renaming.sidecars = sidecars.get_text();
-            options.renaming.name_norm = name_norm.get_active_row_number();
-            options.renaming.ext_norm = ext_norm.get_active_row_number();
-            options.renaming.allow_whitespace = allow_whitespace.get_active();
-            options.renaming.on_existing = on_existing.get_active_row_number();
-            options.renaming.progressive_number = progressive_number.get_value_as_int();
-            options.lastCopyMovePath = out.basedir;
+            if (options.renaming.remember) {
+                options.renaming.pattern = patternstr;
+                options.renaming.sidecars = sidecars.get_text();
+                options.renaming.name_norm = name_norm.get_active_row_number();
+                options.renaming.ext_norm = ext_norm.get_active_row_number();
+                options.renaming.allow_whitespace = allow_whitespace.get_active();
+                options.renaming.on_existing = on_existing.get_active_row_number();
+                options.renaming.progressive_number = progressive_number.get_value_as_int();
+                options.lastCopyMovePath = out.basedir;
+            }
 
             return true;
         };
@@ -789,14 +791,26 @@ bool get_params(Gtk::Window &parent, const std::vector<FileBrowserEntry *> &args
     if (!Glib::file_test(options.lastCopyMovePath, Glib::FILE_TEST_IS_DIR)) {
         options.lastCopyMovePath = ".";
     }
-    basedir.set_filename(options.lastCopyMovePath);
-    pattern.set_text(options.renaming.pattern);
-    sidecars.set_text(options.renaming.sidecars);
-    name_norm.set_active(options.renaming.name_norm);
-    ext_norm.set_active(options.renaming.ext_norm);
-    on_existing.set_active(options.renaming.on_existing);
-    allow_whitespace.set_active(options.renaming.allow_whitespace);
-    progressive_number.set_value(options.renaming.progressive_number);
+    if (options.renaming.remember) {
+        basedir.set_filename(options.lastCopyMovePath);
+        pattern.set_text(options.renaming.pattern);
+        sidecars.set_text(options.renaming.sidecars);
+        name_norm.set_active(options.renaming.name_norm);
+        ext_norm.set_active(options.renaming.ext_norm);
+        on_existing.set_active(options.renaming.on_existing);
+        allow_whitespace.set_active(options.renaming.allow_whitespace);
+        progressive_number.set_value(options.renaming.progressive_number);
+    } else {
+        auto r = Options::RenameOptions();
+        basedir.set_filename(".");
+        pattern.set_text(r.pattern);
+        sidecars.set_text(r.sidecars);
+        name_norm.set_active(r.name_norm);
+        ext_norm.set_active(r.ext_norm);
+        on_existing.set_active(r.on_existing);
+        allow_whitespace.set_active(r.allow_whitespace);
+        progressive_number.set_value(r.progressive_number);
+    }
 
     pattern.signal_changed().connect(sigc::slot<void>(on_pattern_change));
     name_norm.signal_changed().connect(sigc::slot<void>(on_pattern_change));

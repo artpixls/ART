@@ -1302,9 +1302,11 @@ Gtk::Widget* Preferences::getFileBrowserPanel ()
 
     thumbRatingMode = Gtk::manage(new Gtk::CheckButton(M("PREFERENCES_THUMBNAIL_RATING")));
     remember_metadata_filters = Gtk::manage(new Gtk::CheckButton(M("PREFERENCES_REMEMBER_METADATA_FILTERS")));
+    remember_rename_options = Gtk::manage(new Gtk::CheckButton(M("PREFERENCES_REMEMBER_RENAME_OPTIONS")));
     dir_browser_single_click = Gtk::manage(new Gtk::CheckButton(M("PREFERENCES_DIRBROWSER_SINGLECLICK") + " (" + M("PREFERENCES_APPLNEXTSTARTUP") + ")"));
     vbro->pack_start(*thumbRatingMode, Gtk::PACK_SHRINK, 0);
     vbro->pack_start(*remember_metadata_filters, Gtk::PACK_SHRINK, 0);
+    vbro->pack_start(*remember_rename_options, Gtk::PACK_SHRINK, 0);
     vbro->pack_start(*dir_browser_single_click, Gtk::PACK_SHRINK, 0);
 
     Gtk::HBox* hbrecent = Gtk::manage ( new Gtk::HBox () );
@@ -1910,6 +1912,7 @@ void Preferences::storePreferences ()
     moptions.toolpanels_disable = ckbTpDisable->get_active();
 
     moptions.remember_exif_filter_settings = remember_metadata_filters->get_active();
+    moptions.renaming.remember = remember_rename_options->get_active();
     moptions.dir_browser_single_click = dir_browser_single_click->get_active();
 
     moptions.fastexport_resize_width = fastexport_max_width->get_value();
@@ -2207,6 +2210,7 @@ void Preferences::fillPreferences ()
     ckbTpDisable->set_active(moptions.toolpanels_disable);
 
     remember_metadata_filters->set_active(moptions.remember_exif_filter_settings);
+    remember_rename_options->set_active(moptions.renaming.remember);
     dir_browser_single_click->set_active(moptions.dir_browser_single_click);
 
     fastexport_max_width->set_value(moptions.fastexport_resize_width);

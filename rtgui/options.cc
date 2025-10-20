@@ -80,6 +80,7 @@ Options::RenameOptions::RenameOptions()
     allow_whitespace = false;
     on_existing = 0;
     progressive_number = 1;
+    remember = true;
 }
 
 
@@ -1702,6 +1703,9 @@ void Options::readFromFile(Glib::ustring fname)
                 if (keyFile.has_key(g, "ProgressiveNumber")) {
                     renaming.progressive_number = keyFile.get_integer(g, "ProgressiveNumber");
                 }
+                if (keyFile.has_key(g, "Remember")) {
+                    renaming.remember = keyFile.get_boolean(g, "Remember");
+                }
             }
 
             if (keyFile.has_group("ExifFilterSettings")) {
@@ -2128,6 +2132,7 @@ void Options::saveToFile(Glib::ustring fname)
         keyFile.set_boolean("Renaming", "AllowWhitespace", renaming.allow_whitespace);
         keyFile.set_integer("Renaming", "OnExisting", renaming.on_existing);
         keyFile.set_integer("Renaming", "ProgressiveNumber", renaming.progressive_number);
+        keyFile.set_integer("Renaming", "Remember", renaming.remember);
 
         keyFile.set_boolean("ExifFilterSettings", "Remember", remember_exif_filter_settings);
         last_exif_filter_settings.save(keyFile, "ExifFilterSettings");
