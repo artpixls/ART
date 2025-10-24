@@ -37,8 +37,6 @@ Exposure::Exposure():
     EvHRBlur = m->newEvent(rtengine::DARKFRAME, "HISTORY_MSG_EXPOSURE_HRBLUR");
 
 //-------------- Highlight Reconstruction -----------------
-    pack_start (*Gtk::manage (new  Gtk::HSeparator()));
-
     hrmode = Gtk::manage (new MyComboBoxText ());
     hrmode->append(M("TP_HLREC_OFF"));
     hrmode->append(M("TP_HLREC_BLEND"));

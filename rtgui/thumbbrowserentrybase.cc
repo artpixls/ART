@@ -866,7 +866,9 @@ void ThumbBrowserEntryBase::resize (int h)
 
 void ThumbBrowserEntryBase::drawFrame(Cairo::RefPtr<Cairo::Context> cc, const Gdk::RGBA &bg, const Gdk::RGBA &fg)
 {
-    int radius = 4;
+    Glib::RefPtr<Gtk::StyleContext> style = parent->getStyle();
+    
+    int radius = 8;
 
     cc->move_to (radius, 0);
     cc->arc (exp_width - 1 - radius, radius, radius, -rtengine::RT_PI / 2, 0);
