@@ -1,14 +1,21 @@
-@define-color ART-bgDark01 mix(@ART-bg, black, 0.1);
-@define-color ART-bgDark05 mix(@ART-bg, black, 0.5);
-@define-color ART-bgDark025 mix(@ART-bg, black, 0.25);
-@define-color ART-bgDark033 mix(@ART-bg, black, 0.33);
-@define-color ART-bgDark045 mix(@ART-bg, black, 0.45);
-@define-color ART-bgDark06 mix(@ART-bg, black, 0.6);
+/*@define-color ART-bgDark01 mix(@ART-bg, @ART-dark, 0.1);*/
+@define-color ART-bgDark01 mix(@ART-bg, @ART-dark, 0);
+@define-color ART-bgDark05 mix(@ART-bg, @ART-dark, 0.5);
+/*@define-color ART-bgDark05 mix(@ART-bg, @ART-dark, 0);*/
+/*@define-color ART-bgDark025 mix(@ART-bg, @ART-dark, 0.25);*/
+@define-color ART-bgDark025 mix(@ART-bg, @ART-dark, 0.25);
+/*@define-color ART-bgDark033 mix(@ART-bg, @ART-dark, 0.33);*/
+@define-color ART-bgDark033 mix(@ART-bg, @ART-dark, 0.25);
+/*@define-color ART-bgDark045 mix(@ART-bg, @ART-dark, 0.45);*/
+@define-color ART-bgDark045 mix(@ART-bg, @ART-dark, 0.5);
+/*@define-color ART-bgDark06 mix(@ART-bg, @ART-dark, 0.6);*/
+@define-color ART-bgDark06 mix(@ART-bg, @ART-dark, 0.5);
+
 @define-color ART-bgBright0075 mix(@ART-bg, white, 0.075);
 
-@define-color ART-fgDark04 mix(@ART-fg, black, 0.4);
-@define-color ART-fgDark01 mix(@ART-fg, black, 0.1);
-@define-color ART-fgDark02 mix(@ART-fg, black, 0.2);
+@define-color ART-fgDark04 mix(@ART-fg, @ART-dark, 0.4);
+@define-color ART-fgDark01 mix(@ART-fg, @ART-dark, 0.1);
+@define-color ART-fgDark02 mix(@ART-fg, @ART-dark, 0.2);
 @define-color ART-fgBright02 mix(@ART-fg, white, 0.2);
 
 * {
@@ -1624,6 +1631,14 @@ button.text-button.toggle:hover:checked {
 .drawingarea:selected {
     background-color: @ART-bgBright0075;
     border-radius: 0.8333333333333333em;
+}
+
+#HistogramArea, #HistogramRGBArea {
+    background-color: rgb(40,40,40);
+}
+
+#PreviewWindow, #Inspector {
+    background-color: rgb(100,100,100);
 }
 
 image {
