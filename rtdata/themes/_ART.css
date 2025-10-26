@@ -764,6 +764,8 @@ messagedialog .dialog-action-area button:not(:only-child):nth-child(2) {
     /*border-radius: 0;*/
     min-height: 0.5em;/*x*/
 /*    border-radius: 0.6em; */
+    border-left-style: solid;
+    border-color: rgba(0,0,0,0.5);
 }
 /**/
 
@@ -2765,4 +2767,16 @@ notebook > header.left tab {
 
 button {
     background-image: none;
+}
+
+spinbutton button.down {
+    border-radius: 0.6em 0 0 0.6em;
+    margin: 0 1px 0 0;
+}
+spinbutton button.up {
+    border-radius: 0 0.6em 0.6em 0;
+}
+
+entry, combobox button {
+    min-height: 1.5em;
 }

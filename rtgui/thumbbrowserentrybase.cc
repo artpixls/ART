@@ -868,8 +868,18 @@ void ThumbBrowserEntryBase::drawFrame(Cairo::RefPtr<Cairo::Context> cc, const Gd
 {
     Glib::RefPtr<Gtk::StyleContext> style = parent->getStyle();
     
-    int radius = 8;
+    static int radius = -1;
+    if (radius < 0) {
+        Gtk::Button btn("");
+        auto ctx = btn.get_style_context();
 
+        gtk_style_context_get(ctx->gobj(),
+                              gtk_style_context_get_state(ctx->gobj()),
+                              GTK_STYLE_PROPERTY_BORDER_RADIUS, &radius,
+                              NULL);
+        radius *= 2;
+    }
+    
     cc->move_to (radius, 0);
     cc->arc (exp_width - 1 - radius, radius, radius, -rtengine::RT_PI / 2, 0);
     cc->arc (exp_width - 1 - radius, exp_height - 1 - radius, radius, 0, rtengine::RT_PI / 2);
