@@ -1672,7 +1672,7 @@ button.Bottom {
 #ProfilePanel button.Left,
 button.Left {
     border-radius: 0.6em 0 0 0.6em;
-    border-style: solid; /* none solid solid;*/
+    border-style: solid none solid solid;
     margin-right: 0;
 }
 #MetaPanelNotebook scrolledwindow + grid > button.MiddleH,
@@ -1680,7 +1680,7 @@ button.Left {
 #ProfilePanel button.MiddleH,
 button.MiddleH {
     border-radius: 0;
-    border-style: solid; /* none solid none;*/
+    border-style: solid none solid none;
     margin-left: 0;
     margin-right: 0;
 }
@@ -1689,7 +1689,7 @@ button.MiddleH {
 #ProfilePanel button.Right,
 button.Right {
     border-radius: 0 0.6em 0.6em 0;
-    border-style: solid; /* solid solid none;*/
+    border-style: solid solid solid none;
     margin-left: 0;
 }
 /* end */
