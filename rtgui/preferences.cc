@@ -1136,12 +1136,12 @@ Gtk::Widget* Preferences::getGeneralPanel ()
     edGimp->set_group (ge);
     externaleditorGrid->attach_next_to (*edGimp, Gtk::POS_TOP, 2, 1);
 
-    edPS = Gtk::manage ( new Gtk::RadioButton (M ("PREFERENCES_PSPATH") + ":"));
+    edPS = Gtk::manage (new Gtk::RadioButton("Adobe Photoshop"));
     setExpandAlignProperties (edPS, false, false, Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
-    psDir = Gtk::manage ( new MyFileChooserButton (M ("PREFERENCES_PSPATH"), Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER) );
-    setExpandAlignProperties (psDir, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
+    // psDir = Gtk::manage ( new MyFileChooserButton (M ("PREFERENCES_PSPATH"), Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER) );
+    // setExpandAlignProperties (psDir, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
     externaleditorGrid->attach_next_to (*edPS, *edGimp, Gtk::POS_BOTTOM, 1, 1);
-    externaleditorGrid->attach_next_to (*psDir, *edPS, Gtk::POS_RIGHT, 1, 1);
+    //externaleditorGrid->attach_next_to (*psDir, *edPS, Gtk::POS_RIGHT, 1, 1);
     edPS->set_group (ge);
 
     externaleditorGrid->attach_next_to (*edOther, *edPS, Gtk::POS_BOTTOM, 1, 1);
@@ -1725,8 +1725,8 @@ void Preferences::storePreferences ()
 #ifdef WIN32
     moptions.gimpDir = gimpDir->get_filename ();
     moptions.psDir = psDir->get_filename ();
-#elif defined __APPLE__
-    moptions.psDir = psDir->get_filename ();
+// #elif defined __APPLE__
+//     moptions.psDir = psDir->get_filename ();
 #endif
     moptions.customEditorProg = editorToSendTo->get_text ();
 
@@ -2081,11 +2081,11 @@ void Preferences::fillPreferences ()
 #elif defined __APPLE__
     edPS->set_active (moptions.editorToSendTo == 2);
 
-    if (Glib::file_test (moptions.psDir, Glib::FILE_TEST_IS_DIR)) {
-        psDir->set_current_folder (moptions.psDir);
-    } else {
-        psDir->set_current_folder (Glib::get_home_dir());
-    }
+    // if (Glib::file_test (moptions.psDir, Glib::FILE_TEST_IS_DIR)) {
+    //     psDir->set_current_folder (moptions.psDir);
+    // } else {
+    //     psDir->set_current_folder (Glib::get_home_dir());
+    // }
 
 #endif
     editorToSendTo->set_text (moptions.customEditorProg);
