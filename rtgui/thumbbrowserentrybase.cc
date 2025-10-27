@@ -877,7 +877,7 @@ void ThumbBrowserEntryBase::drawFrame(Cairo::RefPtr<Cairo::Context> cc, const Gd
                               gtk_style_context_get_state(ctx->gobj()),
                               GTK_STYLE_PROPERTY_BORDER_RADIUS, &radius,
                               NULL);
-        radius *= 2;
+        radius *= 1.5;
     }
     
     cc->move_to (radius, 0);

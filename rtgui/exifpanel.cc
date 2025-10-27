@@ -117,22 +117,22 @@ ExifPanel::ExifPanel():
     setExpandAlignProperties (buttons1, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
 
     const auto addbtn =
-        [&](const Glib::ustring &tip, const Glib::ustring &icon1, const Glib::ustring &icon2=Glib::ustring()) -> Gtk::Button *
+        [&](const char *cssclass, const Glib::ustring &tip, const Glib::ustring &icon1, const Glib::ustring &icon2=Glib::ustring()) -> Gtk::Button *
         {
             Gtk::Button *b = Gtk::manage(new Gtk::Button());
             b->set_image(*Gtk::manage(new RTImage(icon1, icon2)));
             b->set_tooltip_text(M(tip));
-            b->get_style_context()->add_class("Right");
+            b->get_style_context()->add_class(cssclass);
             setExpandAlignProperties(b, true, true, Gtk::ALIGN_FILL, Gtk::ALIGN_FILL);
             buttons1->attach_next_to(*b, Gtk::POS_RIGHT, 1, 1);
             return b;
         };
 
-    activate_all_ = addbtn("EXIFPANEL_ACTIVATE_ALL_HINT", "tick.svg");
-    activate_none_ = addbtn("EXIFPANEL_ACTIVATE_NONE_HINT", "box.svg");
-    add = addbtn("EXIFPANEL_ADDEDIT", "edit.svg");
-    reset = addbtn("EXIFPANEL_RESETHINT", "undo.svg", "redo.svg");
-    resetAll = addbtn("EXIFPANEL_RESETALLHINT", "undo-all.svg", "redo-all.svg");
+    activate_all_ = addbtn("Left", "EXIFPANEL_ACTIVATE_ALL_HINT", "tick.svg");
+    activate_none_ = addbtn("MiddleH", "EXIFPANEL_ACTIVATE_NONE_HINT", "box.svg");
+    add = addbtn("MiddleH", "EXIFPANEL_ADDEDIT", "edit.svg");
+    reset = addbtn("MiddleH", "EXIFPANEL_RESETHINT", "undo.svg", "redo.svg");
+    resetAll = addbtn("Right", "EXIFPANEL_RESETALLHINT", "undo-all.svg", "redo-all.svg");
 
     pack_end (*buttons1, Gtk::PACK_SHRINK);
 

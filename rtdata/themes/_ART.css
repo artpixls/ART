@@ -724,8 +724,8 @@ messagedialog .dialog-action-area button:not(:only-child):nth-child(2) {
     min-height: 1.666666666666666666em;/*x*/
     min-width: 1.666666666666666666em;/*x*/
     margin: 0;
-    border-radius: 0 0.2em 0.2em 0;
-    border-width: 0.083333333333333333em;
+/*    border-radius: 0 0.2em 0.2em 0;*/
+/*    border-width: 0.083333333333333333em;*/
     padding: 0;
 }
 #FileBrowserQueryToolbar entry + button.flat:not(:hover):not(:active),
@@ -764,7 +764,7 @@ messagedialog .dialog-action-area button:not(:only-child):nth-child(2) {
     /*border-radius: 0;*/
     min-height: 0.5em;/*x*/
 /*    border-radius: 0.6em; */
-    border-left-style: solid;
+/*    border-left-style: solid;*/
     border-color: rgba(0,0,0,0.5);
 }
 /**/
@@ -1672,7 +1672,7 @@ button.Bottom {
 #ProfilePanel button.Left,
 button.Left {
     border-radius: 0.6em 0 0 0.6em;
-    border-style: solid none solid solid;
+    border-style: solid; /* none solid solid;*/
     margin-right: 0;
 }
 #MetaPanelNotebook scrolledwindow + grid > button.MiddleH,
@@ -1680,7 +1680,7 @@ button.Left {
 #ProfilePanel button.MiddleH,
 button.MiddleH {
     border-radius: 0;
-    border-style: solid none solid none;
+    border-style: solid; /* none solid none;*/
     margin-left: 0;
     margin-right: 0;
 }
@@ -1689,7 +1689,7 @@ button.MiddleH {
 #ProfilePanel button.Right,
 button.Right {
     border-radius: 0 0.6em 0.6em 0;
-    border-style: solid solid solid none;
+    border-style: solid; /* solid solid none;*/
     margin-left: 0;
 }
 /* end */
@@ -2495,15 +2495,19 @@ progressbar progress {
 }
 
 notebook > header tab:hover {
-    box-shadow: 0 -0.25em @ART-bgDark025 inset;
+    box-shadow: 0 -0.25em @ART-bg inset;
 }
 
 notebook > header.left tab:hover {
-    box-shadow: -0.25em 0 @ART-bgDark025 inset;
+    box-shadow: -0.25em 0 @ART-bg inset;
 }
 
 notebook > header.right tab:hover {
-    box-shadow: 0.25em 0 @ART-bgDark025 inset;
+    box-shadow: 0.25em 0 @ART-bg inset;
+}
+
+notebook > header.bottom tab:hover {
+    box-shadow: 0 0.25em @ART-bg inset;
 }
 
 notebook > header tab:checked {
