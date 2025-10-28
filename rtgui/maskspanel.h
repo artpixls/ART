@@ -54,7 +54,7 @@ public:
     
     virtual ~MasksContentProvider() {}
 
-    virtual Gtk::Widget *getWidget() = 0;
+    virtual Gtk::Container *getContainer() = 0;
     virtual void getEvents(Events &events) = 0;
 
     virtual ToolPanelListener *listener() = 0;

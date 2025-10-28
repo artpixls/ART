@@ -951,7 +951,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     adl_(nullptr),
     deltaE_provider_(nullptr)
 {
-    Gtk::Widget *child = cp_->getWidget();
+    Gtk::Container *child = cp_->getContainer();
     MasksContentProvider::Events events;
     cp_->getEvents(events);
     EvMaskList = events.mask_list;
@@ -1053,9 +1053,15 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
     hb->pack_start(*vb, Gtk::PACK_SHRINK);
     pack_start(*hb, true, true);
 
-    pack_start(*Gtk::manage(new Gtk::HSeparator()));
-    pack_start(*child);
-    pack_start(*Gtk::manage(new Gtk::HSeparator()));
+    //pack_start(*Gtk::manage(new Gtk::HSeparator()));
+    {
+        MyExpander *e = Gtk::manage(new MyExpander(false, M("TP_LABMASKS_PARAMETERS")));
+        e->add(*child, false);
+        e->setLevel(1);
+        //pack_start(*child);
+        pack_start(*e);
+    }
+    //pack_start(*Gtk::manage(new Gtk::HSeparator()));
 
     Gtk::VBox *mask_box = Gtk::manage(new Gtk::VBox());
 
@@ -1488,7 +1494,7 @@ MasksPanel::MasksPanel(MasksContentProvider *cp):
         maskName = e;
     }
     mask_exp->add(*mask_box, false);
-    mask_exp->setLevel(2);
+    mask_exp->setLevel(1);
     pack_start(*mask_exp);
 
     mask_exp_ = mask_exp;

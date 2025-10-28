@@ -1680,6 +1680,7 @@ TP_LABMASKS_LIGHTNESS;L
 TP_LABMASKS_LIGHTNESS_DETAIL;Protecció de detalls de la màscara L
 TP_LABMASKS_MASK;Màscara
 TP_LABMASKS_MASK_UNNAMED;Sense nom
+TP_LABMASKS_PARAMETERS;Paràmetres
 TP_LABMASKS_SHOW;Mostrar màscara
 TP_LABMASKS_CONTRASTTHRESHOLDMASK;Màscara de llindar de contrast
 TP_LABMASKS_DELTAE;Màscara de similitud de color

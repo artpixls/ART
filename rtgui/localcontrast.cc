@@ -41,7 +41,7 @@ public:
         return "localcontrast";
     }
 
-    Gtk::Widget *getWidget() override
+    Gtk::Container *getContainer() override
     {
         return parent_->box;
     }
@@ -132,7 +132,7 @@ public:
     
     Glib::ustring getColumnHeader(int col) override
     {
-        return M("TP_LOCALCONTRAST_LIST_TITLE");
+        return M("TP_LABMASKS_PARAMETERS");
     }
     
     Glib::ustring getColumnContent(int col, int row) override
