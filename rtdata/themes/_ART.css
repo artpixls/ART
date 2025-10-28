@@ -1,15 +1,7 @@
-/*@define-color ART-bgDark01 mix(@ART-bg, @ART-dark, 0.1);*/
 @define-color ART-bgDark01 mix(@ART-bg, @ART-dark, 0);
 @define-color ART-bgDark05 mix(@ART-bg, @ART-dark, 0.5);
-/*@define-color ART-bgDark05 mix(@ART-bg, @ART-dark, 0);*/
-/*@define-color ART-bgDark025 mix(@ART-bg, @ART-dark, 0.25);*/
 @define-color ART-bgDark025 mix(@ART-bg, @ART-dark, 0.25);
-/*@define-color ART-bgDark033 mix(@ART-bg, @ART-dark, 0.33);*/
 @define-color ART-bgDark033 mix(@ART-bg, @ART-dark, 0.25);
-/*@define-color ART-bgDark045 mix(@ART-bg, @ART-dark, 0.45);*/
-@define-color ART-bgDark045 mix(@ART-bg, @ART-dark, 0.5);
-/*@define-color ART-bgDark06 mix(@ART-bg, @ART-dark, 0.6);*/
-@define-color ART-bgDark06 mix(@ART-bg, @ART-dark, 0.5);
 
 @define-color ART-bgBright0075 mix(@ART-bg, white, 0.075);
 
@@ -1160,7 +1152,7 @@ label {
 /* Affects all frames except in the toolbox */
 frame {
     border-width: 0;
-    border-color: @ART-bgDark033;
+    border-color: @ART-bgDark025;
     border-radius: 0;
     border-style: solid;
     /*border-style: none none none solid;*/
@@ -1207,7 +1199,7 @@ tooltip * {
 }
 
 treeview header button {
-    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark033); */
+    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark025); */
     background-color: @ART-bgDark025;
 }
 
@@ -1283,7 +1275,7 @@ menu separator {
 }
 
 #BeforeAfterContainer frame {
-    background-color: @ART-bgDark045;
+    background-color: @ART-bgDark05;
     padding: 0;
     margin: 0.0833333333333333em;
 }
@@ -1350,7 +1342,7 @@ scrollbar {
     border: none;
     margin: 0;
     padding: 0;
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
 }
 scrollbar slider {
     padding: 0;
@@ -1455,7 +1447,7 @@ button.flat  {
 }
 
 button.flat:checked {
-    /*  background-image:  linear-gradient(@ART-bgDark025, @ART-bgDark045); */
+    /*  background-image:  linear-gradient(@ART-bgDark025, @ART-bgDark05); */
     background-color: @ART-bgDark025;
 }
 
@@ -1465,13 +1457,13 @@ checkbutton > check {
 }
 
 radiobutton > radio {
-    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark045); */
+    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark05); */
     background-image: none;
     background-color: @ART-bgDark025;
 }
 
 button.flat:hover, checkbutton:hover > check, radiobutton:hover > radio {
-    /*  background-image: linear-gradient(shade(@ART-bgDark025,1.3), shade(@ART-bgDark045,1.3)); */
+    /*  background-image: linear-gradient(shade(@ART-bgDark025,1.3), shade(@ART-bgDark05,1.3)); */
     background-color: shade(@ART-bgDark025,1.3);
 }
 
@@ -1519,15 +1511,15 @@ scale slider {
     padding: 0.583333333333333333em;
     border-radius: 1.166666666666666666em;
     border-width: 0.083333333333333333em;
-    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark045); */
+    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark05); */
     background-color: @ART-bgDark025;
     background-image: none;
     /*border-color: @ART-hl;
-    border-color: @ART-bgDark06;
+    border-color: @ART-bgDark05;
     background-image: radial-gradient(@ART-bgDark025 50%, @ART-hl 15%);*/
 }
 scale slider:hover {
-    /*  background-image: linear-gradient(shade(@ART-bgDark025,1.3), shade(@ART-bgDark045,1.3)); */
+    /*  background-image: linear-gradient(shade(@ART-bgDark025,1.3), shade(@ART-bgDark05,1.3)); */
     background-color: shade(@ART-bgDark025,1.3);
 }
 scale:disabled slider {
@@ -1542,7 +1534,7 @@ scale trough {
     padding: 0 0.583333333333333333em;
     border-width: 0.083333333333333333em;
     border-radius: 0.333333333333333333em;
-    background-color: @ART-bgDark045;
+    background-color: @ART-bgDark05;
     background-image: none;
 }
 
@@ -1553,7 +1545,7 @@ scale.vertical trough {
 
 scale:disabled trough {
     background-color: @ART-bg;
-    border-color: @ART-bgDark045;
+    border-color: @ART-bgDark05;
 }
 scale.color trough {
     border-width: 0.083333333333333333em;
@@ -1622,12 +1614,12 @@ button.text-button.toggle:hover:checked {
 
 .drawingarea {
     border-radius: 0;
-    background-color: @ART-bgDark045;
-    border: 0.0833333333333333em solid @ART-bgDark06;
+    background-color: @ART-bgDark05;
+    border: 0.0833333333333333em solid @ART-bgDark05;
 }
 .drawingarea:disabled {
     background-color: @ART-bg;
-    border-color: @ART-bgDark045;
+    border-color: @ART-bgDark05;
 }
 
 .drawingarea:selected {
@@ -1697,7 +1689,7 @@ button.Right {
 /* [1.23[-][+]] */
 entry, spinbutton {
     min-height: 0.8333333333333333em;
-    background-color: @ART-bgDark045;
+    background-color: @ART-bgDark05;
     /*border-radius: 0.2em;*/
 }
 
@@ -1722,13 +1714,13 @@ entry:hover, spinbutton:hover {
 }
 
 entry:selected {
-    color: @ART-bgDark045;
+    color: @ART-bgDark05;
     background-color: @ART-fg;
 }
 
 /* Context menus */
 menu {
-    background-color: @ART-bgDark045;
+    background-color: @ART-bgDark05;
     color: @ART-fgDark02;
 }
 
@@ -1809,12 +1801,12 @@ button.radio#histButton  {
 }
 
 button.radio#histButton:checked {
-    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark045); */
+    /*  background-image: linear-gradient(@ART-bgDark025, @ART-bgDark05); */
     background-color: @ART-bgDark025;
 }
 
 button.radio#histButton:hover {
-    /*  background-image: linear-gradient(shade(@ART-bgDark025,1.3), shade(@ART-bgDark045,1.3)); */
+    /*  background-image: linear-gradient(shade(@ART-bgDark025,1.3), shade(@ART-bgDark05,1.3)); */
     background-color: shade(@ART-bgDark025,1.3);
 }
 
@@ -1854,7 +1846,7 @@ button.radio#histButton:hover {
     border-style: solid;
     border-width: 0.0833333333333333em;
     border-radius: 0.3333333333333333em;
-    border-color: @ART-bgDark033;
+    border-color: @ART-bgDark025;
     margin: 0.25em;
     padding: 0.25em;
 }
@@ -1895,40 +1887,40 @@ button.radio#histButton:hover {
 
 /* Sub-tool (MyExpander) background */
 #ExpanderBox2 > box, #ExpanderBox2 > grid {
-    background-color: @ART-bgDark01;
-    border: 0.0833333333333333em solid @ART-bgDark033;
+/*    background-color: @ART-bgDark01;*/
+    border: 0.0833333333333333em solid @ART-bgDark05;
     border-radius: 0.3333333333333333em;
     margin: 0;
     padding: 0.25em;
 }
 
-#ExpanderBox2 drawingarea {
+/*#ExpanderBox2 drawingarea {
     background-color: @ART-bgDark025;
-}
+}*/
 
 #ExpanderBox2 frame > border {
-    background-color: @ART-bgDark01;
-    border: 0.0833333333333333em solid @ART-bgDark025;
+/*    background-color: @ART-bgDark01;*/
+    border: 0.0833333333333333em solid @ART-bgDark05;
     border-radius: 0.3333333333333333em;
     margin: 0.25em;
     padding: 0.25em;
 }
 
-#ExpanderBox2 frame drawingarea {
+/*#ExpanderBox2 frame drawingarea {
     background-color: @ART-bgDark01;
-}
+}*/
 
 #ExpanderBox2 frame frame > border {
-    background-color: @ART-bg;
-    border: 0.0833333333333333em solid @ART-bgDark025;
+/*    background-color: @ART-bg;*/
+    border: 0.0833333333333333em solid @ART-bgDark05;
     border-radius: 0.3333333333333333em;
     margin: 0.25em;
     padding: 0.25em;
 }
 
-#ExpanderBox2 frame frame drawingarea {
+/*#ExpanderBox2 frame frame drawingarea {
     background-color: @ART-bg;
-}
+}*/
 
 #MyExpanderTitle > box {
     margin: 0.1666666666666666em 0;
@@ -1952,9 +1944,9 @@ button.radio#histButton:hover {
     color: @ART-fg;
 }
 
-#ExpanderBox2 separator, #ExpanderBox3 separator {
-    color: @ART-bgDark045;
-}
+/*#ExpanderBox2 separator, #ExpanderBox3 separator {
+    color: @ART-bgDark05;
+}*/
 
 /* Editor tab button */
 #MainNotebook grid label, #MainNotebook grid image  {
@@ -1973,7 +1965,7 @@ notebook header {
     background-color: @ART-bgDark025;
     border-width: 0.0833333333333333em;
     border-style: none;
-    border-color: @ART-bgDark045;
+    border-color: @ART-bgDark05;
     border-radius: 0;
     padding: 0.1666666666666666em;
     margin: 0;
@@ -2083,13 +2075,13 @@ fontchooser scrolledwindow,
 
 #MainNotebook header {
     /* OK */
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
     border: 0;
     padding: 0;
 }
 #MainNotebook tabs {
     /* OK */
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
 }
 #MainNotebook tab:hover {
     background-color: @ART-bg;
@@ -2137,10 +2129,10 @@ dialog frame > label:not(.dummy) {
 }
 
 #RightNotebook header {
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
 }
 #RightNotebook tabs {
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
     padding-bottom: 0.083333333333333333em;
 }
 #RightNotebook tab:hover {
@@ -2165,13 +2157,13 @@ dialog frame > label:not(.dummy) {
 
 #ToolPanelNotebook header {
     background-color: @ART-bgDark025;
-    border-color: @ART-bgDark045;
+    border-color: @ART-bgDark05;
     padding: 0;
     margin: 0;
 }
 
 #ToolPanelNotebook header tabs {
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
     margin: 0;
 }
 
@@ -2188,7 +2180,7 @@ dialog frame > label:not(.dummy) {
 /* All tool panels have a frame except for Meta which unlike the rest is a notebook itself.
  * So we use CSS to make it look like a frame. */
 #MetaPanelNotebook > stack > box {
-    border: 0.0833333333333333em solid @ART-bgDark045;
+    border: 0.0833333333333333em solid @ART-bgDark05;
     background-color: @ART-bgDark025;
     border-radius: 0 0 0.3333333333333333em 0.3333333333333333em;
     border-top-style: none;
@@ -2197,7 +2189,7 @@ dialog frame > label:not(.dummy) {
 }
 
 #MetaPanelNotebook header {
-    border: 0.0833333333333333em solid @ART-bgDark045;
+    border: 0.0833333333333333em solid @ART-bgDark05;
     background-color: @ART-bgDark025;
     border-radius: 0.3333333333333333em 0.3333333333333333em 0 0;
     border-bottom-style: none;
@@ -2232,7 +2224,7 @@ dialog frame > label:not(.dummy) {
 
 #MetaPanelNotebook text {
     border-color: @ART-bgDark05;
-    background-color: @ART-bgDark045;
+    background-color: @ART-bgDark05;
     border-style: solid;
     border-width: 0.0833333333333333em;
     border-radius: 0.25em;
@@ -2399,7 +2391,7 @@ button.flat {
 }
 
 button.flat:checked {
-    background: @ART-bgDark045;
+    background: @ART-bgDark05;
 }
 
 .text-button, .image-button, .independent {
@@ -2599,11 +2591,11 @@ dialog frame > border {
 
 
 #FileCatalog {
-    background-color: @ART-bgDark045;
+    background-color: @ART-bgDark05;
 }
 
 #FileCatalog:hover {
-    background-color: @ART-bgDark033;
+    background-color: @ART-bgDark025;
 }
 #FileCatalog:selected {
     background-color: @ART-bgDark01;
@@ -2631,7 +2623,7 @@ checkbutton check, radiobutton radio {
 }
 
 button {
-    /*  background-image: linear-gradient(to bottom, @ART-bgDark025, @ART-bgDark045); */
+    /*  background-image: linear-gradient(to bottom, @ART-bgDark025, @ART-bgDark05); */
     background-color: @ART-bgDark025;
     border-style: solid;
     border-color: #000000;
@@ -2647,7 +2639,7 @@ button.flat {
 }
 
 button.flat:hover, checkbutton:hover > check, radiobutton:hover > radio {
-    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark025,1.3), shade(@ART-bgDark045,1.3)); */
+    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark025,1.3), shade(@ART-bgDark05,1.3)); */
     background-color: shade(@ART-bgDark025,1.3);
 }
 
@@ -2660,43 +2652,43 @@ button.popupbutton-arrow {
 }
 
 button:hover  {
-    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark025,1.3), shade(@ART-bgDark045,1.3)); */
+    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark025,1.3), shade(@ART-bgDark05,1.3)); */
     background-color: shade(@ART-bgDark025,1.3);
 }
 
 button:active  {
-    /*  background-image: linear-gradient(to bottom, @ART-bgDark045, @ART-bgDark06); */
-    background-color: @ART-bgDark045;
+    /*  background-image: linear-gradient(to bottom, @ART-bgDark05, @ART-bgDark05); */
+    background-color: @ART-bgDark05;
 }
 
 button:checked  {
-    /*  background-image: linear-gradient(to bottom, @ART-bgDark045, @ART-bgDark06); */
-    background-color: @ART-bgDark045;
+    /*  background-image: linear-gradient(to bottom, @ART-bgDark05, @ART-bgDark05); */
+    background-color: @ART-bgDark05;
 }
 
 button:checked:hover  {
-    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark045,1.3), shade(@ART-bgDark06,1.3)); */
-    background-color: shade(@ART-bgDark045,1.3);
+    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark05,1.3), shade(@ART-bgDark05,1.3)); */
+    background-color: shade(@ART-bgDark05,1.3);
 }
 
 button.text-button.toggle {
-    /*  background-image: linear-gradient(to bottom, @ART-bgDark025, @ART-bgDark045); */
+    /*  background-image: linear-gradient(to bottom, @ART-bgDark025, @ART-bgDark05); */
     background-color: @ART-bgDark025;
 }
 
 button.text-button.toggle:hover {
-    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark025,1.3), shade(@ART-bgDark045,1.3)); */
+    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark025,1.3), shade(@ART-bgDark05,1.3)); */
     background-color: shade(@ART-bgDark025,1.3);
 }
 
 button.text-button.toggle:checked {
-    /*  background-image: linear-gradient(to bottom, @ART-bgDark06, @ART-bgDark045); */
-    background-color: @ART-bgDark06;
+    /*  background-image: linear-gradient(to bottom, @ART-bgDark05, @ART-bgDark05); */
+    background-color: @ART-bgDark05;
 }
 
 button.text-button.toggle:hover:checked {
-    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark06,1.3), shade(@ART-bgDark045,1.3)); */
-    background-color: shade(@ART-bgDark06,1.3);
+    /*  background-image: linear-gradient(to bottom, shade(@ART-bgDark05,1.3), shade(@ART-bgDark05,1.3)); */
+    background-color: shade(@ART-bgDark05,1.3);
 }
 
 menuitem {
@@ -2708,20 +2700,20 @@ menuitem:hover {
 }
 
 menuitem:hover > label {
-    color: @ART-bgDark045;
+    color: @ART-bgDark05;
 }
 
 menuitem:hover > * > label {
-    color: @ART-bgDark045;
+    color: @ART-bgDark05;
 }
 
 menuitem:hover > * > cellview {
-    color: @ART-bgDark045;
+    color: @ART-bgDark05;
 }
 
 entry selection {
     background-color: @ART-fg;
-    color: @ART-bgDark045;
+    color: @ART-bgDark05;
 }
 
 *:focus {
@@ -2741,7 +2733,7 @@ switch > :nth-child(3) {
     /* background-color: @ART-bg; */
     /*  background-image: linear-gradient(@ART-bg, @ART-bgDark025); */
     background-color: @ART-bgDark025;
-    border-color: @ART-bgDark06;
+    border-color: @ART-bgDark05;
 }
 
 entry, spinbutton, spinbutton button, spinbutton button:hover, spinbutton button:active, spinbutton button:disabled {
