@@ -2504,18 +2504,22 @@ notebook > header.bottom tab:hover {
 
 notebook > header tab:checked {
     box-shadow: 0 -0.25em @ART-hl inset;
+    background-color: @ART-bg;
 }
 
 notebook > header.left tab:checked {
     box-shadow: -0.25em 0 @ART-hl inset;
+    background-color: @ART-bg;
 }
 
 notebook > header.right tab:checked {
     box-shadow: 0.25em 0 @ART-hl inset;
+    background-color: @ART-bg;
 }
 
 notebook > header.bottom tab:checked {
     box-shadow: 0 0.25em @ART-hl inset;
+    background-color: @ART-bg;
 }
 
 scale highlight {
