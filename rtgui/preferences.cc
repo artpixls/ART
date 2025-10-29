@@ -2517,11 +2517,13 @@ void Preferences::switchThemeTo(const Glib::ustring &newTheme, const Options *op
         auto fg = get_theme_color(opts->theme_fg_color);
         auto hl = get_theme_color(opts->theme_hl_color);
         auto lum = rtengine::Color::rgbLuminance(bg[0]/255.0, bg[1]/255.0, bg[2]/255.0);
-        bool is_light = lum > 0.5;
-        if (options.rtSettings.verbose) {
-            std::cout << (is_light ? "light" : "dark") << " theme detected (background luminance is " << lum << ")" << std::endl;
+        float factor = 0.1;
+        if (lum < 0.2) {
+            factor = 2 + (0.2 - lum) / 0.2;
+        } else if (lum > 0.5) {
+            factor = 0.2 + 0.1 * (lum - 0.5) / 0.5;
         }
-        std::string dark = is_light ? "white" : "black";
+        std::string dark = std::string("rgb(") + std::to_string(int(bg[0]*factor)) + "," + std::to_string(int(bg[1]*factor)) + "," + std::to_string(int(bg[2]*factor)) + ")"; // "black";
         std::string filename(Glib::build_filename(options.ART_base_dir, "themes", "_ART.css"));
         buf << "@define-color ART-bg rgb(" << bg[0] << "," << bg[1] << "," << bg[2] << ");\n"
             << "@define-color ART-fg rgb(" << fg[0] << "," << fg[1] << "," << fg[2] << ");\n"

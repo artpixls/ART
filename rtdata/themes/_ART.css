@@ -1894,9 +1894,9 @@ button.radio#histButton:hover {
     padding: 0.25em;
 }
 
-/*#ExpanderBox2 drawingarea {
+#ExpanderBox2, #ExpanderBox3 {
     background-color: @ART-bgDark025;
-}*/
+}
 
 #ExpanderBox2 frame > border {
 /*    background-color: @ART-bgDark01;*/
