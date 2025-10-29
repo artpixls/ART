@@ -2522,6 +2522,13 @@ notebook > header.bottom tab:checked {
     background-color: @ART-bg;
 }
 
+#ExpanderBox * notebook > header tab:checked {
+    background-color: inherit;
+}
+#ExpanderBox * notebook > header tab:hover {
+    background-color: @ART-bg;
+}
+
 scale highlight {
     background-color: mix(@ART-hl, @ART-bg, 0.3);
 }
