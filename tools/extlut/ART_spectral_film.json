@@ -1,0 +1,121 @@
+// configuration file to integrate Spectral Film LUT
+// (https://github.com/JanLohse/spectral_film_lut)
+// into ART as an "external 3dLUT".
+//
+// Assumes that spectral_film_lut is installed in the Python interpreter
+// available from the system PATH. If this is not the case
+// (e.g. spectral_film_lut is installed in a virtual env), change the command
+// line to point to the right Python interpreter
+// (e.g. "/path/to/virtualenv/bin/python3" or similar)
+//
+// NOTE: when installing spectral_film_lut using `pip install -e .`,
+// the following additional packages are needed (at least on my system):
+//    matplotlib
+//    networkx
+//    opencv-python
+// 
+{"ART-lut3d" : {
+    "command" : "python3 spectral_film_mklut.py --server",
+    "server" : true,
+    "params" : [
+        ["exposure", "Exposure", -4.0, 4.0, 0.0, 0.05],
+        ["wb", "WB", 2700, 16000, 6500, 1],
+        ["tint", "Tint", -1.0, 1.0, 0, 0.01],
+        ["film", "Film stock", [
+            "AgfaVista100",
+            "FujiC200",
+            "FujiEterna500",
+            "FujiEterna500Vivid",
+            "FujiFP100C",
+            "FujiInstaxColor",
+            "FujiNatura1600",
+            "FujiPro160C",
+            "FujiPro160S",
+            "FujiPro400H",
+            "FujiProvia100F",
+            "FujiSuperiaReala",
+            "FujiSuperiaXtra400",
+            "FujiVelvia50",
+            "Kodachrome64",
+            "Kodak5207",
+            "Kodak5219",
+            "Kodak5222Dev12",
+            "Kodak5222Dev4",
+            "Kodak5222Dev5",
+            "Kodak5222Dev6",
+            "Kodak5222Dev9",
+            "Kodak5247",
+            "Kodak5247II",
+            "Kodak5248",
+            "Kodak5250",
+            "Kodak5277",
+            "Kodak5293",
+            "KodakAerochromeIII",
+            "KodakAerocolor",
+            "KodakAerocolorHigh",
+            "KodakAerocolorLow",
+            "KodakDyeTransferSeparation",
+            "KodakEXR5248",
+            "KodakEktachromeE100",
+            "KodakEktar100",
+            "KodakGold200",
+            "KodakPortra160",
+            "KodakPortra400",
+            "KodakPortra800",
+            "KodakPortra800At1600",
+            "KodakPortra800At3200",
+            "KodakTriX400Dev11",
+            "KodakTriX400Dev6",
+            "KodakTriX400Dev7",
+            "KodakTriX400Dev9",
+            "KodakUltramax400",
+            "KodakVericolorIII",
+            "TechnicolorIV",
+            "TechnicolorIValt1",
+            "TechnicolorIValt2"
+        ], 0],
+        ["red_light", "Red printer light", -1, 1, 0, 0.01],
+        ["green_light", "Green printer light", -1, 1, 0, 0.01],
+        ["blue_light", "Blue printer light", -1, 1, 0, 0.01],
+        ["paper", "Print stock", [
+            "Fuji3513DI",
+            "FujiCrystalArchiveDPII",
+            "FujiCrystalArchiveMaxima",
+            "FujiCrystalArchiveSuperTypeC",
+            "FujiflexNew",
+            "FujiflexOld",
+            "Kodak2303Dev2",
+            "Kodak2303Dev3",
+            "Kodak2303Dev5",
+            "Kodak2303Dev7",
+            "Kodak2303Dev9",
+            "Kodak2383",
+            "Kodak2393",
+            "Kodak5381",
+            "Kodak5383",
+            "Kodak5384",
+            "KodakDuraflexPlus",
+            "KodakDyeTransferKodachrome",
+            "KodakDyeTransferNegative",
+            "KodakEnduraPremier",
+            "KodakExr5386",
+            "KodakPolymax",
+            "KodakPolymaxGrade0",
+            "KodakPolymaxGrade1",
+            "KodakPolymaxGrade2",
+            "KodakPolymaxGrade3",
+            "KodakPolymaxGrade4",
+            "KodakPolymaxGrade5",
+            "KodakPolymaxGradeNeg1",
+            "KodakPortraEndura",
+            "KodakSupraEndura",
+            "TechinicolorV",
+            "None"
+        ], 0],
+        ["projector_wb", "Projector wb", 2700, 16000, 6500, 1],
+        ["white_point", "White point", 0.5, 2.0, 1.0, 0.001],
+        ["sat", "Sat", 0, 2, 1, 0.01],
+        ["black_offset", "Black offset", -2, 2, 0, 0.01]
+    ],
+    "label" : "Spectral Film Simulation"
+}}
