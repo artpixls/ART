@@ -4038,59 +4038,59 @@ XIAOMI 15 ULTRA REAR WIDE CAMERA
         "dcraw_matrix" : [8598, -2848, -857, -5618, 13606, 2195, -1002, 1773, 7137]
     },
     {
-        "make_model" : "NIKON Z 30",
+        "make_model" : ["NIKON Z 30", "NIKON Z30"], 
         "dcraw_matrix" : [10339, -3822, -890, -4183, 12023, 2436, -671, 1638, 7049]
     },
     {
-        "make_model" : "NIKON Z 5",
+        "make_model" : ["NIKON Z 5", "NIKON Z5"],
         "dcraw_matrix" : [8695, -2558, -648, -5015, 12711, 2575, -1279, 2215, 7514]
     },
     {
-        "make_model" : "NIKON Z 5 2",
+        "make_model" : ["NIKON Z 5 2", "NIKON Z 5_2", "NIKON Z5_2"],
         "dcraw_matrix" : [9874, -3784, -823, -4728, 12673, 2286, -648, 1513, 6375]
     },
     {
-        "make_model" : "NIKON Z 50",
+        "make_model" : ["NIKON Z 50", "NIKON Z50"],
         "dcraw_matrix" : [11640, -4829, -1079, -5107, 13006, 2325, -972, 1711, 7380]
     },
     {
-        "make_model" : "NIKON Z 50 2",
+        "make_model" : ["NIKON Z 50 2", "NIKON Z 50_2", "NIKON Z50_2"],
         "dcraw_matrix" : [11640, -4829, -1079, -5107, 13006, 2325, -972, 1711, 7380]
     },
     {
-        "make_model" : "NIKON Z 6",
+        "make_model" : ["NIKON Z 6", "NIKON Z6"],
         "dcraw_matrix" : [8210, -2534, -683, -5355, 13338, 2212, -1143, 1928, 6464]
     },
     {
-        "make_model" : ["NIKON Z 6 2", "NIKON Z 6_2"],
+        "make_model" : ["NIKON Z 6 2", "NIKON Z 6_2", "NIKON Z6_2"],
         "dcraw_matrix" : [9943, -3269, -839, -5323, 13269, 2259, -1198, 2083, 7557]
     },
     {
-        "make_model" : "NIKON Z 6 3",
+        "make_model" : ["NIKON Z 6 3", "NIKON Z 6_3", "NIKON Z6_3"],
         "dcraw_matrix" : [11206, -4286, -941, -4879, 12847, 2251, -745, 1654, 7374]
     },
     {
-        "make_model" : "NIKON Z 7",
+        "make_model" : ["NIKON Z 7", "NIKON Z7"],
         "dcraw_matrix" : [10405, -3755, -1270, -5461, 13787, 1792, -1040, 2015, 6785]
     },
     {
-        "make_model" : ["NIKON Z 7 2", "NIKON Z 7_2"],
+        "make_model" : ["NIKON Z 7 2", "NIKON Z 7_2", "NIKON Z7_2"],
         "dcraw_matrix" : [13705, -6004, -1400, -5464, 13568, 2062, -940, 1706, 7618]
     },
     {
-        "make_model" : "NIKON Z 8",
+        "make_model" : ["NIKON Z 8", "NIKON Z8"],
         "dcraw_matrix" : [11423, -4564, -1123, -4816, 12895, 2119, -210, 1061, 7282]
     },
     {
-        "make_model" : ["NIKON Z 9", "NIKON Z 8"],
+        "make_model" : ["NIKON Z 9", "NIKON Z9"],
         "dcraw_matrix" : [13389, -6049, -1441, -4544, 12757, 1969, 229, 497, 7390]
     },
     {
-        "make_model" : "NIKON Z F",
+        "make_model" : ["NIKON Z F", "NIKON ZF"],
         "dcraw_matrix" : [11607, -4491, -977, -4522, 12460, 2304, -458, 1519, 7616]
     },
     {
-        "make_model" : "NIKON Z FC",
+        "make_model" : ["NIKON Z FC", "NIKON ZFC"],
         "dcraw_matrix" : [11640, -4829, -1079, -5107, 13006, 2325, -972, 1711, 7380]
     },
     {
