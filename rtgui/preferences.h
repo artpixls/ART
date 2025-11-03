@@ -211,6 +211,8 @@ class Preferences : public Gtk::Dialog, public ProfileStoreListener {
 
     MySpinButton *fastexport_max_width;
     MySpinButton *fastexport_max_height;
+
+    Gtk::ComboBoxText *preview_resampling_quality;
     
     Glib::ustring storedValueRaw;
     Glib::ustring storedValueImg;

@@ -387,8 +387,22 @@ Gtk::Widget* Preferences::getPerformancePanel ()
     vbPerformance->set_spacing (4);
 
     Gtk::Frame* fprevdemo = Gtk::manage (new Gtk::Frame (M ("PREFERENCES_PREVDEMO")));
-    Gtk::HBox* hbprevdemo = Gtk::manage (new Gtk::HBox (false, 4));
-    Gtk::Label* lprevdemo = Gtk::manage (new Gtk::Label (M ("PREFERENCES_PREVDEMO_LABEL")));
+    Gtk::HBox* hbprevdemo = Gtk::manage(new Gtk::HBox(false, 4));
+
+    Gtk::Label* lprevdemo = Gtk::manage(new Gtk::Label(M("PREFERENCES_PREVIEW_RESAMPLING_QUALITY")));
+    
+    preview_resampling_quality = Gtk::manage(new Gtk::ComboBoxText());
+    preview_resampling_quality->append(M("GENERAL_LOW"));
+    preview_resampling_quality->append(M("GENERAL_MEDIUM"));
+    preview_resampling_quality->append(M("GENERAL_HIGH"));
+    preview_resampling_quality->set_active(1);
+    hbprevdemo->pack_start(*lprevdemo, Gtk::PACK_SHRINK);
+    hbprevdemo->pack_start(*preview_resampling_quality);
+    Gtk::VBox *vb = Gtk::manage(new Gtk::VBox());
+    vb->pack_start(*hbprevdemo);
+    
+    hbprevdemo = Gtk::manage (new Gtk::HBox (false, 4));
+    lprevdemo = Gtk::manage (new Gtk::Label (M ("PREFERENCES_PREVDEMO_LABEL")));
     cprevdemo = Gtk::manage (new Gtk::ComboBoxText ());
     cprevdemo->append (M ("PREFERENCES_PREVDEMO_FAST"));
     cprevdemo->append (M ("PREFERENCES_PREVDEMO_SIDECAR"));
@@ -396,7 +410,7 @@ Gtk::Widget* Preferences::getPerformancePanel ()
     hbprevdemo->pack_start (*lprevdemo, Gtk::PACK_SHRINK);
     hbprevdemo->pack_start (*cprevdemo);
     //fprevdemo->add (*hbprevdemo);
-    Gtk::VBox *vb = Gtk::manage(new Gtk::VBox());
+    //vb = Gtk::manage(new Gtk::VBox());
     vb->pack_start(*hbprevdemo);
 
     hbprevdemo = Gtk::manage(new Gtk::HBox(false, 4));
@@ -1828,6 +1842,7 @@ void Preferences::storePreferences ()
     moptions.serializeTiffRead = ctiffserialize->get_active();
     moptions.denoiseZoomedOut = denoiseZoomedOut->get_active();
     moptions.wb_preview_mode = Options::WBPreviewMode(wbpreview->get_active_row_number());
+    moptions.preview_resampling_quality = Options::PreviewResamplingQuality(preview_resampling_quality->get_active_row_number());
 
     if (sdcurrent->get_active ()) {
         moptions.startupDir = Options::STARTUPDIR_CURRENT;
@@ -2006,7 +2021,8 @@ void Preferences::fillPreferences ()
         monitorIccDir->set_current_folder(moptions.rtSettings.monitorIccDirectory);
     }
     
-    cprevdemo->set_active (moptions.prevdemo);
+    cprevdemo->set_active(moptions.prevdemo);
+    preview_resampling_quality->set_active(int(moptions.preview_resampling_quality));
 
     languages->set_active_text (moptions.language);
     ckbLangAutoDetect->set_active (moptions.languageAutoDetect);

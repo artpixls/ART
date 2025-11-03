@@ -624,6 +624,8 @@ void Options::setDefaults()
     theme_hl_color.assign({227, 146, 67});
     svg_color = svg_dark_color;
 
+    preview_resampling_quality = PreviewResamplingQuality::MEDIUM;
+
     rtSettings.os_monitor_profile = rtengine::Settings::StdMonitorProfile::SRGB;
 }
 
@@ -1157,6 +1159,10 @@ void Options::readFromFile(Glib::ustring fname)
 
                 if (keyFile.has_key("Performance", "RAWImageIOCacheSize")) {
                     rtSettings.imgio_raw_cache_size = keyFile.get_integer("Performance", "RAWImageIOCacheSize");
+                }
+
+                if (keyFile.has_key("Performance", "PreviewResamplingQuality")) {
+                    preview_resampling_quality = PreviewResamplingQuality(keyFile.get_integer("Performance", "PreviewResamplingQuality"));
                 }
             }
 
@@ -1906,6 +1912,7 @@ void Options::saveToFile(Glib::ustring fname)
         keyFile.set_boolean("Performance", "CTLScriptsFastPreview", rtSettings.ctl_scripts_fast_preview);
         keyFile.set_integer("Performance", "WBPreviewMode", wb_preview_mode);
         keyFile.set_integer("Performance", "RAWImageIOCacheSize", rtSettings.imgio_raw_cache_size);
+        keyFile.set_integer("Performance", "PreviewResamplingQuality", int(preview_resampling_quality));
         
         keyFile.set_integer("Inspector", "Mode", int(rtSettings.thumbnail_inspector_mode));
         keyFile.set_integer("Inspector", "RawCurve", int(rtSettings.thumbnail_inspector_raw_curve));

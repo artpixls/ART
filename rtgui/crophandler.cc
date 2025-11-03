@@ -27,6 +27,7 @@
 #include "../rtengine/refreshmap.h"
 #include "../rtengine/rt_math.h"
 #include "../rtengine/improcfun.h"
+#include "../rtengine/gauss.h"
 
 #include "../rtengine/threadpool.h"
 
@@ -51,7 +52,7 @@ Glib::RefPtr<Gdk::Pixbuf> resize_lanczos(Glib::RefPtr<Gdk::Pixbuf> src, int dw, 
 {
     const int sW = src->get_width();
     const int sH = src->get_height();
-    
+
     Imagefloat tmps(sW, sH);
     tmps.assignMode(Imagefloat::Mode::LAB);
     auto s_data = src->get_pixels();
@@ -92,6 +93,68 @@ Glib::RefPtr<Gdk::Pixbuf> resize_lanczos(Glib::RefPtr<Gdk::Pixbuf> src, int dw, 
 
     return dst;
 }
+
+
+void sharpen_for_display(Glib::RefPtr<Gdk::Pixbuf> src, int skip)
+{
+    if (skip <= 1) {
+        return;
+    }
+
+    const int sW = src->get_width();
+    const int sH = src->get_height();
+
+    array2D<float> buf(sW, sH);
+
+    auto s_data = src->get_pixels();
+    auto s_stride = src->get_rowstride();
+
+    const double sigma = 0.5 * 2.0/double(skip);
+    const float amount = 0.8;
+
+#ifdef _OPENMP
+#   pragma omp parallel
+#endif
+    {
+#ifdef _OPENMP
+#       pragma omp for
+#endif
+        for (int y = 0; y < sH; ++y) {
+            auto s_row = s_data + (y * s_stride);
+            for (int x = 0; x < sW; ++x) {
+                buf[y][x] = s_row[x * 3 + 1];
+            }
+        }
+
+        gaussianBlur(buf, buf, sW, sH, sigma);
+
+#ifdef _OPENMP
+#       pragma omp for
+#endif
+        for (int y = 0; y < sH; ++y) {
+            auto s_row = s_data + (y * s_stride);
+            for (int x = 0; x < sW; ++x) {
+                float diff = s_row[x * 3 + 1] - buf[y][x];
+                s_row[x * 3 + 1] = LIM(int(s_row[x * 3 + 1] + diff * amount), 0, 255);
+            }
+        }
+    }
+}
+
+
+Glib::RefPtr<Gdk::Pixbuf> resample_preview(Glib::RefPtr<Gdk::Pixbuf> src, int dw, int dh, float scale, int skip)
+{
+    if (scale > 1.f || options.preview_resampling_quality == Options::PreviewResamplingQuality::LOW) {
+        src = resize_fast(src, dw, dh, scale);
+    } else if (scale < 1.f) {
+        src = resize_lanczos(src, dw, dh, scale);
+    }
+    if (options.preview_resampling_quality == Options::PreviewResamplingQuality::HIGH) {
+        sharpen_for_display(src, skip);
+    }
+    return src;
+}
+
 
 } // namespace
 
@@ -473,11 +536,14 @@ void CropHandler::setDetailedCrop(
                                 }
 
                                 cropPixbuf = Gdk::Pixbuf::create_from_data (cropimg.data(), Gdk::COLORSPACE_RGB, false, 8, cropimg_width, cropimg_height, 3 * cropimg_width);
-                                if (czoom < 1.f) {
-                                    cropPixbuf = resize_lanczos(cropPixbuf, imw, imh, czoom);
-                                } else if (czoom > 1.f) {
-                                    cropPixbuf = resize_fast(cropPixbuf, imw, imh, czoom);
-                                }
+                                cropPixbuf = resample_preview(cropPixbuf, imw, imh, czoom, cis);
+                                // if (czoom < 1.f) {
+                                //     cropPixbuf = resize_lanczos(cropPixbuf, imw, imh, czoom);
+                                // } else if (czoom > 1.f) {
+                                //     cropPixbuf = resize_fast(cropPixbuf, imw, imh, czoom);
+                                // }
+
+                                // sharpen_for_display(cropPixbuf, cis);
 
                                 cropPixbuftrue = Gdk::Pixbuf::create_from_data (cropimgtrue.data(), Gdk::COLORSPACE_RGB, false, 8, cropimg_width, cropimg_height, 3 * cropimg_width);
                                 if (czoom != 1.f) {

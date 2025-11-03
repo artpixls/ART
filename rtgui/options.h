@@ -464,6 +464,13 @@ public:
     static const std::string svg_dark_color;
     static const std::string svg_light_color;
 
+    enum class PreviewResamplingQuality {
+        LOW,
+        MEDIUM,
+        HIGH
+    };
+    PreviewResamplingQuality preview_resampling_quality;
+
     struct ExportProfileInfo {
         Glib::ustring profile;
         bool enabled;
