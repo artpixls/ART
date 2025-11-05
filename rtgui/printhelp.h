@@ -11,7 +11,7 @@ inline void ART_print_help(std::ostream &out, const char *progname, bool gui)
     
     out << "  An advanced, cross-platform program for developing raw photos." << std::endl;
     out << std::endl;
-    out << "  Website: https://art.pixls.us/" << std::endl;
+    out << "  Website: https://artraweditor.github.io/" << std::endl;
     out << std::endl;
     out << "Symbols:" << std::endl;
     out << "  <Chevrons> indicate parameters you can change." << std::endl;

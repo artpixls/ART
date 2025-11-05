@@ -4,7 +4,7 @@
 # simulation pipeline (see https://github.com/andreavolpato/agx-emulsion)
 #
 # the script can be run standalone or integrated with ART
-# (https://art.pixls.us) using its "external 3dLUT" interface
+# (https://artraweditor.github.io) using its "external 3dLUT" interface
 
 import os
 os.environ['KMP_WARNINGS'] = 'off'

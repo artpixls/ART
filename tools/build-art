@@ -22,7 +22,7 @@ exe="ART"
 exeRelativePath=""
 
 # The path to the repository:
-repo="https://github.com/artpixls/ART.git"
+repo="https://github.com/artraweditor/ART.git"
 
 # No touching below this line, with the exception of the "Compile" section
 # -----------------------------------------------------------------------------

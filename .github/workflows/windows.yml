@@ -59,7 +59,7 @@ jobs:
             export ART_MSYS2_REPO=clangarm64
             export ART_PKG_PREFIX=mingw-w64-clang-aarch64
           fi
-          wget https://github.com/artpixls/msys2-repo/releases/download/1.0/repo-${ART_MSYS2_REPO}.tar
+          wget https://github.com/artraweditor/msys2-repo/releases/download/1.0/repo-${ART_MSYS2_REPO}.tar
           tar xf repo-${ART_MSYS2_REPO}.tar
           echo "[options]" > /etc/pacman.conf
           echo "HoldPkg     = pacman" >> /etc/pacman.conf

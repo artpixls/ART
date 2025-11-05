@@ -15,7 +15,7 @@
     <content_rating type="oars-1.1" />
     <metadata_license>MIT</metadata_license>
     <project_license>GPL-3.0+</project_license>
-    <url type="homepage">https://art.pixls.us</url>
+    <url type="homepage">https://artraweditor.github.io</url>
     <launchable type="desktop-id">ART.desktop</launchable>
     <provides>
         <binary>ART</binary>
@@ -24,11 +24,11 @@
     <screenshots>
         <screenshot type="default">
             <caption>Main window</caption>
-            <image>https://art.pixls.us/quickstart-pics/file_browser.jpg</image>
+            <image>https://artraweditor.github.io/quickstart-pics/file_browser.jpg</image>
         </screenshot>
         <screenshot>
           <caption>Image Preview</caption>
-          <image>https://art.pixls.us/quickstart-pics/inspect2.jpg</image>
+          <image>https://artraweditor.github.io/quickstart-pics/inspect2.jpg</image>
         </screenshot>
     </screenshots>
     <update_contact>_hub_AT_figuiere_net_</update_contact>

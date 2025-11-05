@@ -44,7 +44,7 @@ def getopts():
 
 def get_imageio_releases():
     auth = os.getenv('GITHUB_AUTH')
-    req = Request('https://api.github.com/repos/artpixls/ART-imageio/releases')
+    req = Request('https://api.github.com/repos/artraweditor/ART-imageio/releases')
     if auth is not None:
         req.add_header('authorization', 'Bearer ' + auth)
     with urlopen(req) as f:
