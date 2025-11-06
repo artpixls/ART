@@ -861,10 +861,10 @@ void get_targets(Params &params, FileBrowserEntry *entry,
     if (Glib::file_test(pf, Glib::FILE_TEST_EXISTS)) {
         out.push_back(std::make_pair(pf, options.getParamFile(newpath)));
     }
-    auto xmp = options.getXmpSidecarFile(fn);
-    if (Glib::file_test(xmp, Glib::FILE_TEST_EXISTS)) {
-        out.push_back(std::make_pair(xmp, options.getXmpSidecarFile(newpath)));
-    }
+    // auto xmp = options.getXmpSidecarFile(fn);
+    // if (Glib::file_test(xmp, Glib::FILE_TEST_EXISTS)) {
+    //     out.push_back(std::make_pair(xmp, options.getXmpSidecarFile(newpath)));
+    // }
 
     const auto ok =
         [&](const Glib::ustring &name) -> bool
@@ -1085,7 +1085,7 @@ void FileCatalog::deleteRequested(const std::vector<FileBrowserEntry*>& tbe, boo
                     ::g_remove(fname.c_str());
                     // delete also the arp sidecar
                     ::g_remove(options.getParamFile(fname).c_str());
-
+                    
                     if (!params.sidecars.empty()) {
                         auto base_fn = removeExtension(fname);
                         for (auto &s : params.sidecars) {
