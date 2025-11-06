@@ -30,6 +30,7 @@
 #include <shlobj.h>
 #endif
 
+#include "config.h"
 #include "options.h"
 #include "multilangmgr.h"
 #include "../rtengine/utils.h"
@@ -58,7 +59,11 @@ public:
     {
         auto uc = UserCommandStore::getInstance();
         pth_ = uc->getPathEnvVar(false);
-        Glib::setenv("PATH", uc->getPathEnvVar(true));
+        auto p = uc->getPathEnvVar(true);
+        if (options.rtSettings.verbose > 1) {
+            std::cout << "setting PATH for user command to: " << p << std::endl;
+        }
+        Glib::setenv("PATH", p);
     }
 
     ~PathSetter()
@@ -198,8 +203,9 @@ void UserCommandStore::init(const Glib::ustring &dirname)
 #ifdef BUILD_BUNDLE
 # ifdef __APPLE__
     extrapath = Glib::build_filename(options.ART_base_dir, "../MacOS") + G_SEARCHPATH_SEPARATOR_S + options.ART_base_dir;
-# endif // __APPLE__
+# else // __APPLE__
     extrapath = options.ART_base_dir;
+# endif // __APPLE__
 #endif // BUILD_BUNDLE
     auto epth = Glib::getenv("ART_EXIFTOOL_BASE_DIR");
     if (!epth.empty()) {
