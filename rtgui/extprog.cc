@@ -60,9 +60,6 @@ public:
         auto uc = UserCommandStore::getInstance();
         pth_ = uc->getPathEnvVar(false);
         auto p = uc->getPathEnvVar(true);
-        if (options.rtSettings.verbose > 1) {
-            std::cout << "setting PATH for user command to: " << p << std::endl;
-        }
         Glib::setenv("PATH", p);
     }
 
@@ -211,7 +208,10 @@ void UserCommandStore::init(const Glib::ustring &dirname)
     if (!epth.empty()) {
         extrapath += G_SEARCHPATH_SEPARATOR_S + epth;
     }
-    ucpath_ = extrapath + G_SEARCHPATH_SEPARATOR_S + origpath_;
+    if (!extrapath.empty()) {
+        extrapath += G_SEARCHPATH_SEPARATOR_S;
+    }
+    ucpath_ = extrapath + origpath_;
     
     commands_.clear();
 
