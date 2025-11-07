@@ -95,6 +95,7 @@ IPTCPanel::IPTCPanel()
     capl->set_tooltip_text(M("IPTCPANEL_DESCRIPTIONHINT"));
     captionView->set_tooltip_text(M("IPTCPANEL_DESCRIPTIONHINT"));
     captionView->set_size_request(35, 95);
+    captionView->set_wrap_mode(Gtk::WrapMode::WRAP_WORD);
     iptc->attach(*capl, 0, row++, 1, 1);
     iptc->attach(*scrolledWindowc, 0, row++, 1, 1);
 
