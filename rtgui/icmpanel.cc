@@ -51,22 +51,9 @@ ICMPanel::ICMPanel():
 
     // ------------------------------- Input profile
 
-
-    //Gtk::Frame *iFrame = Gtk::manage(new Gtk::Frame(M("TP_ICM_INPUTPROFILE")));
-    //iFrame->set_label_align(0.025, 0.5);
-    //iFrame->set_name("ExpanderBox2");
-
-    const auto lbl =
-        [&](const Glib::ustring &txt) -> Gtk::Widget *
-        {
-            auto l = Gtk::manage(new Gtk::Label());
-            l->set_markup("<b>" + txt + "</b>");
-            setExpandAlignProperties(l, false, false, Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
-            return l;
-        };
-
-    iVBox = Gtk::manage(new Gtk::VBox());
-    iVBox->pack_start(*lbl(M("TP_ICM_INPUTPROFILE")));
+    auto iVBox = Gtk::manage(new Gtk::VBox());
+    auto exp = Gtk::manage(new MyExpander(false, M("TP_ICM_INPUTPROFILE")));
+    exp->add(*iVBox);
 
     inone = Gtk::manage(new Gtk::RadioButton(M("TP_ICM_INPUTNONE")));
     inone->set_tooltip_text(M("TP_ICM_INPUTNONE_TOOLTIP"));
@@ -102,10 +89,6 @@ ICMPanel::ICMPanel():
     dcpFrame->set_name("ExpanderBox2");
 
     auto dcpGrid = Gtk::manage(new Gtk::VBox());
-    // dcpGrid->set_column_homogeneous(false);
-    // dcpGrid->set_row_homogeneous(false);
-    // dcpGrid->set_column_spacing(2);
-    // dcpGrid->set_row_spacing(2);
 
     Gtk::Grid* dcpIllGrid = Gtk::manage(new Gtk::Grid());
     dcpIllGrid->set_column_homogeneous(false);
@@ -180,19 +163,14 @@ ICMPanel::ICMPanel():
     saveRef->set_tooltip_markup(M("TP_ICM_SAVEREFERENCE_TOOLTIP"));
     iVBox->pack_start(*saveRef, Gtk::PACK_SHRINK);
 
-    pack_start(*iVBox, Gtk::PACK_EXPAND_WIDGET);
+    //pack_start(*iVBox, Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*exp, Gtk::PACK_EXPAND_WIDGET);
 
 
     // ---------------------------- Working profile
-
-
-    //Gtk::Frame *wFrame = Gtk::manage(new Gtk::Frame(M("TP_ICM_WORKINGPROFILE")));
-    //wFrame->set_label_align(0.025, 0.5);
-    //wFrame->set_name("ExpanderBox2");
-
-    iVBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK, 4);
-    iVBox->pack_start(*lbl(M("TP_ICM_WORKINGPROFILE")));
-    Gtk::VBox *wProfVBox = iVBox; //Gtk::manage(new Gtk::VBox());
+    Gtk::VBox *wProfVBox = Gtk::manage(new Gtk::VBox());
+    exp = Gtk::manage(new MyExpander(false, M("TP_ICM_WORKINGPROFILE")));
+    exp->add(*wProfVBox);
 
     wProfNames = Gtk::manage(new MyComboBoxText());
     wProfVBox->pack_start(*wProfNames, Gtk::PACK_SHRINK);
@@ -205,24 +183,14 @@ ICMPanel::ICMPanel():
 
     wProfNames->set_active(0);
 
-    // wFrame->add(*wVBox);
-
-    //wFrame->add(*wProfVBox);
-
-    pack_start(*wProfVBox, Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*exp, Gtk::PACK_EXPAND_WIDGET);
 
 
     // ---------------------------- Output profile
 
-
-    // Gtk::Frame *oFrame = Gtk::manage(new Gtk::Frame(M("TP_ICM_OUTPUTPROFILE")));
-    // //oFrame->set_label_align(0.025, 0.5);
-    // oFrame->set_name("ExpanderBox2");
-
-    
-    iVBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK, 4);
-    iVBox->pack_start(*lbl(M("TP_ICM_OUTPUTPROFILE")));
-    Gtk::VBox *oProfVBox = iVBox; //Gtk::manage(new Gtk::VBox());
+    Gtk::VBox *oProfVBox = Gtk::manage(new Gtk::VBox());
+    exp = Gtk::manage(new MyExpander(false, M("TP_ICM_OUTPUTPROFILE")));
+    exp->add(*oProfVBox);
 
     oProfNames = Gtk::manage(new MyComboBoxText());
     oProfVBox->pack_start(*oProfNames, Gtk::PACK_SHRINK);
@@ -287,7 +255,8 @@ ICMPanel::ICMPanel():
 
     //oFrame->add(*oProfVBox);
 
-    pack_start(*oProfVBox, Gtk::PACK_EXPAND_WIDGET);
+    //pack_start(*oProfVBox, Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*exp, Gtk::PACK_EXPAND_WIDGET);
 
     // ---------------------------- Output gamma list entries
 
