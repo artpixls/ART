@@ -663,8 +663,15 @@ void Thumbnail::getOriginalSize(int &w, int &h, bool consider_coarse)
     }
     w = cfs.width;
     h = cfs.height;
-    if (consider_coarse && pparamsValid) {
-        if (pparams.master.coarse.rotate == 90 || pparams.master.coarse.rotate == 270) {
+    if (consider_coarse) {
+        int rotate = 0;
+        if (pparamsValid) {
+            rotate = pparams.master.coarse.rotate;
+        }
+        if (rotate == 0) {
+            rotate = infoFromImage(fname);
+        }
+        if (rotate == 90 || rotate == 270) {
             std::swap(w, h);
         }
     }
