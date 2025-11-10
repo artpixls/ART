@@ -61,8 +61,6 @@ protected:
 private:
     rtengine::ProcEvent EvUseCAT;
 
-    Gtk::VBox* iVBox;
-
     Gtk::CheckButton* obpc;
     Gtk::RadioButton* inone;
 

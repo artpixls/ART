@@ -528,7 +528,7 @@ Glib::ustring filenameToUri(const Glib::ustring &fname, const Glib::ustring &bas
                 return Glib::filename_to_uri(fn, "U");
             } else if (Glib::path_get_dirname(fname) == basedir) {
                 fn = fname_to_utf8(Glib::path_get_basename(fname));
-                return Glib::filename_to_uri(fn, "B");
+                return Glib::filename_to_uri(Glib::ustring(G_DIR_SEPARATOR_S) + fn, "B");
             } else if (!home.empty() && stripif(fn, home)) {
                 return Glib::filename_to_uri(fn, "H");
             } else {
@@ -537,7 +537,8 @@ Glib::ustring filenameToUri(const Glib::ustring &fname, const Glib::ustring &bas
         } else {
             return Glib::filename_to_uri(Glib::ustring(G_DIR_SEPARATOR_S) + fn, "R");
         }
-    } catch (Glib::ConvertError &) {
+    } catch (Glib::ConvertError &exc) {
+        //std::cout << "ERROR IN CONVERTING TO URI: " << exc.what() << std::endl;
         return fname;
     }
 }
