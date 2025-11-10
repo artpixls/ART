@@ -51,11 +51,9 @@ ICMPanel::ICMPanel():
 
     // ------------------------------- Input profile
 
-
-    Gtk::Frame *iFrame = Gtk::manage(new Gtk::Frame(M("TP_ICM_INPUTPROFILE")));
-    iFrame->set_label_align(0.025, 0.5);
-
-    iVBox = Gtk::manage(new Gtk::VBox());
+    auto iVBox = Gtk::manage(new Gtk::VBox());
+    auto exp = Gtk::manage(new MyExpander(false, M("TP_ICM_INPUTPROFILE")));
+    exp->add(*iVBox);
 
     inone = Gtk::manage(new Gtk::RadioButton(M("TP_ICM_INPUTNONE")));
     inone->set_tooltip_text(M("TP_ICM_INPUTNONE_TOOLTIP"));
@@ -88,12 +86,9 @@ ICMPanel::ICMPanel():
     inone->set_group(opts);
 
     dcpFrame = Gtk::manage(new Gtk::Frame("DCP"));
+    dcpFrame->set_name("ExpanderBox2");
 
-    Gtk::Grid* dcpGrid = Gtk::manage(new Gtk::Grid());
-    dcpGrid->set_column_homogeneous(false);
-    dcpGrid->set_row_homogeneous(false);
-    dcpGrid->set_column_spacing(2);
-    dcpGrid->set_row_spacing(2);
+    auto dcpGrid = Gtk::manage(new Gtk::VBox());
 
     Gtk::Grid* dcpIllGrid = Gtk::manage(new Gtk::Grid());
     dcpIllGrid->set_column_homogeneous(false);
@@ -137,14 +132,14 @@ ICMPanel::ICMPanel():
     ckbApplyBaselineExposureOffset->set_tooltip_text(M("TP_ICM_APPLYBASELINEEXPOSUREOFFSET_TOOLTIP"));
     setExpandAlignProperties(ckbApplyBaselineExposureOffset, false, false, Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
 
-    dcpGrid->attach_next_to(*dcpIllGrid, Gtk::POS_BOTTOM, 1, 1);
-    dcpGrid->attach_next_to(*ckbToneCurve, Gtk::POS_BOTTOM, 1, 1);
-    dcpGrid->attach_next_to(*ckbApplyHueSatMap, Gtk::POS_BOTTOM, 1, 1);
-    dcpGrid->attach_next_to(*ckbApplyLookTable, Gtk::POS_BOTTOM, 1, 1);
-    dcpGrid->attach_next_to(*ckbApplyBaselineExposureOffset, Gtk::POS_BOTTOM, 1, 1);
+    dcpGrid->pack_start(*dcpIllGrid);
+    dcpGrid->pack_start(*ckbToneCurve);
+    dcpGrid->pack_start(*ckbApplyHueSatMap);
+    dcpGrid->pack_start(*ckbApplyLookTable);
+    dcpGrid->pack_start(*ckbApplyBaselineExposureOffset);
 
     dcpFrame->add(*dcpGrid);
-    dcpFrame->set_sensitive(false);
+    //dcpFrame->set_sensitive(false);
     iVBox->pack_start(*dcpFrame);
 
     use_CAT_ = Gtk::manage(new Gtk::CheckButton(M("TP_ICM_INPUT_CAT")));
@@ -168,17 +163,14 @@ ICMPanel::ICMPanel():
     saveRef->set_tooltip_markup(M("TP_ICM_SAVEREFERENCE_TOOLTIP"));
     iVBox->pack_start(*saveRef, Gtk::PACK_SHRINK);
 
-    iFrame->add(*iVBox);
-    pack_start(*iFrame, Gtk::PACK_EXPAND_WIDGET);
+    //pack_start(*iVBox, Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*exp, Gtk::PACK_EXPAND_WIDGET);
 
 
     // ---------------------------- Working profile
-
-
-    Gtk::Frame *wFrame = Gtk::manage(new Gtk::Frame(M("TP_ICM_WORKINGPROFILE")));
-    wFrame->set_label_align(0.025, 0.5);
-
     Gtk::VBox *wProfVBox = Gtk::manage(new Gtk::VBox());
+    exp = Gtk::manage(new MyExpander(false, M("TP_ICM_WORKINGPROFILE")));
+    exp->add(*wProfVBox);
 
     wProfNames = Gtk::manage(new MyComboBoxText());
     wProfVBox->pack_start(*wProfNames, Gtk::PACK_SHRINK);
@@ -191,20 +183,14 @@ ICMPanel::ICMPanel():
 
     wProfNames->set_active(0);
 
-    // wFrame->add(*wVBox);
-
-    wFrame->add(*wProfVBox);
-
-    pack_start(*wFrame, Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*exp, Gtk::PACK_EXPAND_WIDGET);
 
 
     // ---------------------------- Output profile
 
-
-    Gtk::Frame *oFrame = Gtk::manage(new Gtk::Frame(M("TP_ICM_OUTPUTPROFILE")));
-    oFrame->set_label_align(0.025, 0.5);
-
     Gtk::VBox *oProfVBox = Gtk::manage(new Gtk::VBox());
+    exp = Gtk::manage(new MyExpander(false, M("TP_ICM_OUTPUTPROFILE")));
+    exp->add(*oProfVBox);
 
     oProfNames = Gtk::manage(new MyComboBoxText());
     oProfVBox->pack_start(*oProfNames, Gtk::PACK_SHRINK);
@@ -267,9 +253,10 @@ ICMPanel::ICMPanel():
     obpc->set_active(true);
     oProfVBox->pack_start(*obpc, Gtk::PACK_SHRINK);
 
-    oFrame->add(*oProfVBox);
+    //oFrame->add(*oProfVBox);
 
-    pack_start(*oFrame, Gtk::PACK_EXPAND_WIDGET);
+    //pack_start(*oProfVBox, Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*exp, Gtk::PACK_EXPAND_WIDGET);
 
     // ---------------------------- Output gamma list entries
 
@@ -373,7 +360,7 @@ void ICMPanel::updateDCP(int dcpIlluminant, Glib::ustring dcp_name)
     ckbApplyHueSatMap->set_sensitive(false);
     dcpIllLabel->set_sensitive(false);
     dcpIll->set_sensitive(false);
-    dcpFrame->set_sensitive(false);
+    //dcpFrame->set_sensitive(false);
 
     DCPProfile* dcp = nullptr;
 
@@ -386,7 +373,7 @@ void ICMPanel::updateDCP(int dcpIlluminant, Glib::ustring dcp_name)
     }
 
     if (dcp) {
-        dcpFrame->set_sensitive(true);
+        //dcpFrame->set_sensitive(true);
         dcpFrame->set_visible(true);
 
         if (dcp->getHasToneCurve()) {
