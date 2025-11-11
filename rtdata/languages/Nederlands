@@ -296,7 +296,10 @@ GENERAL_EDIT;Bewerk
 GENERAL_ENABLE;Activeer
 GENERAL_ENABLED;Aan
 GENERAL_FILE;Bestand
+GENERAL_HIGH;Hoog
 GENERAL_LANDSCAPE;Landschap
+GENERAL_LOW;Laag
+GENERAL_MEDIUM;Medium
 GENERAL_NA;nvt.
 GENERAL_NO;Nee
 GENERAL_NONE;Geen
@@ -1145,6 +1148,7 @@ PREFERENCES_PREVDEMO;Accuratesse voorbeeld
 PREFERENCES_PREVDEMO_FAST;Snel
 PREFERENCES_PREVDEMO_LABEL;Gebruikte demozaïekmethode voor het voorbeeld bij <100% zoom:
 PREFERENCES_PREVDEMO_SIDECAR;Gelijk aan arp
+PREFERENCES_PREVIEW_RESAMPLING_QUALITY;Resampling-kwaliteit van het voorbeeld bij <100% zoom:
 PREFERENCES_PRINTER;Afdruksimulatie
 PREFERENCES_PROFILEHANDLING;Verwerking profielen
 PREFERENCES_PROFILELOADPR;Laadprioriteit profielen
@@ -1164,6 +1168,7 @@ PREFERENCES_PSPATH;Installatiemap Adobe Photoshop
 PREFERENCES_REMEMBERZOOMPAN;Onthoud zoom% en pan-verschuiving
 PREFERENCES_REMEMBERZOOMPAN_TOOLTIP;Onthoud het zoom-% en pan-startpunt van de huidige afbeelding als er een nieuwe afbeelding wordt geopend.\n\nDeze optie werkt alleen in 'Enkel-tab modus' en wanneer 'Demozaïekmethode van het voorbeeld bij <100% zoom' is ingesteld als 'Als in arp'.
 PREFERENCES_REMEMBER_METADATA_FILTERS;Onthoud metadatafilters
+PREFERENCES_REMEMBER_RENAME_OPTIONS;Onthoud instellingen voor hernoemen/kopiëren van bestanden
 PREFERENCES_SAVE_TP_OPEN_NOW;Bewaar open/dicht-status van de gereedschappen nu
 PREFERENCES_SELECTLANG;Selecteer taal
 PREFERENCES_SERIALIZE_TIFF_READ_LABEL;Serieel lezen van TIFF-bestanden

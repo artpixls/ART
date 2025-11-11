@@ -1,8 +1,8 @@
 #00 Hungary - Hungarian
 #01 Developers should add translations to this file and then run the 'generateTranslationDiffs' Bash script to update other locales.
 #02 Translators please append a comment here with the current date and your name(s) as used in the RawTherapee/ART forum or Bitbucket page, e.g.:
-#03 2025-09-16 Bereczky Péter
-# ART version: 1.25.9
+#03 2025-11-11 Bereczky Péter
+# ART version: 1.25.11
 ABOUT_TAB_BUILD;Verzió
 ABOUT_TAB_CREDITS;Szerzők
 ABOUT_TAB_LICENSE;Licenc
@@ -257,7 +257,10 @@ GENERAL_DISABLED;Letiltott
 GENERAL_ENABLE;Engedélyezés
 GENERAL_ENABLED;Engedélyezett
 GENERAL_FILE;Fájl
+GENERAL_HIGH;Magas
 GENERAL_LANDSCAPE;Fekvő
+GENERAL_LOW;Alacsony
+GENERAL_MEDIUM;Közepes
 GENERAL_NA;n/a
 GENERAL_NO;Nem
 GENERAL_NONE;Nincs
@@ -1128,6 +1131,7 @@ PREFERENCES_PREVDEMO;Előnézet pontossága
 PREFERENCES_PREVDEMO_FAST;Gyors
 PREFERENCES_PREVDEMO_LABEL;Az előnézethez használt színrekonstrukciós módszer <100%-os nagyításnál:
 PREFERENCES_PREVDEMO_SIDECAR;A kísérőfájl szerint
+PREFERENCES_PREVIEW_RESAMPLING_QUALITY;Az előnézeti kép újramintavételezési minősége <100%-os nagyításnál:
 PREFERENCES_PRINTER;Soft-Proofing
 PREFERENCES_PROFILEHANDLING;Feldolgozási profil kezelése
 PREFERENCES_PROFILELOADPR;Feldolgozási profil betöltésének prioritása
@@ -1147,6 +1151,7 @@ PREFERENCES_PSPATH;Adobe Photoshop telepítési könyvtára
 PREFERENCES_REMEMBERZOOMPAN;Emlékezzen nagyítás %-ára és az eltolásra
 PREFERENCES_REMEMBERZOOMPAN_TOOLTIP;Megőrzi az aktuális kép előnézetének nagyítási szintjét és pozícióját új kép megnyitásakor.\n\nCsak Egy szerkesztőlap módban működik, és amikor a színrekonstrukciós eljárást  <100% nagyításnál alkalmazzuk, akkor "A kísérőfájl szerint" van beállítva.
 PREFERENCES_REMEMBER_METADATA_FILTERS;Emlékezzen a metaadat szűrőkre
+PREFERENCES_REMEMBER_RENAME_OPTIONS;Emlékezzen a fájl átnevezés/másolás beállításaira
 PREFERENCES_SAVE_TP_OPEN_NOW;Eszközök összecsukott/kibontott állapotának mentése most
 PREFERENCES_SELECTLANG;Nyelv kiválasztása
 PREFERENCES_SERIALIZE_TIFF_READ;TIFF beolvasási beállítások
