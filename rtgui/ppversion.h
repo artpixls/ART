@@ -1,10 +1,12 @@
 #pragma once
 
 // This number has to be incremented whenever the ARP file format is modified or the behaviour of a tool changes
-#define PPVERSION 1043
+#define PPVERSION 1044
 
 /*
   Log of version changes
+  1044  2025-11-11
+        added option to apply DCP look early in the pipeline
   1043  2025-02-25
         added color mode to film grain
   1042  2024-12-30

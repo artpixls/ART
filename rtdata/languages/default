@@ -609,6 +609,7 @@ HISTORY_MSG_GRAIN_STRENGTH;Film Grain - Strength
 HISTORY_MSG_GRAIN_SCALE;Film Grain - Scale
 HISTORY_MSG_HISTMATCHING;Auto-matched tone curve
 HISTORY_MSG_HSL_SMOOTHING;Color equalizer - Smoothing
+HISTORY_MSG_ICM_DCP_LOOK_PIPELINE_POS;Input profile - DCP look application
 HISTORY_MSG_ICM_INPUT_CAT;Input profile - CAT
 HISTORY_MSG_ICM_OUTPUT_PRIMARIES;Output - Primaries
 HISTORY_MSG_ICM_OUTPUT_TEMP;Output - ICC-v4 illuminant D
@@ -1603,6 +1604,10 @@ TP_ICM_APPLYHUESATMAP_TOOLTIP;Employ the embedded DCP base table (HueSatMap). Th
 TP_ICM_APPLYLOOKTABLE;Look table
 TP_ICM_APPLYLOOKTABLE_TOOLTIP;Employ the embedded DCP look table. The setting is only available if the selected DCP has one.
 TP_ICM_BPC;Black Point Compensation
+TP_ICM_DCP_LOOK_PIPELINE_POS;Look application
+TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY;Early in the pipeline
+TP_ICM_DCP_LOOK_PIPELINE_POS_LATE;Later in the pipeline
+TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;Controls when to apply the look modifiers of the DCP profile (look table, baseline exposure and tone curve) in the processing pipeline. Applying the look earlier (before the Color/Tone Correction) is more conformant to the original Adobe DNG specifications, but it might result in clipped highlights that cannot be recovered by the local editing tools
 TP_ICM_DCPILLUMINANT;Illuminant
 TP_ICM_DCPILLUMINANT_INTERPOLATED;Interpolated
 TP_ICM_DCPILLUMINANT_TOOLTIP;Select which embedded DCP illuminant to employ. Default is "interpolated" which is a mix between the two based on white balance. The setting is only available if a dual-illuminant DCP with interpolation support is selected.

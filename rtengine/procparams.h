@@ -1183,6 +1183,7 @@ struct ColorManagementParams {
     bool applyBaselineExposureOffset;
     bool applyHueSatMap;
     int dcpIlluminant;
+    bool dcp_look_early;
 
     Glib::ustring workingProfile;
 

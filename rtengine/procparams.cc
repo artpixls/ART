@@ -2617,6 +2617,7 @@ ColorManagementParams::ColorManagementParams() :
     applyBaselineExposureOffset(true),
     applyHueSatMap(true),
     dcpIlluminant(0),
+    dcp_look_early(false),
     workingProfile("Rec2020"),
     outputProfile("RTv2_sRGB"),
     outputIntent(RI_RELATIVE),
@@ -2638,7 +2639,8 @@ bool ColorManagementParams::operator ==(const ColorManagementParams& other) cons
         && outputProfile == other.outputProfile
         && outputIntent == other.outputIntent
         && outputBPC == other.outputBPC
-        && inputProfileCAT == other.inputProfileCAT;
+        && inputProfileCAT == other.inputProfileCAT
+        && dcp_look_early == other.dcp_look_early;
 }
 
 bool ColorManagementParams::operator !=(const ColorManagementParams& other) const
@@ -3967,6 +3969,7 @@ int ProcParams::save(ProgressListener *pl, bool save_general,
             saveToKeyfile("Color Management", "ApplyBaselineExposureOffset", icm.applyBaselineExposureOffset, keyFile);
             saveToKeyfile("Color Management", "ApplyHueSatMap", icm.applyHueSatMap, keyFile);
             saveToKeyfile("Color Management", "DCPIlluminant", icm.dcpIlluminant, keyFile);
+            saveToKeyfile("Color Management", "DCPLookEarly", icm.dcp_look_early, keyFile);
             saveToKeyfile("Color Management", "WorkingProfile", icm.workingProfile, keyFile);
             saveToKeyfile("Color Management", "OutputProfile", icm.outputProfile, keyFile);
             saveToKeyfile(
@@ -5171,6 +5174,11 @@ int ProcParams::load(ProgressListener *pl, bool load_general,
             assignFromKeyfile(keyFile, "Color Management", "ApplyBaselineExposureOffset", icm.applyBaselineExposureOffset);
             assignFromKeyfile(keyFile, "Color Management", "ApplyHueSatMap", icm.applyHueSatMap);
             assignFromKeyfile(keyFile, "Color Management", "DCPIlluminant", icm.dcpIlluminant);
+            if (ppVersion < 1044) {
+                icm.dcp_look_early = false;
+            } else {
+                assignFromKeyfile(keyFile, "Color Management", "DCPLookEarly", icm.dcp_look_early);
+            }
             assignFromKeyfile(keyFile, "Color Management", "WorkingProfile", icm.workingProfile);
 
             assignFromKeyfile(keyFile, "Color Management", "OutputProfile", icm.outputProfile);

@@ -43,6 +43,7 @@ ICMPanel::ICMPanel():
     auto m = ProcEventMapper::getInstance();
     EvUseCAT = m->newEvent(rtengine::ALLNORAW, "HISTORY_MSG_ICM_INPUT_CAT");
     EvToolReset.set_action(rtengine::DEMOSAIC);
+    EvDCPApplyLookEarly = m->newEvent(rtengine::RGBCURVE, "HISTORY_MSG_ICM_DCP_LOOK_PIPELINE_POS");
 
     ipDialog = Gtk::manage(new MyFileChooserButton(M("TP_ICM_INPUTDLGLABEL"), Gtk::FILE_CHOOSER_ACTION_OPEN));
     ipDialog->set_tooltip_text(M("TP_ICM_INPUTCUSTOM_TOOLTIP"));
@@ -132,11 +133,23 @@ ICMPanel::ICMPanel():
     ckbApplyBaselineExposureOffset->set_tooltip_text(M("TP_ICM_APPLYBASELINEEXPOSUREOFFSET_TOOLTIP"));
     setExpandAlignProperties(ckbApplyBaselineExposureOffset, false, false, Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
 
+    auto dcp_look_early_hbox = Gtk::manage(new Gtk::HBox());
+    auto dcp_look_early_lbl = Gtk::manage(new Gtk::Label(M("TP_ICM_DCP_LOOK_PIPELINE_POS") + ": "));
+    dcp_look_early_lbl->set_tooltip_text(M("TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP"));
+    dcp_look_early_hbox->pack_start(*dcp_look_early_lbl, Gtk::PACK_SHRINK);
+    dcp_look_early_ = Gtk::manage(new MyComboBoxText());
+    dcp_look_early_->append(M("TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY"));
+    dcp_look_early_->append(M("TP_ICM_DCP_LOOK_PIPELINE_POS_LATE"));
+    dcp_look_early_hbox->pack_start(*dcp_look_early_, Gtk::PACK_EXPAND_WIDGET, 4);
+    setExpandAlignProperties(dcp_look_early_lbl, false, false, Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
+    setExpandAlignProperties(dcp_look_early_, true, false, Gtk::ALIGN_FILL, Gtk::ALIGN_CENTER);
+
     dcpGrid->pack_start(*dcpIllGrid);
-    dcpGrid->pack_start(*ckbToneCurve);
     dcpGrid->pack_start(*ckbApplyHueSatMap);
-    dcpGrid->pack_start(*ckbApplyLookTable);
     dcpGrid->pack_start(*ckbApplyBaselineExposureOffset);
+    dcpGrid->pack_start(*ckbApplyLookTable);
+    dcpGrid->pack_start(*ckbToneCurve);
+    dcpGrid->pack_start(*dcp_look_early_hbox);
 
     dcpFrame->add(*dcpGrid);
     //dcpFrame->set_sensitive(false);
@@ -312,6 +325,11 @@ ICMPanel::ICMPanel():
     ltableconn = ckbApplyLookTable->signal_toggled().connect(sigc::mem_fun(*this, &ICMPanel::applyLookTableChanged));
     beoconn = ckbApplyBaselineExposureOffset->signal_toggled().connect(sigc::mem_fun(*this, &ICMPanel::applyBaselineExposureOffsetChanged));
     hsmconn = ckbApplyHueSatMap->signal_toggled().connect(sigc::mem_fun(*this, &ICMPanel::applyHueSatMapChanged));
+    dcp_look_early_->signal_changed().connect(sigc::slot<void>([&]() {
+        if (listener) {
+            listener->panelChanged(EvDCPApplyLookEarly, dcp_look_early_->get_active_text());
+        }
+    }));
 
     icamera->signal_toggled().connect(sigc::mem_fun(*this, &ICMPanel::ipChanged));
     icameraICC->signal_toggled().connect(sigc::mem_fun(*this, &ICMPanel::ipChanged));
@@ -514,6 +532,8 @@ void ICMPanel::read(const ProcParams* pp)
     use_CAT_->set_active(pp->icm.inputProfileCAT);
     use_CAT_->set_visible(icamera->get_active());
 
+    dcp_look_early_->set_active(pp->icm.dcp_look_early ? 0 : 1);
+
     enableListener();
 }
 
@@ -565,6 +585,8 @@ void ICMPanel::write(ProcParams* pp)
     pp->toneCurve.fromHistMatching = false;
 
     pp->icm.inputProfileCAT = use_CAT_->get_active();
+
+    pp->icm.dcp_look_early = dcp_look_early_->get_active_row_number() == 0;
 }
 
 void ICMPanel::setDefaults(const ProcParams* defParams)

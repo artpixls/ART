@@ -60,6 +60,7 @@ protected:
 
 private:
     rtengine::ProcEvent EvUseCAT;
+    rtengine::ProcEvent EvDCPApplyLookEarly;
 
     Gtk::CheckButton* obpc;
     Gtk::RadioButton* inone;
@@ -75,6 +76,8 @@ private:
     Gtk::CheckButton* ckbApplyLookTable;
     Gtk::CheckButton* ckbApplyBaselineExposureOffset;
     Gtk::CheckButton* ckbApplyHueSatMap;
+    MyComboBoxText *dcp_look_early_;
+    
     MyComboBoxText* wProfNames;
     sigc::connection wprofnamesconn;
 

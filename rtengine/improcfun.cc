@@ -587,9 +587,11 @@ bool ImProcFunctions::process(Pipeline pipeline, Stage stage, Imagefloat *img)
         }
         break;
     case Stage::STAGE_2:
+        if (params->icm.dcp_look_early) {
+            dcpProfile(img, dcpProf, dcpApplyState, multiThread);
+        }
         linked_mask_mgr_.init(*params);
-        if (pipeline == Pipeline::OUTPUT ||
-            (pipeline == Pipeline::PREVIEW /*&& scale == 1*/)) {
+        if (pipeline == Pipeline::OUTPUT || pipeline == Pipeline::PREVIEW) {
             stop = STEP_s_(sharpening);
             if (!stop) {
                 STEP_(impulsedenoise);
@@ -606,7 +608,9 @@ bool ImProcFunctions::process(Pipeline pipeline, Stage stage, Imagefloat *img)
             STEP_(filmGrain);
             STEP_(logEncoding);
             STEP_(saturationVibrance);
-            dcpProfile(img, dcpProf, dcpApplyState, multiThread);
+            if (!params->icm.dcp_look_early) {
+                dcpProfile(img, dcpProf, dcpApplyState, multiThread);
+            }
             if (!params->filmSimulation.after_tone_curve) {
                 STEP_(filmSimulation);
             }
@@ -621,7 +625,6 @@ bool ImProcFunctions::process(Pipeline pipeline, Stage stage, Imagefloat *img)
         stop = stop || STEP_s_(localContrast);
         if (!stop) {
             STEP_(blackAndWhite);
-//            STEP_(filmGrain);
         }
         if (pipeline == Pipeline::PREVIEW && params->prsharpening.enabled) {
             double s = scale;
