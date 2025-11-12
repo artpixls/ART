@@ -1607,7 +1607,7 @@ TP_ICM_BPC;Black Point Compensation
 TP_ICM_DCP_LOOK_PIPELINE_POS;Look application
 TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY;Early in the pipeline
 TP_ICM_DCP_LOOK_PIPELINE_POS_LATE;Later in the pipeline
-TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;Controls when to apply the look modifiers of the DCP profile (look table, baseline exposure and tone curve) in the processing pipeline. Applying the look earlier (before the Color/Tone Correction) is more conformant to the original Adobe DNG specifications, but it might result in clipped highlights that cannot be recovered by the local editing tools
+TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;Controls when to apply the look modifiers of the DCP profile (look table, baseline exposure and tone curve) in the processing pipeline. Applying the look earlier (before Color/Tone Correction) is more conformant to the original Adobe DNG specifications, but it might result in clipped highlights that cannot be recovered by the local editing tools
 TP_ICM_DCPILLUMINANT;Illuminant
 TP_ICM_DCPILLUMINANT_INTERPOLATED;Interpolated
 TP_ICM_DCPILLUMINANT_TOOLTIP;Select which embedded DCP illuminant to employ. Default is "interpolated" which is a mix between the two based on white balance. The setting is only available if a dual-illuminant DCP with interpolation support is selected.
