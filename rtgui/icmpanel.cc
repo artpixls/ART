@@ -54,7 +54,7 @@ ICMPanel::ICMPanel():
 
     auto iVBox = Gtk::manage(new Gtk::VBox());
     auto exp = Gtk::manage(new MyExpander(false, M("TP_ICM_INPUTPROFILE")));
-    exp->add(*iVBox);
+    exp->add(*iVBox, false);
 
     inone = Gtk::manage(new Gtk::RadioButton(M("TP_ICM_INPUTNONE")));
     inone->set_tooltip_text(M("TP_ICM_INPUTNONE_TOOLTIP"));
@@ -183,7 +183,7 @@ ICMPanel::ICMPanel():
     // ---------------------------- Working profile
     Gtk::VBox *wProfVBox = Gtk::manage(new Gtk::VBox());
     exp = Gtk::manage(new MyExpander(false, M("TP_ICM_WORKINGPROFILE")));
-    exp->add(*wProfVBox);
+    exp->add(*wProfVBox, false);
 
     wProfNames = Gtk::manage(new MyComboBoxText());
     wProfVBox->pack_start(*wProfNames, Gtk::PACK_SHRINK);
@@ -203,7 +203,7 @@ ICMPanel::ICMPanel():
 
     Gtk::VBox *oProfVBox = Gtk::manage(new Gtk::VBox());
     exp = Gtk::manage(new MyExpander(false, M("TP_ICM_OUTPUTPROFILE")));
-    exp->add(*oProfVBox);
+    exp->add(*oProfVBox, false);
 
     oProfNames = Gtk::manage(new MyComboBoxText());
     oProfVBox->pack_start(*oProfNames, Gtk::PACK_SHRINK);
