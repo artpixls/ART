@@ -17,7 +17,7 @@
 #16 2024-07-28 Ohnishi, Yasuo, updates for 1.22.2
 #17 2025-06-20 Ohnishi, Yasuo, updates for 1.25.6
 #18 2025-09-10  Ohnishi, Yasuo, updates for 1.25.9
-#19 2025-11-11  Ohnishi, Yasuo, updates for 1.25.11
+#19 2025-11-12  Ohnishi, Yasuo, updates for 1.25.11
 ABOUT_TAB_BUILD;버전
 ABOUT_TAB_CREDITS;크레디트
 ABOUT_TAB_LICENSE;저작권
@@ -625,6 +625,7 @@ HISTORY_MSG_GRAIN_STRENGTH;필름 효과 - 강도
 HISTORY_MSG_GRAIN_SCALE;필름 효과 - 크기 (Scale)
 HISTORY_MSG_HISTMATCHING;톤 곡선 자동조정
 HISTORY_MSG_HSL_SMOOTHING;색 이퀄라이저 - 매끄럽게 하기
+HISTORY_MSG_ICM_DCP_LOOK_PIPELINE_POS;입력 프로파일 - DCP 프로파일 적용
 HISTORY_MSG_ICM_INPUT_CAT;프로파일 입력 - 색순응변환 (CAT)
 HISTORY_MSG_ICM_OUTPUT_PRIMARIES;출력 - Primaries
 HISTORY_MSG_ICM_OUTPUT_TEMP;출력 - ICC-v4 광원 D
@@ -1619,6 +1620,10 @@ TP_ICM_APPLYHUESATMAP_TOOLTIP;DCP에 포함된 Base Table (색조-채도 맵) �
 TP_ICM_APPLYLOOKTABLE;Look Table
 TP_ICM_APPLYLOOKTABLE_TOOLTIP;DCP에 포함된 Look Table을 사용합니다. 단 적용하는 DCP에 이 태그가 있는 경우에 한정됩니다.
 TP_ICM_BPC;블랙 포인트 보정
+TP_ICM_DCP_LOOK_PIPELINE_POS;DCP 프로파일 적용
+TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY;파이프라인 초기에 적용
+TP_ICM_DCP_LOOK_PIPELINE_POS_LATE;파이프라인의 느린 단계에서 적용
+TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;DCP 프로파일에 의한 이미지 표시 변환(룩 테이블, 기준선 노출, 톤 커브)을 처리 파이프라인의 어느 단계에서 적용할지 제어합니다. 이미지 변환을 빠르게 (색상 / 톤 보정 전에) 적용하면 원래 Adobe DNG 사양에 근사하지만 하이라이트가 잘리고 로컬 편집 도구로 복구하지 못할 수 있습니다.
 TP_ICM_DCPILLUMINANT;광원
 TP_ICM_DCPILLUMINANT_INTERPOLATED;보간
 TP_ICM_DCPILLUMINANT_TOOLTIP;포함되는 DCP의 광원의 어느 쪽을 사용하는 지 선택함.초기 설정에서는 화이트 밸런스를 바탕으로 두 광원의 중간으로 보간함.이 설정은 "보간 지원이 있는 두 DCP 광원"이 선택되는 경우에 유효함.

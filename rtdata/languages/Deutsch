@@ -10,6 +10,7 @@
 #08 28.07.2024 Update für neue Version (apostel338)
 #09 31.07.2025 Update für neue Version (apostel338)
 #10 13.09.2025 Update für neue Version (apostel338)
+#11 11.11.2025 Update für neue Version (apostel338)
 ABOUT_TAB_BUILD;Version
 ABOUT_TAB_CREDITS;Danksagungen
 ABOUT_TAB_LICENSE;Lizenz
@@ -268,7 +269,10 @@ GENERAL_EDIT;Bearbeiten
 GENERAL_ENABLE;Aktivieren
 GENERAL_ENABLED;Aktiviert
 GENERAL_FILE;Datei
+GENERAL_HIGH;Hoch
 GENERAL_LANDSCAPE;Querformat
+GENERAL_LOW;Niedrig
+GENERAL_MEDIUM;Mittel
 GENERAL_NA;n/a
 GENERAL_NO;Nein
 GENERAL_NONE;Keine
@@ -609,6 +613,7 @@ HISTORY_MSG_GRAIN_SCALE;Filmkörnung - Skala
 HISTORY_MSG_GRAIN_STRENGTH;Filmkörnung - Stärke
 HISTORY_MSG_HISTMATCHING;Auto-Tonwertkurve
 HISTORY_MSG_HSL_SMOOTHING;Farb-Equalizer - Glättung
+HISTORY_MSG_ICM_DCP_LOOK_PIPELINE_POS;Eingangsfarbprofil - DCP Look-Anwendung
 HISTORY_MSG_ICM_INPUT_CAT;Eingangsprofil - CAT
 HISTORY_MSG_ICM_OUTPUT_PRIMARIES;Ausgabeprofil - Primärfarben
 HISTORY_MSG_ICM_OUTPUT_TEMP;Ausgabeprofil - ICC-V4-Illuminant D
@@ -1152,6 +1157,7 @@ PREFERENCES_PREVDEMO;Genauigkeit der Vorschau
 PREFERENCES_PREVDEMO_FAST;Schnell
 PREFERENCES_PREVDEMO_LABEL;Demosaicing-Methode für 100%-Ansicht
 PREFERENCES_PREVDEMO_SIDECAR;Wie im Bildverarbeitungsprofil vorgegeben
+PREFERENCES_PREVIEW_RESAMPLING_QUALITY;Resampling-Qualität für das Vorschaubild bei Zoom <100%
 PREFERENCES_PRINTER;Drucker (Soft-Proofing)
 PREFERENCES_PROFILEHANDLING;Behandlung der Bearbeitungsprofile
 PREFERENCES_PROFILELOADPR;Priorität der Profile beim Laden
@@ -1171,6 +1177,7 @@ PREFERENCES_PSPATH;Adobe Photoshop Installationsverzeichnis
 PREFERENCES_REMEMBERZOOMPAN;Zoom und Bildposition merken
 PREFERENCES_REMEMBERZOOMPAN_TOOLTIP;Öffnen eines neuen Bildes mit den Zoom- und Positionswerten des vorangegangenen Bildes.\n\nFunktioniert nur unter folgenden Bedingungen:\nEinzel-Tab-Modus aktiv\n'Demosaicing-Methode für 100%-Ansicht' muss auf 'Wie im Bildverarbeitungsprofil vorgegeben' eingestellt sein.
 PREFERENCES_REMEMBER_METADATA_FILTERS;Metadatenfilter merken
+PREFERENCES_REMEMBER_RENAME_OPTIONS;Datei umbennennen/kopieren Einstellungen merken
 PREFERENCES_SAVE_TP_OPEN_NOW;Werkzeugstatus jetzt speichern
 PREFERENCES_SELECTLANG;Sprache
 PREFERENCES_SERIALIZE_TIFF_READ;TIFF-Bilder
@@ -1617,6 +1624,10 @@ TP_ICM_BPC;Schwarzpunkt-Kompensation
 TP_ICM_DCPILLUMINANT;Illumination
 TP_ICM_DCPILLUMINANT_INTERPOLATED;Interpoliert
 TP_ICM_DCPILLUMINANT_TOOLTIP;DCP-Illumination auswählen. Vorgabe ist 'Interpoliert'. Die Einstellung ist nur verfügbar, wenn sie vom Eingangsfarbprofil unterstützt wird.
+TP_ICM_DCP_LOOK_PIPELINE_POS;Look anwenden
+TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY;Früh in der Pipeline
+TP_ICM_DCP_LOOK_PIPELINE_POS_LATE;Spät in der Pipeline
+TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;Steuert, wann in der Verarbeitungspipeline die 'Look'-Modifikatoren des DCP-Profils ('Look'-Tabelle, Basistabelle und Tonwertkurve) angewendet werden. Eine frühe Anwendung (vor Farb-/Tonkorrektur) entspricht mehr den originalen Adobe DNG Spezifikationen, kann jedoch zu abgeschnittenen Spitzlichtern führen, die durch die Werkzeuge in 'Lokale Bearbeitung' nicht wiederhergestellt werden können.
 TP_ICM_INPUTCAMERA;Kamera-Standard
 TP_ICM_INPUTCAMERAICC;Kameraspezifisches Profil
 TP_ICM_INPUTCAMERAICC_TOOLTIP;Verwendet, sofern für die Kamera verfügbar, ARTs\nkameraspezifisches DCP/ICC-Eingangsfarbprofil, welches\npräziser als eine einfache Matrix ist.
@@ -1719,6 +1730,7 @@ TP_LABMASKS_LIGHTNESS_DETAIL;L-Maske Details erhalten
 TP_LABMASKS_LINKEDMASK;Verknüpfte Maske
 TP_LABMASKS_MASK;Maske
 TP_LABMASKS_MASK_UNNAMED;Unbenannt
+TP_LABMASKS_PARAMETERS;Parameter
 TP_LABMASKS_PARAMETERS;Parameter
 TP_LABMASKS_PARAMETRIC;Parametische Maske
 TP_LABMASKS_POSTPROCESS;Nachbearbeitung

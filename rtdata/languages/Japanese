@@ -26,7 +26,7 @@
 #25 2024-07-28 Ohnishi, Yasuo, updates for 1.22.2
 #26 2025-06-20 Ohnishi, Yasuo, updates for 1.25.6
 #27 2025-09-10  Ohnishi, Yasuo, updates for 1.25.9
-#28 2025-11-11  Ohnishi, Yasuo, updates for 1.25.11
+#28 2025-11-12  Ohnishi, Yasuo, updates for 1.25.11
 ABOUT_TAB_BUILD;バージョン
 ABOUT_TAB_CREDITS;クレジット
 ABOUT_TAB_LICENSE;ライセンス
@@ -634,6 +634,7 @@ HISTORY_MSG_GRAIN_STRENGTH;フィルム粒状効果 - 強さ
 HISTORY_MSG_GRAIN_SCALE;フィルム粒状効果 - 大きさ (Scale)
 HISTORY_MSG_HISTMATCHING;トーンカーブの自動調節
 HISTORY_MSG_HSL_SMOOTHING;カラーイコライザ - スムージング
+HISTORY_MSG_ICM_DCP_LOOK_PIPELINE_POS;入力プロファイル - DCP プロファイルの適用
 HISTORY_MSG_ICM_INPUT_CAT;プロファイル入力 - 色順応変換 (CAT)
 HISTORY_MSG_ICM_OUTPUT_PRIMARIES;出力 - プライマリ
 HISTORY_MSG_ICM_OUTPUT_TEMP;出力 - ICC-v4 光源 D
@@ -1628,6 +1629,10 @@ TP_ICM_APPLYHUESATMAP_TOOLTIP;DCPに埋め込まれているベーステーブ�
 TP_ICM_APPLYLOOKTABLE;ルックテーブル
 TP_ICM_APPLYLOOKTABLE_TOOLTIP;DCPに埋め込まれているルックテーブルを用います. 但し 適用するDCPにこのタグがある場合に限ります.
 TP_ICM_BPC;ブラックポイント補正
+TP_ICM_DCP_LOOK_PIPELINE_POS;DCP プロファイルの適用
+TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY;パイプラインの早い段階で適用
+TP_ICM_DCP_LOOK_PIPELINE_POS_LATE;パイプラインの遅い段階で適用
+TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;DCPプロファイルによる画像表示変換（ルックテーブル、ベースライン露出、トーンカーブ）を処理パイプラインのどの段階で適用するかを制御します。表示変換を早めに（色/トーン補正の前に）適用すると、元のAdobe DNGの仕様に近似しますが、ハイライトがクリップされ、ローカル編集ツールでは修復できない可能性があります.
 TP_ICM_DCPILLUMINANT;光源
 TP_ICM_DCPILLUMINANT_INTERPOLATED;補間
 TP_ICM_DCPILLUMINANT_TOOLTIP;埋め込まれているDCPの光源のどちらを使うか選択. デフォルトではホワイトバランスに基づいて二つの光源の中間に補間する. この設定は二つのDCPの光源が補間サポートされる を選択している場合に有効.

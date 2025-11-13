@@ -42,6 +42,7 @@
 #41 23-05-24 update naar ART v1.23 door pm
 #42 28-07-24 update naar ART v1.24 door pm
 #43 08-09-25 update naar ART v1.25.8 door pm
+#44 12-11-25 update naar ART v1.25.9 door pm
 
 ABOUT_TAB_BUILD;Versie
 ABOUT_TAB_CREDITS;Credits
@@ -631,6 +632,7 @@ HISTORY_MSG_GRAIN_SCALE;Filmkorrel - schaal
 HISTORY_MSG_GRAIN_STRENGTH;Filmkorrel - kracht
 HISTORY_MSG_HISTMATCHING;Auto-tooncurve
 HISTORY_MSG_HSL_SMOOTHING;Kleur-equalizer - verzachten
+HISTORY_MSG_ICM_DCP_LOOK_PIPELINE_POS;Inputprofiel - DCP 'look'-toepassing
 HISTORY_MSG_ICM_INPUT_CAT;Invoerprofiel - CAT
 HISTORY_MSG_ICM_OUTPUT_PRIMARIES;Uitvoer - primaire kleuren
 HISTORY_MSG_ICM_OUTPUT_TEMP;Uitvoer - ICC-v4 illuminant D
@@ -1602,6 +1604,10 @@ TP_ICM_APPLYHUESATMAP_TOOLTIP;Gebruik de ingebedde DCP-basistabel (HueSatMap). D
 TP_ICM_APPLYLOOKTABLE;DCP-'look'-tabel
 TP_ICM_APPLYLOOKTABLE_TOOLTIP;Gebruik de ingebedde DCP 'look'-tabel. De instelling is alleen actief als de DCP er een heeft.
 TP_ICM_BPC;Zwartpuntcompensatie
+TP_ICM_DCP_LOOK_PIPELINE_POS;'Look'-toepassing
+TP_ICM_DCP_LOOK_PIPELINE_POS_EARLY;Aan het begin van de pijplijn
+TP_ICM_DCP_LOOK_PIPELINE_POS_LATE;Later in de pijplijn
+TP_ICM_DCP_LOOK_PIPELINE_POS_TOOLTIP;Regelt wanneer de 'look'-modifiers van het DCP-profiel (look-tabel, basisbelichting en tooncurve) in de pijplijn worden toegepast. De look eerder toepassen (voor Kleur/Tooncorrectie) is meer in overeenstemming met de originele Adobe DNG-specificaties, maar dit kan resulteren in afgekapte hoge lichten die niet kunnen worden hersteld met de gereedschappen in de Lokale bewerkingsgroep
 TP_ICM_DCPILLUMINANT;Illuminant
 TP_ICM_DCPILLUMINANT_INTERPOLATED;Interpoleren
 TP_ICM_DCPILLUMINANT_TOOLTIP;Kies welk ingebed DCP-illuminant moet worden gebruikt. Standaard is dit "interpoleren". Dit is een mix van de twee gebaseerd op de witbalans. De instelling is alleen actief als een Dual-Illuminant DCP met interpolatie is geselecteerd.
