@@ -2537,7 +2537,7 @@ void Preferences::switchThemeTo(const Glib::ustring &newTheme, const Options *op
         if (lum < 0.2) {
             factor = 2 + (0.2 - lum) / 0.2;
         } else if (lum > 0.5) {
-            factor = 0.2 + 0.1 * (lum - 0.5) / 0.5;
+            factor = 0.2 + 0.6 * (lum - 0.5) / 0.5;
         }
         std::string dark = std::string("rgb(") + std::to_string(int(bg[0]*factor)) + "," + std::to_string(int(bg[1]*factor)) + "," + std::to_string(int(bg[2]*factor)) + ")"; // "black";
         std::string filename(Glib::build_filename(options.ART_base_dir, "themes", "_ART.css"));
